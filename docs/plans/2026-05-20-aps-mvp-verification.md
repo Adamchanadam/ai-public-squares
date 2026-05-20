@@ -116,9 +116,9 @@ e0f8572 docs(aps): add APS publish/consume rows to DOC_SYNC_REGISTRY
 
 ### Design + plan SSOT — `C:\Users\adam\_claude_desktop\AI_Public_Squares\`
 
-Branch `main`, 9 commits:
+Branch `main`, 9 commits (snapshot taken just before the M1 fix commit was finalized; the top entry is the M1 fix commit itself, written at the moment its diff was being authored):
 ```
-<M1_COMMIT_PLACEHOLDER> fix(aps): correct commit-count drift in verification report + I4 footnote
+b85d155 fix(aps): correct commit-count drift in verification report + I4 footnote
 632be49 fix(aps): sync Bridge Pack PROTOCOL.md-authoritative line into plan T5
 045c5c0 docs(aps): MVP verification report — round-trip PASS
 d9d852a fix(aps): sync Bridge Pack content fixes into plan T5
@@ -128,6 +128,8 @@ fbd8b91 fix(aps): close 6 contract holes in PROTOCOL.md
 d467f64 docs(aps): add Agent Public Square design from brainstorm
 de7a3a3 chore: import agent-handoff-kit baseline scaffold
 ```
+
+Any subsequent backfill commit (which would have added 1 to the count) is intentionally excluded from this snapshot to avoid the self-referential SHA paradox; verify the live count via `git log --oneline | wc -l` in the workspace.
 
 ## Key findings
 
