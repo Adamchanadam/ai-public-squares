@@ -1,0 +1,40 @@
+# Agent Handoff Kit Migration Report
+
+Command: init
+Mode: first-install
+Root: C:\Users\adam\_claude_desktop\AI_Public_Squares
+Created: 2026-05-19T08:10:04.591Z
+
+## Created
+- AGENTS.md
+- CLAUDE.md
+- GEMINI.md
+- dev/SESSION_HANDOFF.md
+- dev/SESSION_LOG.md
+- dev/PROJECT_INDEX.md
+- dev/DOC_SYNC_REGISTRY.md
+- dev/RULE_PACKS.md
+- dev/rules/safety.md
+- dev/rules/coding.md
+- dev/rules/writing.md
+- dev/rules/research.md
+- dev/rules/agent-governance.md
+- dev/rules/release.md
+- dev/rules/knowledge.md
+- dev/rules/communication.md
+
+## Merged
+- none
+
+## Skipped Existing
+- none
+
+## Conflicts
+- none
+
+## Backup
+- none
+
+## Notes
+- Existing files are preserved unless the installer can perform a bounded merge.
+- Files that cannot be safely merged are reported as conflicts and are not overwritten.
