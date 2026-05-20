@@ -36,7 +36,9 @@
 | T14 | Adam detects reply + closes | Demo Adam `75034fb` | Spec + Quality: Approved; round-trip CLOSED |
 | T15 | This verification report | This workspace, commit pending | n/a |
 
-Plan SSOT lives in `AI_Public_Squares` workspace: 3 design+plan commits plus 1 sync commit (`d9d852a`) for T5's fix → 4 commits total.
+**Footnote (T10, deliberate improvement over plan):** the implementer produced Jay's Bridge Pack Boundaries with generic `<other>` placeholder (DRY, copy-paste-safe for any third agent) instead of the plan's hardcoded `from_adam/` form. Adam's pack uses the same generic form. This is intentionally better than plan T10 said; plan need not be patched retroactively.
+
+Plan SSOT lives in `AI_Public_Squares` workspace. After all task commits + sync commits, branch `main` carries 9 commits as listed in the snapshot below.
 
 ## Acceptance criteria (whole plan)
 
@@ -114,16 +116,18 @@ e0f8572 docs(aps): add APS publish/consume rows to DOC_SYNC_REGISTRY
 
 ### Design + plan SSOT — `C:\Users\adam\_claude_desktop\AI_Public_Squares\`
 
-Branch `main`, 4 commits:
+Branch `main`, 9 commits:
 ```
+<M1_COMMIT_PLACEHOLDER> fix(aps): correct commit-count drift in verification report + I4 footnote
+632be49 fix(aps): sync Bridge Pack PROTOCOL.md-authoritative line into plan T5
+045c5c0 docs(aps): MVP verification report — round-trip PASS
 d9d852a fix(aps): sync Bridge Pack content fixes into plan T5
+5a411b0 fix(aps): template ergonomics from T2 code review
 fbd8b91 fix(aps): close 6 contract holes in PROTOCOL.md
 85fffd9 docs(aps): add MVP implementation plan
 d467f64 docs(aps): add Agent Public Square design from brainstorm
 de7a3a3 chore: import agent-handoff-kit baseline scaffold
 ```
-
-(Plus T2 ergonomic fix commit `5a411b0` was made earlier in the same workspace — see git log for full history.)
 
 ## Key findings
 
