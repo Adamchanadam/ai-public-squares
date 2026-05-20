@@ -216,22 +216,33 @@ This file lives on Drive (not in this git repo). No commit here. Track in Task 1
 - Create: `<HUB>\_hub\templates\packet.md.template`
 - Create: `<HUB>\_hub\templates\outbox.log.md.template`
 - Create: `<HUB>\_hub\templates\ack.json.template`
+- Create: `<HUB>\_hub\templates\ack.json.example`
 
 **Step 1: Write `packet.md.template`**
 
 ```markdown
+<!-- Template for APS PROTOCOL.md v1.0. If PROTOCOL version differs, re-sync this template. -->
+<!--
+  This file lives at: packets/<packet_id>__v<version>/packet.md
+  where <packet_id> and <version> below match the folder name.
+-->
 ---
 packet_id: REPLACE_WITH_UTC_yyyymmddThhmmssZ__short_snake_topic
+# For a NEW logical packet: version=1, supersedes=null.
+# For a REVISE of an existing packet: bump version, set supersedes to <packet_id>__v<previous>.
 version: 1
 from: REPLACE_WITH_SENDER_AGENT_ID
 to: REPLACE_WITH_RECEIVER_AGENT_ID
 project: REPLACE_WITH_PROJECT_SLUG
-level: L2-handoff
+level: REPLACE_WITH_LEVEL  # L1-fyi | L2-handoff | L3-urgent
 supersedes: null
 created_at: REPLACE_WITH_ISO8601_UTC
 ssot_refs:
   - "REPLACE: repo-relative path or anchor; remove this template line if none"
 scope: "REPLACE: one-line description of what this packet covers and what it does not"
+# items: snapshot at publish time. Zero items is valid for pure L1-fyi (use `items: []`).
+# For multiple items, duplicate the `- id:` block below.
+# status values: pending | in_progress | done | needs_clarification | fyi_align
 items:
   - id: REPLACE_ID
     status: pending
@@ -251,6 +262,7 @@ items:
 **Step 2: Write `outbox.log.md.template`**
 
 ```markdown
+<!-- Template for APS PROTOCOL.md v1.0. If PROTOCOL version differs, re-sync this template. -->
 # Outbox Ledger
 
 Append-only. One event per line. Never edit existing lines.
@@ -267,6 +279,8 @@ Verbs: publish | revise | close | withdraw
 
 **Step 3: Write `ack.json.template`**
 
+JSON does not support comments, so the template stays pure and minimal. A sibling `ack.json.example` ships alongside it as the version-coupled reference.
+
 ```json
 {
   "agent": "REPLACE_WITH_AGENT_ID",
@@ -276,13 +290,33 @@ Verbs: publish | revise | close | withdraw
 }
 ```
 
-**Step 4: Verify**
+**Step 4: Write `ack.json.example`**
+
+```json
+{
+  "agent": "adam",
+  "project": "mpedu_plus_branding",
+  "consumed": [
+    {
+      "packet_id": "20260518T103000Z__color_semantics",
+      "version": 1,
+      "at": "2026-05-20T09:00:00Z",
+      "result": "Merged into ssot/MASTER_INDEX.md #9; reply published as 20260520T123000Z__color_semantics_reply v1."
+    }
+  ],
+  "open_questions": [
+    { "ref": "section_7", "need": "External quotable boundary G4 awaiting Adam's confirmation." }
+  ]
+}
+```
+
+**Step 5: Verify**
 
 ```bash
 ls "/g/我的雲端硬碟/Adam 工作目錄/AI_Projects/AI_Public_Squares/_hub/templates/"
 ```
 
-Expected: three files listed.
+Expected: four files listed (three templates + one example).
 
 ---
 
@@ -352,6 +386,7 @@ Expected (order may differ):
 .../AI_Public_Squares/_hub/templates/packet.md.template
 .../AI_Public_Squares/_hub/templates/outbox.log.md.template
 .../AI_Public_Squares/_hub/templates/ack.json.template
+.../AI_Public_Squares/_hub/templates/ack.json.example
 .../AI_Public_Squares/mpedu_plus_branding/from_adam/outbox.log.md
 .../AI_Public_Squares/mpedu_plus_branding/from_adam/packets/README.md
 .../AI_Public_Squares/mpedu_plus_branding/from_jay/outbox.log.md
