@@ -459,6 +459,7 @@ Expected: 1 commit.
 <!-- Anchored to APS PROTOCOL.md v1.0. If PROTOCOL.md is upgraded beyond v1.0, re-read it in full and revalidate this pack before relying on it. -->
 
 Source-of-truth contract: `<hub_root>/_hub/PROTOCOL.md` (Drive).
+If any procedural wording in this Bridge Pack disagrees with the same procedure in `_hub/PROTOCOL.md`, PROTOCOL.md wins; treat the local pack as the operational form of the protocol.
 Architectural rationale: see APS design doc in `AI_Public_Squares` repo,
 `docs/plans/2026-05-20-agent-public-square-design.md`.
 
