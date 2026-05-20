@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Public Square — 項目入口</title>
+<style>
+  :root {
+    --ink: #1b2230;
+    --ink-soft: #4a5468;
+    --ink-fade: #8892a3;
+    --bg: #f6f3ec;
+    --bg-card: #fffdf7;
+    --line: #d9d4c5;
+    --accent: #2f5d7c;
+    --accent-soft: #e3edf3;
+    --ok: #2e7d4f;
+    --pending: #8a6a23;
+    --mono: ui-monospace, "Cascadia Code", "Source Code Pro", Consolas, "PingFang TC", monospace;
+    --serif: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", "Songti TC", Georgia, serif;
+    --sans: "Noto Sans TC", "Source Han Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.75;
+    padding: 32px 16px 64px;
+  }
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  header.cover {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 24px;
+    margin-bottom: 28px;
+  }
+  header.cover .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  header.cover h1 {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  header.cover .subtitle {
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin: 0 0 18px;
+  }
+  header.cover .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--ink-fade);
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid currentColor;
+    background: rgba(255,255,255,0.4);
+  }
+  .badge.ok { color: var(--ok); }
+  .badge.pending { color: var(--pending); }
+  section {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 22px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  section > p.lede {
+    margin: 0 0 16px;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 18px 0 4px;
+    color: var(--accent);
+  }
+  p { margin: 0 0 12px; }
+  ul, ol { margin: 6px 0 14px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  code, .path, .sha {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: #ece6d3;
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--ink);
+    word-break: break-all;
+  }
+  .key { color: var(--accent); font-weight: 600; }
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding-left: 0;
+    margin: 12px 0 0;
+  }
+  .step-list li {
+    counter-increment: step;
+    padding-left: 38px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    text-align: center;
+    line-height: 26px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--mono);
+  }
+  table.entry {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  table.entry th, table.entry td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.entry th {
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  table.entry tr:last-child td { border-bottom: none; }
+  .callout {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    border-radius: 0 4px 4px 0;
+  }
+  .callout strong { color: var(--ink); }
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  @media (min-width: 640px) {
+    .pain-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .pain-card {
+    background: #fbf6e9;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 14px;
+  }
+  .pain-card .icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+  .pain-card .title {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .pain-card .body {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .trick {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .trick:last-child { border-bottom: none; }
+  .trick .num {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 14px;
+    min-width: 28px;
+  }
+  .trick .body { flex: 1; }
+  .trick .head { font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .trick .why { font-size: 13px; color: var(--ink-soft); }
+  .status-list { list-style: none; padding-left: 0; margin: 0; }
+  .status-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 14px;
+  }
+  .status-list li:last-child { border-bottom: none; }
+  .status-list .mark {
+    font-family: var(--mono);
+    font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+  }
+  .status-list .mark.done { color: var(--ok); }
+  .status-list .mark.wait { color: var(--pending); }
+  footer {
+    text-align: center;
+    color: var(--ink-fade);
+    font-size: 12px;
+    margin-top: 30px;
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header class="cover">
+  <div class="eyebrow">項目入口頁</div>
+  <h1>Agent Public Square</h1>
+  <p class="subtitle">兩個 AI agent 喺唔同電腦、唔同系統,可以喺同一個項目入面分工協作。</p>
+  <div class="meta">
+    <span class="badge ok">MVP 完成</span>
+    <span class="badge pending">Phase 4 待跑</span>
+    <span>建立 2026-05-20</span>
+    <span>最新更新 2026-05-20</span>
+  </div>
+</header>
+
+<section>
+  <h2>一句話講晒</h2>
+  <p>Adam 同 Jay 各自用自己嘅 AI agent 做唔同部份(Adam 寫品牌文字,Jay 做視覺設計),需要交接嘅時候,人只係 WhatsApp send 一句固定模板,搬檔同解釋上下文嘅手工活由 APS 系統嘅結構自己孭。</p>
+</section>
+
+<section>
+  <h2>原本嘅痛</h2>
+  <p class="lede">未有 APS 前,每次跨機交接都要做晒以下步驟。每個方向都要做一次,即係雙向交流就做兩次。</p>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="icon">📦</div>
+      <div class="title">搬檔</div>
+      <div class="body">Adam 親手將交接包複製到 Google Drive 嘅指定資料夾。</div>
+    </div>
+    <div class="pain-card">
+      <div class="icon">📱</div>
+      <div class="title">通知 + 解釋</div>
+      <div class="body">WhatsApp 通知 Jay,並且解釋呢個 packet 係咩嚟、要做咩。</div>
+    </div>
+    <div class="pain-card">
+      <div class="icon">🤖</div>
+      <div class="title">Jay 再轉述</div>
+      <div class="body">Jay 開新 session,要再次將上下文人手 brief 畀自己個 agent。</div>
+    </div>
+    <div class="pain-card">
+      <div class="icon">🔁</div>
+      <div class="title">每次來回都重做</div>
+      <div class="body">Jay 出回包又要做返反方向一次:搬檔、通知、轉述。</div>
+    </div>
+  </div>
+  <p style="margin-top:14px;">兩個 agent 之間冇標準 inbox/outbox,Drive 只係檔案倉,唔係協作位;進度、狀態、待處理項目唔同步。</p>
+</section>
+
+<section>
+  <h2>APS 點消除呢啲痛 — 五個招數</h2>
+
+  <div class="trick">
+    <div class="num">1</div>
+    <div class="body">
+      <div class="head">中立交換區</div>
+      <div class="why">Drive 上一個共享資料夾(<span class="path">G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares</span>)做中介,雙方 agent 視為本地路徑直接讀寫,完全唔需要 API 或 connector。</div>
+    </div>
+  </div>
+
+  <div class="trick">
+    <div class="num">2</div>
+    <div class="body">
+      <div class="head">單寫道</div>
+      <div class="why">Adam 嘅檔位淨係 Adam 寫,Jay 嘅檔位淨係 Jay 寫,兩個 agent 永不寫對方檔。Drive 同步衝突由結構杜絕,唔靠自律。</div>
+    </div>
+  </div>
+
+  <div class="trick">
+    <div class="num">3</div>
+    <div class="body">
+      <div class="head">不可變交接包</div>
+      <div class="why">每個 packet 一發佈就鎖,要改 = 出新版本(v2、v3)同註明取代邊一版。雙方永遠引到清晰版本,唔會引到對方未定稿嘅中間狀態。</div>
+    </div>
+  </div>
+
+  <div class="trick">
+    <div class="num">4</div>
+    <div class="body">
+      <div class="head">焙入啟動讀序</div>
+      <div class="why">Jay 開新 session 嗰陣,佢個 agent 自己會先去 Hub 撿有冇人留包畀佢,自動列出待辦,Jay 唔使解釋上下文。</div>
+    </div>
+  </div>
+
+  <div class="trick">
+    <div class="num">5</div>
+    <div class="body">
+      <div class="head">一句固定 WhatsApp 模板</div>
+      <div class="why">Adam 出完包,只係 send 一句固定句,Jay 將呢句貼畀自己個 agent。整個過程冇再要任何解釋。</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>實際跑過一次點樣</h2>
+  <p class="lede">2026-05-20 喺 demo agent 跑通,順序如下:</p>
+  <ol class="step-list">
+    <li><strong>Adam 個 agent 收尾</strong>:寫好嘅交接包自動入 Drive 嘅 <span class="path">from_adam/</span> 道。</li>
+    <li><strong>Adam WhatsApp Jay</strong>:一句固定模板,30 秒事。</li>
+    <li><strong>Jay 開新 session</strong>:個 agent 啟動嗰陣自動撿到 Adam 嘅包,讀晒包入面嘅 scope 同待辦,主動列畀 Jay 睇。</li>
+    <li><strong>Jay 做完視覺,session 收尾</strong>:自動出回包入 <span class="path">from_jay/</span>,並且登記咗已消化 Adam 嗰一版。</li>
+    <li><strong>Adam 下次開 session</strong>:個 agent 自動撿到 Jay 回包,讀完,登記消化,正式收結整個交接 thread。</li>
+  </ol>
+  <div class="callout">
+    <strong>驗證結果:</strong>全程冇人手搬檔、冇人手解釋上下文。Drive 冇出衝突副本。兩邊 agent 嘅待辦清單最後都計算為「空」,系統返到穩定狀態。
+  </div>
+</section>
+
+<section>
+  <h2>現時狀態</h2>
+  <ul class="status-list">
+    <li><span class="mark done">✓</span><span>協定設計完成(三層邊界、單寫道、不可變版本、識別碼及聯合鍵)</span></li>
+    <li><span class="mark done">✓</span><span>實作 MVP 同驗證完成(設計→計劃→落地→驗證報告,4 份齊備)</span></li>
+    <li><span class="mark done">✓</span><span>同一部機模擬兩個 agent 跑通完整 round-trip</span></li>
+    <li><span class="mark wait">⏳</span><span>真實跨兩部機(同 Jay 嗰部機)未試 — 留 Phase 4</span></li>
+    <li><span class="mark wait">⏳</span><span>接入真實工作目錄(<span class="path">C:\…\MPEdu_Plus_Branding</span> 同 Jay 嗰邊)— 留 Phase 4</span></li>
+    <li><span class="mark wait">⏳</span><span>大附件(>50MB)、第三個 agent、Codex CLI 等 edge case — 將來逐項添加</span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Phase 4 等住做嘅嘢</h2>
+  <p>下次想真係用 APS 同 Jay 對接,以下幾項要逐項收口:</p>
+  <ul>
+    <li>Jay 部機 mount 同一個 Drive 資料夾,右鍵設「離線可用」(同你部機嘅設定一樣)。</li>
+    <li>將 Bridge Pack 接入你嘅真實 <span class="path">MPEdu_Plus_Branding</span> 工作目錄,Jay 嗰邊要 Jay 配合裝同樣嘢。</li>
+    <li>由你 + Jay 真跑一次跨機 round-trip,觀察 Drive 同步延遲、確認無衝突副本。</li>
+    <li>同 Jay 對齊 agent id(<span class="path">adam</span> / <span class="path">jay</span>)同 project slug(<span class="path">mpedu_plus_branding</span>)。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>項目入口 — 將來要查咩去邊度</h2>
+  <table class="entry">
+    <thead>
+      <tr>
+        <th>要查嘅嘢</th>
+        <th>位置</th>
+        <th>角色</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>協定本身(雙方 agent 跟邊套規矩)</td>
+        <td><span class="path">G:\…\AI_Public_Squares\_hub\PROTOCOL.md</span></td>
+        <td>運行時契約,雙方共同遵守</td>
+      </tr>
+      <tr>
+        <td>協定變更歷史</td>
+        <td><span class="path">G:\…\AI_Public_Squares\_hub\CHANGELOG.md</span></td>
+        <td>每次升版要雙方簽字</td>
+      </tr>
+      <tr>
+        <td>新 packet/ack 嘅範本</td>
+        <td><span class="path">G:\…\_hub\templates\</span></td>
+        <td>4 個範本檔,REPLACE 位填齊即可</td>
+      </tr>
+      <tr>
+        <td>個 agent 點接駁協定(Adam 嘅)</td>
+        <td><span class="path">C:\…\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md</span></td>
+        <td>規則包,焙入啟動+收尾兩步</td>
+      </tr>
+      <tr>
+        <td>個 agent 點接駁協定(Jay 嘅)</td>
+        <td><span class="path">C:\…\Demo_Agent_Jay_Public_Squares\dev\rules\aps-bridge.md</span></td>
+        <td>同 Adam 鏡像,只係識別碼唔同</td>
+      </tr>
+      <tr>
+        <td>點解咁設計(完整推理)</td>
+        <td><span class="path">docs\plans\2026-05-20-agent-public-square-design.md</span></td>
+        <td>5 段設計理據</td>
+      </tr>
+      <tr>
+        <td>步步點落地</td>
+        <td><span class="path">docs\plans\2026-05-20-aps-mvp-implementation.md</span></td>
+        <td>15 個任務嘅實作計劃</td>
+      </tr>
+      <tr>
+        <td>跑通咗咩、Phase 4 等乜</td>
+        <td><span class="path">docs\plans\2026-05-20-aps-mvp-verification.md</span></td>
+        <td>MVP 驗證報告</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>而家 Drive 上有咩</h2>
+  <pre style="font-family:var(--mono);font-size:12px;background:#ece6d3;padding:14px;border-radius:4px;overflow-x:auto;line-height:1.5;color:var(--ink);">
+G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\
+├── _hub\
+│   ├── PROTOCOL.md            ← 協定 v1.0
+│   ├── CHANGELOG.md           ← 協定變更日誌
+│   └── templates\
+│       ├── packet.md.template
+│       ├── outbox.log.md.template
+│       ├── ack.json.template
+│       └── ack.json.example
+└── mpedu_plus_branding\        ← 第一個項目嘅交換區
+    ├── from_adam\              ← Adam 寫,Jay 只讀
+    │   ├── outbox.log.md
+    │   └── packets\…
+    ├── from_jay\               ← Jay 寫,Adam 只讀
+    │   ├── outbox.log.md
+    │   └── packets\…
+    ├── _ack\
+    │   ├── adam.ack.json
+    │   └── jay.ack.json
+    └── to_Agent_Jay\           ← 舊手工流程嘅檔案(保留,日後可清)
+  </pre>
+</section>
+
+<section>
+  <h2>維護呢頁</h2>
+  <p>呢份入口頁係手動維護。每當 APS 有重大改動(例:跨機跑通、接入真實工作目錄、增加第三個 agent),請更新以下兩處:</p>
+  <ul>
+    <li><strong>頁首 meta</strong>:更新「最新更新」日期同狀態徽章。</li>
+    <li><strong>「現時狀態」 + 「Phase 4 等住做嘅嘢」</strong>:逐項 ✓ / ⏳ / 移走。</li>
+  </ul>
+  <p>檔案位置:<span class="path">C:\Users\adam\_claude_desktop\AI_Public_Squares\docs\index.html</span></p>
+</section>
+
+<footer>
+  Agent Public Square · MVP 0.1 · 2026-05-20
+</footer>
+
+</main>
+</body>
+</html>
