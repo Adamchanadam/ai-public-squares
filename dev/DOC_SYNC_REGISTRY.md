@@ -19,6 +19,7 @@ Use: `confirmed`, `unverified`, `pending`, `blocked`, `not_applicable`.
 | Release | release notes, README version, changelog | release pack checklist |
 | APS protocol / plan / verification change | `docs/plans/2026-05-20-*.md`, `docs/index.html` (status badge / Phase 4 status line), `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\_hub\PROTOCOL.md` + `_hub\CHANGELOG.md`, both demo workspaces' `dev/rules/aps-bridge.md` | doctor green; cross-doc consistency check across the four APS docs; PROTOCOL.md CHANGELOG sign-off; template version-anchor comments still match PROTOCOL version |
 | APS round-trip session (live packet, ack, or close on the Drive Hub) | local `dev/SESSION_LOG.md` Sync field with `APS publish/consume/close: <packet_id> v<N>` line; `ack.json` in the agent's own lane | grep `^- \*\*Sync:\*\* APS` in SESSION_LOG returns ≥ 1 new line; `_ack/<me>.ack.json` `consumed[]` reflects any inbound packet acted on |
+| APS user-facing docs change (`docs/index.html`, `docs/guides/**.html`) | the affected HTML files in `docs/` plus `dev/PROJECT_INDEX.md` Fact Base rows for any added/removed page; the inline `.site-nav` block must stay in sync across all HTML pages under `docs/` | manual link audit (index ↔ guides hub ↔ each walkthrough), site-nav `<a>` set identical across pages, Fact Base row exists for each guide HTML file |
 
 ## Registry Rule
 

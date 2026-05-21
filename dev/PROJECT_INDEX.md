@@ -8,9 +8,9 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 |---|---|---|
 | Agent Handoff Kit template version | 0.1.7 | 2026-05-21 |
 | Runtime | N/A — governance + documentation workspace, no code execution | 2026-05-21 |
-| Framework | N/A — same reason | 2026-05-21 |
+| Framework | N/A — static HTML for user-facing docs under `docs/`; no build step | 2026-05-21 |
 | Package manager | N/A — same reason | 2026-05-21 |
-| Test command | N/A — no test suite; verification via `agent-handoff-kit doctor` plus manual acceptance per plan | 2026-05-21 |
+| Test command | N/A — no test suite; verification via `agent-handoff-kit doctor` plus manual acceptance per plan; HTML link audit by hand | 2026-05-21 |
 | Build command | N/A — same | 2026-05-21 |
 | Deploy command | N/A — same; not published | 2026-05-21 |
 
@@ -25,8 +25,9 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 | `dev/` | governance state (handoff, log, index, sync registry) | session startup / closeout |
 | `dev/rules/` | rule packs loaded per task signal from `dev/RULE_PACKS.md` | per task, per pack-loading routing rule |
 | `dev/governance_migrations/<UTC>/` | kit upgrade backup + migration reports; one folder per `agent-handoff-kit upgrade` invocation | reference only; not for routine reads |
-| `docs/plans/` | APS design, implementation plan, verification report | before any APS-related task; before declaring MVP scope complete; before opening Phase 4 |
-| `docs/index.html` | user-facing project entry page (Cantonese, hand-maintained) | when explaining APS to a non-developer |
+| `docs/plans/` | APS design, MVP implementation plan, MVP verification report, Phase 4 implementation plan | before any APS-related task; before declaring MVP scope complete; before opening or executing Phase 4 |
+| `docs/index.html` | user-facing project entry page (Cantonese, hand-maintained); top-level nav links to guides hub and key plans | when explaining APS to a non-developer |
+| `docs/guides/` | user-facing teaching pages (HTML); guides hub at `docs/guides/index.html` lists current + planned walkthroughs | when onboarding a user to APS or adding a new teaching page |
 
 ## Entry Points
 
@@ -47,7 +48,10 @@ Reachable means the source can be found. It does not mean the source has been re
 | `docs/plans/2026-05-20-agent-public-square-design.md` | APS design rationale; SSOT for "why" | any APS protocol change | local path | 2026-05-21 |
 | `docs/plans/2026-05-20-aps-mvp-implementation.md` | 15-task MVP step-by-step plan; SSOT for "what was built" | re-execution or audit of the MVP build | local path | 2026-05-21 |
 | `docs/plans/2026-05-20-aps-mvp-verification.md` | MVP acceptance audit + Phase 4 open items | declaring MVP scope complete or planning Phase 4 | local path | 2026-05-21 |
+| `docs/plans/2026-05-21-aps-phase4-plan.md` | Phase 4 implementation plan; T0 + Blocks 4A–4D + 10 tasks + acceptance criteria; SSOT for "how to take APS to real cross-machine runtime" | executing Phase 4; planning a Phase 4 verification report | local path | 2026-05-21 |
 | `docs/index.html` | non-developer project explainer; user-maintained entry page | communicating APS state to humans, e.g. status updates to Jay or other stakeholders | local path | 2026-05-21 |
+| `docs/guides/index.html` | guides hub listing current + planned user-facing walkthroughs | onboarding a user; adding a new guide | local path | 2026-05-21 |
+| `docs/guides/aps-onboarding-walkthrough.html` | end-to-end Adam + Jay step-by-step Phase 4 onboarding teaching page | first-time user reading; pairing with Phase 4 plan during execution | local path | 2026-05-21 |
 
 ## External Sources
 
