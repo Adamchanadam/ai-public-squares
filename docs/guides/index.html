@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APS 教學中心</title>
+<style>
+  /* === Shared design tokens (keep in sync with docs/index.html) === */
+  :root {
+    --ink: #1b2230;
+    --ink-soft: #4a5468;
+    --ink-fade: #8892a3;
+    --bg: #f6f3ec;
+    --bg-card: #fffdf7;
+    --line: #d9d4c5;
+    --accent: #2f5d7c;
+    --accent-soft: #e3edf3;
+    --ok: #2e7d4f;
+    --pending: #8a6a23;
+    --mono: ui-monospace, "Cascadia Code", "Source Code Pro", Consolas, "PingFang TC", monospace;
+    --serif: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", "Songti TC", Georgia, serif;
+    --sans: "Noto Sans TC", "Source Han Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.75;
+    padding: 32px 16px 64px;
+  }
+  main { max-width: 760px; margin: 0 auto; }
+  header.cover {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 24px;
+    margin-bottom: 28px;
+  }
+  header.cover .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  header.cover h1 {
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  header.cover .subtitle {
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  section {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 22px;
+  }
+  section > h2 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  section > p.lede {
+    margin: 0 0 16px;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  p { margin: 0 0 12px; }
+  ul, ol { margin: 6px 0 14px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  code, .path {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: #ece6d3;
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--ink);
+    word-break: break-all;
+  }
+  .callout {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    border-radius: 0 4px 4px 0;
+  }
+  .callout strong { color: var(--ink); }
+  footer {
+    text-align: center;
+    color: var(--ink-fade);
+    font-size: 12px;
+    margin-top: 30px;
+  }
+  /* === Shared site nav (sync with docs/index.html) === */
+  .site-nav {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 22px;
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    align-items: baseline;
+  }
+  .site-nav__brand {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    margin-right: 8px;
+  }
+  .site-nav__brand-tag {
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-left: 4px;
+  }
+  .site-nav__link {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+    white-space: nowrap;
+    transition: border-color 0.15s ease;
+  }
+  .site-nav__link:hover { border-bottom-color: var(--accent); }
+  .site-nav__link--active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+  .site-nav__spacer { flex: 1; }
+  .site-nav__hint {
+    color: var(--ink-fade);
+    font-size: 12px;
+  }
+  /* === Guides hub: card list === */
+  .guide-card {
+    display: block;
+    background: #fbf6e9;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .guide-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .guide-card__head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .guide-card__title {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+    flex: 1;
+  }
+  .guide-card__tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .guide-card__tag--ok { color: var(--ok); border-color: var(--ok); background: rgba(46,125,79,0.08); }
+  .guide-card__tag--pending { color: var(--pending); border-color: var(--pending); background: rgba(138,106,35,0.08); }
+  .guide-card__meta {
+    font-size: 12px;
+    color: var(--ink-fade);
+    margin-bottom: 6px;
+    font-family: var(--mono);
+  }
+  .guide-card__desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0;
+    line-height: 1.65;
+  }
+  .planned-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .planned-list li {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .planned-list li:last-child { border-bottom: none; }
+  .planned-list li::before {
+    content: "⏳";
+    margin-right: 8px;
+  }
+  .planned-list strong { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+
+<nav class="site-nav" aria-label="主目錄">
+  <span class="site-nav__brand">Agent Public Square<span class="site-nav__brand-tag">APS</span></span>
+  <a class="site-nav__link" href="../index.html">入口</a>
+  <a class="site-nav__link site-nav__link--active" href="index.html">教學中心</a>
+  <a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">跨機接駁計劃</a>
+  <a class="site-nav__link" href="../plans/2026-05-20-agent-public-square-design.md">設計理據</a>
+  <span class="site-nav__spacer"></span>
+  <span class="site-nav__hint">2026-05-21</span>
+</nav>
+
+<header class="cover">
+  <div class="eyebrow">教學中心</div>
+  <h1>APS 教學中心</h1>
+  <p class="subtitle">一份教學對一個情景。揀啱你而家面對嘅,跟住做。</p>
+</header>
+
+<section>
+  <h2>想由零開始學</h2>
+  <p class="lede">第一次接觸,由呢一份開始。讀完跟住做,你同 Jay 就可以第一次跨機交接。</p>
+
+  <a class="guide-card" href="aps-onboarding-walkthrough.html">
+    <div class="guide-card__head">
+      <h3 class="guide-card__title">APS 完整落地教學</h3>
+      <span class="guide-card__tag guide-card__tag--ok">推薦先睇</span>
+    </div>
+    <div class="guide-card__meta">約 20 分鐘讀完,跟住做另計</div>
+    <p class="guide-card__desc">由你部機未接過 APS 嗰一刻起,行到你同 Jay 第一次跨機交接完成。寫畀真人讀。你同 Jay 兩個角度,各自跟住做就得。</p>
+  </a>
+</section>
+
+<section>
+  <h2>之後會逐步加</h2>
+  <p class="lede">每一份對應一個落地之後嘅實際情景。會跟住項目進度慢慢補。</p>
+  <ul class="planned-list">
+    <li><strong>接落嚟嘅日常用法</strong> — 第一次跨機接通之後,每日點開新對話、Jay 收到通知後做乜、出包同收包嘅重複動作。</li>
+    <li><strong>大檔點過</strong> — 設計圖、影片過大,唔好擺入交接包入面。要另外擺一個位,再喺包入面講邊度搵。呢份講具體做法。</li>
+    <li><strong>協定升版嘅做法</strong> — 雙方覺得規矩要改、要加欄、要動流程,點先有秩序咁過版本,留底等將來追溯。</li>
+    <li><strong>多一個人入嚟協作</strong> — 三個或以上嘅人同時做一個項目,點開新通道,點計算多方嘅待辦。</li>
+    <li><strong>換另一個 AI 程式</strong> — 由 Claude Code 轉去其他同類程式之後,邊啲位要重新驗,會唔會出現唔同行為。</li>
+    <li><strong>出咗重複檔點救</strong> — 萬一真嘅出咗 Drive 衝突副本,點順序處理,點搵原因,點先唔好越救越亂。</li>
+    <li><strong>用 Notion 做進度看板</strong> — 將活動同消化記錄單向同步去 Notion,等人手一眼睇晒邊單對邊單。</li>
+  </ul>
+  <p style="margin-top:14px;color:var(--ink-soft);font-size:14px;">呢個教學中心會跟住每一階段落實,慢慢補新教學。</p>
+</section>
+
+<footer>
+  Agent Public Square · 教學中心 · 最新更新 2026-05-21
+</footer>
+
+</main>
+</body>
+</html>

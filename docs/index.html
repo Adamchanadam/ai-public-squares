@@ -244,10 +244,67 @@
     font-size: 12px;
     margin-top: 30px;
   }
+  /* === Shared site nav (keep in sync across docs/index.html and docs/guides/*.html) === */
+  .site-nav {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 22px;
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    align-items: baseline;
+  }
+  .site-nav__brand {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    margin-right: 8px;
+  }
+  .site-nav__brand-tag {
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-left: 4px;
+  }
+  .site-nav__link {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+    white-space: nowrap;
+    transition: border-color 0.15s ease;
+  }
+  .site-nav__link:hover { border-bottom-color: var(--accent); }
+  .site-nav__link--active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+  .site-nav__spacer { flex: 1; }
+  .site-nav__hint {
+    color: var(--ink-fade);
+    font-size: 12px;
+  }
 </style>
 </head>
 <body>
 <main>
+
+<nav class="site-nav" aria-label="主目錄">
+  <span class="site-nav__brand">Agent Public Square<span class="site-nav__brand-tag">APS</span></span>
+  <a class="site-nav__link site-nav__link--active" href="index.html">入口</a>
+  <a class="site-nav__link" href="guides/index.html">教學中心</a>
+  <a class="site-nav__link" href="plans/2026-05-21-aps-phase4-plan.md">跨機接駁計劃</a>
+  <a class="site-nav__link" href="plans/2026-05-20-agent-public-square-design.md">設計理據</a>
+  <span class="site-nav__spacer"></span>
+  <span class="site-nav__hint">2026-05-21</span>
+</nav>
 
 <header class="cover">
   <div class="eyebrow">項目入口頁</div>
@@ -257,7 +314,7 @@
     <span class="badge ok">MVP 完成</span>
     <span class="badge pending">Phase 4 待跑</span>
     <span>建立 2026-05-20</span>
-    <span>最新更新 2026-05-20</span>
+    <span>最新更新 2026-05-21</span>
   </div>
 </header>
 
@@ -359,21 +416,27 @@
     <li><span class="mark done">✓</span><span>協定設計完成(三層邊界、單寫道、不可變版本、識別碼及聯合鍵)</span></li>
     <li><span class="mark done">✓</span><span>實作 MVP 同驗證完成(設計→計劃→落地→驗證報告,4 份齊備)</span></li>
     <li><span class="mark done">✓</span><span>同一部機模擬兩個 agent 跑通完整 round-trip</span></li>
-    <li><span class="mark wait">⏳</span><span>真實跨兩部機(同 Jay 嗰部機)未試 — 留 Phase 4</span></li>
-    <li><span class="mark wait">⏳</span><span>接入真實工作目錄(<span class="path">C:\…\MPEdu_Plus_Branding</span> 同 Jay 嗰邊)— 留 Phase 4</span></li>
+    <li><span class="mark done">✓</span><span>兩個 demo workspace 同此 plan SSOT 已對齊至 Agent Handoff Kit v0.1.7</span></li>
+    <li><span class="mark done">✓</span><span>Phase 4 完整計劃已落地,有 step-by-step 任務分解 + Jay 配合清單 + 驗收條件(<a class="site-nav__link" style="font-size:14px;" href="plans/2026-05-21-aps-phase4-plan.md">睇 Phase 4 計劃</a>)</span></li>
+    <li><span class="mark wait">⏳</span><span>真實跨兩部機(同 Jay 嗰部機)未試 — Phase 4 Block 4C</span></li>
+    <li><span class="mark wait">⏳</span><span>接入真實工作目錄(<span class="path">C:\…\MPEdu_Plus_Branding</span> 同 Jay 嗰邊)— Phase 4 Block 4A / 4B</span></li>
     <li><span class="mark wait">⏳</span><span>大附件(>50MB)、第三個 agent、Codex CLI 等 edge case — 將來逐項添加</span></li>
   </ul>
 </section>
 
 <section>
   <h2>Phase 4 等住做嘅嘢</h2>
-  <p>下次想真係用 APS 同 Jay 對接,以下幾項要逐項收口:</p>
+  <p>下次想真係用 APS 同 Jay 對接,以下幾項要逐項收口。每一項喺 <a href="plans/2026-05-21-aps-phase4-plan.md" class="site-nav__link" style="font-size:15px;">Phase 4 計劃文檔</a>都有完整 step-by-step 任務拆解 + 驗收條件,可直接照做。</p>
   <ul>
-    <li>Jay 部機 mount 同一個 Drive 資料夾,右鍵設「離線可用」(同你部機嘅設定一樣)。</li>
-    <li>將 Bridge Pack 接入你嘅真實 <span class="path">MPEdu_Plus_Branding</span> 工作目錄,Jay 嗰邊要 Jay 配合裝同樣嘢。</li>
-    <li>由你 + Jay 真跑一次跨機 round-trip,觀察 Drive 同步延遲、確認無衝突副本。</li>
-    <li>同 Jay 對齊 agent id(<span class="path">adam</span> / <span class="path">jay</span>)同 project slug(<span class="path">mpedu_plus_branding</span>)。</li>
+    <li><strong>T0 鎖定參數</strong>:同 Jay 對齊 agent id(<span class="path">adam</span> / <span class="path">jay</span>)同 project slug(沿用 <span class="path">mpedu_plus_branding</span> 定改新名)。</li>
+    <li><strong>Block 4A(可獨力先做)</strong>:將 Bridge Pack 接入你嘅真實 <span class="path">C:\…\MPEdu_Plus_Branding</span> 工作目錄;6 個 task 嘅 mirror,參數改一改就得。</li>
+    <li><strong>Block 4B(等 Jay 配合)</strong>:Jay 部機 mount 同一個 Drive 資料夾、右鍵設「離線可用」、接 Bridge Pack。</li>
+    <li><strong>Block 4C</strong>:由你 + Jay 真跑一次跨機 round-trip,觀察 Drive 同步延遲、確認無衝突副本。</li>
+    <li><strong>Block 4D(建議,但可推遲)</strong>:大附件(>50 MB)dry-run,驗證 externalization 規則。</li>
   </ul>
+  <div class="callout">
+    <strong>想由零開始學點用?</strong>去 <a href="guides/index.html" class="site-nav__link" style="font-size:14px;">教學中心</a>,有完整落地 walkthrough,寫畀 Adam 同 Jay 兩個視角各自跟。
+  </div>
 </section>
 
 <section>
@@ -427,6 +490,16 @@
         <td><span class="path">docs\plans\2026-05-20-aps-mvp-verification.md</span></td>
         <td>MVP 驗證報告</td>
       </tr>
+      <tr>
+        <td>Phase 4 完整實作計劃</td>
+        <td><span class="path">docs\plans\2026-05-21-aps-phase4-plan.md</span></td>
+        <td>4 個 block、10 個 task,可直接執行</td>
+      </tr>
+      <tr>
+        <td>應用情景教學(由零開始)</td>
+        <td><span class="path">docs\guides\index.html</span></td>
+        <td>教學中心 hub,目前有完整 onboarding walkthrough</td>
+      </tr>
     </tbody>
   </table>
 </section>
@@ -468,7 +541,7 @@ G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\
 </section>
 
 <footer>
-  Agent Public Square · MVP 0.1 · 2026-05-20
+  Agent Public Square · MVP 完成 · 最新更新 2026-05-21
 </footer>
 
 </main>
