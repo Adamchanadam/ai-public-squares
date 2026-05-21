@@ -1,4 +1,4 @@
-Work in <absolute project root>.
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares.
 
 Read in order:
 1. AGENTS.md
@@ -11,4 +11,6 @@ Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
-After reading, summarize current objective, task understanding, confirmed decisions, pending work, risks, and the next recommended action.
+Current state (as of 2026-05-21): APS MVP complete and verified on same-machine simulation. AGENTS.md is at kit v0.1.7 (clean, doctor 34/34 passing). Next task is Phase 4 — real cross-machine handoff with Jay; not yet started. See docs/plans/2026-05-20-aps-mvp-verification.md for the Phase 4 open items, and docs/index.html for the user-facing project explainer.
+
+After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
