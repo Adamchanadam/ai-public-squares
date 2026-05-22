@@ -152,10 +152,10 @@ Handoff evidence location: this file (durable continuity);`dev/SESSION_LOG.md` 2
 Expected project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares`
 Git root: same
 Branch: `main`
-Latest pushed commit: `78b52eb` (設計理據 voice rewrite) as of S9 extended reconcile #2;**20th commit landing S9 reconcile #2 (this file + SESSION_LOG continuation block + PROJECT_INDEX examples/ row + START_NEXT_SESSION_PROMPT regen) pending at end of this turn**。
+Latest pushed commit: `01f748f`(S9 reconcile #2 governance update)as of formal closeout;**22nd commit landing formal closeout state reconciliation pending at end of this turn**。21 commits accumulated this session(S8 stage 1 → 設計理據 voice → S9 reconcile #2),22nd 為此 closeout 自身。
 Remote: `origin` = `https://github.com/Adamchanadam/ai-public-squares.git` (private, Apache-2.0, HTTPS via Windows Credential Manager)。
 Worktree / parallel workspace status: none (no `git worktree add`);siblings (`Demo_Agent_{Adam,Jay}_Public_Squares` MVP fixtures + Drive Hub) 仍 independent stores;real runtime workspaces 仲喺 each user's own machine (out of repo)。
-Uncommitted changes summary: 4 governance files 待 commit (SESSION_HANDOFF / SESSION_LOG / PROJECT_INDEX / START_NEXT_SESSION_PROMPT) — will commit at end of this turn as the 20th commit of session。
+Uncommitted changes summary: 1 governance file 待 commit(SESSION_HANDOFF.md formal closeout 之 State Reconciliation Check + Workspace Identity 微調)— will commit at end of this turn as the 22nd commit of session,working tree clean 之後即正式收工。
 
 <!-- ack:section:sync-status -->
 ## Sync Status
@@ -178,7 +178,7 @@ Use statuses from `dev/DOC_SYNC_REGISTRY.md`: `confirmed`, `unverified`, `pendin
 
 At full closeout, complete this check after updating the state sections above.
 
-- Reconciled at: 2026-05-21 S2-S8 closeouts;**2026-05-22 S9 mid-session reconcile** (呢個 reconcile 唔係正式 closeout — Adam 講 「唔收工」;但 vision shift major 所以全部 state section 都 reconcile 過,等下一 session 可以接得返)。
+- Reconciled at: 2026-05-21 S2-S8 closeouts;**2026-05-22 S9 reconcile #1**(mid-session,commit `230503d`)— funnel-first vision shift + Layer A done + npm bootstrap + GitHub remote 落地;**2026-05-22 S9 reconcile #2**(commit `01f748f`)— 5 份人讀文檔 voice rewrite + walkthrough concrete rewrite(Adam pattern confirmed)+ ship demo fixtures 入 `examples/` + design doc reframe + 加 §3 工作目錄 + cascade renumber 11→13 sections;**2026-05-22 formal closeout**(此 turn)— Adam 拍板收工,reconcile #2 之後再 update State Reconciliation Check + Workspace Identity 反映 21 commits 累積。
 <!-- ack:field:state-sections-rewritten-or-confirmed -->
 - State sections rewritten or confirmed current (S9 mid-session pass): Last Updated header (S9 mid-session);Durable Anchors (item 1, 2, 4, 5 updated for funnel-first vision + GitHub remote + npm package + product name shift;item 3 unchanged);Closeout-Reconciled State (intro note added explaining mid-session reconcile);Current Baseline (rewritten — funnel-first vision + Layer A done + npm skeleton + GitHub remote);Task Understanding Summary (user intent refined + success criteria updated);Active Objective (rewritten — Phase X-3 next;Phase X-1 done;Phase X-2 partial);Completed This Session (replaced with S9 work);Next Priorities (rewritten 8 entries reflecting funnel roadmap);Next Task Required Reading (10 sources updated for Phase X-3 entry);Risks (rewritten 8 risks reflecting new state);Validation/QC (S9 checks);Workspace Identity (commit + uncommitted summary updated for S9);Sync Status (refreshed);State Reconciliation Check (this field);Handoff Sufficiency Check (re-confirmed);Next Session Opening Message (regenerated for S9)。
 <!-- ack:field:stale-snapshots-left -->
