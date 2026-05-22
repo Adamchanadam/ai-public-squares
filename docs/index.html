@@ -313,6 +313,7 @@
   <p class="subtitle">兩個 AI agent 喺唔同電腦、唔同系統,可以喺同一個項目入面分工協作。</p>
   <div class="meta">
     <span class="badge ok">MVP 完成</span>
+    <span class="badge ok">三層精簡 + QC vocabulary</span>
     <span class="badge pending">Phase 4 待跑</span>
     <span>建立 2026-05-20</span>
     <span>最新更新 2026-05-21</span>
@@ -321,7 +322,11 @@
 
 <section>
   <h2>一句話講晒</h2>
-  <p>Adam 同 Jay 各自用自己嘅 AI agent 做唔同部份(Adam 寫品牌文字,Jay 做視覺設計),需要交接嘅時候,人只係 WhatsApp send 一句固定模板,搬檔同解釋上下文嘅手工活由 APS 系統嘅結構自己孭。</p>
+  <p>兩位用戶各自用自己嘅 AI agent 做唔同部份(例如一邊寫品牌文字,另一邊做視覺設計),需要交接嘅時候,人只係 WhatsApp send 一句固定模板,搬檔同解釋上下文嘅手工活由 APS 系統嘅結構自己孭。</p>
+
+  <div class="callout">
+    <strong>呢個 repo 係通用 APS template</strong>。下面教學用「Adam」「Jay」做兩個 narrative protagonist 講故,佢哋係 example user name — MVP 驗證嗰陣用嗰兩個名,唔係話你一定要用呢兩個名。實際落地時,「Adam」對應你揀做 <strong>User A</strong>(發起接駁嗰位),「Jay」對應 <strong>User B</strong>(對方);agent_id、項目代號、工作目錄路徑全部你哋自己決定。
+  </div>
 </section>
 
 <section>
@@ -419,8 +424,11 @@
     <li><span class="mark done">✓</span><span>同一部機模擬兩個 agent 跑通完整 round-trip</span></li>
     <li><span class="mark done">✓</span><span>兩個 demo workspace 同此 plan SSOT 已對齊至 Agent Handoff Kit v0.1.7</span></li>
     <li><span class="mark done">✓</span><span>Phase 4 完整計劃已落地,有 step-by-step 任務分解 + Jay 配合清單 + 驗收條件(<a class="site-nav__link" style="font-size:14px;" href="plans/2026-05-21-aps-phase4-plan.md">睇 Phase 4 計劃</a>)</span></li>
-    <li><span class="mark wait">⏳</span><span>真實跨兩部機(同 Jay 嗰部機)未試 — Phase 4 Block 4C</span></li>
-    <li><span class="mark wait">⏳</span><span>接入真實工作目錄(<span class="path">C:\…\MPEdu_Plus_Branding</span> 同 Jay 嗰邊)— Phase 4 Block 4A / 4B</span></li>
+    <li><span class="mark done">✓</span><span>三層 user-flow 精簡完成 — 中途叫一句 <code>check Hub</code> 做日常默認 / 跨機通知 WhatsApp 短訊化 / 衝突檔由 agent 啟動自動掃 / T0 拍板由 5+ 簡到 3 個 + 4 默認(S3-S5)</span></li>
+    <li><span class="mark done">✓</span><span>PowerShell idempotent installer <code>tools/aps-onboard.ps1</code> 可用 — 真實 runtime onboarding 嘅 4 個機械 file edit 一次跑(T6 留手動)</span></li>
+    <li><span class="mark done">✓</span><span>分層 QC vocabulary 建立 — 🟢快檢 / 🟡外發前檢 / 🔴全面檢,SSOT 喺 <code>dev/qc/triggers.md</code>,reference card 喺 <a class="site-nav__link" style="font-size:14px;" href="qc/governance-map.html">分層 QC</a></span></li>
+    <li><span class="mark wait">⏳</span><span>真實跨兩部機(User A + User B 各自部機)未試 — Phase 4 Block 4C</span></li>
+    <li><span class="mark wait">⏳</span><span>接入真實工作目錄(User A 同 User B 各自揀嘅項目目錄)— Phase 4 Block 4A / 4B</span></li>
     <li><span class="mark wait">⏳</span><span>大附件(>50MB)、第三個 agent、Codex CLI 等 edge case — 將來逐項添加</span></li>
   </ul>
 </section>
@@ -429,10 +437,11 @@
   <h2>Phase 4 等住做嘅嘢</h2>
   <p>下次想真係用 APS 同 Jay 對接,以下幾項要逐項收口。每一項喺 <a href="plans/2026-05-21-aps-phase4-plan.md" class="site-nav__link" style="font-size:15px;">Phase 4 計劃文檔</a>都有完整 step-by-step 任務拆解 + 驗收條件,可直接照做。</p>
   <ul>
-    <li><strong>T0 鎖定參數</strong>:同 Jay 對齊 agent id(<span class="path">adam</span> / <span class="path">jay</span>)同 project slug(沿用 <span class="path">mpedu_plus_branding</span> 定改新名)。</li>
-    <li><strong>Block 4A(可獨力先做)</strong>:將 Bridge Pack 接入你嘅真實 <span class="path">C:\…\MPEdu_Plus_Branding</span> 工作目錄;6 個 task 嘅 mirror,參數改一改就得。</li>
-    <li><strong>Block 4B(等 Jay 配合)</strong>:Jay 部機 mount 同一個 Drive 資料夾、右鍵設「離線可用」、接 Bridge Pack。</li>
-    <li><strong>Block 4C</strong>:由你 + Jay 真跑一次跨機 round-trip,觀察 Drive 同步延遲、確認無衝突副本。</li>
+    <li><strong>T0 鎖定參數(經 Layer 2 簡化後只剩 3 個拍板)</strong>:你揀新 project slug(建議 <code>branding_2026</code> 一類新名,demo lane 自然唔受影響)+ Jay 報自己部機嘅工作目錄同 Hub 路徑 + T10 大檔試跑做唔做。其餘四項(雙方 agent_id / demo 舊資料處理 / Adam Hub + 共享權限)默認沿用即可。</li>
+    <li><strong>T0b(preferred prerequisite)</strong>:喺兩個 demo workspace 嘅 session 入面,將 Bridge Pack startup 兩個 polish 落入 demo packs(衝突檔自動掃 + 官方觸發詞 <code>check Hub</code> 認 case-insensitive 連 2 個同義詞兜底),咁 Block 4A / 4B 嘅「copy demo pack verbatim」步自然繼承,真實 runtime 唔需要再 patch。</li>
+    <li><strong>Block 4A(可獨力先做)</strong>:將 Bridge Pack 接入 User A 自己揀嘅真實項目工作目錄。可選跑 <code>tools/aps-onboard.ps1</code> 一次過落 T2-T5 嘅 4 個機械 file edit(idempotent + DryRun 可預覽 + 失敗有 manual fallback),T6 SESSION_HANDOFF Durable Anchors 仍手做(涉判斷);或者按 Phase 4 計劃逐 task 手做。</li>
+    <li><strong>Block 4B(等 Jay 配合)</strong>:Jay 部機 mount 同一個 Drive 資料夾、右鍵設「離線可用」、接 Bridge Pack。Adam 可以將 <code>tools/aps-onboard.ps1</code> 經 WhatsApp / Drive 傳俾 Jay,Jay-side 同樣一次過跑(調 <code>-AgentId "jay" -OtherAgentId "adam"</code>)。</li>
+    <li><strong>Block 4C</strong>:由你 + Jay 真跑一次跨機 round-trip,觀察 Drive 同步延遲、確認無衝突副本。Block 4A 嘅 first run 亦係 <code>tools/aps-onboard.ps1</code> 嘅 first real insertion-path verification。</li>
     <li><strong>Block 4D(建議,但可推遲)</strong>:大附件(>50 MB)dry-run,驗證 externalization 規則。</li>
   </ul>
   <div class="callout">
@@ -501,6 +510,21 @@
         <td><span class="path">docs\guides\index.html</span></td>
         <td>教學中心 hub,目前有完整 onboarding walkthrough</td>
       </tr>
+      <tr>
+        <td>PowerShell idempotent installer(T2-T5 一次跑)</td>
+        <td><span class="path">tools\aps-onboard.ps1</span></td>
+        <td>Phase 4 onboarding helper;有 <code>-DryRun</code> + inline <code>Get-Help</code>;T6 留手動</td>
+      </tr>
+      <tr>
+        <td>分層 QC 觸發詞彙 SSOT</td>
+        <td><span class="path">dev\qc\triggers.md</span></td>
+        <td>🟢快檢 / 🟡外發前檢 / 🔴全面檢 嘅 canonical 定義;觸發 keyword + 嵌套 + 反問規矩</td>
+      </tr>
+      <tr>
+        <td>分層 QC 視覺 reference card</td>
+        <td><span class="path">docs\qc\governance-map.html</span></td>
+        <td>對住人類睇嘅版本;三 box 設計;<a class="site-nav__link" style="font-size:14px;" href="qc/governance-map.html">睇一眼</a></td>
+      </tr>
     </tbody>
   </table>
 </section>
@@ -517,28 +541,32 @@ G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\
 │       ├── outbox.log.md.template
 │       ├── ack.json.template
 │       └── ack.json.example
-└── mpedu_plus_branding\        ← 第一個項目嘅交換區
-    ├── from_adam\              ← Adam 寫,Jay 只讀
+└── <your_project_slug>\        ← 你揀嘅項目代號做資料夾名(MVP fixture 用咗 mpedu_plus_branding)
+    ├── from_<user_A_agent_id>\ ← User A 寫,User B 只讀
     │   ├── outbox.log.md
     │   └── packets\…
-    ├── from_jay\               ← Jay 寫,Adam 只讀
+    ├── from_<user_B_agent_id>\ ← User B 寫,User A 只讀
     │   ├── outbox.log.md
     │   └── packets\…
     ├── _ack\
-    │   ├── adam.ack.json
-    │   └── jay.ack.json
-    └── to_Agent_Jay\           ← 舊手工流程嘅檔案(保留,日後可清)
+    │   ├── <user_A_agent_id>.ack.json
+    │   └── <user_B_agent_id>.ack.json
+    └── (其他 sibling 資料夾按需要)
   </pre>
 </section>
 
 <section>
   <h2>維護呢頁</h2>
-  <p>呢份入口頁係手動維護。每當 APS 有重大改動(例:跨機跑通、接入真實工作目錄、增加第三個 agent),請更新以下兩處:</p>
+  <p>呢份入口頁係手動維護。每當 APS 有重大改動(例:跨機跑通、接入真實工作目錄、增加第三個 agent、新建治理 vocabulary),請更新以下三處:</p>
   <ul>
     <li><strong>頁首 meta</strong>:更新「最新更新」日期同狀態徽章。</li>
     <li><strong>「現時狀態」 + 「Phase 4 等住做嘅嘢」</strong>:逐項 ✓ / ⏳ / 移走。</li>
+    <li><strong>「項目入口」table</strong>:新增重要檔 / 資源加新 row(例 S5 嗰陣加 <code>tools/aps-onboard.ps1</code>、S6 嗰陣加 <code>dev/qc/triggers.md</code>)。</li>
   </ul>
   <p>檔案位置:<span class="path">C:\Users\adam\_claude_desktop\AI_Public_Squares\docs\index.html</span></p>
+  <div class="callout">
+    <strong>對齊驗證</strong>:重大改動後喺呢個 workspace 講「<code>跑外發前檢</code>」(🟡 tier),會自動跑跨工作目錄 placeholder audit + plan/教學/Bridge Pack 三處 cross-read + PII sweep + voice discipline 掃描,順便發現本頁有冇 drift。詳見 <a class="site-nav__link" style="font-size:14px;" href="qc/governance-map.html">分層 QC</a>。
+  </div>
 </section>
 
 <footer>

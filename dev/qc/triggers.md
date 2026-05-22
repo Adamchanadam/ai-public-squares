@@ -57,7 +57,7 @@
 - 任何「物件離開呢個 workspace」之前
 
 **覆蓋**：快檢 4 項全部 + 5 項：
-1. **跨工作目錄 placeholder audit** — `grep -i mpedu` 確認 demo slug 唔出現喺非示例 user-facing prompt / template；如有命中要 confirm 屬 A-class（明標示例）or B-class（要 placeholder 化）
+1. **跨工作目錄 placeholder audit** — 確認任何 example instance value（demo workspace 嘅 slug、舊 project 嘅名、specific 路徑）唔出現喺通用 user-facing prompt / template 嘅 default 位。Grep 揾出 hit 後逐項判斷係 A-class（明標示例，OK 保留）或 B-class（slipped into default position，要 placeholder 化）。例：呢個 repo 嘅 MVP 試演用過 demo slug `mpedu_plus_branding`，跑 `grep -i mpedu` 應該全部命中喺 A-class 歷史 doc（MVP plan / verification / SESSION_LOG）或者 example-labeled 段落，零命中喺 active template surface（Phase 4 plan T0 default / tools .EXAMPLE / index.html Phase 4 narrative 等）。
 2. **三處 cross-read** — Phase 4 plan ↔ 教學頁 ↔ Bridge Pack spec 對同一 procedure 嘅敘述一致（single source of spec，其他位 only reference）
 3. **HTML preview 視覺確認** — 教學頁 / governance-map / index 經 Launch preview panel render clean
 4. **PII / secrets sweep** — `grep -iE "api[_-]?key|password|token|secret|credential"` 各 user-facing doc + tool，預期 0 命中

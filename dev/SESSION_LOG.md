@@ -8,6 +8,64 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
+## 2026-05-21 (S8, latest, same day) — Stage 1 generic-template pivot + retroactive correction
+
+- **ID:** S8
+- **Summary:** User clarified that `MPEdu_Plus_Branding` (referenced throughout S2-S7 governance entries) is a **read-only reference example for AI orientation only** — NOT this repo's actual deployment target. The repo intent is **pure generic APS template** for any project, not Adam-Jay-MPEdu-specific. Stage 1 of architectural correction landed: removed Adam-Jay-MPEdu as implicit deployment target throughout active doc surface; reframed Block 4A / 4B / 4C / 4D as User A / User B roles; demo workspaces (Demo_Agent_Adam / Demo_Agent_Jay) reframed as MVP verification fixtures (canonical Bridge Pack source) rather than agent-specific sandboxes. Adam/Jay names preserved as example narrative protagonists in user-facing walkthrough + index entry page, with prominent disclaimer added at §1 of each. Triggered 🔴 全面檢 inner phase: 14-item checklist + audit report.
+- **Retroactive correction note:** S2-S7 governance entries (in SESSION_LOG) recorded `MPEdu_Plus_Branding` as "Adam real runtime" / "Phase 4 Block 4A target" / etc. Those entries reflected the **wrong assumption at write-time**; S8 clarification revealed the true status (read-only reference). Historical SESSION_LOG entries remain unchanged (immutable history per AGENTS.md §4); active surface (handoff Active Objective + Next Priorities + plan + walkthrough + index + tool + governance state) was reframed in S8.
+- **Changed:** This workspace only.
+  - Modified: `docs/plans/2026-05-21-aps-phase4-plan.md` — ~25+ surgical edits: Workspaces touched table reframed (User A / User B + demo fixtures); `<RUNTIME_ADAM>` / `<RUNTIME_JAY>` placeholders replaced with `<RUNTIME_A>` / `<RUNTIME_B>` / `<HUB on A's/B's machine>`; T0 Why + Decide + Defaults tables generic-ized; T0b Owner reframed; Block 4A header + intro + T1-T6 all User A; Block 4B + T7-T8 all User B; T9a topic + T9b + T9c reframed; T10 Steps reframed; Acceptance criteria + Risks table + Operational notes reframed; bottom Confirmed parameters table reframed; Next-session opening message regen; file history S8 entry appended.
+  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — §1 prominent disclaimer added (Adam/Jay = example narrative protagonist names; NOT default agent_ids); 3 Demo_Agent path references reframed as "this repo's MVP fixture" with clear labeling; narrative Adam/Jay protagonist names preserved for human readability.
+  - Modified: `docs/index.html` — 一句話講晒 section reframed (兩位用戶 instead of Adam/Jay); disclaimer callout added; 現時狀態 list reframed (User A / User B); Phase 4 section reframed; Drive structure tree placeholderised (`<your_project_slug>` / `<user_A_agent_id>` etc.); narrative Adam/Jay in tone narrative preserved.
+  - Modified: `tools/aps-onboard.ps1` — .EXAMPLE block all placeholders; HubRoot / DemoPackPath doc-comments generic-ized.
+  - Modified: `dev/qc/triggers.md` — 外發前檢 step 1 reframed (was hardcoded `grep -i mpedu`; now generic "any example instance value" with mpedu as labeled example).
+  - Modified: `dev/PROJECT_INDEX.md` — Fact Base rows for walkthrough updated; External Sources rows for demo workspaces + real-runtime reframed (User-A-side fixture / User-B-side fixture / user-chosen real runtime template).
+  - Modified: `dev/SESSION_HANDOFF.md` — Active Objective + Next Priorities + Workspace Identity + Risks (#1, #5) + Sync Status reframed for User A / User B; opening message regen; S8 closeout reconciled.
+  - Modified: `dev/SESSION_LOG.md` (this entry).
+  - Regenerated: `START_NEXT_SESSION_PROMPT.txt`.
+  - New: `dev/qc/2026-05-21-stage1-full-audit.md` (audit report per 🔴 全面檢 step 5 — see file for 14-item checklist + Class-C deferred items + retrospective).
+- **QC: 🔴 全面檢 (nested 🟡 + 🟢) inner phase executed:**
+  - 🟢 quick-check per atomic edit (kit doctor 35/35 baseline maintained throughout)
+  - 🟡 release-check 5 items: placeholder audit (mpedu hits now all A-class — historical / fixture / labeled example) / cross-read (Phase 4 plan ↔ walkthrough ↔ index voice consistency) / HTML preview render OK / PII sweep 0 hits / voice discipline scan passes
+  - 🔴 full-check inner 4 items: (a) 五區段 / 自審 retrospective (S2-S7 wrote under "MPEdu = deployment target" wrong premise — surfaced too late by user, not by self-audit; pattern: insufficient first-principle questioning of WHY paths were referenced — to be incorporated into future五區段 self-audit checklists); (b) Bridge Pack startup behavior trace (deferred to actual Block 4A execution; script logic unchanged this session); (c) audit report at `dev/qc/2026-05-21-stage1-full-audit.md`; (d) generic template self-trace pending in audit report.
+  - 🔴 全面檢 outer phase deferred (Class-C 跨 workspace audit + MVP-style round-trip regression) — owner sessions; tracked in audit report.
+- **Sync:**
+  - APS protocol / plan / verification change: confirmed (Phase 4 plan major reframe).
+  - APS user-facing docs change: confirmed (index.html + walkthrough §1 disclaimer + path reframes).
+  - QC trigger vocabulary change: confirmed (triggers.md step 1 reframed for generic template).
+- **Pending:**
+  - 🔴 全面檢 outer phase items in audit report (Class-C audit / round-trip regression).
+  - Q2 onboarding wizard (Stage 2 — deferred to next session per S8 plan).
+  - Q3 voice polish — partial done in this session via reframe; deep polish remains for next iteration if user flags specific drift.
+- **Risks:** S2-S7 historical entries still record the wrong "MPEdu = target" premise but are immutable; future sessions reading SESSION_LOG must interpret these in light of S8 correction note (this entry's "Retroactive correction note" section is the key signpost).
+- **Log maintenance:** kept; new entry at top; S7 + S6 + S5 + ... retained as-is.
+
+### Next Session Opening Message
+
+📋 Next session: copy and paste the whole block below
+
+```text
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template; not bound to any specific project). Real Phase 4 execution happens in each user's own real-runtime workspace (User A in their own project workspace; User B in theirs). The MPEdu_Plus_Branding path in S2-S7 governance entries is a read-only reference example (clarified in S8), NOT this repo's deployment target. If you intend to execute Phase 4 Block 4A, open a new session inside User A's own real-runtime workspace. If you intend to apply Bridge Pack T0b polish, do it inside Demo_Agent_Adam_Public_Squares / Demo_Agent_Jay_Public_Squares sessions (one each).
+
+Read in order:
+1. AGENTS.md
+2. dev/SESSION_HANDOFF.md
+3. dev/SESSION_LOG.md
+4. dev/PROJECT_INDEX.md
+5. dev/RULE_PACKS.md
+6. docs/plans/2026-05-21-aps-phase4-plan.md
+
+Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
+
+QC vocabulary (S6): if user invokes 「跑快檢 / 跑外發前檢 / 跑全面檢」 (or English aliases quick-check / release-check / full-check), load dev/qc/triggers.md and run the specified tier. If user uses 含混詞 (「做 QC / 跑驗收 / 整體 audit / QC」), stop and ask 「你指快檢 / 外發前檢 / 全面檢?」.
+
+If this root does not match the expected project root, stop and ask for confirmation.
+
+S8 Stage 1 generic-template pivot landed: repo is now pure generic APS template; Adam-Jay-MPEdu removed as implicit deployment target. Adam/Jay names preserved as narrative protagonists in walkthrough + index with disclaimer at §1 of each. See dev/qc/2026-05-21-stage1-full-audit.md for Stage 1 audit report + Class-C deferred items.
+
+After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
+```
+
 ## 2026-05-21 (S6, latest, same day) — 分層 QC vocabulary (🟢快檢 / 🟡外發前檢 / 🔴全面檢)
 
 - **ID:** S6

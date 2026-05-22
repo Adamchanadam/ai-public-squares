@@ -52,9 +52,9 @@ Reachable means the source can be found. It does not mean the source has been re
 | `docs/plans/2026-05-20-aps-mvp-implementation.md` | 15-task MVP step-by-step plan; SSOT for "what was built" | re-execution or audit of the MVP build | local path | 2026-05-21 |
 | `docs/plans/2026-05-20-aps-mvp-verification.md` | MVP acceptance audit + Phase 4 open items | declaring MVP scope complete or planning Phase 4 | local path | 2026-05-21 |
 | `docs/plans/2026-05-21-aps-phase4-plan.md` | Phase 4 implementation plan; T0 + Blocks 4A–4D + 10 tasks + acceptance criteria; SSOT for "how to take APS to real cross-machine runtime" | executing Phase 4; planning a Phase 4 verification report | local path | 2026-05-21 |
-| `docs/index.html` | non-developer project explainer; user-maintained entry page | communicating APS state to humans, e.g. status updates to Jay or other stakeholders | local path | 2026-05-21 |
+| `docs/index.html` | non-developer project explainer; user-maintained entry page | communicating APS state to humans, e.g. status updates to a counterpart or other stakeholders | local path | 2026-05-21 |
 | `docs/guides/index.html` | guides hub listing current + planned user-facing walkthroughs | onboarding a user; adding a new guide | local path | 2026-05-21 |
-| `docs/guides/aps-onboarding-walkthrough.html` | end-to-end Adam + Jay step-by-step Phase 4 onboarding teaching page | first-time user reading; pairing with Phase 4 plan during execution | local path | 2026-05-21 |
+| `docs/guides/aps-onboarding-walkthrough.html` | end-to-end User A + User B step-by-step Phase 4 onboarding teaching page (uses Adam/Jay as example narrative protagonists with disclaimer at §1) | first-time user reading; pairing with Phase 4 plan during execution | local path | 2026-05-21 |
 | `dev/qc/triggers.md` | QC trigger vocabulary SSOT — 三 tier 定義 + 嵌套規矩 + 反問規矩 + 既有 mechanism mapping | any QC trigger invocation; designing new QC checks; resolving QC scope ambiguity | local path | 2026-05-21 |
 | `docs/qc/governance-map.html` | user-facing QC reference card (mirrors SSOT for visual reading); shared site-nav across docs/ pages | explaining QC tier system to humans; onboarding new contributors to the QC discipline | local path | 2026-05-21 |
 
@@ -62,10 +62,10 @@ Reachable means the source can be found. It does not mean the source has been re
 
 | Source | Role | Required before | Access method | Write-back rule | Last verified |
 |---|---|---|---|---|---|
-| APS Hub on Google Drive | runtime data store for cross-agent exchange — holds PROTOCOL.md, templates, lane data, packets, ack files | Phase 4 cross-machine handoff and any APS protocol or template change | local path `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\` (Drive for Desktop, offline-available on Adam's machine; Jay-side mirror pending) | this workspace owns no agent lane; writes only to `_hub/` for protocol / template / CHANGELOG updates; never writes to `mpedu_plus_branding/from_*/` or `_ack/*.ack.json` | 2026-05-21 |
-| Demo Agent Adam workspace | sibling demo testbed; not a runtime | re-running the MVP demo, onboarding a third agent, or validating a PROTOCOL change | local path `C:\Users\adam\_claude_desktop\Demo_Agent_Adam_Public_Squares` | independent git repo; do NOT modify from this workspace | 2026-05-21 |
-| Demo Agent Jay workspace | same as above | same | local path `C:\Users\adam\_claude_desktop\Demo_Agent_Jay_Public_Squares` | independent git repo; do NOT modify from this workspace | 2026-05-21 |
-| Real `MPEdu_Plus_Branding` runtime (Adam) | Phase 4 target | Phase 4 only — out of scope until that plan opens | local path `C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\` | read-only reference from this workspace; never modify | not verified — not in scope this session |
+| APS Hub on Google Drive | runtime data store for cross-agent exchange — holds PROTOCOL.md, templates, lane data, packets, ack files | Phase 4 cross-machine handoff and any APS protocol or template change | per-machine local path (template; the maintainer's own machine sees it at `G:\…\AI_Public_Squares\`; other users' drive letters vary; offline-available required on every participating machine) | this workspace owns no agent lane; writes only to `_hub/` for protocol / template / CHANGELOG updates; never writes to any `<project_slug>/from_<agent>/` or `_ack/*.ack.json` | 2026-05-21 |
+| Demo Agent workspace (User-A-side fixture) | MVP verification sandbox; canonical Bridge Pack source for downstream T2 | re-running the MVP demo, onboarding a third agent, or validating a PROTOCOL change | local path `C:\Users\adam\_claude_desktop\Demo_Agent_Adam_Public_Squares` (sibling directory; name reflects MVP fixture's example agent_id) | independent git repo; do NOT modify from this workspace | 2026-05-21 |
+| Demo Agent workspace (User-B-side fixture) | same as above (mirror of User-A-side fixture; differs only in Identity section) | same | local path `C:\Users\adam\_claude_desktop\Demo_Agent_Jay_Public_Squares` (sibling directory; name reflects MVP fixture's example counterpart agent_id) | independent git repo; do NOT modify from this workspace | 2026-05-21 |
+| User-chosen real runtime workspace(s) | Phase 4 target(s) — each user picks own | Phase 4 only — out of scope until that plan opens, and out-of-process for this template repo (real runtime exists on each user's own machine, not in this repo) | per-user absolute path (template; example shape: `MPEdu_Plus_Branding` from the read-only reference workspace used in S2-S7 sessions) | read-only reference from this workspace; never modify any user's real runtime from here | not verified — out of scope for template SSOT |
 
 ## Local QC Commands
 
@@ -101,7 +101,7 @@ Record this at closeout so the next AI can detect wrong-root or workspace drift.
 
 | Service | Scope | Verification source | Last verified |
 |---|---|---|---|
-| Google Drive for Desktop | provides the Hub Root mount on `G:` for cross-machine APS sync; must be set "offline-available" on every participating machine (per design doc §12.1) | Drive for Desktop client status on Adam's machine; design doc §12 verified facts with Google official documentation links | 2026-05-21 |
+| Google Drive for Desktop | provides the Hub Root mount (any drive letter — `G:` / `H:` etc. per machine) for cross-machine APS sync; must be set "offline-available" on every participating machine (per design doc §12.1) | Drive for Desktop client status on each participating machine; design doc §12 verified facts with Google official documentation links | 2026-05-21 |
 | `@adamchanadam/agent-handoff-kit` npm package | source of `AGENTS.md` managed core, governance file templates, doctor and upgrade commands | npm registry `https://www.npmjs.com/package/@adamchanadam/agent-handoff-kit`; installed via `npx @adamchanadam/agent-handoff-kit@latest upgrade` | 2026-05-21 (v0.1.7) |
 
 ## Maintenance Rule

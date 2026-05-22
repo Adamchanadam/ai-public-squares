@@ -35,27 +35,29 @@
   Counterpart agent id. Must differ from AgentId.
 
 .PARAMETER HubRoot
-  Absolute path to the Hub Root on this machine's Drive mount. Letters may
-  differ between machines (Adam G:\, Jay possibly H:\); this is per-agent.
+  Absolute path to the Hub Root on this machine's Drive mount. Drive letters
+  may differ between machines (one user may see G:\, another H:\, etc.); this
+  is per-user and recorded in the Identity section of the Bridge Pack.
 
 .PARAMETER DemoPackPath
-  Absolute path to the source Bridge Pack file to copy. Typically:
-    C:\Users\adam\_claude_desktop\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md
-  (for Adam) or the demo Jay equivalent (for Jay). Demo pack must already
-  carry Layer 1 polish (conflict auto-scan + canonical `check Hub` trigger)
-  per Phase 4 plan T0b.
+  Absolute path to a source Bridge Pack file to copy as the procedural
+  baseline. This repo ships with two demo workspaces (the MVP verification
+  fixtures) that contain canonical Bridge Pack content; either one can be
+  used as DemoPackPath. The demo pack must already carry Layer 1 polish
+  (conflict auto-scan + canonical `check Hub` trigger) per Phase 4 plan T0b.
 
 .PARAMETER DryRun
   Preview changes without writing. Reports each step as DRY-RUN.
 
 .EXAMPLE
+  # Placeholder values below — substitute with your own paths and ids.
   powershell -NoProfile -ExecutionPolicy Bypass -File tools\aps-onboard.ps1 `
-    -RuntimeRoot "C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding" `
-    -ProjectSlug "branding_2026" `
-    -AgentId "adam" `
-    -OtherAgentId "jay" `
-    -HubRoot "G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares" `
-    -DemoPackPath "C:\Users\adam\_claude_desktop\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md" `
+    -RuntimeRoot "<path\to\your\project\workspace>" `
+    -ProjectSlug "<your_project_slug>" `
+    -AgentId "<your_agent_id>" `
+    -OtherAgentId "<counterpart_agent_id>" `
+    -HubRoot "<path\to\your\Drive\AI_Public_Squares>" `
+    -DemoPackPath "<path\to\demo\workspace\dev\rules\aps-bridge.md>" `
     -DryRun
 
 .NOTES

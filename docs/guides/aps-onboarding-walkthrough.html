@@ -527,7 +527,11 @@
 
 <section id="s1">
   <h2><span class="sec-num">1.</span>開始之前 — 你會走完點樣嘅一條路</h2>
-  <p class="lede">由「Adam 同 Jay 各自部機冇接過」開始,行到「第一次跨機交接跑通,雙方可以日常用」為止。總時間約 60–90 分鐘,假設 Drive 已經 mount 好。</p>
+  <p class="lede">由「兩位用戶各自部機冇接過」開始,行到「第一次跨機交接跑通,雙方可以日常用」為止。總時間約 60–90 分鐘,假設 Drive 已經 mount 好。</p>
+
+  <div class="callout warn">
+    <strong>Adam / Jay 只係兩個 example 用戶名</strong>。呢個 repo 係**通用 APS template**,唔綁定特定項目或者特定人。下面教學用「Adam」「Jay」做兩個 narrative protagonist 講故,但實際落地時佢哋係 <strong>User A</strong>(發起接駁嘅一方)同 <strong>User B</strong>(對方)— 邊個用都得,你哋自己決定 agent_id、項目代號、工作目錄路徑全部。試演留低嘅 demo workspace 同 demo slug 只係 MVP 驗證嗰陣用嘅 fixture,作為 Bridge Pack 嘅 canonical source,唔係 default value。
+  </div>
 
   <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-overview-title flow-overview-desc">
     <title id="flow-overview-title">接駁五階段總覽</title>
@@ -720,7 +724,7 @@
 
       <li>
         <p><strong>叫 Agent Adam 抄個橋接小規則檔落嚟</strong></p>
-        <p>Adam 喺對話入面叫 Agent Adam 將試演嗰邊 <span class="path">Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md</span>(MVP 跑通嗰個版本)抄落工作目錄相同位置。除咗最上面個 Identity 段之外,內容唔郁。</p>
+        <p>Adam 喺對話入面叫 Agent Adam 將呢個 repo 隨附嘅 demo Bridge Pack(MVP 驗證嗰陣留低,canonical source)抄落工作目錄相同位置 — 路徑類似 <span class="path">[呢個 repo 嘅 sibling]\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md</span>(實際 fixture 名,Adam-side 嗰份;對應 Jay-side 有另一份 demo Jay pack,procedural 部分完全一樣,只 Identity 唔同)。除咗最上面個 Identity 段之外,內容唔郁。</p>
         <p>Identity 段改成 Adam 部機嘅實際值:</p>
         <pre>- agent_id: adam
 - project_slug: [項目代號]
@@ -772,7 +776,7 @@
     <div class="role-block__head"><span class="chip chip--adam">Adam</span>預先準備</div>
     <p>將兩件嘢 send 畀 Jay:</p>
     <ul>
-      <li><span class="path">Demo_Agent_Jay_Public_Squares\dev\rules\aps-bridge.md</span></li>
+      <li>呢個 repo 隨附嘅 demo Bridge Pack(Jay-side fixture),路徑類似 <span class="path">[呢個 repo 嘅 sibling]\Demo_Agent_Jay_Public_Squares\dev\rules\aps-bridge.md</span> — 同 Adam-side 嗰份 procedural 內容一樣,只係 Identity 唔同。</li>
       <li>一張短紙條,記第 3 節拍板嘅七行參數結果。</li>
     </ul>
   </div>
@@ -1293,8 +1297,8 @@
         <td><span class="path">docs\plans\2026-05-20-aps-mvp-verification.md</span></td>
       </tr>
       <tr>
-        <td>橋接小規則檔嘅基線(試演 Adam 嗰版)</td>
-        <td><span class="path">C:\…\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md</span></td>
+        <td>橋接小規則檔嘅 canonical 基線(MVP fixture,呢個 repo 隨附)</td>
+        <td><span class="path">[呢個 repo 嘅 sibling]\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md</span>(或 demo Jay-side 嗰份;procedural 內容一樣)</td>
       </tr>
       <tr>
         <td>後續教學(大檔、第三個人、Notion 看板等)</td>
