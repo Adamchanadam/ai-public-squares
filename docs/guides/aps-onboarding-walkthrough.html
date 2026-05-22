@@ -775,10 +775,69 @@
     <div class="role-block__head"><span class="chip chip--adam">Adam</span>與<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>逐步動作</div>
     <ol class="step-list">
       <li>
-        <p><strong>Adam 要求 Agent Adam 做唯讀檢查</strong></p>
-        <p>Adam 於工作目錄開啟新對話,要求 Agent Adam 做以下事但不要改檔:列出 root 內是否存在 <span class="path">AGENTS.md</span>、<span class="path">dev\SESSION_HANDOFF.md</span>、<span class="path">dev\RULE_PACKS.md</span>、<span class="path">dev\PROJECT_INDEX.md</span>、<span class="path">dev\DOC_SYNC_REGISTRY.md</span>;執行 <code>npx @adamchanadam/agent-handoff-kit doctor</code> 自動報出 kit 之版本與健康狀態。</p>
-        <div class="accept">Agent Adam 報告:doctor 通過幾項(預期 34/34)、git 狀態。無任何檔案改動。</div>
-        <div class="callout warn"><strong>若 doctor 報告 kit 版本舊於 0.1.7</strong>:Adam 要求 Agent Adam 執行 <code>npx @adamchanadam/agent-handoff-kit@latest upgrade</code>,doctor 須全部通過方可繼續下一步。</div>
+        <p><strong>Agent Adam 做唯讀檢查</strong></p>
+        <p>此步之目的:正式驗證 §2 之 4 件先決事完整、kit 健康、Claude Code 可與 Agent Adam 對話。Agent Adam 不會改任何檔。</p>
+
+        <p><strong>1.1 打開命令行</strong></p>
+        <p>Windows:打開 PowerShell 或 Windows Terminal。macOS / Linux:打開 Terminal。</p>
+
+        <p><strong>1.2 <code>cd</code> 入你之工作目錄</strong></p>
+        <p>於命令行執行(將路徑換為你 §3 中創建之實際路徑;Windows 範例):</p>
+        <pre>cd C:\Work\branding_2026</pre>
+        <p class="copy-block__note">macOS / Linux 範例:<code>cd ~/Work/branding_2026</code>。如尚未創建工作目錄,先返回 §3「準備你嘅項目工作目錄」(待加入,§5 完成後 batch 補)完成創建。</p>
+
+        <p><strong>1.3 啟動 Claude Code 對話</strong></p>
+        <p>於工作目錄中執行:</p>
+        <pre>claude</pre>
+        <p class="copy-block__note">此命令啟動 Claude Code 對話 session。後續所有與 Agent Adam 之互動皆於此對話中進行。如命令行報「未找到 <code>claude</code> 命令」,§2 第三件之 Claude Code 安裝未完成,先返回 §2 安裝。</p>
+
+        <p><strong>1.4 將以下 prompt 貼予 Agent Adam</strong></p>
+        <p>於 Claude Code 對話中複製貼上以下 prompt(你不需要明白其中之技術細節,Agent Adam 會處理):</p>
+        <pre>請做以下事但不要改任何檔:
+
+(a) 列出工作目錄之 root 內是否存在以下 5 個檔案:
+    AGENTS.md、dev/SESSION_HANDOFF.md、dev/RULE_PACKS.md、
+    dev/PROJECT_INDEX.md、dev/DOC_SYNC_REGISTRY.md
+
+(b) 執行 `npx @adamchanadam/agent-handoff-kit doctor`,
+    將 output 完整報予我
+
+(c) 執行 `git status`,將 output 報予我;若 git 未初始化,
+    告知我並建議跑 `git init`
+
+報告 (a) (b) (c) 之結果,然後停手等我指示。</pre>
+
+        <p><strong>1.5 Agent Adam 報出之內容應對照以下表</strong></p>
+        <table class="params">
+          <thead>
+            <tr><th>檢查項</th><th>預期結果</th><th>若不符合,如何處理</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>(a) 5 個 governance 檔案</td>
+              <td>5 個 file 皆存在</td>
+              <td>§2 第一件之 <code>init</code> 命令未跑齊。返回 §2 第一件補做。</td>
+            </tr>
+            <tr>
+              <td>(b) doctor output</td>
+              <td><code>Status: passed</code>,通過 34 / 34 項</td>
+              <td>見下方「若 doctor 失敗」</td>
+            </tr>
+            <tr>
+              <td>(c) git status</td>
+              <td>顯示分支與工作樹狀態(已 init);或 Agent Adam 建議 <code>git init</code>(未 init)</td>
+              <td>未 init 可選,但建議跑 <code>git init</code>,APS 之檔案改動方可追溯</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout warn">
+          <strong>若 doctor 失敗 / 通過項少於 34</strong>:常見原因為 kit 版本舊於 0.1.7。Doctor output 首行顯示 kit version。若版本顯示為 <code>0.1.5</code> 或更舊,將以下 prompt 貼予 Agent Adam:
+          <pre>請執行 npx @adamchanadam/agent-handoff-kit@latest upgrade,將完整 output 報予我。</pre>
+          Upgrade 完成後重做 1.4 步驟,doctor 須通過 34 / 34 方可繼續第 2 步。其他失敗原因,將 doctor output 連同 Agent Adam 之報告貼予 <a href="https://github.com/Adamchanadam/agent-handoff-kit/issues" class="site-nav__link">Agent Handoff Kit 嘅 GitHub issue</a> 求助。
+        </div>
+
+        <div class="accept">5 個 governance 檔案皆存在;doctor 通過 34 / 34;git 已 init(或已決定不 init);Agent Adam 無做任何檔案改動。完成此步即可進入下一步(複製 Bridge Pack)。</div>
       </li>
 
       <li>
