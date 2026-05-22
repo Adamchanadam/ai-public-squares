@@ -12,6 +12,7 @@ Read only the packs needed for the current task.
 | Release, publish, deploy, tag, hotfix, GA | `dev/rules/release.md` | release verification and evidence |
 | External notes, knowledge base, Notion, Obsidian, Drive | `dev/rules/knowledge.md` | external knowledge source integration |
 | Reply format, language, output schema | `dev/rules/communication.md` | user-facing response rules |
+| QC trigger (跑快檢 / 跑外發前檢 / 跑全面檢 / quick-check / release-check / full-check / qa-gate / handover-verify / full-audit) | `dev/qc/triggers.md` | execute the specified tier; reject ambiguous QC requests with the clarification prompt defined there |
 
 ## Routing Rule
 

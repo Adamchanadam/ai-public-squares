@@ -29,6 +29,8 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 | `docs/index.html` | user-facing project entry page (Cantonese, hand-maintained); top-level nav links to guides hub and key plans | when explaining APS to a non-developer |
 | `docs/guides/` | user-facing teaching pages (HTML); guides hub at `docs/guides/index.html` lists current + planned walkthroughs | when onboarding a user to APS or adding a new teaching page |
 | `tools/` | APS onboarding helper script (and future tooling); `tools/aps-onboard.ps1` is the idempotent installer for Phase 4 plan T2-T5 | when onboarding a runtime to APS, or extending workspace tooling |
+| `dev/qc/` | QC trigger vocabulary SSOT and per-tier checklists; `dev/qc/triggers.md` defines 🟢快檢 / 🟡外發前檢 / 🔴全面檢 | when user invokes a QC trigger keyword, or when designing new QC checks |
+| `docs/qc/` | user-facing QC reference card; `docs/qc/governance-map.html` mirrors the SSOT for visual reading | when explaining the QC tier system to a human reader |
 
 ## Entry Points
 
@@ -53,6 +55,8 @@ Reachable means the source can be found. It does not mean the source has been re
 | `docs/index.html` | non-developer project explainer; user-maintained entry page | communicating APS state to humans, e.g. status updates to Jay or other stakeholders | local path | 2026-05-21 |
 | `docs/guides/index.html` | guides hub listing current + planned user-facing walkthroughs | onboarding a user; adding a new guide | local path | 2026-05-21 |
 | `docs/guides/aps-onboarding-walkthrough.html` | end-to-end Adam + Jay step-by-step Phase 4 onboarding teaching page | first-time user reading; pairing with Phase 4 plan during execution | local path | 2026-05-21 |
+| `dev/qc/triggers.md` | QC trigger vocabulary SSOT — 三 tier 定義 + 嵌套規矩 + 反問規矩 + 既有 mechanism mapping | any QC trigger invocation; designing new QC checks; resolving QC scope ambiguity | local path | 2026-05-21 |
+| `docs/qc/governance-map.html` | user-facing QC reference card (mirrors SSOT for visual reading); shared site-nav across docs/ pages | explaining QC tier system to humans; onboarding new contributors to the QC discipline | local path | 2026-05-21 |
 
 ## External Sources
 

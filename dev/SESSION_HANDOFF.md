@@ -1,6 +1,6 @@
 # Session Handoff
 
-Last Updated: 2026-05-21 (session S5 closeout: Layer 3 — PowerShell onboarding helper `tools/aps-onboard.ps1`)
+Last Updated: 2026-05-21 (session S6 closeout: 分層 QC trigger vocabulary — `dev/qc/triggers.md` + `docs/qc/governance-map.html`)
 
 <!-- ack:section:durable-anchors -->
 ## Durable Anchors
@@ -22,7 +22,7 @@ This is the current-state area. At every full closeout, rewrite or explicitly co
 ## Current Baseline
 
 1. Project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares` (Windows; git branch `main`; check `git log -1 --format=%h` for current HEAD).
-2. Product/system state: APS MVP complete and round-trip-verified on same-machine simulation. Phase 4 (real cross-machine handoff between Adam's `MPEdu_Plus_Branding` runtime and Jay's machine) **planned in full** (`docs/plans/2026-05-21-aps-phase4-plan.md`, including T0b Bridge Pack Layer 1 polish prerequisite + Layer 2 T0 restructure + Layer 3 Tooling shortcut) but **execution not started**. All three layers of user-flow simplification landed in this workspace's docs and tooling: Layer 1 (S3 — voice / trigger / auto-scan polish), Layer 2 (S4 — T0 3+4 split + daily-default flip), Layer 3 (S5 — `tools/aps-onboard.ps1` PowerShell helper for T2-T5).
+2. Product/system state: APS MVP complete and round-trip-verified on same-machine simulation. Phase 4 (real cross-machine handoff between Adam's `MPEdu_Plus_Branding` runtime and Jay's machine) **planned in full** (`docs/plans/2026-05-21-aps-phase4-plan.md`, including T0b Bridge Pack Layer 1 polish prerequisite + Layer 2 T0 restructure + Layer 3 Tooling shortcut) but **execution not started**. All three layers of user-flow simplification landed in S3-S5; S6 added 分層 QC trigger vocabulary (🟢快檢 / 🟡外發前檢 / 🔴全面檢) at `dev/qc/triggers.md` (SSOT) + `docs/qc/governance-map.html` (reference card), wrapping the 6 existing QC mechanisms into 3 trigger entry points with 嵌套 + 反問 rules.
 3. Governance state: Agent Handoff Kit v0.1.7 managed-core in place; `AGENTS.md` clean; kit doctor self-check 34/34 passing as of last verified run; this file plus `SESSION_LOG.md`, `PROJECT_INDEX.md`, `DOC_SYNC_REGISTRY.md` all reflect current state as of 2026-05-21. Demo workspaces (`Demo_Agent_{Adam,Jay}_Public_Squares`) confirmed by user as aligned to kit v0.1.7 (Risk #3 closed this session).
 4. Source-of-truth notes: APS design + MVP plan + MVP verification + Phase 4 plan under `docs/plans/`; user-facing entry at `docs/index.html`; user-facing teaching pages under `docs/guides/` (hub at `docs/guides/index.html`; first guide at `docs/guides/aps-onboarding-walkthrough.html`). No code; this workspace is governance + documentation only.
 
@@ -59,19 +59,19 @@ Phase 4 execution itself has not started. Block 4B / 4C / 4D unchanged from S2-S
 <!-- ack:section:completed-this-session -->
 ## Completed This Session
 
-Record only work actually completed in the current session (S5, 2026-05-21 latest same day).
+Record only work actually completed in the current session (S6, 2026-05-21 latest same day).
 
-1. Landed Layer 3 of the three-layer simplification plan (one new PowerShell helper + cross-doc references; ahead of pre-Block-4B staged deadline):
-   - New file `tools/aps-onboard.ps1` (~225 lines): PowerShell idempotent installer automating Phase 4 plan T2-T5 (Bridge Pack copy + Identity substitute / RULE_PACKS routing row / PROJECT_INDEX External Sources row / DOC_SYNC_REGISTRY two sync rows). T6 (SESSION_HANDOFF Durable Anchors) intentionally manual. Has `-DryRun` flag, inline `Get-Help` documentation, bilingual T6 reminder, doctor reminder on completion.
-   - Phase 4 plan: new "Tooling shortcut" section hoisted above Phase 4 scope (spec'd once, with usage examples for both Adam-side and Jay-side, execution-policy guidance, and explicit "insertion-path verification deferred to Block 4A first run" caveat); T2/T3/T4/T5 each gained a one-line cross-link pointer (avoids 4-place spec duplication per §19 防漂移); file history appended with S4 back-fill + S5 entry.
-   - Walkthrough §4 + §5: each gained a `.callout` mentioning `tools/aps-onboard.ps1` by filename inline and linking to plan Tooling shortcut.
-   - `dev/PROJECT_INDEX.md`: Directory Map gained `tools/` row.
-2. Self-audit-before-execution discipline applied: user flagged initial five-zone plan as「自檢不足，深入檢查」; re-audit surfaced 13 gaps across critical-tech / structure / minor / timing / verification categories. All 13 addressed in revised plan, then executed cleanly. Detailed gap list in `dev/SESSION_LOG.md` S5 entry.
-3. Script verified: `[scriptblock]::Create` parse-check PARSE_OK; dry-run against `Demo_Agent_Adam_Public_Squares` (already onboarded) reported 4 SKIPs + T6 bilingual reminder. PowerShell tool used directly for invocation (Bash had backtick-interpolation issue).
-4. In-flight fix: initial walkthrough callouts mentioned "helper script" without filename inline → Test #4 failed at 0 hits → filename added inline in both §4 and §5 callouts → re-run hit 2 (passing).
-5. Updated governance state files (this file, `SESSION_LOG.md` S5 entry at top, `PROJECT_INDEX.md` Directory Map row), regenerated `START_NEXT_SESSION_PROMPT.txt`.
+1. Built 分層 QC trigger vocabulary based on reference pattern from `file:///C:/Users/adam/_claude_desktop/_Prompt_Template/ai-session-governance_v2_WORK/docs/GOVERNANCE_MAP.html` but project-specific re-mapped to APS context (no npm publish / no CI / no remote git):
+   - New: `dev/qc/triggers.md` SSOT (~165 lines) — three tiers (🟢快檢 / 🟡外發前檢 / 🔴全面檢) each with 6 attributes (別名 / 時機 / 覆蓋 / 驗收 / 時間 / 失敗處理); 嵌套規矩 (outer 必含 inner); 反問規矩 (含混詞「全套 QC / 完整 QC / 做 QC / 跑驗收 / Audit / QC 單字」觸發停手反問); 典型用法; 既有 6 層 mechanism by-reference 表 (kit doctor / rule packs / plan acceptance / Bridge Pack runtime / tool self-check / 五區段紀律).
+   - New: `docs/qc/governance-map.html` reference card (~310 lines) — same design tokens as `docs/index.html` + walkthrough; three coloured boxes (green/amber/red) using existing --ok / --pending / --warn variables; how-to-invoke section; SSOT cross-link.
+   - Modified: `docs/index.html` + `docs/guides/index.html` + `docs/guides/aps-onboarding-walkthrough.html` — site-nav 5th link「分層 QC」added (relative path varies per location).
+   - Modified: `dev/RULE_PACKS.md` — 9th routing row matches QC trigger keywords → loads `dev/qc/triggers.md`.
+   - Modified: `dev/PROJECT_INDEX.md` — Directory Map +2 rows (`dev/qc/` + `docs/qc/`); Fact Base +2 rows (SSOT + card).
+2. Pre-execution self-audit caught 11 design questions before any file change (SSOT placement vs `dev/rules/` / startup-load path / cross-page site-nav consistency / mechanism reuse-by-reference / 反問 keyword boundary / HTML design system / scope creep / TaskCreate decision / commit handling / doctor schema risk / inaugural demo).
+3. Inaugural 🟢 跑快檢 demo executed live as proof-of-actionability: kit doctor 35/35 PASS + git status matches HANDOFF Workspace Identity + 7 grep acceptance tests all green on first run + script step skipped (no script change this session).
+4. Structural notes documented in S6 entry: SSOT can't live in AGENTS.md (kit-managed); routes via RULE_PACKS row instead. `dev/qc/` chosen over `dev/rules/qc-triggers.md` to leave room for future qc/ sub-docs (audit reports, retro logs).
 
-Note: S4 (Layer 2 polish), S3 (Layer 1 polish), S2 (Phase 4 plan + user-facing docs), and S1 (APS design / MVP build / verification / kit upgrade chain) details remain in `dev/SESSION_LOG.md` 2026-05-21 + 2026-05-20 entries; not duplicated here.
+Note: S5 (Layer 3 tooling), S4 (Layer 2 polish), S3 (Layer 1 polish), S2 (Phase 4 plan + user-facing docs), and S1 (APS design / MVP build) details remain in `dev/SESSION_LOG.md` 2026-05-21 + 2026-05-20 entries; not duplicated here.
 
 <!-- ack:section:next-priorities -->
 ## Next Priorities
@@ -117,7 +117,14 @@ Before acting on the next task, read or mark blocked:
 <!-- ack:section:validation-qc -->
 ## Validation / QC
 
-- Checks run this session (S5, 2026-05-21 latest):
+- Checks run this session (S6, 2026-05-21 latest):
+  - **Inaugural 🟢 跑快檢 demo**: live execution of the new vocabulary as proof-of-actionability. 4 quick-check items: (1) kit doctor → 35/35 PASS; (2) `git status` matches handoff Workspace Identity narrative; (3) 7 grep acceptance tests all green on first run; (4) script step skipped (no tools/ change this session).
+  - 7 grep acceptance tests passed first run: file existence ×2 (triggers.md + governance-map.html); 9 emoji hits 🟢🟡🔴 in SSOT; 3 required sub-section headings present; site-nav 「分層 QC」 1 hit × 3 HTML pages; RULE_PACKS row added; PROJECT_INDEX 4 references (2 Directory Map + 2 Fact Base).
+  - Pre-execution self-audit: caught 11 design questions before any file change (`dev/qc/` vs `dev/rules/` placement / AGENTS.md routing path / cross-page site-nav / mechanism by-reference / 反問 keyword set boundary / HTML design tokens / scope creep / TaskCreate decision / commit handling / doctor schema risk / inaugural demo).
+  - HTML preview-panel render: `docs/qc/governance-map.html` renders clean; site-nav consistent across all 5 docs/*.html pages.
+  - Voice / terminology discipline: trigger keywords 中英並用; 反問 keyword set lists 含混詞 explicitly; no internal codes as sentence subjects in user-facing prose.
+  - PII / secrets scan: none introduced.
+- Checks run earlier (S5, 2026-05-21):
   - Script PowerShell parse-check (Test #2): `[scriptblock]::Create((Get-Content tools/aps-onboard.ps1 -Raw))` → PARSE_OK.
   - Script dry-run (Test #6): run against `Demo_Agent_Adam_Public_Squares` (already onboarded) reported 4 SKIPs (T2/T3/T4/T5 idempotency-skip path) + T6 bilingual reminder. Confirms idempotency logic works.
   - Grep tests #1/#3/#5/#8: all pass on first run.
@@ -162,29 +169,30 @@ Before acting on the next task, read or mark blocked:
 Expected project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares`
 Git root: same
 Branch: `main`
-Commit (post-S5 bundle): single commit bundling S2 + S3 + S4 + S5 work plus the handoff reconciliation edit. Message: `docs(aps): three-layer user-flow simplification + onboarding helper`. 8 files, 784 insertions, 91 deletions; `tools/aps-onboard.ps1` created. Prior HEAD before this bundle was `9a29348`. Run `git log -1 --format='%h %s'` to see current HEAD (intentionally not hardcoded here — any specific hash inside the commit it describes would be self-referentially stale by one amend cycle).
+Commit history: post-S5 bundle was first committed; post-S5 work (S3/S4/S5 + handoff drift reconciliation + abstract-hash second amend) is folded into one commit (`docs(aps): three-layer user-flow simplification + onboarding helper`). S6 work (this session — QC vocabulary) is NOT yet committed. Run `git log -1 --format='%h %s'` to see current HEAD.
 Worktree / parallel workspace status: none (no `git worktree add`); two sibling demo workspaces (`Demo_Agent_Adam_Public_Squares`, `Demo_Agent_Jay_Public_Squares`) and the Drive Hub are separate repos / data stores; Adam's real `MPEdu_Plus_Branding` runtime is a separate workspace (Phase 4 Block 4A executes there).
-Uncommitted changes summary: working tree clean as of the post-S5 bundle commit. No outstanding edits, no untracked files (other than `dev/governance_migrations/<UTC>/` historical backups which are kept as-is).
+Uncommitted changes summary: S6 work pending commit. 10 entries in working tree per `git status --short`: 8 modified (`docs/index.html`, `docs/guides/index.html`, `docs/guides/aps-onboarding-walkthrough.html`, `dev/RULE_PACKS.md`, `dev/PROJECT_INDEX.md`, `dev/SESSION_LOG.md`, this file, `START_NEXT_SESSION_PROMPT.txt`) + 2 untracked directories (`dev/qc/` containing `triggers.md`, `docs/qc/` containing `governance-map.html`). Commit decision pending user (amend post-S5 bundle vs new S6 commit).
 
 <!-- ack:section:sync-status -->
 ## Sync Status
 
 Use statuses from `dev/DOC_SYNC_REGISTRY.md`: `confirmed`, `unverified`, `pending`, `blocked`, `not_applicable`.
 
-- Project index: `confirmed` (this session — Directory Map gained `tools/` row).
-- Doc sync registry: `confirmed` (no change this session — `tools/` covered by existing "New file or directory" row → PROJECT_INDEX Directory Map listing).
-- Public docs / README: `not_applicable` — no README; user-facing entry is `docs/index.html` with guides hub at `docs/guides/index.html`, intentional.
+- Project index: `confirmed` (this session — Directory Map +2 rows for `dev/qc/` + `docs/qc/`; Fact Base +2 rows for SSOT + card).
+- Doc sync registry: `confirmed` (no change this session — `dev/qc/` + `docs/qc/` covered by existing "New file or directory" row → PROJECT_INDEX listing).
+- Public docs / README: `not_applicable` — no README; user-facing entry is `docs/index.html`.
 - External knowledge tools: `confirmed` — Drive Hub offline-available on Adam's side; Jay-side mirror `blocked` (Phase 4 Block 4B T7 prerequisite).
-- APS plan / verification docs: `confirmed` — Phase 4 plan gained Tooling shortcut section + T2-T5 cross-links + file history entries (S4 back-fill + S5); T0b, Layer 2 T0 split, acceptance criteria all carry forward unchanged.
-- APS user-facing docs (`docs/index.html` + `docs/guides/`): `confirmed` (this session — walkthrough §4 + §5 each gained `.callout` referencing `tools/aps-onboard.ps1` by filename inline and linking to plan Tooling shortcut; S3 + S4 patches carry forward; site-nav unchanged; Fact Base unchanged).
-- Tooling: `confirmed` — new `tools/aps-onboard.ps1` PowerShell helper; parse-check PARSE_OK; dry-run against demo Adam shows 4 idempotency-SKIP; insertion-path real verification deferred to Block 4A first run.
+- APS plan / verification docs: `confirmed` (no change this session — S5 Tooling shortcut + S4 T0 split + S3 T0b carry forward).
+- APS user-facing docs (`docs/index.html` + `docs/guides/`): `confirmed` (this session — site-nav 5th link「分層 QC」added consistently across 3 HTML pages; S3-S5 callouts carry forward).
+- Tooling: `confirmed` — `tools/aps-onboard.ps1` from S5 unchanged.
+- QC vocabulary: `confirmed` (this session — new `dev/qc/triggers.md` SSOT + `docs/qc/governance-map.html` card; routed via `dev/RULE_PACKS.md` 9th row; inaugural 跑快檢 demo passes 7/7 grep + doctor 35/35).
 
 <!-- ack:section:state-reconciliation-check -->
 ## State Reconciliation Check
 
 At full closeout, complete this check after updating the state sections above.
 
-- Reconciled at: 2026-05-21 S2 closeouts (iterations 1-5); 2026-05-21 same-day S3 closeout (Layer 1 polish); 2026-05-21 same-day S4 closeout (Layer 2 polish); 2026-05-21 same-day S5 closeout (Layer 3 — `tools/aps-onboard.ps1` + Phase 4 plan Tooling shortcut + walkthrough §4/§5 callouts + PROJECT_INDEX `tools/` row; 13-gap self-audit before execution).
+- Reconciled at: 2026-05-21 S2 closeouts (iterations 1-5); 2026-05-21 same-day S3 closeout (Layer 1 polish); 2026-05-21 same-day S4 closeout (Layer 2 polish); 2026-05-21 same-day S5 closeout (Layer 3 — PowerShell helper script); 2026-05-21 same-day S6 closeout (分層 QC trigger vocabulary — `dev/qc/triggers.md` + `docs/qc/governance-map.html` + site-nav 5th link + RULE_PACKS 9th routing row; 11-question pre-audit + inaugural 跑快檢 demo).
 <!-- ack:field:state-sections-rewritten-or-confirmed -->
 - State sections rewritten or confirmed current (S5 pass): Last Updated header (S5); Durable Anchors (still current; verified); Current Baseline (§2 product state updated — all three layers done); Task Understanding Summary (still current; verified); Active Objective (rewritten — three-layer simplification fully done, next-action list narrowed to 3 independent threads); Completed This Session (replaced with S5 work; S4 + S3 + S2 + S1 archived in SESSION_LOG); Next Priorities (rewritten 8 entries; T0b + Block 4A + T0 at top, Layer 3 removed since done); Next Task Required Reading (still current); Risks (still current — no new risks introduced by tooling addition; `tools/aps-onboard.ps1` is idempotent + dry-run-capable + manual-fallback-available, so surface is bounded); Validation/QC (S5 checks added on top, S4 + S3 + S2 retained); Workspace Identity (commit + uncommitted summary updated for S5); Sync Status (refreshed + Tooling row added); State Reconciliation Check (this field); Handoff Sufficiency Check (re-confirmed); Next Session Opening Message (regenerated for S5).
 <!-- ack:field:stale-snapshots-left -->
@@ -224,16 +232,18 @@ Read in order:
 
 Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
 
+QC vocabulary (S6): if user invokes 「跑快檢 / 跑外發前檢 / 跑全面檢」 (or English aliases quick-check / release-check / full-check), load dev/qc/triggers.md and run the specified tier. If user uses 含混詞 (「做 QC / 跑驗收 / 整體 audit / QC」), stop and ask 「你指快檢 / 外發前檢 / 全面檢?」.
+
 If this root does not match the expected project root, stop and ask for confirmation.
 
-Current state (as of 2026-05-21 S5 closeout): APS MVP verified; both demo workspaces at kit v0.1.7; Phase 4 plan complete with T0b Bridge Pack prerequisite + Layer 2 T0 restructure (3 decisions + 4 defaults) + Layer 3 Tooling shortcut introducing tools/aps-onboard.ps1; user-facing walkthrough refined under all three layers — canonical mid-session trigger `check Hub` + 2 synonyms; daily WhatsApp short `Hub 有新嘢`; mid-session `check Hub` is the 默認嘅日常 primary pattern; auto-conflict-scan moved to Bridge Pack; UTC/find marked first-cross-machine verification only; T0 parameter decision burden cut from 5+ to 3; PowerShell helper script tools/aps-onboard.ps1 covers T2-T5 idempotently (T6 stays manual).
+Current state (as of 2026-05-21 S6 closeout): APS MVP verified; both demo workspaces at kit v0.1.7; Phase 4 plan complete with T0b Bridge Pack prerequisite + Layer 2 T0 restructure + Layer 3 Tooling shortcut (tools/aps-onboard.ps1); user-facing walkthrough refined under all three layers — canonical mid-session trigger `check Hub` + 2 synonyms; daily WhatsApp short `Hub 有新嘢`; mid-session `check Hub` is the 默認嘅日常 primary pattern; auto-conflict-scan moved to Bridge Pack; UTC/find marked first-cross-machine verification only; T0 parameter decision burden cut from 5+ to 3; PowerShell helper script tools/aps-onboard.ps1 covers T2-T5 idempotently (T6 stays manual). NEW S6: 分層 QC vocabulary established — dev/qc/triggers.md SSOT + docs/qc/governance-map.html card; 三 tier 🟢快檢 / 🟡外發前檢 / 🔴全面檢 wraps the 6 existing QC mechanisms with 嵌套 + 反問 rules.
 
 Next user-driven actions (3 independent threads):
 - T0b execution in Demo_Agent_Adam + Demo_Agent_Jay sessions: apply two Bridge Pack startup behaviours per Phase 4 plan T0b.
 - Block 4A in MPEdu_Plus_Branding real runtime: Layer 1 + Layer 2 + Layer 3 (with Tooling shortcut) + T0b pre-state ready. Block 4A first run is also the script's first real insertion-path verification.
 - T0 parameter lock with Jay: 3 user decisions (PROJECT / Jay 部機路徑 / T10) per Phase 4 plan T0 / walkthrough §3.
 
-User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md. PowerShell helper at tools/aps-onboard.ps1 with inline `Get-Help` documentation.
+User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md. PowerShell helper at tools/aps-onboard.ps1. QC trigger vocabulary card at docs/qc/governance-map.html (SSOT at dev/qc/triggers.md).
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
 ```

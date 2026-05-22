@@ -8,6 +8,78 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
+## 2026-05-21 (S6, latest, same day) — 分層 QC vocabulary (🟢快檢 / 🟡外發前檢 / 🔴全面檢)
+
+- **ID:** S6
+- **Summary:** Established a project-specific QC trigger vocabulary referencing the pattern from `_Prompt_Template/ai-session-governance_v2_WORK/docs/GOVERNANCE_MAP.html` but re-mapped to APS context (no npm publish / no CI / no remote git). Three tiers wrap the 6 existing QC mechanisms (kit doctor / rule packs / plan acceptance / Bridge Pack runtime / tool self-check / 五區段紀律) into 3 trigger entry points. Solves the「整體 audit / 跑驗收 / 做 QC」 含混 scope drift problem via 反問 rule.
+- **Changed:** This workspace only.
+  - New: `dev/qc/triggers.md` — SSOT (~165 lines). Three tiers each with 6 attributes (別名 / 時機 / 覆蓋 / 驗收 / 時間 / 失敗處理), 嵌套規矩, 反問規矩, 典型用法, 既有 mechanism mapping table.
+  - New: `docs/qc/governance-map.html` — Reference card (~310 lines). Same design tokens as `docs/index.html` + walkthrough; three coloured boxes (green/amber/red) using existing --ok / --pending / --warn variables; how-to-invoke section; SSOT cross-link.
+  - Modified: `docs/index.html` site-nav — added 5th link「分層 QC」→ `qc/governance-map.html`.
+  - Modified: `docs/guides/index.html` site-nav — added 5th link → `../qc/governance-map.html`.
+  - Modified: `docs/guides/aps-onboarding-walkthrough.html` site-nav — added 5th link → `../qc/governance-map.html`.
+  - Modified: `dev/RULE_PACKS.md` — added 9th routing row: QC trigger keywords → `dev/qc/triggers.md`.
+  - Modified: `dev/PROJECT_INDEX.md` — Directory Map +2 rows (`dev/qc/` + `docs/qc/`); Fact Base +2 rows (triggers.md SSOT + governance-map.html card).
+  - Modified: `dev/SESSION_LOG.md` (this entry).
+  - Modified: `dev/SESSION_HANDOFF.md` (S6 closeout).
+  - Regenerated: `START_NEXT_SESSION_PROMPT.txt`.
+- **Done:**
+  - Pre-execution self-audit caught 11 design questions before any file change (SSOT placement / startup-load path / cross-page consistency / mechanism reuse-by-reference / 反問 boundary / HTML design system / scope creep / TaskCreate decision / commit handling / doctor schema / inaugural demo).
+  - 7 grep acceptance tests + inaugural「跑快檢」demo all pass on first run.
+  - Inaugural 跑快檢 demo executes the vocabulary live as proof-of-actionability: doctor 35/35 + git status 一致 + 7 grep tests 全綠 + script step skipped (no script change this session).
+  - Structural note: SSOT placement is `dev/qc/triggers.md` not `dev/rules/qc-triggers.md` — reasoning: `dev/rules/` is for load-by-task-signal packs; `dev/qc/` is a dedicated QC namespace, leaves room for future qc/ sub-docs (audit reports, retro logs). Loaded via `dev/RULE_PACKS.md` routing row matching QC keywords.
+  - Structural note: cannot put SSOT in `AGENTS.md` (reference doc's choice) because AGENTS.md here is kit-managed (between BEGIN/END markers, not hand-editable). Routing via `dev/RULE_PACKS.md` is the equivalent entry point.
+- **QC:**
+  - All 7 acceptance grep tests pass: file existence (×2), emoji count (9 hits for 🟢🟡🔴), 3 required sub-sections, cross-page site-nav consistency (1 hit per page × 3), routing row added, PROJECT_INDEX 4 references (2 Directory Map + 2 Fact Base).
+  - `kit doctor` 35/35 still passes (no schema impact from new dirs).
+  - HTML preview-panel render: governance-map.html clean.
+  - Voice / terminology discipline: trigger keywords in中英並用 form (`跑快檢` / `quick-check` / `qa-gate`); 反問規矩 lists 含混詞 by Chinese + Audit English variants.
+  - PII / secrets scan: none introduced.
+  - PROJECT_INDEX maintenance rule satisfied (Directory Map updated per AGENTS.md §4 step 3).
+- **Sync:**
+  - QC trigger vocabulary change: confirmed — new SSOT + reference card; routing wired through `dev/RULE_PACKS.md`.
+  - APS user-facing docs change: confirmed — three HTML pages' site-nav harmonised.
+  - New file or directory: confirmed — `dev/qc/` + `docs/qc/` registered in PROJECT_INDEX Directory Map.
+- **Pending:**
+  - Phase 4 forward thread (T0b / Block 4A / T0 lock with Jay) unchanged.
+  - Commit of S6 work: pending (user decision: amend `eadc141` vs new commit).
+  - Voice / cross-doc consistency 後續 audit: each future tier invocation will catch drift naturally.
+- **Risks:** unchanged from S5. New vocabulary creates one minor surface: if future drift between SSOT and HTML card, must follow「SSOT wins」rule documented in triggers.md.
+- **Log maintenance:** kept; new entry at top.
+
+### Next Session Opening Message
+
+📋 Next session: copy and paste the whole block below
+
+```text
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (Phase 4 plan SSOT). Most actual Phase 4 execution happens elsewhere — Adam real runtime at C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\ and Jay's machine. If you intend to execute Phase 4 Block 4A, open a new session inside that real runtime workspace instead of this one. If you intend to apply Bridge Pack T0b polish, do it inside Demo_Agent_Adam_Public_Squares / Demo_Agent_Jay_Public_Squares sessions (one each).
+
+Read in order:
+1. AGENTS.md
+2. dev/SESSION_HANDOFF.md
+3. dev/SESSION_LOG.md
+4. dev/PROJECT_INDEX.md
+5. dev/RULE_PACKS.md
+6. docs/plans/2026-05-21-aps-phase4-plan.md
+
+Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
+
+QC vocabulary (NEW S6): if user invokes 「跑快檢 / 跑外發前檢 / 跑全面檢」 (or English aliases quick-check / release-check / full-check), load dev/qc/triggers.md and run the specified tier. If user uses 含混詞 (「做 QC / 跑驗收 / 整體 audit / QC」), stop and ask 「你指快檢 / 外發前檢 / 全面檢?」.
+
+If this root does not match the expected project root, stop and ask for confirmation.
+
+Current state (as of 2026-05-21 S6 closeout): APS MVP verified; both demo workspaces at kit v0.1.7; Phase 4 plan complete with T0b Bridge Pack prerequisite + Layer 2 T0 restructure + Layer 3 Tooling shortcut (tools/aps-onboard.ps1); user-facing walkthrough refined under all three layers; PowerShell helper script covers T2-T5 idempotently. NEW S6: 分層 QC vocabulary established — dev/qc/triggers.md SSOT + docs/qc/governance-map.html card; 三 tier 🟢快檢 / 🟡外發前檢 / 🔴全面檢 wraps the 6 existing QC mechanisms.
+
+Next user-driven actions (3 independent threads):
+- T0b execution in Demo_Agent_Adam + Demo_Agent_Jay sessions: apply two Bridge Pack startup behaviours per Phase 4 plan T0b.
+- Block 4A in MPEdu_Plus_Branding real runtime: Layer 1 + Layer 2 + Layer 3 (with Tooling shortcut) + T0b pre-state ready.
+- T0 parameter lock with Jay: 3 user decisions per Phase 4 plan T0 / walkthrough §3.
+
+User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md. PowerShell helper at tools/aps-onboard.ps1. QC trigger vocabulary card at docs/qc/governance-map.html (SSOT at dev/qc/triggers.md).
+
+After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
+```
+
 ## 2026-05-21 (S5, latest, same day) — Layer 3: PowerShell onboarding helper
 
 - **ID:** S5
