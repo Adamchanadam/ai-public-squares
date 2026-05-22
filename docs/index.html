@@ -172,6 +172,11 @@
     color: var(--ink-soft);
     border-radius: 0 4px 4px 0;
   }
+  .callout.warn {
+    background: rgba(185,74,58,0.08);
+    border-left-color: #b94a3a;
+  }
+  .callout.warn strong { color: #b94a3a; }
   .callout strong { color: var(--ink); }
   .pain-grid {
     display: grid;
@@ -325,151 +330,175 @@
 <header class="cover">
   <div class="eyebrow">項目入口頁</div>
   <h1>AI Public Squares</h1>
-  <p class="subtitle">兩個人各自喺自己部機、用 AI 工具合作整一個項目 — 但 file 黎黎去去成日撞、context 講完又要再講?</p>
+  <p class="subtitle">兩個人,各自在自己的電腦上,以 AI 共同製作一份品牌指引、撰寫一份報告、設計一個項目 — 但檔案來去往返、上下文重複交代?</p>
   <div class="meta">
-    <span class="badge ok">v0.1.0 placeholder</span>
-    <span class="badge pending">完整 init 後台起緊</span>
+    <span class="badge ok">試行版 0.1.0</span>
+    <span class="badge pending">init 後台仍在建構</span>
     <span>建立 2026-05-20</span>
     <span>最新更新 2026-05-22</span>
   </div>
 </header>
 
 <section>
-  <h2>呢個工具係咩</h2>
-  <p>兩個人喺兩部機 — 可能係朋友、同事,或者隔住一個太平洋嘅 partner — 用 AI 工具一齊整一份品牌指引、寫一份報告、做一個 design。最常撞嘅問題:</p>
+  <h2>這個工具是什麼</h2>
+  <p>兩個人在兩部電腦上 — 可能是朋友、同事,或是隔著一個太平洋的協作夥伴 — 以 AI 共同完成一份品牌指引、撰寫一份報告、設計一個項目。最常遇到的問題:</p>
   <div class="pain-grid">
     <div class="pain-card">
       <div class="icon">📦</div>
-      <div class="title">「最新版啲檔喺邊?」</div>
-      <div class="body">每次 update 都要 WhatsApp send 一次,Drive 一邊整一邊覆。</div>
+      <div class="title">「最新版的檔案在哪裡?」</div>
+      <div class="body">每次更新都要透過 WhatsApp 通知一次,Google Drive 一邊更新一邊覆蓋。</div>
     </div>
     <div class="pain-card">
       <div class="icon">🤖</div>
-      <div class="title">「我嗰部 AI 唔知我哋之前傾過咩」</div>
-      <div class="body">對方開新 AI session 要從頭講上下文,費時費力。</div>
+      <div class="title">「我這部 AI 記不起我們之前的討論」</div>
+      <div class="body">對方開啟新 AI 對話時,須重新交代上下文,費時費力。</div>
     </div>
     <div class="pain-card">
       <div class="icon">⚠️</div>
-      <div class="title">Drive 整咗 conflict file</div>
-      <div class="body">兩邊同時 save,Drive 出個「(1).md」 /「(conflict).md」,唔知 keep 邊個。</div>
+      <div class="title">Google Drive 出現衝突副本</div>
+      <div class="body">雙方同時儲存,Google Drive 產生「(1).md」或「(conflict).md」,無法判斷哪一份是最新版。</div>
     </div>
     <div class="pain-card">
       <div class="icon">🔁</div>
-      <div class="title">每次來回都重做一次</div>
-      <div class="body">Partner 回包又要倒返,搬檔、解釋、再講一次。</div>
+      <div class="title">每次往返均須重做</div>
+      <div class="body">對方回覆之後又要重複一遍:搬運檔案、解釋背景、再次經歷整個流程。</div>
     </div>
   </div>
-  <p style="margin-top:14px;">APS 嘅設計:Drive 上一個 shared folder + 一套寫入規矩 = 兩部機嘅 AI 自動知道對方做緊咩、新嘢自動 surface、衝突結構性避免。冇 server、冇外加帳號、冇 push notification(故意),純粹 Drive 上嘅 file。</p>
+  <p style="margin-top:14px;">本工具的設計:Google Drive 上一個共享資料夾,加上一套寫入規矩 = 雙方電腦的 AI 自動知道對方的進度;新內容自動呈現給使用者;衝突由結構性避免。沒有伺服器,沒有額外的雲端帳號,沒有自動推送通知(刻意如此設計),純粹依靠 Google Drive 上的檔案結構。</p>
 </section>
 
 <section>
-  <h2>點開始</h2>
-  <p class="lede">目標體驗(完整可用 timeline 見「<a href="#status" class="site-nav__link" style="font-size:14px;">而家狀態</a>」):</p>
+  <h2>安裝前置事項</h2>
+  <p class="lede">本工具有兩項先決條件,須先完成。</p>
+
+  <h3>第一項 — 安裝 Agent Handoff Kit(治理基礎)</h3>
+  <p>本 repo 與 Agent Handoff Kit 互相配合。Agent Handoff Kit 提供基本的交接、紀錄、健康檢查機制;APS 在此基礎上加入跨機協作的功能。</p>
+  <div class="callout warn">
+    <strong>未先安裝 Agent Handoff Kit,APS 的檔案結構將無法獨立運作。</strong>
+  </div>
+  <p>前往 <a href="https://adamchanadam.github.io/agent-handoff-kit" class="site-nav__link">https://adamchanadam.github.io/agent-handoff-kit</a>,依其指引安裝。一條命令即可:</p>
+  <div class="install-block"><span class="prompt">$</span>npx @adamchanadam/agent-handoff-kit init</div>
+
+  <h3>第二項 — 基本前提</h3>
+  <ul>
+    <li>電腦需安裝 Google Drive 桌面版(前往 <a href="https://www.google.com/drive/download/" class="site-nav__link">https://www.google.com/drive/download/</a> 下載),登入之後將共享資料夾設為「離線存取」</li>
+    <li>電腦需安裝 Claude Code(前往 <a href="https://claude.com/code" class="site-nav__link">https://claude.com/code</a> 下載)</li>
+    <li>與你的協作夥伴之間能透過 WhatsApp 通訊</li>
+  </ul>
+  <p>以上任何一項尚未完成?各個官方網頁均有逐步指引。先安裝完成,再回來執行下一步。</p>
+</section>
+
+<section>
+  <h2>開始使用</h2>
+  <p class="lede">完成上述安裝之後:</p>
   <div class="install-block"><span class="prompt">$</span>npx @adamchanadam/aps init</div>
   <ol class="step-list">
-    <li>喺你工作目錄(任何 folder)跑上面嗰條命令。</li>
-    <li>工具 ask 你幾條 plain 廣東話 / 英文問題:用咩 Drive folder、項目叫咩名、partner 嘅名等。</li>
-    <li>跑完之後,喺 Claude Code 對話入面直接講 plain words:
+    <li>在你計劃進行此項目的資料夾內執行上述命令。</li>
+    <li>工具會詢問數個問題:使用哪個 Google Drive 資料夾作為共享、項目名稱、協作夥伴的識別名等。</li>
+    <li>執行完畢之後,在 Claude Code 對話中以日常粵語或英文與 AI 溝通:
       <ul style="margin-top:6px;">
-        <li>「我有嘢俾 Jay」 → 工具自動出包 + 生成 partner WhatsApp 通知句</li>
-        <li>「Jay 嗰邊有冇新嘢?」 → 工具撿 partner 嘅檔 + 列待辦</li>
-        <li>「Drive 同步唔到」 → 工具偵測 + 提出 recovery 方案</li>
+        <li>「我有嘢俾 Jay」 → 工具自動將內容打包,生成一句 WhatsApp 通知句供你發送</li>
+        <li>「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦</li>
+        <li>「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法</li>
       </ul>
     </li>
   </ol>
   <div class="callout">
-    <strong>全程冇需要 APS protocol knowledge</strong>。工具自己處理 Drive 入面嘅檔案、版本、待辦、衝突避免。
+    <strong>全程無需先閱讀任何技術文檔。</strong>工具自行處理 Google Drive 上的檔案、版本、待辦、衝突避免。
+  </div>
+  <div class="callout warn">
+    <strong>目前狀態</strong>:這條 <code>aps init</code> 命令的後台仍在建構中。試行版(0.1.0)執行時會顯示「尚未完成」的訊息,引導你前往設置教學手動安裝。完整可用之前,本頁與設置教學會逐步補完。
   </div>
 </section>
 
 <section>
-  <h2>工具背後嘅 5 個 design 招數</h2>
-  <p class="lede">想理解背後點 work — 唔需要先讀就用得到,但對技術背景嘅讀者有 reference value。</p>
+  <h2>本工具的構想 — 5 個核心設計</h2>
+  <p class="lede">想理解背後如何運作 — 無需先閱讀即可使用,但對技術背景的讀者具參考價值。</p>
 
   <div class="trick">
     <div class="num">1</div>
     <div class="body">
-      <div class="head">Drive 上一個雙方都見到嘅 shared folder</div>
-      <div class="why">兩邊 AI 程式都當佢係本地 folder 直接讀寫,完全唔需要 API / 雲端 connector。Drive 預設嘅 sync 已經足夠。</div>
+      <div class="head">Google Drive 上一個雙方都見到的共享資料夾</div>
+      <div class="why">雙方 AI 程式都視之為本地資料夾直接讀寫,完全無需 API 或雲端介接機制。Google Drive 預設的同步機制已經足夠。</div>
     </div>
   </div>
 
   <div class="trick">
     <div class="num">2</div>
     <div class="body">
-      <div class="head">每邊各自寫各自嘅 sub-folder,唔寫對方嘅</div>
-      <div class="why">User A 嘅 AI 淨係寫 User A 嗰邊,User B 嘅 AI 淨係寫 User B 嗰邊。Drive 同步衝突由結構性避免,唔靠人手紀律。</div>
+      <div class="head">各自寫各自的子資料夾,不寫對方的</div>
+      <div class="why">User A 的 AI 僅寫 User A 那邊,User B 的 AI 僅寫 User B 那邊。Google Drive 同步衝突由結構性避免,不靠人手紀律。</div>
     </div>
   </div>
 
   <div class="trick">
     <div class="num">3</div>
     <div class="body">
-      <div class="head">一發出嘅檔就鎖,要改 = 出新版本</div>
-      <div class="why">每個交接包一寫入 Drive 就唔再改;要 update = 出 v2 + 註明取代邊一版。雙方永遠引到清晰版本,唔會誤引到對方未定稿嘅中間狀態。</div>
+      <div class="head">一旦發出的檔案就鎖定,需修改則出新版本</div>
+      <div class="why">每個交接包寫入 Google Drive 之後即不再修改;要更新 = 出新版本並標明取代哪一版。雙方永遠引用清晰的版本,不會誤引到對方未定稿的中間狀態。</div>
     </div>
   </div>
 
   <div class="trick">
     <div class="num">4</div>
     <div class="body">
-      <div class="head">Partner 開新對話嗰陣,個 AI 自動撿你嘅新嘢</div>
-      <div class="why">User B 開新 Claude Code session 嗰陣,個 AI 啟動讀序入面已經 baked 入「去 Drive 睇下有冇 User A 留低嘅新檔」,自動列待辦 — User B 唔需要解釋上下文。</div>
+      <div class="head">協作夥伴開啟新對話時,AI 自動擷取你的新內容</div>
+      <div class="why">User B 開啟新 Claude Code 對話時,其 AI 啟動讀序中已內嵌「前往 Google Drive 查看 User A 是否留下新檔案」,自動列出待辦 — User B 無需解釋上下文。</div>
     </div>
   </div>
 
   <div class="trick">
     <div class="num">5</div>
     <div class="body">
-      <div class="head">日常 WhatsApp 短訊 + 一句 trigger</div>
-      <div class="why">User A 出完嘢,WhatsApp 一句「Hub 有新嘢」;User B 對住現有 AI 對話講「check Hub」,個 AI 即刻撿。冇需要 paste 任何模板,冇 push notification(故意 — 你決定幾時被打斷,唔係 AI 主動 ping)。</div>
+      <div class="head">日常 WhatsApp 短訊 + 一句觸發句</div>
+      <div class="why">User A 發出內容之後,WhatsApp 一句「Hub 有新嘢」;User B 對著現有 AI 對話講「check Hub」,AI 立即擷取。無需貼任何模板,沒有自動推送通知(刻意如此 — 由你決定何時被打斷,而非由 AI 主動發送提示)。</div>
     </div>
   </div>
 </section>
 
 <section id="status">
-  <h2>而家狀態</h2>
+  <h2>目前狀態</h2>
   <ul class="status-list">
-    <li><span class="mark done">✓</span><span>Protocol design + MVP 同機 round-trip 跑通(2026-05-20)</span></li>
-    <li><span class="mark done">✓</span><span>完整 manual setup walkthrough(技術 reference,深入了解用)</span></li>
-    <li><span class="mark done">✓</span><span>Bootstrap npm package — <code>@adamchanadam/aps</code> v0.1.0 placeholder release</span></li>
-    <li><span class="mark wait">⏳</span><span><code>aps init</code> 嘅 setup conversation 後台起緊</span></li>
-    <li><span class="mark wait">⏳</span><span>Skill 嘅日常 subflow(publish / inbox-check / troubleshoot)起緊</span></li>
-    <li><span class="mark wait">⏳</span><span>真實兩部機跨機跑通(等 setup conversation 完成先試)</span></li>
+    <li><span class="mark done">✓</span><span>協定設計與 MVP 在同一部電腦上跑通(2026-05-20)</span></li>
+    <li><span class="mark done">✓</span><span>完整的手動設置教學(技術參考,供深入了解使用)</span></li>
+    <li><span class="mark done">✓</span><span>初步 npm 套件 — <code>@adamchanadam/aps</code> 試行版 0.1.0</span></li>
+    <li><span class="mark wait">⏳</span><span><code>aps init</code> 的對話流程後台仍在建構中</span></li>
+    <li><span class="mark wait">⏳</span><span>Claude 自動帶你完成的日常流程(出包 / 撿包 / 出錯處理)仍在建構中</span></li>
+    <li><span class="mark wait">⏳</span><span>實際兩部電腦跨機運作(等對話流程完成之後試行)</span></li>
   </ul>
-  <p style="margin-top:14px;">完整 build roadmap 見 <a class="site-nav__link" style="font-size:14px;" href="../dev/qc/2026-05-22-zero-knowledge-funnel-audit.md">零認知用戶 funnel audit</a>(Stage 0-7 friction + Layer A/B/C/D 嘅 phase 順序)。</p>
+  <p style="margin-top:14px;">完整建構路線見 <a class="site-nav__link" style="font-size:14px;" href="../dev/qc/2026-05-22-zero-knowledge-funnel-audit.md">內部檢討文件</a>(目前以技術術語為主,正在重寫對齊讀者)。</p>
 </section>
 
 <section>
   <h2>想深入了解</h2>
-  <p class="lede">如果你想理解工具背後個 protocol、或者想自己 reference 落地步驟 — 全部係 deeper-dive,<strong>唔需要先讀就用得到</strong>。</p>
+  <p class="lede">下列文檔屬技術參考,<strong>無需先閱讀即可使用</strong>。想理解工具背後的協定,或自行手動執行某個步驟,再回到此處查閱。</p>
   <table class="entry">
     <thead>
-      <tr><th>想睇咩</th><th>去邊</th></tr>
+      <tr><th>想了解</th><th>前往</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td>跑完 init 之後嘅完整使用步驟</td>
-        <td><a href="guides/aps-onboarding-walkthrough.html" class="site-nav__link">完整 walkthrough</a>(技術 reference)</td>
+        <td>執行 init 之後的完整使用步驟</td>
+        <td><a href="guides/aps-onboarding-walkthrough.html" class="site-nav__link">完整設置教學</a>(技術參考)</td>
       </tr>
       <tr>
-        <td>Protocol 點解咁設計</td>
+        <td>協定的設計理據</td>
         <td><a href="plans/2026-05-20-agent-public-square-design.md" class="site-nav__link">設計理據</a></td>
       </tr>
       <tr>
-        <td>跨機落地嘅技術計劃</td>
+        <td>跨機落地的技術步驟</td>
         <td><a href="plans/2026-05-21-aps-phase4-plan.md" class="site-nav__link">跨機接駁計劃</a></td>
       </tr>
       <tr>
-        <td>本 repo 嘅 build roadmap + 零認知 user funnel</td>
-        <td><a href="../dev/qc/2026-05-22-zero-knowledge-funnel-audit.md" class="site-nav__link">funnel audit</a></td>
+        <td>本 repo 的建構路線</td>
+        <td><a href="../dev/qc/2026-05-22-zero-knowledge-funnel-audit.md" class="site-nav__link">內部檢討文件</a></td>
       </tr>
       <tr>
-        <td>本 repo 嘅 governance + QC 機制</td>
+        <td>本 repo 的治理與 QC 機制</td>
         <td><a href="qc/governance-map.html" class="site-nav__link">分層 QC</a></td>
       </tr>
       <tr>
-        <td>原始碼 + issue tracker</td>
+        <td>原始碼與 issue tracker</td>
         <td><a href="https://github.com/Adamchanadam/ai-public-squares" class="site-nav__link">GitHub repo</a></td>
       </tr>
     </tbody>
@@ -477,13 +506,13 @@
 </section>
 
 <section>
-  <h2>License + 反饋</h2>
-  <p><a class="site-nav__link" href="https://github.com/Adamchanadam/ai-public-squares/blob/main/LICENSE">Apache License 2.0</a>。私人 repo 但 license 已預設,將來轉 public 即時生效。</p>
-  <p>Bug report / feature request / 想試用:<a class="site-nav__link" href="https://github.com/Adamchanadam/ai-public-squares/issues">GitHub issues</a>。</p>
+  <h2>License 與反饋</h2>
+  <p><a class="site-nav__link" href="https://github.com/Adamchanadam/ai-public-squares/blob/main/LICENSE">Apache License 2.0</a>。目前為私人 repo,但 license 已預先設定,將來轉為公開時即時生效。</p>
+  <p>遇到錯誤、想試用、或有功能建議?前往 <a class="site-nav__link" href="https://github.com/Adamchanadam/ai-public-squares/issues">GitHub issues</a> 留言。</p>
 </section>
 
 <footer>
-  AI Public Squares · v0.1.0 placeholder · 最新更新 2026-05-22
+  AI Public Squares · 試行版 0.1.0 · 最新更新 2026-05-22
 </footer>
 
 </main>
