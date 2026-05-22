@@ -17,3 +17,6 @@ desktop.ini
 # Backup
 *.bak
 *.orig
+
+# Temp output files (GENERIC_OPERATIONAL_RUNBOOK §5i convention)
+_*.txt
