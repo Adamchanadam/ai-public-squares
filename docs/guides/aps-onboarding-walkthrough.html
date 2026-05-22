@@ -530,7 +530,7 @@
   <p class="lede">由「兩位用戶各自部機冇接過」開始,行到「第一次跨機交接跑通,雙方可以日常用」為止。總時間約 60–90 分鐘,假設 Drive 已經 mount 好。</p>
 
   <div class="callout warn">
-    <strong>Adam / Jay 只係兩個 example 用戶名</strong>。呢個 repo 係**通用 APS template**,唔綁定特定項目或者特定人。下面教學用「Adam」「Jay」做兩個 narrative protagonist 講故,但實際落地時佢哋係 <strong>User A</strong>(發起接駁嘅一方)同 <strong>User B</strong>(對方)— 邊個用都得,你哋自己決定 agent_id、項目代號、工作目錄路徑全部。試演留低嘅 demo workspace 同 demo slug 只係 MVP 驗證嗰陣用嘅 fixture,作為 Bridge Pack 嘅 canonical source,唔係 default value。
+    <strong>Adam / Jay 只係兩個 example 用戶名</strong>。呢個 repo 係 <strong>通用 APS template</strong>,唔綁定特定項目或者特定人。下面教學用「Adam」「Jay」做兩個 narrative protagonist 講故,但實際落地時佢哋係 <strong>User A</strong>(發起接駁嘅一方)同 <strong>User B</strong>(對方)— 邊個用都得,你哋自己決定 agent_id、項目代號、工作目錄路徑全部。試演留低嘅 demo workspace 同 demo slug 只係 MVP 驗證嗰陣用嘅 fixture,作為 Bridge Pack 嘅 canonical source,唔係 default value。
   </div>
 
   <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-overview-title flow-overview-desc">
@@ -654,7 +654,7 @@
       <tr>
         <td>項目代號</td>
         <td>揀新嘅 snake_case 短名(例:<code>branding_2026</code>、<code>logo_refresh</code>)</td>
-        <td>用新 slug 嘅好處:試演嗰兩個包原封不動留作 reference,唔需要清。要沿用試演 slug 都得,但要清舊資料 — 多咗一個 step,通常唔抵。樣本嘅完整形狀規則見第 1 節「Placeholder 樣本」。</td>
+        <td>揀全新 slug 最乾淨 — 唔需要清任何已有 lane 資料,協定亦唔受影響。若想沿用某個共享資料夾入面已有嘅 slug(例如曾經做過試演或者過往項目用過),要先清舊資料(刪舊 packets、reset outbox)— 多咗一個 step,通常唔抵。樣本嘅完整形狀規則見第 1 節「Placeholder 樣本」。</td>
       </tr>
       <tr>
         <td>Jay 部機路徑</td>
@@ -677,23 +677,23 @@
     <tbody>
       <tr>
         <td>Adam agent 名</td>
-        <td><span class="path">adam</span></td>
-        <td>幾乎冇情景需要改,沿用試演。</td>
+        <td>自己揀(snake_case,1-30 字內;MVP fixture 用咗 <code>adam</code> 做例)</td>
+        <td>揀短啲、stable、容易讀就得;唔需要跟 fixture。</td>
       </tr>
       <tr>
         <td>Jay agent 名</td>
-        <td><span class="path">jay</span></td>
+        <td>自己揀(snake_case;MVP fixture 用咗 <code>jay</code> 做例)</td>
         <td>同上。</td>
       </tr>
       <tr>
-        <td>試演舊資料處理</td>
-        <td>留底唔郁(新 slug 預設下,試演嘅 lane 自然唔受影響)</td>
-        <td>只有揀沿用試演 slug 嗰陣才有得選清/留;用新 slug 就唔關事。</td>
+        <td>共享資料夾入面已有嘅 lane 資料</td>
+        <td>留底唔郁(揀新 slug 嘅前提下,已有 lane 自然唔受影響)</td>
+        <td>只有揀沿用某個已有 slug 嗰陣才有得選清/留;揀新 slug 就唔關事。如果共享資料夾啱啱啟動、未有任何 lane,呢 row N/A。</td>
       </tr>
       <tr>
         <td>Adam 部機 Hub 路徑 + Drive 分享權限</td>
-        <td>沿用試演已設好嘅 <span class="path">[Adam 部機嘅共享資料夾絕對路徑]</span> 同現有共用權限</td>
-        <td>若試演時 Drive sharing 設喺 slug 子資料夾而唔係 <span class="path">AI_Public_Squares</span> root,新 slug 要新加 share。除此之外,沿用試演設定。</td>
+        <td>Adam 嗰邊部機掛載 Hub 嘅實際絕對路徑(<span class="path">[Adam 部機嘅共享資料夾絕對路徑]</span>)+ Drive 上層 <span class="path">AI_Public_Squares</span> 資料夾 share 畀 Jay 有寫權</td>
+        <td>若 Drive sharing 設喺 slug 子資料夾而唔係 <span class="path">AI_Public_Squares</span> root,新 slug 要新加 share。若 Hub 仲未掛載或者 Drive 仲未 share,要先補咗呢兩件嘅機器 setup 先繼續。</td>
       </tr>
     </tbody>
   </table>
@@ -724,7 +724,7 @@
 
       <li>
         <p><strong>叫 Agent Adam 抄個橋接小規則檔落嚟</strong></p>
-        <p>Adam 喺對話入面叫 Agent Adam 將呢個 repo 隨附嘅 demo Bridge Pack(MVP 驗證嗰陣留低,canonical source)抄落工作目錄相同位置 — 路徑類似 <span class="path">[呢個 repo 嘅 sibling]\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md</span>(實際 fixture 名,Adam-side 嗰份;對應 Jay-side 有另一份 demo Jay pack,procedural 部分完全一樣,只 Identity 唔同)。除咗最上面個 Identity 段之外,內容唔郁。</p>
+        <p>Adam 喺對話入面叫 Agent Adam 將呢個 repo 隨附嘅 demo Bridge Pack(MVP 驗證嗰陣留低,canonical source)抄落工作目錄相同位置 — 路徑類似 <span class="path">[呢個 repo 嘅 sibling]\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md</span>(demo Adam fixture — procedural 部分同 demo Jay pack 一樣,只 Identity 唔同)。除咗最上面個 Identity 段之外,內容唔郁。</p>
         <p>Identity 段改成 Adam 部機嘅實際值:</p>
         <pre>- agent_id: adam
 - project_slug: [項目代號]
@@ -736,7 +736,7 @@
 
       <li>
         <p><strong>叫 Agent Adam 喺路由表入面註冊呢個小規則</strong></p>
-        <p>喺 <span class="path">dev\RULE_PACKS.md</span> 嘅路由表加多一行(<span class="path">## Routing Rule</span> 之前),叫 Agent Adam 抄試演嗰行原文。</p>
+        <p>喺 <span class="path">dev\RULE_PACKS.md</span> 嘅路由表加多一行(<code>## Routing Rule</code> 之前),叫 Agent Adam 抄試演嗰行原文。</p>
       </li>
 
       <li>
@@ -768,7 +768,7 @@
   <h2><span class="sec-num">5.</span>Jay 接駁自己部機</h2>
 
   <div class="callout">
-    <strong>Jay 嗰邊都可以用同一個 helper script(<code>tools/aps-onboard.ps1</code>)</strong>(Adam 整完之後用 WhatsApp / Drive 連同 demo Jay pack 一齊傳過嚟畀 Jay 跑)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>嘅 Tooling shortcut 段;Jay-side invocation 用 <code>-AgentId "jay" -OtherAgentId "adam"</code>,demo Jay pack 做 <code>-DemoPackPath</code>。下面手做版本仍然係 authoritative。
+    <strong>Jay 嗰邊都可以用同一個 helper script(<code>tools/aps-onboard.ps1</code>)</strong>(Adam 整完之後用 WhatsApp / Drive 連同 demo Jay pack 一齊傳過嚟畀 Jay 跑)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>嘅 Tooling shortcut 段;Jay-side invocation 用 <code>-AgentId "&lt;your_agent_id&gt;" -OtherAgentId "&lt;counterpart_agent_id&gt;"</code>(以本教學嘅 narrative 為例,分別係 <code>jay</code> 同 <code>adam</code>),demo Jay pack 做 <code>-DemoPackPath</code>。下面手做版本仍然係 authoritative。
   </div>
   <p class="lede">呢一節 Jay 喺自己部機,叫 Agent Jay 幫手執行。Adam 嘅角色係預先 WhatsApp 將試演 Jay 嗰份小規則檔同三行參數 send 畀 Jay,然後隨時答問題。Adam 同 Agent Adam 都唔可以代 Jay 跑命令。</p>
 
@@ -1051,7 +1051,7 @@
 
 <section id="s8">
   <h2><span class="sec-num">8.</span>日常點用</h2>
-  <p class="lede">第 4 至 6 節跑通,APS 已上線。日常用法就係一個重複拍子,每次來回都係呢個七步。每個 pill 標明係用戶動作定 agent 動作。</p>
+  <p class="lede">第 4 至 6 節跑通,APS 已上線。日常用法就係一個重複拍子,每次來回都係呢個十步。每個 pill 標明係用戶動作定 agent 動作。</p>
 
   <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-daily-title flow-daily-desc">
     <title id="flow-daily-title">日常用法七步</title>
@@ -1268,7 +1268,7 @@
   <ol>
     <li>Drive 桌面版係咪 running、係咪 sign-in 緊?</li>
     <li>個共享資料夾係咪設咗「可離線存取」?如果只係「串流」可能會延遲。</li>
-    <li>網絡頻寬足夠?大檔嘅話可以再要等。</li>
+    <li>網絡頻寬足夠?大檔嘅話可能要再等。</li>
     <li>對方部機係咪 online?Drive 唔會主動 push,要 receiver 嗰邊 Drive 客戶端 sync 先見到。</li>
   </ol>
 </section>
@@ -1282,7 +1282,7 @@
     <tbody>
       <tr>
         <td>協定本身嘅契約(畀 agent 程式讀)</td>
-        <td><span class="path">G:\…\AI_Public_Squares\_hub\PROTOCOL.md</span></td>
+        <td><span class="path">&lt;你部機嘅 Hub 絕對路徑&gt;\_hub\PROTOCOL.md</span></td>
       </tr>
       <tr>
         <td>技術版完整計劃</td>
