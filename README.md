@@ -22,4 +22,4 @@
 
 ## License
 
-Private repo,all rights reserved(待定)。
+[Apache License 2.0](LICENSE)。私人 repo,但 license 已預設好,將來轉 public 即時生效。
