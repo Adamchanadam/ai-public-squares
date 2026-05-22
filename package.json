@@ -1,0 +1,39 @@
+{
+  "name": "@adamchanadam/aps",
+  "version": "0.1.0",
+  "description": "Set up two AI agents on two machines to collaborate over a shared Google Drive folder. Cantonese / English aware.",
+  "bin": {
+    "aps": "./bin/aps.js"
+  },
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "ai-agent",
+    "claude-code",
+    "cross-machine",
+    "collaboration",
+    "google-drive",
+    "agent-public-square",
+    "aps"
+  ],
+  "author": "Adam Chan",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adamchanadam/ai-public-squares.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Adamchanadam/ai-public-squares/issues"
+  },
+  "homepage": "https://github.com/Adamchanadam/ai-public-squares#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
