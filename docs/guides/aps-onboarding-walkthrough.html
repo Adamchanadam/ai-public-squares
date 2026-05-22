@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>APS 完整落地教學</title>
 <style>
-  /* === 設計符號 (同 docs/index.html、docs/guides/index.html 保持一致) === */
   :root {
     --ink: #1b2230;
     --ink-soft: #4a5468;
@@ -286,7 +285,7 @@
     color: var(--ink-soft);
   }
   .accept::before {
-    content: "✓ 點知做完 ";
+    content: "✓ 如何知道完成 ";
     font-weight: 700;
     color: var(--ok);
     font-family: var(--mono);
@@ -451,7 +450,7 @@
   .copy-block__note code {
     background: #ece6d3;
   }
-  /* 視覺指引(actor 嘅讀法 legend) */
+  /* 視覺指引 (actor 之 legend) */
   .actor-legend {
     display: flex;
     flex-wrap: wrap;
@@ -489,53 +488,54 @@
   <a class="site-nav__link" href="../plans/2026-05-20-agent-public-square-design.md">設計理據</a>
   <a class="site-nav__link" href="../qc/governance-map.html">分層 QC</a>
   <span class="site-nav__spacer"></span>
-  <span class="site-nav__hint">2026-05-21</span>
+  <span class="site-nav__hint">2026-05-22</span>
 </nav>
 
 <header class="cover">
-  <div class="eyebrow">教學 · 推薦先睇</div>
+  <div class="eyebrow">教學 · 推薦先閱讀</div>
   <h1>APS 完整落地教學</h1>
-  <p class="subtitle">由零開始,雙方各自跟一次,做完就可以喺真實項目跨機交接。</p>
+  <p class="subtitle">由零開始,雙方各自跟讀一次,完成後即可於真實項目進行跨機交接。</p>
   <div class="meta">
-    <span><span class="chip chip--adam">Adam</span>用戶本人嘅動作</span>
-    <span><span class="chip chip--agent-adam">Agent Adam</span>Adam 部機嘅 agent 程式做嘅事</span>
-    <span><span class="chip chip--jay">Jay</span>用戶本人嘅動作</span>
-    <span><span class="chip chip--agent-jay">Agent Jay</span>Jay 部機嘅 agent 程式做嘅事</span>
+    <span><span class="chip chip--adam">Adam</span>用戶本人之動作</span>
+    <span><span class="chip chip--agent-adam">Agent Adam</span>Adam 部電腦上之 AI 程式之動作</span>
+    <span><span class="chip chip--jay">Jay</span>用戶本人之動作</span>
+    <span><span class="chip chip--agent-jay">Agent Jay</span>Jay 部電腦上之 AI 程式之動作</span>
   </div>
 </header>
 
 <div class="callout">
-  <strong>四個 actor,唔好撈亂</strong>:呢份教學分清「人」同「程式」兩層。Adam 同 Jay 係用戶本人,負責決定做咩、寫內容、發 WhatsApp。Agent Adam 同 Agent Jay 係兩部機上面跑緊嘅 agent 程式,負責讀寫共享資料夾、計算待辦、出包入帳。Hub 上嘅單寫道,實際嘅單寫者係 agent 程式,唔係人。
+  <strong>四個 actor,勿混淆</strong>:本教學分清「人」與「程式」兩層。Adam 與 Jay 為用戶本人,負責決定做什麼、撰寫內容、發送 WhatsApp。Agent Adam 與 Agent Jay 為兩部電腦上正在運行的 AI 程式,負責讀寫共享資料夾、計算待辦、出包入帳。共享資料夾上之單寫道,實際之單寫者為 AI 程式,而非人。
 </div>
 
 <div class="toc">
   <h3>內容導航</h3>
   <ol>
-    <li><a href="#s1">開始之前 — 你會走完點樣嘅一條路</a></li>
-    <li><a href="#s2">前置條件清單</a></li>
-    <li><a href="#s3">先傾妥幾件嘢</a></li>
-    <li><a href="#s4">Adam 接駁自己部機</a></li>
-    <li><a href="#s5">Jay 接駁自己部機</a></li>
-    <li><a href="#s6">首次跨機交接</a></li>
-    <li><a href="#s7">大檔過嘅試跑(可選)</a></li>
-    <li><a href="#s8">日常點用</a></li>
-    <li><a href="#s9">中間想交換,唔等對話收結</a></li>
-    <li><a href="#s10">出咗錯點救</a></li>
-    <li><a href="#s11">完成之後喺邊度查咩</a></li>
+    <li><a href="#s1">開始之前 — 你會走過怎樣的一條路</a></li>
+    <li><a href="#s2">安裝前置事項 — 4 件須先做</a></li>
+    <li><a href="#s3">概念熱身 — 教學中常見之詞</a></li>
+    <li><a href="#s4">先傾妥幾件事</a></li>
+    <li><a href="#s5">Adam 接駁自己部機</a></li>
+    <li><a href="#s6">Jay 接駁自己部機</a></li>
+    <li><a href="#s7">首次跨機交接</a></li>
+    <li><a href="#s8">大檔試跑(可選)</a></li>
+    <li><a href="#s9">日常使用</a></li>
+    <li><a href="#s10">中途想交換,不等對話結束</a></li>
+    <li><a href="#s11">出錯處理</a></li>
+    <li><a href="#s12">完成之後到哪裡查什麼</a></li>
   </ol>
 </div>
 
 <section id="s1">
-  <h2><span class="sec-num">1.</span>開始之前 — 你會走完點樣嘅一條路</h2>
-  <p class="lede">由「兩位用戶各自部機冇接過」開始,行到「第一次跨機交接跑通,雙方可以日常用」為止。總時間約 60–90 分鐘,假設 Drive 已經 mount 好。</p>
+  <h2><span class="sec-num">1.</span>開始之前 — 你會走過怎樣的一條路</h2>
+  <p class="lede">由「兩位用戶之電腦皆未接通」開始,行至「第一次跨機交接跑通,雙方可日常使用」為止。總時間約 60-90 分鐘,假設 Google Drive 已 mount 妥當。</p>
 
   <div class="callout warn">
-    <strong>Adam / Jay 只係兩個 example 用戶名</strong>。呢個 repo 係 <strong>通用 APS template</strong>,唔綁定特定項目或者特定人。下面教學用「Adam」「Jay」做兩個 narrative protagonist 講故,但實際落地時佢哋係 <strong>User A</strong>(發起接駁嘅一方)同 <strong>User B</strong>(對方)— 邊個用都得,你哋自己決定 agent_id、項目代號、工作目錄路徑全部。試演留低嘅 demo workspace 同 demo slug 只係 MVP 驗證嗰陣用嘅 fixture,作為 Bridge Pack 嘅 canonical source,唔係 default value。
+    <strong>Adam / Jay 只是兩個 example 用戶名</strong>。本 repo 為通用 APS template,不綁定任何特定項目或人物。下文以「Adam」、「Jay」做敘事人物講故事,實際落地時:Adam 對應 <strong>發起接駁的一方</strong>(User A),Jay 對應 <strong>對方</strong>(User B)。雙方自行決定 agent_id、項目代號、工作目錄路徑。試演留下之 demo workspace 與 demo slug 僅為 MVP 驗證所用之 fixture,並非 default value。
   </div>
 
   <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-overview-title flow-overview-desc">
     <title id="flow-overview-title">接駁五階段總覽</title>
-    <desc id="flow-overview-desc">由雙方傾妥幾件嘢開始,Adam 同 Jay 各自接駁自己部機(可平行),完成後雙方一齊跑首次跨機交接,之後再可選做大檔試跑。</desc>
+    <desc id="flow-overview-desc">由雙方傾妥幾件事開始,Adam 與 Jay 各自接駁自己部機(可並行),完成後雙方一同進行首次跨機交接,然後可選做大檔試跑。</desc>
 
     <defs>
       <marker id="flow-arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
@@ -548,9 +548,9 @@
 
     <g>
       <rect x="240" y="20" width="280" height="80" rx="8" fill="#ece6f3" stroke="#5c4a8c" stroke-width="2"/>
-      <text x="380" y="44" text-anchor="middle" class="flow-title">先傾妥幾件嘢</text>
+      <text x="380" y="44" text-anchor="middle" class="flow-title">先傾妥幾件事</text>
       <text x="380" y="64" text-anchor="middle" class="flow-sub">項目代號、agent 名、Jay 部機路徑</text>
-      <text x="380" y="86" text-anchor="middle" class="flow-meta">Adam 同 Jay(兩個人)· 約 30 分鐘</text>
+      <text x="380" y="86" text-anchor="middle" class="flow-meta">Adam 與 Jay 兩位用戶 · 約 30 分鐘</text>
     </g>
 
     <path d="M 380 100 L 380 136" stroke="#4a5468" stroke-width="2" fill="none"/>
@@ -560,15 +560,15 @@
     <g>
       <rect x="60" y="184" width="280" height="96" rx="8" fill="#e3edf3" stroke="#2f5d7c" stroke-width="2"/>
       <text x="200" y="212" text-anchor="middle" class="flow-title">Adam 接駁自己部機</text>
-      <text x="200" y="236" text-anchor="middle" class="flow-sub">Adam 同 Agent Adam 一齊做:</text>
-      <text x="200" y="254" text-anchor="middle" class="flow-sub">抄個小規則檔,填三行身份</text>
-      <text x="200" y="272" text-anchor="middle" class="flow-meta">約 15 分鐘 · 唔等 Jay</text>
+      <text x="200" y="236" text-anchor="middle" class="flow-sub">Adam 與 Agent Adam 共同操作:</text>
+      <text x="200" y="254" text-anchor="middle" class="flow-sub">複製小規則檔,填三行身份</text>
+      <text x="200" y="272" text-anchor="middle" class="flow-meta">約 15 分鐘 · 不等 Jay</text>
     </g>
 
     <g>
       <rect x="420" y="184" width="280" height="96" rx="8" fill="#f7ecdd" stroke="#b56a23" stroke-width="2"/>
       <text x="560" y="212" text-anchor="middle" class="flow-title">Jay 接駁自己部機</text>
-      <text x="560" y="236" text-anchor="middle" class="flow-sub">Jay 同 Agent Jay 一齊做:</text>
+      <text x="560" y="236" text-anchor="middle" class="flow-sub">Jay 與 Agent Jay 共同操作:</text>
       <text x="560" y="254" text-anchor="middle" class="flow-sub">先確認 Drive 設定齊備,再接駁</text>
       <text x="560" y="272" text-anchor="middle" class="flow-meta">約 15 分鐘</text>
     </g>
@@ -580,238 +580,297 @@
     <g>
       <rect x="180" y="360" width="400" height="84" rx="8" fill="#ece6f3" stroke="#5c4a8c" stroke-width="2"/>
       <text x="380" y="388" text-anchor="middle" class="flow-title">首次跨機交接</text>
-      <text x="380" y="412" text-anchor="middle" class="flow-sub">四個 actor 一齊走一輪:出包、撿包、回包、收結</text>
-      <text x="380" y="432" text-anchor="middle" class="flow-meta">雙方 · 15 分鐘 + Drive 同步等待</text>
+      <text x="380" y="412" text-anchor="middle" class="flow-sub">四個 actor 一同走一輪:出包、撿包、回包、收結</text>
+      <text x="380" y="432" text-anchor="middle" class="flow-meta">雙方 · 15 分鐘 + Drive 同步等候</text>
     </g>
 
     <path d="M 380 444 L 380 484" stroke="#8892a3" stroke-width="2" stroke-dasharray="4 4" fill="none" marker-end="url(#flow-arrow-soft)"/>
 
     <g>
       <rect x="200" y="484" width="360" height="60" rx="8" fill="#fbf6e9" stroke="#8892a3" stroke-width="1.5" stroke-dasharray="6 4"/>
-      <text x="380" y="510" text-anchor="middle" class="flow-title flow-title--optional">大檔過嘅試跑(可選)</text>
-      <text x="380" y="530" text-anchor="middle" class="flow-meta">可推遲到第一份真大檔之前</text>
+      <text x="380" y="510" text-anchor="middle" class="flow-title flow-title--optional">大檔試跑(可選)</text>
+      <text x="380" y="530" text-anchor="middle" class="flow-meta">可推遲至第一份真實大檔出現之前</text>
     </g>
   </svg>
-  <p class="flow-caption">五個方格嘅詳細做法,下面段落逐個展開。實線表示要等上一步完成;虛線表示可推遲。</p>
+  <p class="flow-caption">五個方格之詳細做法,下面段落逐個展開。實線表示須等上一步完成;虛線表示可推遲。</p>
 
   <div class="callout">
-    呢份教學寫畀真人睇,口語、narrative、夾實際例。執行步驟嘅精準版本(包括 agent 程式要照住做嘅技術細節)喺 <a class="site-nav__link" style="font-size:14px;" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃文檔</a>,兩份對讀就最齊。
+    本教學寫予真人閱讀,結合敘事與實際範例。執行步驟之精準版本(包括 AI 程式須依照之技術細節)見 <a class="site-nav__link" style="font-size:14px;" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃文檔</a>,兩份對讀則最為完整。
   </div>
 
   <div class="callout warn">
-    <strong>用語慣例:方括號 placeholder 要 substitute</strong>。教學入面所有方括號嘅短語 — 例如 <code>[項目代號]</code>、<code>[題目]</code>、<code>[時間戳]</code>、<code>[工作目錄]</code>、<code>[Jay 部機嘅共享資料夾絕對路徑]</code> — 都係 placeholder,屬 forcing function。複製去寫入規則檔、發 WhatsApp 之前,要逐個換做你哋第 3 節拍板嘅實際值。協定本身通用,教學文字唔列具體 value;具體 value 由你哋自己決定。
+    <strong>用語慣例:方括號 placeholder 須 substitute</strong>。教學中所有方括號之短語 — 例如 <code>[項目代號]</code>、<code>[題目]</code>、<code>[時間戳]</code>、<code>[工作目錄]</code>、<code>[Jay 部機之共享資料夾絕對路徑]</code> — 皆為 placeholder,屬 forcing function。複製至規則檔、發送 WhatsApp 之前,須逐個換為你哋第 4 節拍板之實際值。協定本身通用,教學文字不列具體 value;具體 value 由雙方自行決定。
   </div>
 
   <div class="callout">
-    <strong>Placeholder 樣本 — 形狀同例</strong>。每個 placeholder 嘅 substitute value 應該係邊種樣,以下用幾個 hypothetical 例做 reference(下面例都唔係實際 demo 嘅 slug,純粹樣示):
+    <strong>Placeholder 樣本 — 形狀與範例</strong>。每個 placeholder 之 substitute value 應為何種樣式,下列以幾個 hypothetical 範例做 reference(下列範例皆非實際 demo 之 slug,純屬樣式示例):
     <ul style="margin:10px 0 0;font-size:14px;line-height:1.7;">
-      <li><code>[項目代號]</code> — snake_case 短名(英文小寫加底線加數字,長度 30 字內)。例:<code>branding_2026</code>、<code>logo_refresh_q2</code>、<code>internal_pitch</code>、<code>cobeing_website</code>。協定上鎖細楷,Windows NTFS 雖然唔分大細楷,但 Drive 同步去其他系統有機會出 bug,所以 stable 細楷。唔好放中文、空格、特殊符號。</li>
-      <li><code>[Adam 部機嘅共享資料夾絕對路徑]</code> / <code>[Jay 部機嘅共享資料夾絕對路徑]</code> / <code>[Hub 絕對路徑]</code> — 由磁碟字母開始嘅 absolute path,指向你部機掛載 Hub 嘅實際位置;最後一段必然係 <code>AI_Public_Squares</code>。例:<code>G:\Cloud\AI_Public_Squares</code>、<code>D:\Work\AI_Public_Squares</code>、<code>H:\我的雲端硬碟\Marketing\AI_Public_Squares</code>。雙方各自寫自己部機嗰版,磁碟字母 / 中間段可以唔同。</li>
-      <li><code>[工作目錄]</code> — 你部機嘅項目工作目錄絕對路徑(裝有 Agent Handoff Kit 嗰個 root,即係你開新對話畀 agent 嗰個 folder)。例:<code>C:\Work\branding</code>、<code>D:\Projects\client_x</code>。</li>
-      <li><code>[題目]</code> — snake_case 短主題,描述呢個包做緊咩。例:<code>logo_convergence</code>、<code>brand_voice_v2</code>、<code>color_semantics</code>、<code>tagline_review</code>。同樣鎖細楷加底線。</li>
-      <li><code>[時間戳]</code> — UTC ISO 8601 compact 格式 <code>YYYYMMDDTHHMMSSZ</code>,反映你出包嗰刻嘅 UTC 時間。例:<code>20260520T103000Z</code>(= 2026 年 5 月 20 日 10:30:00 UTC)。Agent 程式自動生成,你唔需要手寫。</li>
+      <li><code>[項目代號]</code> — snake_case 短名(英文小寫加底線加數字,長度 30 字內)。例:<code>branding_2026</code>、<code>logo_refresh_q2</code>、<code>internal_pitch</code>、<code>cobeing_website</code>。協定上鎖小寫;Windows NTFS 雖不分大小寫,但 Google Drive 同步至其他系統有機會出 bug,故穩定小寫。不要放中文、空格或特殊符號。</li>
+      <li><code>[Adam 部機之共享資料夾絕對路徑]</code> / <code>[Jay 部機之共享資料夾絕對路徑]</code> / <code>[Hub 絕對路徑]</code> — 由磁碟字母開始之 absolute path,指向你部機掛載 Hub 之實際位置;最後一段必然為 <code>AI_Public_Squares</code>。例:<code>G:\Cloud\AI_Public_Squares</code>、<code>D:\Work\AI_Public_Squares</code>、<code>H:\我的雲端硬碟\Marketing\AI_Public_Squares</code>。雙方各自寫自己部機之版本,磁碟字母與中間段可不同。</li>
+      <li><code>[工作目錄]</code> — 你部機之項目工作目錄絕對路徑(裝有 Agent Handoff Kit 之 root,即開啟新對話予 AI 之資料夾)。例:<code>C:\Work\branding</code>、<code>D:\Projects\client_x</code>。</li>
+      <li><code>[題目]</code> — snake_case 短主題,描述此包做什麼。例:<code>logo_convergence</code>、<code>brand_voice_v2</code>、<code>color_semantics</code>、<code>tagline_review</code>。同樣鎖小寫加底線。</li>
+      <li><code>[時間戳]</code> — UTC ISO 8601 compact 格式 <code>YYYYMMDDTHHMMSSZ</code>,反映你出包之時刻之 UTC 時間。例:<code>20260520T103000Z</code>(即 2026 年 5 月 20 日 10:30:00 UTC)。AI 程式自動生成,無需手寫。</li>
     </ul>
   </div>
 </section>
 
 <section id="s2">
-  <h2><span class="sec-num">2.</span>前置條件清單</h2>
+  <h2><span class="sec-num">2.</span>安裝前置事項 — 4 件須先做</h2>
+  <p class="lede">完成此 4 件事之前,後面之步驟全部無法執行。雙方各自於自己部機完成。</p>
 
-  <div class="role-block role-block--adam">
-    <div class="role-block__head"><span class="chip chip--adam">Adam</span>你部機應該已經有</div>
-    <ul>
-      <li>Drive 桌面版已 sign-in,個共享資料夾右 click 設咗「可離線存取」。</li>
-      <li>Claude Code 裝好,可以喺你嘅工作目錄(<span class="path">[工作目錄]</span>)開新對話畀 Agent Adam。</li>
-      <li>該工作目錄入面已裝好 Agent Handoff Kit(<span class="path">AGENTS.md</span> + <span class="path">dev\</span> 一系列檔案存在)。</li>
-      <li>WhatsApp 可以聯絡到 Jay。</li>
-    </ul>
+  <h3>第一件 — 安裝 Agent Handoff Kit(治理基礎)</h3>
+  <p>APS 之檔案結構依靠 Agent Handoff Kit 之 managed-core block、doctor 與 upgrade 機制。未先安裝,APS 之檔案結構無法獨立運作。</p>
+  <div class="callout warn">
+    <strong>無 Agent Handoff Kit = APS 無法運作。</strong>此為硬性前置。
   </div>
+  <p>前往 <a class="site-nav__link" href="https://adamchanadam.github.io/agent-handoff-kit">https://adamchanadam.github.io/agent-handoff-kit</a>,依其指引安裝。完成後於你計劃之工作目錄中執行:</p>
+  <pre>npx @adamchanadam/agent-handoff-kit init</pre>
+  <p>執行完畢後,該工作目錄會多出一系列 governance 檔案(<code>AGENTS.md</code>、<code>dev/SESSION_HANDOFF.md</code>、<code>dev/RULE_PACKS.md</code>、<code>dev/PROJECT_INDEX.md</code>、<code>dev/DOC_SYNC_REGISTRY.md</code> 等)。此為 APS 後續步驟所依賴之基礎結構。</p>
 
-  <div class="role-block role-block--jay">
-    <div class="role-block__head"><span class="chip chip--jay">Jay</span>你部機應該已經有</div>
-    <ul>
-      <li>Drive 桌面版已 sign-in,見到 Adam share 出嚟嗰個共享資料夾。</li>
-      <li>Claude Code 裝好,可以喺你揀嘅工作目錄開新對話畀 Agent Jay。</li>
-      <li>你嘅工作目錄入面已裝好 Agent Handoff Kit,doctor 跑得通。</li>
-    </ul>
-  </div>
+  <h3>第二件 — 安裝 Google Drive 桌面版</h3>
+  <ul>
+    <li>前往 <a class="site-nav__link" href="https://www.google.com/drive/download/">https://www.google.com/drive/download/</a> 下載桌面版</li>
+    <li>登入後將共享之資料夾右鍵設為「<strong>離線存取</strong>」(此設定保證 AI 程式無需經網絡即可讀寫 Hub)</li>
+  </ul>
+
+  <h3>第三件 — 安裝 Claude Code</h3>
+  <ul>
+    <li>前往 <a class="site-nav__link" href="https://claude.com/code">https://claude.com/code</a> 下載</li>
+    <li>登入後,於你之工作目錄中能開啟新對話;此對話中之 AI 即為 <code>Agent Adam</code>(若你扮 User A)或 <code>Agent Jay</code>(若你扮 User B)</li>
+  </ul>
+
+  <h3>第四件 — 取得本工具(clone repo)</h3>
+  <p>本教學引用之 demo Bridge Pack fixture 位於本 repo 之 <code>examples/</code> 資料夾。取得方式有兩種:</p>
+  <ul>
+    <li><strong>推薦做法:<code>git clone</code></strong> — 於命令行執行 <code>git clone https://github.com/Adamchanadam/ai-public-squares.git</code>。clone 完成後可於 <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 找到 fixture</li>
+    <li><strong>替代做法:直接下載 zip</strong> — 於 GitHub repo 頁面點「Code」 → 「Download ZIP」。解壓後 fixture 同樣位於 <code>examples/</code> 中</li>
+  </ul>
 
   <div class="callout warn">
-    <strong>仲未準備好邊樣?</strong>呢樣係硬性前置,唔做齊唔好繼續。Drive 未設「可離線存取」,衝突避免嘅 guarantee 都不成立。
+    <strong>4 件事尚未完成?</strong>各個官方網頁皆有逐步指引。先完成全部 4 件,再返回繼續第 3 節。
   </div>
 </section>
 
 <section id="s3">
-  <h2><span class="sec-num">3.</span>先傾妥幾件嘢</h2>
-  <p class="lede">唔郁任何檔。十五分鐘左右嘅電話或者 WhatsApp 傾妥即可 — 你哋實際要拍板嘅,只有三件;其餘四項都有合理默認,沿用即可。呢一步係用戶之間嘅事,唔涉及兩個 agent 程式。</p>
+  <h2><span class="sec-num">3.</span>概念熱身 — 教學中常見之詞</h2>
+  <p class="lede">後續各節會出現以下詞;此節一次過解釋,後面遇到時不再重複定義。</p>
 
-  <h3>要拍板嘅三件事</h3>
   <table class="params">
     <thead>
-      <tr><th>要傾嘅嘢</th><th>建議</th><th>備註</th></tr>
+      <tr><th>詞</th><th>意思</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Hub</strong>(共享資料夾)</td>
+        <td>Google Drive 上雙方都見到之資料夾,固定名為 <code>AI_Public_Squares</code>。雙方 AI 程式皆視為本地資料夾直接讀寫,Google Drive 處理同步。</td>
+      </tr>
+      <tr>
+        <td><strong>Bridge Pack</strong>(橋接小規則)</td>
+        <td>一份 markdown 規則檔(<code>dev/rules/aps-bridge.md</code>),教 AI 程式如何解讀 Hub 上之檔案。每位用戶之工作目錄都需要一份。此教學第 5 / 6 節即係安裝此檔。</td>
+      </tr>
+      <tr>
+        <td><strong>packet</strong>(交接包)</td>
+        <td>一個資料夾,內含一份 <code>packet.md</code>(交接之主內容)+ 可選 <code>attachments/</code>。一旦發出即不再修改;若需更新則出 v2 並標明取代哪一版。</td>
+      </tr>
+      <tr>
+        <td><strong>outbox</strong>(出包紀錄)</td>
+        <td>每位用戶在自己 lane 之 <code>outbox.log.md</code>,逐行紀錄每次出包、改版、收結、撤回。append-only。</td>
+      </tr>
+      <tr>
+        <td><strong>ack</strong>(消化紀錄)</td>
+        <td>每位用戶之 <code>_ack/&lt;agent_id&gt;.ack.json</code>,記下自己消化過對方哪些 packet。</td>
+      </tr>
+      <tr>
+        <td><strong>lane</strong>(通道)</td>
+        <td>Hub 上之子資料夾 <code>from_&lt;agent_id&gt;/</code>。每位用戶各自寫自己 lane,不寫對方 lane。Drive 同步衝突由此結構性避免。</td>
+      </tr>
+      <tr>
+        <td><strong>Agent Adam / Agent Jay</strong></td>
+        <td>運行於 Adam / Jay 部機之 AI 程式(本教學中用 Claude Code)。與 Adam / Jay 用戶本人之動作分開記錄。</td>
+      </tr>
+      <tr>
+        <td><strong>doctor</strong>(健康檢查)</td>
+        <td>Agent Handoff Kit 之健康檢查命令(<code>npx @adamchanadam/agent-handoff-kit doctor</code>),驗證 governance 檔案結構正確。每次設置完應跑一次確認綠燈。</td>
+      </tr>
+      <tr>
+        <td><strong>kit</strong></td>
+        <td>Agent Handoff Kit 之簡稱。</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="s4">
+  <h2><span class="sec-num">4.</span>先傾妥幾件事</h2>
+  <p class="lede">不動任何檔案。十五分鐘左右之電話或 WhatsApp 傾妥即可 — 你哋實際要拍板者,只有三件;其餘三件皆有合理默認,沿用即可。此步為用戶之間之事,不涉及兩個 AI 程式。</p>
+
+  <h3>須拍板之三件事</h3>
+  <table class="params">
+    <thead>
+      <tr><th>須傾之事</th><th>建議</th><th>備註</th></tr>
     </thead>
     <tbody>
       <tr>
         <td>項目代號</td>
-        <td>揀新嘅 snake_case 短名(例:<code>branding_2026</code>、<code>logo_refresh</code>)</td>
-        <td>揀全新 slug 最乾淨 — 唔需要清任何已有 lane 資料,協定亦唔受影響。若想沿用某個共享資料夾入面已有嘅 slug(例如曾經做過試演或者過往項目用過),要先清舊資料(刪舊 packets、reset outbox)— 多咗一個 step,通常唔抵。樣本嘅完整形狀規則見第 1 節「Placeholder 樣本」。</td>
+        <td>選新之 snake_case 短名(例:<code>branding_2026</code>、<code>logo_refresh</code>)</td>
+        <td>選全新 slug 最為乾淨 — 不需清任何已有 lane 資料,協定亦不受影響。若想沿用某個共享資料夾中已有之 slug(例如曾做過試演或過往項目使用過),須先清舊資料(刪舊 packets、reset outbox)— 多了一個 step,通常不划算。樣本之完整形狀規則見第 1 節「Placeholder 樣本」。</td>
       </tr>
       <tr>
         <td>Jay 部機路徑</td>
-        <td>Jay 自己揀工作目錄 + 喺自己部機 mount Hub</td>
-        <td>例:工作目錄 <span class="path">D:\Work\[項目代號]_Jay\</span>(要 kit-init,doctor 跑得通);Hub 磁碟字母可能唔同(例 <span class="path">H:\</span> 唔係 <span class="path">G:\</span>),呢個合理 — 個小規則檔內各自寫實際路徑,協定本身唔受影響。</td>
+        <td>Jay 自選工作目錄並於自己部機 mount Hub</td>
+        <td>例:工作目錄 <span class="path">D:\Work\[項目代號]_Jay\</span>(須完成 kit 之初始化,doctor 通過);Hub 之磁碟字母可能不同(例 <span class="path">H:\</span> 而非 <span class="path">G:\</span>),此為合理 — 小規則檔內各自寫實際路徑,協定本身不受影響。</td>
       </tr>
       <tr>
-        <td>大檔試跑要唔要做</td>
-        <td>建議做,可推遲</td>
-        <td>第一份真正過 50 MB 嘅資產之前一定要做。如果近期都係文字材料,可以遲啲再補。</td>
+        <td>大檔試跑是否進行</td>
+        <td>建議進行,可推遲</td>
+        <td>第一份真實之逾 50 MB 資產出現之前必須進行一次。若近期皆為文字材料,可遲一步補做。</td>
       </tr>
     </tbody>
   </table>
 
-  <h3>預設默認嘅四件事(唔郁就 OK)</h3>
+  <h3>預設默認之三件事(不需改即可)</h3>
   <table class="params">
     <thead>
-      <tr><th>項目</th><th>默認值</th><th>幾時要改默認</th></tr>
+      <tr><th>項目</th><th>默認值</th><th>何時須改默認</th></tr>
     </thead>
     <tbody>
       <tr>
         <td>Adam agent 名</td>
-        <td>自己揀(snake_case,1-30 字內;MVP fixture 用咗 <code>adam</code> 做例)</td>
-        <td>揀短啲、stable、容易讀就得;唔需要跟 fixture。</td>
+        <td>自選(snake_case,1-30 字內;MVP fixture 使用 <code>adam</code> 做範例)</td>
+        <td>選短、stable、容易讀即可;無需跟 fixture。</td>
       </tr>
       <tr>
         <td>Jay agent 名</td>
-        <td>自己揀(snake_case;MVP fixture 用咗 <code>jay</code> 做例)</td>
+        <td>自選(snake_case;MVP fixture 使用 <code>jay</code> 做範例)</td>
         <td>同上。</td>
       </tr>
       <tr>
-        <td>共享資料夾入面已有嘅 lane 資料</td>
-        <td>留底唔郁(揀新 slug 嘅前提下,已有 lane 自然唔受影響)</td>
-        <td>只有揀沿用某個已有 slug 嗰陣才有得選清/留;揀新 slug 就唔關事。如果共享資料夾啱啱啟動、未有任何 lane,呢 row N/A。</td>
+        <td>共享資料夾中已有之 lane 資料</td>
+        <td>留底不動(選新 slug 之前提下,已有 lane 自然不受影響)</td>
+        <td>只有選沿用某個已有 slug 之時才有得選清 / 留;選新 slug 即不關事。若共享資料夾剛啟動、未有任何 lane,此項 N/A。</td>
       </tr>
       <tr>
-        <td>Adam 部機 Hub 路徑 + Drive 分享權限</td>
-        <td>Adam 嗰邊部機掛載 Hub 嘅實際絕對路徑(<span class="path">[Adam 部機嘅共享資料夾絕對路徑]</span>)+ Drive 上層 <span class="path">AI_Public_Squares</span> 資料夾 share 畀 Jay 有寫權</td>
-        <td>若 Drive sharing 設喺 slug 子資料夾而唔係 <span class="path">AI_Public_Squares</span> root,新 slug 要新加 share。若 Hub 仲未掛載或者 Drive 仲未 share,要先補咗呢兩件嘅機器 setup 先繼續。</td>
+        <td>Adam 部機 Hub 路徑與 Drive 分享權限</td>
+        <td>Adam 那邊部機掛載 Hub 之實際絕對路徑(<span class="path">[Adam 部機之共享資料夾絕對路徑]</span>)+ Drive 上層 <span class="path">AI_Public_Squares</span> 資料夾 share 予 Jay 有寫權</td>
+        <td>若 Drive sharing 設於 slug 子資料夾而非 <span class="path">AI_Public_Squares</span> root,新 slug 須新增 share。若 Hub 尚未掛載或 Drive 尚未 share,須先補完此兩件機器 setup 方能繼續。</td>
       </tr>
     </tbody>
   </table>
 
   <div class="role-block role-block--both">
     <div class="role-block__head"><span class="chip chip--both">雙方</span>傾妥之後</div>
-    <p>Adam 打開技術版計劃文檔最尾嘅參數表,將拍板嘅嘢同確認嘅默認填齊。呢一刻就係呢一節完成。</p>
-  </div>
-</section>
-
-<section id="s4">
-  <h2><span class="sec-num">4.</span>Adam 接駁自己部機</h2>
-  <p class="lede">呢一節 Adam 喺自己部機,叫 Agent Adam 幫手執行;Jay 唔需要喺度。完成之後 Adam 嘅工作目錄已接好個橋接小規則,但仲未交收過任何包。</p>
-
-  <div class="callout">
-    <strong>有 helper script(<code>tools/aps-onboard.ps1</code>)可以一次過落 4 個 file edit</strong>(步驟 2-5 嘅機械部分 — Identity 連 4 個 governance row 一齊裝)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>嘅 Tooling shortcut 段。步驟 1(read-only baseline check)同步驟 6(SESSION_HANDOFF Durable Anchors,涉判斷)仲係手做。下面手做版本仍然係 authoritative reference,跑 script 之前可以先睇明白每步做緊咩。
-  </div>
-
-  <div class="role-block role-block--adam">
-    <div class="role-block__head"><span class="chip chip--adam">Adam</span>同<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>逐步動作</div>
-    <ol class="step-list">
-      <li>
-        <p><strong>Adam 叫 Agent Adam 做唯讀檢查</strong></p>
-        <p>Adam 喺工作目錄開新對話,叫 Agent Adam 做以下事但唔好改檔:列 root 內有冇 <span class="path">AGENTS.md</span>、<span class="path">dev\SESSION_HANDOFF.md</span>、<span class="path">dev\RULE_PACKS.md</span>、<span class="path">dev\PROJECT_INDEX.md</span>、<span class="path">dev\DOC_SYNC_REGISTRY.md</span>;睇 <span class="path">AGENTS.md</span> 頭幾行記低版本;跑 doctor。</p>
-        <div class="accept">Agent Adam 報告:版本、doctor 通過幾多項、git 狀態。冇任何檔案改動。</div>
-        <div class="callout warn"><strong>如果版本舊過 0.1.7</strong>:Adam 叫 Agent Adam 跑升版指令,doctor 要全部通過先繼續落一步。</div>
-      </li>
-
-      <li>
-        <p><strong>叫 Agent Adam 抄個橋接小規則檔落嚟</strong></p>
-        <p>Adam 喺對話入面叫 Agent Adam 將呢個 repo 隨附嘅 demo Bridge Pack(MVP 驗證嗰陣留低,canonical source)抄落工作目錄相同位置 — 路徑類似 <span class="path">[呢個 repo 嘅 sibling]\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md</span>(demo Adam fixture — procedural 部分同 demo Jay pack 一樣,只 Identity 唔同)。除咗最上面個 Identity 段之外,內容唔郁。</p>
-        <p>Identity 段改成 Adam 部機嘅實際值:</p>
-        <pre>- agent_id: adam
-- project_slug: [項目代號]
-- hub_root: [Adam 部機嘅共享資料夾絕對路徑]
-- other_agent_id: jay</pre>
-        <p class="copy-block__note">複製出嚟之後,將 <code>[項目代號]</code> 換做第 3 節拍板嗰個值(例 <code>branding_2026</code>);<code>[Adam 部機嘅共享資料夾絕對路徑]</code> 換做你部機掛載 Hub 嘅實際 absolute path(例 <code>G:\Cloud\AI_Public_Squares</code>),先寫入規則檔。完整形狀規則見第 1 節「Placeholder 樣本」。</p>
-        <div class="accept">將工作目錄嘅小規則檔同試演嗰份比較,差異只係 Identity 段。</div>
-      </li>
-
-      <li>
-        <p><strong>叫 Agent Adam 喺路由表入面註冊呢個小規則</strong></p>
-        <p>喺 <span class="path">dev\RULE_PACKS.md</span> 嘅路由表加多一行(<code>## Routing Rule</code> 之前),叫 Agent Adam 抄試演嗰行原文。</p>
-      </li>
-
-      <li>
-        <p><strong>叫 Agent Adam 將共享資料夾登記做 External Source</strong></p>
-        <p>喺 <span class="path">dev\PROJECT_INDEX.md</span> 嘅 External Sources 表加一行,將共享資料夾路徑同寫權範圍寫低。</p>
-      </li>
-
-      <li>
-        <p><strong>叫 Agent Adam 喺同步登記表加兩行</strong></p>
-        <p>喺 <span class="path">dev\DOC_SYNC_REGISTRY.md</span> 加兩行(「出包」一行 + 「消化登記」一行),抄試演原文即可。</p>
-      </li>
-
-      <li>
-        <p><strong>叫 Agent Adam 更新交接檔嘅 Durable Anchors</strong></p>
-        <p>喺 <span class="path">dev\SESSION_HANDOFF.md</span> 嘅 Durable Anchors 同 Active Objective 各補一句,等將來開新對話嘅 Agent Adam 一讀就知工作目錄已接通共享資料夾,啟動同收尾要跑嗰兩步。</p>
-        <div class="accept"><span class="path">dev\SESSION_HANDOFF.md</span> 入面搜 "APS" 有至少兩個位提到。</div>
-      </li>
-    </ol>
-
-    <p>所有改動以小 commit 形式記低,標題用 <code>feat(aps):</code>(新檔)或 <code>docs(aps):</code>(governance 改動)前綴。Agent Adam 寫 commit message,Adam 確認後 commit。</p>
-  </div>
-
-  <div class="callout">
-    <strong>呢一節完之後</strong>:Adam 工作目錄已接好,但因為 Jay 嗰邊未接通,任何試出包都未有 receiver。先等 Jay 完成第 5 節,然後第 6 節雙方一齊跑。
+    <p>Adam 打開技術版計劃文檔最末之參數表,將拍板之事與確認之默認填齊。此刻即此節完成。</p>
   </div>
 </section>
 
 <section id="s5">
-  <h2><span class="sec-num">5.</span>Jay 接駁自己部機</h2>
+  <h2><span class="sec-num">5.</span>Adam 接駁自己部機</h2>
+  <p class="lede">此節 Adam 於自己部機,要求 Agent Adam 協助執行;Jay 無需在場。完成後 Adam 之工作目錄已接好橋接小規則,但尚未交收任何 packet。</p>
 
   <div class="callout">
-    <strong>Jay 嗰邊都可以用同一個 helper script(<code>tools/aps-onboard.ps1</code>)</strong>(Adam 整完之後用 WhatsApp / Drive 連同 demo Jay pack 一齊傳過嚟畀 Jay 跑)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>嘅 Tooling shortcut 段;Jay-side invocation 用 <code>-AgentId "&lt;your_agent_id&gt;" -OtherAgentId "&lt;counterpart_agent_id&gt;"</code>(以本教學嘅 narrative 為例,分別係 <code>jay</code> 同 <code>adam</code>),demo Jay pack 做 <code>-DemoPackPath</code>。下面手做版本仍然係 authoritative。
+    <strong>有 helper script(<code>tools/aps-onboard.ps1</code>)可一次過落 4 個檔案編輯</strong>(步驟 2-5 之機械部分 — Identity 連同 4 個 governance row 一齊裝)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>之 Tooling shortcut 段。步驟 1(read-only baseline check)與步驟 6(SESSION_HANDOFF Durable Anchors,涉判斷)仍須手做。下面手做版本仍為 authoritative reference,執行 script 之前可先閱讀明白每步在做什麼。
   </div>
-  <p class="lede">呢一節 Jay 喺自己部機,叫 Agent Jay 幫手執行。Adam 嘅角色係預先 WhatsApp 將試演 Jay 嗰份小規則檔同三行參數 send 畀 Jay,然後隨時答問題。Adam 同 Agent Adam 都唔可以代 Jay 跑命令。</p>
+
+  <div class="role-block role-block--adam">
+    <div class="role-block__head"><span class="chip chip--adam">Adam</span>與<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>逐步動作</div>
+    <ol class="step-list">
+      <li>
+        <p><strong>Adam 要求 Agent Adam 做唯讀檢查</strong></p>
+        <p>Adam 於工作目錄開啟新對話,要求 Agent Adam 做以下事但不要改檔:列出 root 內是否存在 <span class="path">AGENTS.md</span>、<span class="path">dev\SESSION_HANDOFF.md</span>、<span class="path">dev\RULE_PACKS.md</span>、<span class="path">dev\PROJECT_INDEX.md</span>、<span class="path">dev\DOC_SYNC_REGISTRY.md</span>;執行 <code>npx @adamchanadam/agent-handoff-kit doctor</code> 自動報出 kit 之版本與健康狀態。</p>
+        <div class="accept">Agent Adam 報告:doctor 通過幾項(預期 34/34)、git 狀態。無任何檔案改動。</div>
+        <div class="callout warn"><strong>若 doctor 報告 kit 版本舊於 0.1.7</strong>:Adam 要求 Agent Adam 執行 <code>npx @adamchanadam/agent-handoff-kit@latest upgrade</code>,doctor 須全部通過方可繼續下一步。</div>
+      </li>
+
+      <li>
+        <p><strong>要求 Agent Adam 抄此 repo 隨附之 demo Bridge Pack 副本至工作目錄</strong></p>
+        <p>Adam 於對話中要求 Agent Adam 將本 repo <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 抄至工作目錄之 <span class="path">[工作目錄]\dev\rules\aps-bridge.md</span>(此即 Adam 角色之 Bridge Pack fixture,procedural 內容與 Jay 角色完全相同,只是 Identity 段不同)。除最上之 Identity 段之外,內容不變。</p>
+        <p>Identity 段改為 Adam 部機之實際值:</p>
+        <pre>- agent_id: adam
+- project_slug: [項目代號]
+- hub_root: [Adam 部機之共享資料夾絕對路徑]
+- other_agent_id: jay</pre>
+        <p class="copy-block__note">複製出來後,將 <code>[項目代號]</code> 換為第 4 節拍板之值(例 <code>branding_2026</code>);將 <code>[Adam 部機之共享資料夾絕對路徑]</code> 換為你部機掛載 Hub 之實際 absolute path(例 <code>G:\Cloud\AI_Public_Squares</code>),然後寫入規則檔。完整形狀規則見第 1 節「Placeholder 樣本」。</p>
+        <div class="accept">將工作目錄之小規則檔與 <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 比較,差異只應於 Identity 段。</div>
+      </li>
+
+      <li>
+        <p><strong>要求 Agent Adam 在路由表中註冊此小規則</strong></p>
+        <p>於 <span class="path">dev\RULE_PACKS.md</span> 之路由表加一行(<code>## Routing Rule</code> 之前),要求 Agent Adam 抄試演該行原文。</p>
+      </li>
+
+      <li>
+        <p><strong>要求 Agent Adam 將共享資料夾登記為 External Source</strong></p>
+        <p>於 <span class="path">dev\PROJECT_INDEX.md</span> 之 External Sources 表加一行,將共享資料夾路徑與寫權範圍寫下。</p>
+      </li>
+
+      <li>
+        <p><strong>要求 Agent Adam 在同步登記表加兩行</strong></p>
+        <p>於 <span class="path">dev\DOC_SYNC_REGISTRY.md</span> 加兩行(「出包」一行 + 「消化登記」一行),抄試演原文即可。</p>
+      </li>
+
+      <li>
+        <p><strong>要求 Agent Adam 更新交接檔之 Durable Anchors</strong></p>
+        <p>於 <span class="path">dev\SESSION_HANDOFF.md</span> 之 Durable Anchors 與 Active Objective 各補一句,讓將來開啟新對話之 Agent Adam 一讀即知工作目錄已接通共享資料夾,啟動與收尾須跑兩步。</p>
+        <div class="accept">於 <span class="path">dev\SESSION_HANDOFF.md</span> 中搜「APS」至少有兩處提及。</div>
+      </li>
+    </ol>
+
+    <p>所有改動以小 commit 形式記錄,標題以 <code>feat(aps):</code>(新檔)或 <code>docs(aps):</code>(governance 改動)為 prefix。Agent Adam 撰寫 commit message,Adam 確認後 commit。</p>
+  </div>
+
+  <div class="callout">
+    <strong>此節完成之後</strong>:Adam 之工作目錄已接通,但因 Jay 那邊尚未接通,任何試出包皆未有 receiver。先等 Jay 完成第 6 節,然後第 7 節雙方一同跑。
+  </div>
+</section>
+
+<section id="s6">
+  <h2><span class="sec-num">6.</span>Jay 接駁自己部機</h2>
+
+  <div class="callout">
+    <strong>Jay 那邊亦可使用同一個 helper script(<code>tools/aps-onboard.ps1</code>)</strong>(Adam 整完之後以 WhatsApp / Drive 連同 demo Jay pack 一齊傳給 Jay 執行)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>之 Tooling shortcut 段;Jay-side 之 invocation 以 <code>-AgentId "&lt;your_agent_id&gt;" -OtherAgentId "&lt;counterpart_agent_id&gt;"</code>(以本教學之 narrative 計,分別為 <code>jay</code> 與 <code>adam</code>),demo Jay pack 作為 <code>-DemoPackPath</code>。下面手做版本仍為 authoritative。
+  </div>
+  <p class="lede">此節 Jay 於自己部機,要求 Agent Jay 協助執行。Adam 之角色為預先以 WhatsApp 將試演之 Jay 版本之小規則檔與三行參數傳給 Jay,隨後隨時答問。Adam 與 Agent Adam 皆不可代 Jay 跑命令。</p>
 
   <div class="role-block role-block--adam">
     <div class="role-block__head"><span class="chip chip--adam">Adam</span>預先準備</div>
-    <p>將兩件嘢 send 畀 Jay:</p>
+    <p>將兩件事傳給 Jay:</p>
     <ul>
-      <li>呢個 repo 隨附嘅 demo Bridge Pack(Jay-side fixture),路徑類似 <span class="path">[呢個 repo 嘅 sibling]\Demo_Agent_Jay_Public_Squares\dev\rules\aps-bridge.md</span> — 同 Adam-side 嗰份 procedural 內容一樣,只係 Identity 唔同。</li>
-      <li>一張短紙條,記第 3 節拍板嘅七行參數結果。</li>
+      <li>本 repo 隨附之 demo Bridge Pack(Jay 角色之 fixture),路徑為 <span class="path">examples/demo-agent-b/dev/rules/aps-bridge.md</span> — 與 Adam 角色版本之 procedural 內容相同,只是 Identity 不同</li>
+      <li>一張短便箋,記錄第 4 節拍板之七行參數結果</li>
     </ul>
   </div>
 
   <div class="role-block role-block--jay">
-    <div class="role-block__head"><span class="chip chip--jay">Jay</span>同<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>逐步動作</div>
+    <div class="role-block__head"><span class="chip chip--jay">Jay</span>與<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>逐步動作</div>
     <ol class="step-list">
       <li>
-        <p><strong>Jay 自己跑部機前置 checklist</strong></p>
-        <p>逐項打剔:Drive 桌面版 sign-in 咗、共享資料夾見到、共享資料夾已設「可離線存取」、工作目錄揀好兼 kit-init、doctor 跑得通。</p>
-        <p>做完一句 WhatsApp 答 Adam,例:<code>checklist OK · 工作目錄: D:\Work\[項目代號]_Jay</code>(將 placeholder 換做你部機嘅實際路徑)。</p>
+        <p><strong>Jay 自行跑部機前置 checklist</strong></p>
+        <p>逐項打剔:Google Drive 桌面版已 sign-in、共享資料夾可見、共享資料夾已設「離線存取」、工作目錄已選好並完成 kit 初始化、doctor 通過。</p>
+        <p>完成後以一句 WhatsApp 答覆 Adam,例:<code>checklist OK · 工作目錄: D:\Work\[項目代號]_Jay</code>(將 placeholder 換為你部機之實際路徑)。</p>
       </li>
 
       <li>
-        <p><strong>Jay 叫 Agent Jay 接駁小規則檔</strong></p>
-        <p>將 Adam send 嚟嗰份 save 入 <span class="path">[工作目錄]\dev\rules\aps-bridge.md</span>,叫 Agent Jay 改 Identity 段:</p>
+        <p><strong>Jay 要求 Agent Jay 接駁小規則檔</strong></p>
+        <p>將 Adam 傳來之 fixture 儲存為 <span class="path">[工作目錄]\dev\rules\aps-bridge.md</span>,要求 Agent Jay 改 Identity 段:</p>
         <pre>- agent_id: jay
 - project_slug: [項目代號]
-- hub_root: [Jay 部機嘅共享資料夾絕對路徑]
+- hub_root: [Jay 部機之共享資料夾絕對路徑]
 - other_agent_id: adam</pre>
-        <p class="copy-block__note">複製出嚟之後,將 <code>[項目代號]</code> 換做第 3 節拍板嗰個值(例 <code>branding_2026</code>);<code>[Jay 部機嘅共享資料夾絕對路徑]</code> 換做你部機實際嘅路徑(例 <code>D:\Work\AI_Public_Squares</code>;磁碟字母可能係 <code>H:\</code>、<code>D:\</code> 或其他)。完整形狀規則見第 1 節「Placeholder 樣本」。</p>
-        <p>跟住叫 Agent Jay 做同第 4 節第 3–6 步對等嘅動作:路由表加行、External Source 加行(寫權範圍寫「永不寫 <span class="path">from_adam</span> 同 <span class="path">_ack\adam.ack.json</span>」)、同步登記表加兩行、交接檔更新 Durable Anchors。</p>
-        <div class="accept">Jay 跑 doctor 仍然全部通過。一句 WhatsApp 答 Adam:<code>接駁好,doctor OK</code>。</div>
+        <p class="copy-block__note">複製出來後,將 <code>[項目代號]</code> 換為第 4 節拍板之值(例 <code>branding_2026</code>);將 <code>[Jay 部機之共享資料夾絕對路徑]</code> 換為你部機之實際路徑(例 <code>D:\Work\AI_Public_Squares</code>;磁碟字母可能為 <code>H:\</code>、<code>D:\</code> 或其他)。完整形狀規則見第 1 節「Placeholder 樣本」。</p>
+        <p>隨後要求 Agent Jay 做與第 5 節步驟 3-6 對應之動作:路由表加一行、External Source 加一行(寫權範圍寫「永不寫 <span class="path">from_adam</span> 與 <span class="path">_ack\adam.ack.json</span>」)、同步登記表加兩行、交接檔更新 Durable Anchors。</p>
+        <div class="accept">Jay 跑 doctor 仍全部通過。以一句 WhatsApp 答覆 Adam:<code>接駁好,doctor OK</code>。</div>
       </li>
     </ol>
   </div>
 
   <div class="callout">
-    <strong>呢一節完之後</strong>:雙方工作目錄都接好,但共享資料夾上仲未有真嘅包過。第 6 節就係跑首次跨機交接。
+    <strong>此節完成之後</strong>:雙方工作目錄皆已接通,但共享資料夾上尚未有真實 packet 過。第 7 節即為首次跨機交接之執行。
   </div>
 </section>
 
-<section id="s6">
-  <h2><span class="sec-num">6.</span>首次跨機交接</h2>
-  <p class="lede">由 Adam 出第一個真包開始,經 Agent Adam 寫入 Hub,Adam 一句 WhatsApp 通知 Jay,Jay 叫 Agent Jay 撿包,Jay 做完叫 Agent Jay 出回包,Jay 一句 WhatsApp 通知 Adam,Adam 叫 Agent Adam 撿到回包收結。揀一個細嘅內容(一段品牌語氣 note、一個 logo spec 段落)做第一次,唔好試大檔(嗰個係第 7 節)。</p>
+<section id="s7">
+  <h2><span class="sec-num">7.</span>首次跨機交接</h2>
+  <p class="lede">由 Adam 發第一個真實 packet 開始,經 Agent Adam 寫入 Hub,Adam 以一句 WhatsApp 通知 Jay,Jay 要求 Agent Jay 撿包,Jay 完成後要求 Agent Jay 出回包,Jay 以一句 WhatsApp 通知 Adam,Adam 要求 Agent Adam 撿到回包並收結。選一個小型內容(一段品牌語氣 note、一個 logo spec 段落)做第一次,不要試大檔(該檔之測試為第 8 節)。</p>
 
   <div class="actor-legend">
     <span class="lg"><span class="swatch swatch--adam-user"></span>Adam 用戶</span>
@@ -821,20 +880,20 @@
   </div>
 
   <div class="callout warn">
-    <strong>敏感資料禁區</strong>。Packet 入面唔放 credentials、API key、未公開財務、未授權人名。共享資料夾屬中立區,唔適合留 secret。要交付敏感資料,行另一條 secure channel(WhatsApp 私訊、1Password share 等),packet body 入面用抽象 reference 指過去,唔貼實際值。
+    <strong>敏感資料禁區</strong>。Packet 中不放 credentials、API key、未公開財務、未授權人名。共享資料夾屬中立區,不適合留 secret。如需交付敏感資料,行另一條 secure channel(WhatsApp 私訊、1Password share 等),packet body 中以抽象 reference 指過去,不貼實際值。
   </div>
 
   <div class="callout">
-    <strong>用戶決定,Agent 執行 — 之間有一格</strong>。Agent Adam 同 Agent Jay 撿到包之後,係 propose 待辦畀對應嘅用戶睇,<strong>唔自動修改本地 SSOT 嘅檔</strong>。用戶揀做唔做、揀幾時做、揀做幾多,先叫個 agent 動手執行。Packet body 講「請更新 X」唔等於對方 agent 自動更新 X — 「propose → 用戶拍板 → execute」係故意保留嘅人手 step,等用戶控住每次工作流。
+    <strong>用戶決定,Agent 執行 — 之間有一格</strong>。Agent Adam 與 Agent Jay 撿到 packet 之後,皆為向對應用戶 propose 待辦,<strong>不自動修改本地 SSOT 之檔</strong>。用戶決定做與不做、決定何時做、決定做多少,然後再要求 agent 動手執行。Packet body 說「請更新 X」並不等於對方 agent 自動更新 X — 「propose → 用戶拍板 → execute」為刻意保留之人手 step,讓用戶控住每次工作流。
   </div>
 
   <div class="callout">
-    <strong>首次跨機驗證 vs 日常運作</strong>。下面嘅完整十步係跨機接駁計劃<strong>第一次</strong>跑做嘅動作 — 包括 UTC 時間記錄(量度 Drive 同步延遲)同 WhatsApp 完整模板。呢啲屬一次性驗收,跑通之後就有 baseline。日常運作精簡好多 — WhatsApp 短訊一句、receiver 對住現有對話講 <code>check Hub</code> 就得,詳見 §8。
+    <strong>首次跨機驗證 vs 日常運作</strong>。下面之完整十步為跨機接駁計劃<strong>第一次</strong>跑時所做之動作 — 包括 UTC 時間記錄(量度 Drive 同步延遲)與 WhatsApp 完整模板。此皆屬一次性驗收,跑通之後即有 baseline。日常運作精簡甚多 — WhatsApp 短訊一句、receiver 對著現有對話講 <code>check Hub</code> 即可,詳見 §9。
   </div>
 
   <svg viewBox="0 0 760 760" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-handover-title flow-handover-desc">
     <title id="flow-handover-title">首次跨機交接 四 actor 時序圖</title>
-    <desc id="flow-handover-desc">由左至右四條 lane 分別代表 Adam 用戶、Agent Adam 程式、Agent Jay 程式、Jay 用戶。時間由上至下,Adam 寫內容叫 Agent Adam 出包,Adam 發 WhatsApp,Jay 開新對話叫 Agent Jay 撿包,Jay 做完叫 Agent Jay 出回包,Jay 發 WhatsApp,Adam 叫 Agent Adam 撿回包收結。</desc>
+    <desc id="flow-handover-desc">由左至右四條 lane 分別代表 Adam 用戶、Agent Adam 程式、Agent Jay 程式、Jay 用戶。時間由上至下:Adam 寫內容並要求 Agent Adam 出包,Adam 發 WhatsApp,Jay 開啟新對話要求 Agent Jay 撿包,Jay 完成後要求 Agent Jay 出回包,Jay 發 WhatsApp,Adam 要求 Agent Adam 撿回包並收結。</desc>
 
     <defs>
       <marker id="ho-arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
@@ -842,7 +901,6 @@
       </marker>
     </defs>
 
-    <!-- Lane headers -->
     <g>
       <rect x="20" y="6" width="170" height="32" rx="4" fill="var(--adam-soft)" stroke="#2f5d7c" stroke-width="2"/>
       <text x="105" y="22" text-anchor="middle" class="flow-lane-header" fill="#2f5d7c">Adam</text>
@@ -864,198 +922,178 @@
       <text x="655" y="34" text-anchor="middle" class="flow-lane-sub">用戶本人</text>
     </g>
 
-    <!-- Lane separators (dashed light) -->
     <path d="M 195 50 L 195 750" stroke="#d9d4c5" stroke-width="1" stroke-dasharray="2 6" fill="none"/>
     <path d="M 380 50 L 380 750" stroke="#d9d4c5" stroke-width="1" stroke-dasharray="2 6" fill="none"/>
     <path d="M 565 50 L 565 750" stroke="#d9d4c5" stroke-width="1" stroke-dasharray="2 6" fill="none"/>
 
-    <!-- ① Adam:寫好內容 -->
     <g>
       <rect x="25" y="56" width="160" height="60" rx="6" fill="var(--adam-soft)" stroke="#2f5d7c" stroke-width="2"/>
       <text x="105" y="78" text-anchor="middle" class="flow-step">① 寫好要交</text>
-      <text x="105" y="96" text-anchor="middle" class="flow-step">嘅內容</text>
+      <text x="105" y="96" text-anchor="middle" class="flow-step">之內容</text>
     </g>
-    <!-- ① → ② arrow (cross-lane) -->
     <path d="M 185 86 L 195 86 L 195 116 L 205 116" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#ho-arrow)"/>
-    <text x="200" y="76" text-anchor="middle" class="flow-meta">叫 agent</text>
+    <text x="200" y="76" text-anchor="middle" class="flow-meta">要求 agent</text>
 
-    <!-- ② Agent Adam:出包入 Hub -->
     <g>
       <rect x="205" y="116" width="160" height="76" rx="6" fill="white" stroke="#2f5d7c" stroke-width="2" stroke-dasharray="5 3"/>
       <text x="285" y="138" text-anchor="middle" class="flow-step">② 出包入 Hub</text>
       <text x="285" y="156" text-anchor="middle" class="flow-step">加事件記錄</text>
       <text x="285" y="178" text-anchor="middle" class="flow-meta">(Drive 自動同步)</text>
     </g>
-    <!-- ② done → ③ -->
     <path d="M 285 192 L 285 210 L 105 210 L 105 226" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#ho-arrow)"/>
 
-    <!-- ③ Adam:發 WhatsApp -->
     <g>
       <rect x="25" y="226" width="160" height="60" rx="6" fill="var(--adam-soft)" stroke="#2f5d7c" stroke-width="2"/>
       <text x="105" y="248" text-anchor="middle" class="flow-step">③ 發一句</text>
       <text x="105" y="266" text-anchor="middle" class="flow-step">WhatsApp 模板</text>
     </g>
-    <!-- ③ → ④ (大跨 lane, 由 L1 經 lanes 過 L4) -->
     <path d="M 185 256 L 575 256" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#ho-arrow)"/>
-    <text x="380" y="248" text-anchor="middle" class="flow-meta">WhatsApp 過 Jay</text>
+    <text x="380" y="248" text-anchor="middle" class="flow-meta">WhatsApp 至 Jay</text>
 
-    <!-- ④ Jay:開新對話 + paste -->
     <g>
       <rect x="575" y="226" width="160" height="76" rx="6" fill="var(--jay-soft)" stroke="#b56a23" stroke-width="2"/>
-      <text x="655" y="248" text-anchor="middle" class="flow-step">④ 收到 + 開新</text>
-      <text x="655" y="266" text-anchor="middle" class="flow-step">對話 paste 模板</text>
+      <text x="655" y="248" text-anchor="middle" class="flow-step">④ 收到後開啟新</text>
+      <text x="655" y="266" text-anchor="middle" class="flow-step">對話貼上模板</text>
       <text x="655" y="288" text-anchor="middle" class="flow-meta">指令 agent 啟動</text>
     </g>
-    <!-- ④ → ⑤ -->
     <path d="M 575 280 L 565 280 L 565 322 L 555 322" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#ho-arrow)"/>
-    <text x="560" y="312" text-anchor="middle" class="flow-meta">叫 agent</text>
+    <text x="560" y="312" text-anchor="middle" class="flow-meta">要求 agent</text>
 
-    <!-- ⑤ Agent Jay:撿包 + 列待辦 -->
     <g>
       <rect x="395" y="322" width="160" height="76" rx="6" fill="white" stroke="#b56a23" stroke-width="2" stroke-dasharray="5 3"/>
       <text x="475" y="344" text-anchor="middle" class="flow-step">⑤ 撿包,計</text>
       <text x="475" y="362" text-anchor="middle" class="flow-step">待辦,呈現</text>
-      <text x="475" y="384" text-anchor="middle" class="flow-meta">畀 Jay 睇</text>
+      <text x="475" y="384" text-anchor="middle" class="flow-meta">予 Jay 閱讀</text>
     </g>
-    <!-- ⑤ → ⑥ -->
     <path d="M 555 360 L 565 360 L 565 422 L 575 422" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#ho-arrow)"/>
 
-    <!-- ⑥ Jay:做完 + 叫出回包 -->
     <g>
       <rect x="575" y="422" width="160" height="76" rx="6" fill="var(--jay-soft)" stroke="#b56a23" stroke-width="2"/>
-      <text x="655" y="444" text-anchor="middle" class="flow-step">⑥ 做要做嘅嘢</text>
-      <text x="655" y="462" text-anchor="middle" class="flow-step">叫 agent 出回包</text>
+      <text x="655" y="444" text-anchor="middle" class="flow-step">⑥ 完成所需工作</text>
+      <text x="655" y="462" text-anchor="middle" class="flow-step">要求 agent 出回包</text>
       <text x="655" y="484" text-anchor="middle" class="flow-meta">+ 登記消化</text>
     </g>
-    <!-- ⑥ → ⑦ -->
     <path d="M 575 478 L 565 478 L 565 522 L 555 522" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#ho-arrow)"/>
 
-    <!-- ⑦ Agent Jay:出回包 + 加記錄 -->
     <g>
       <rect x="395" y="522" width="160" height="76" rx="6" fill="white" stroke="#b56a23" stroke-width="2" stroke-dasharray="5 3"/>
       <text x="475" y="544" text-anchor="middle" class="flow-step">⑦ 寫回包 +</text>
       <text x="475" y="562" text-anchor="middle" class="flow-step">加事件記錄</text>
       <text x="475" y="584" text-anchor="middle" class="flow-meta">(Drive 自動同步)</text>
     </g>
-    <!-- ⑦ done → ⑧ -->
     <path d="M 475 598 L 475 616 L 655 616 L 655 632" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#ho-arrow)"/>
 
-    <!-- ⑧ Jay:發 WhatsApp -->
     <g>
       <rect x="575" y="632" width="160" height="60" rx="6" fill="var(--jay-soft)" stroke="#b56a23" stroke-width="2"/>
       <text x="655" y="654" text-anchor="middle" class="flow-step">⑧ 發一句</text>
       <text x="655" y="672" text-anchor="middle" class="flow-step">WhatsApp 模板</text>
     </g>
-    <!-- ⑧ → ⑨ (大跨 lane 回 Adam) -->
     <path d="M 575 662 L 185 662" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#ho-arrow)"/>
-    <text x="380" y="654" text-anchor="middle" class="flow-meta">WhatsApp 過 Adam</text>
+    <text x="380" y="654" text-anchor="middle" class="flow-meta">WhatsApp 至 Adam</text>
 
-    <!-- ⑨ Adam:開新對話 + paste -->
     <g>
       <rect x="25" y="632" width="160" height="76" rx="6" fill="var(--adam-soft)" stroke="#2f5d7c" stroke-width="2"/>
-      <text x="105" y="654" text-anchor="middle" class="flow-step">⑨ 收到 + 開新</text>
-      <text x="105" y="672" text-anchor="middle" class="flow-step">對話 paste 模板</text>
+      <text x="105" y="654" text-anchor="middle" class="flow-step">⑨ 收到後開啟新</text>
+      <text x="105" y="672" text-anchor="middle" class="flow-step">對話貼上模板</text>
       <text x="105" y="694" text-anchor="middle" class="flow-meta">指令 agent 啟動</text>
     </g>
-    <!-- ⑨ → ⑩ -->
     <path d="M 185 685 L 195 685 L 195 720 L 205 720" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#ho-arrow)"/>
 
-    <!-- ⑩ Agent Adam:撿回包 + 收結 -->
     <g>
       <rect x="205" y="720" width="160" height="38" rx="6" fill="white" stroke="#2f5d7c" stroke-width="2" stroke-dasharray="5 3"/>
       <text x="285" y="744" text-anchor="middle" class="flow-step">⑩ 撿回包 + 收結</text>
     </g>
   </svg>
-  <p class="flow-caption">四條 lane,實邊框係人,虛邊框係程式。時間由上至下,十步走完一輪。藍色屬 Adam 域,橙色屬 Jay 域。</p>
+  <p class="flow-caption">四條 lane,實邊框為人,虛邊框為程式。時間由上至下,十步走完一輪。藍色屬 Adam 域,橙色屬 Jay 域。</p>
 
   <div class="role-block role-block--adam">
-    <div class="role-block__head"><span class="chip chip--adam">Adam</span>同<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>· 出第一個真包(步驟 ①–③)</div>
+    <div class="role-block__head"><span class="chip chip--adam">Adam</span>與<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>· 發第一個真實 packet(步驟 ①–③)</div>
     <ol class="step-list">
-      <li>Adam 喺工作目錄開新對話,寫好想交畀 Jay 嘅內容。</li>
-      <li>Adam 對話收尾,叫 Agent Adam 跟收尾流程出包:Agent Adam 喺共享資料夾下 <span class="path">[項目代號]\from_adam\packets\[時間戳]__[題目]__v1\</span> 寫 <span class="path">packet.md</span>;append 一行入 <span class="path">from_adam\outbox.log.md</span>;本地 <span class="path">SESSION_LOG.md</span> 加同步行。</li>
-      <li><strong>(首跑驗收一次性)</strong> Adam 自己記低出包嗰刻嘅 UTC 時間,落後計 Drive 同步延遲做接駁計劃嘅驗收。日常 round-trip 唔需要做。</li>
-      <li>Adam <strong>自己</strong>發 WhatsApp 畀 Jay,貼下面呢句(<code>[項目代號]</code> 換做實際值)。WhatsApp 唔由 Agent Adam 發 — 係 Adam 親手發:</li>
+      <li>Adam 於工作目錄開啟新對話,寫好想交予 Jay 之內容。</li>
+      <li>Adam 對話收尾時要求 Agent Adam 依收尾流程出包:Agent Adam 於共享資料夾下 <span class="path">[項目代號]\from_adam\packets\[時間戳]__[題目]__v1\</span> 寫 <span class="path">packet.md</span>;append 一行入 <span class="path">from_adam\outbox.log.md</span>;本地 <span class="path">SESSION_LOG.md</span> 加同步行。</li>
+      <li><strong>(首跑驗收一次性)</strong> Adam 自行記下出包之時刻之 UTC 時間,稍後計算 Drive 同步延遲作為接駁計劃之驗收。日常 round-trip 無需做此。</li>
+      <li>Adam <strong>親自</strong>以 WhatsApp 發予 Jay,貼以下短訊(<code>[項目代號]</code> 換為實際值)。WhatsApp 不由 Agent Adam 發 — 由 Adam 親手發:</li>
     </ol>
     <pre>APS Hub has new traffic. Open a new session and paste this to your agent:
 "Read &lt;hub_root&gt;/[項目代號], follow APS PROTOCOL, process unconsumed items in from_adam."</pre>
-    <p class="copy-block__note">複製出嚟之後,將 <code>[項目代號]</code> 換做第 3 節拍板嘅實際值(例 <code>branding_2026</code>),先發出去畀 Jay。<code>&lt;hub_root&gt;</code> 唔需要換 — 個字 literal 留低,Jay 嘅 Agent Jay 會用自己部機嘅實際 <code>hub_root</code> 解讀。</p>
+    <p class="copy-block__note">複製出來後,將 <code>[項目代號]</code> 換為第 4 節拍板之實際值(例 <code>branding_2026</code>),然後發予 Jay。<code>&lt;hub_root&gt;</code> 無需換 — 此字 literal 保留,Jay 之 Agent Jay 會以自己部機之實際 <code>hub_root</code> 解讀。</p>
   </div>
 
   <div class="role-block role-block--jay">
-    <div class="role-block__head"><span class="chip chip--jay">Jay</span>同<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>· 撿包、做、出回包(步驟 ④–⑧)</div>
+    <div class="role-block__head"><span class="chip chip--jay">Jay</span>與<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>· 撿包、執行、出回包(步驟 ④–⑧)</div>
     <ol class="step-list">
-      <li>Jay 收到 Adam WhatsApp,等 Drive 同步少少時間(通常秒到一分鐘,慢嘅話五分鐘以內都正常)。</li>
-      <li>Jay 喺工作目錄開新對話,將 Adam 嗰句模板貼落畀 Agent Jay。</li>
-      <li>Agent Jay 跟啟動流程:讀 <span class="path">from_adam\outbox.log.md</span> + 自己 <span class="path">_ack\jay.ack.json</span>,差集計算 → 列出一個待辦項:Adam 嗰個包,連埋包入面寫嘅內容範圍同要做嘅項目。</li>
-      <li><strong>留意</strong>:Jay 冇喺呢個新對話解釋過任何上下文,Agent Jay 自己讀晒。</li>
-      <li>Jay 做工作。完成之後叫 Agent Jay 跟收尾流程出回包:寫 <span class="path">from_jay\packets\[時間戳]__[題目]_reply__v1\packet.md</span>;append <span class="path">from_jay\outbox.log.md</span>;update <span class="path">_ack\jay.ack.json</span>(加一行記低消化咗 Adam 嗰個包)。</li>
-      <li><strong>(首跑驗收一次性)</strong> Jay 記低 Agent Jay detection 同回包嘅 UTC 時間,落後計 Drive 同步延遲。日常 round-trip 唔需要做。</li>
-      <li>Agent Jay 喺啟動同 mid-session <code>check Hub</code> 嗰陣已經自動掃過共享資料夾;冇報衝突檔即可繼續。如果報咗,停手按 §10.1 處理(用戶唔需要自己跑 <code>find</code>)。</li>
-      <li>Jay <strong>自己</strong>反方向發 WhatsApp 畀 Adam:</li>
+      <li>Jay 收到 Adam 之 WhatsApp,等待 Drive 同步少許時間(通常秒至一分鐘,慢者五分鐘以內皆正常)。</li>
+      <li>Jay 於工作目錄開啟新對話,將 Adam 之短訊模板貼予 Agent Jay。</li>
+      <li>Agent Jay 依啟動流程:讀 <span class="path">from_adam\outbox.log.md</span> 與自己之 <span class="path">_ack\jay.ack.json</span>,差集計算 → 列出一個待辦項:Adam 之 packet,連同包中所寫之內容範圍與須執行之項目。</li>
+      <li><strong>留意</strong>:Jay 於此新對話中並未解釋任何上下文,Agent Jay 自行讀畢。</li>
+      <li>Jay 執行工作。完成後要求 Agent Jay 依收尾流程出回包:寫 <span class="path">from_jay\packets\[時間戳]__[題目]_reply__v1\packet.md</span>;append <span class="path">from_jay\outbox.log.md</span>;update <span class="path">_ack\jay.ack.json</span>(加一行記下消化了 Adam 之 packet)。</li>
+      <li><strong>(首跑驗收一次性)</strong> Jay 記下 Agent Jay 偵測時刻與出回包時刻之 UTC 時間,稍後計算 Drive 同步延遲。日常 round-trip 無需做此。</li>
+      <li>Agent Jay 於啟動與 mid-session <code>check Hub</code> 時皆已自動掃描共享資料夾;若無衝突檔報告即可繼續。若有報告,停手依 §11.1 處理(用戶無需自行跑 <code>find</code>)。</li>
+      <li>Jay <strong>親自</strong>以反方向之 WhatsApp 發予 Adam:</li>
     </ol>
     <pre>APS Hub has new traffic. Open a new session and paste this to your agent:
 "Read &lt;hub_root&gt;/[項目代號], follow APS PROTOCOL, process unconsumed items in from_jay."</pre>
-    <p class="copy-block__note">同上 — <code>[項目代號]</code> 換做第 3 節拍板嘅實際值(例 <code>branding_2026</code>);<code>&lt;hub_root&gt;</code> literal 留低。</p>
-    <div class="accept">detection 順利、Drive 延遲少過五分鐘、共享資料夾冇衝突檔。Jay 嘅 <span class="path">SESSION_LOG.md</span> 加返同步行。</div>
+    <p class="copy-block__note">同上 — <code>[項目代號]</code> 換為第 4 節拍板之實際值(例 <code>branding_2026</code>);<code>&lt;hub_root&gt;</code> literal 保留。</p>
+    <div class="accept">偵測順利、Drive 延遲少於五分鐘、共享資料夾無衝突檔。Jay 之 <span class="path">SESSION_LOG.md</span> 加同步行。</div>
   </div>
 
   <div class="role-block role-block--adam">
-    <div class="role-block__head"><span class="chip chip--adam">Adam</span>同<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>· 收結整個交接(步驟 ⑨–⑩)</div>
+    <div class="role-block__head"><span class="chip chip--adam">Adam</span>與<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>· 收結整個交接(步驟 ⑨–⑩)</div>
     <ol class="step-list">
-      <li>Adam 等 Drive 同步,喺工作目錄開新對話,將 Jay 嗰句模板貼落畀 Agent Adam。</li>
-      <li>Agent Adam 跟啟動流程撿到 Jay 嗰份回包,讀埋內容範圍同回包內容,呈現畀 Adam。</li>
-      <li>Adam 叫 Agent Adam 做兩件事:(a) update <span class="path">_ack\adam.ack.json</span> 加一行記低消化咗 Jay 嘅回包;(b) append 一行 close 事件入 <span class="path">from_adam\outbox.log.md</span>,收結 Adam 當初出嗰個包:</li>
+      <li>Adam 等 Drive 同步,於工作目錄開啟新對話,將 Jay 之短訊模板貼予 Agent Adam。</li>
+      <li>Agent Adam 依啟動流程撿到 Jay 之回包,讀畢內容範圍與回包內容,呈現予 Adam。</li>
+      <li>Adam 要求 Agent Adam 做兩件事:(a) update <span class="path">_ack\adam.ack.json</span> 加一行記下消化了 Jay 之回包;(b) append 一行 close 事件入 <span class="path">from_adam\outbox.log.md</span>,收結 Adam 當初發之 packet:</li>
     </ol>
     <pre>[時間] | close | [時間戳]__[題目] v1 | reason:jay ack'd and replied</pre>
     <ol class="step-list" start="4">
-      <li>Adam 再開一次新對話試。Agent Adam 啟動流程應該報「冇待辦」—— 因為個 close 已經將整個 thread 由計算除咗。Agent Jay 嗰邊同樣係冇待辦狀態。</li>
+      <li>Adam 再開啟一次新對話試。Agent Adam 啟動流程應報「無待辦」 —— 因 close 已將整個 thread 由計算中除去。Agent Jay 那邊亦同樣無待辦狀態。</li>
     </ol>
-    <div class="accept">雙方消化記錄表各有一行;雙方事件記錄都有對應出包行(Adam 嗰邊仲多一行 close);共享資料夾無衝突檔;之後再開新對話兩個 agent 都係「冇待辦」。整個交接完成。</div>
+    <div class="accept">雙方消化記錄表各有一行;雙方事件記錄皆有對應出包行(Adam 那邊多一行 close);共享資料夾無衝突檔;之後再開啟新對話兩個 agent 皆為「無待辦」。整個交接完成。</div>
   </div>
 
   <div class="callout">
-    <strong>頭嘅總時間</strong>:Adam 由出包嗰刻到收結嗰刻嘅 wall-clock,試演同機係即時嘅,真實跨機會包括兩次 Drive 同步 + Jay 嘅工作時間,可能幾個鐘到幾日唔等。Jay 幾時開新對話畀 Agent Jay,係由 Jay 用戶決定,唔係 Agent Jay 主動 poll。
-  </div>
-</section>
-
-<section id="s7">
-  <h2><span class="sec-num">7.</span>大檔過嘅試跑(可選)</h2>
-  <p class="lede">驗證「過 50 MB 嘅檔唔擺包入面,改放外面再喺包入面講邊度搵」呢條規矩。試演冇試過,第一個真大檔之前一定要試一次。</p>
-
-  <div class="role-block role-block--adam">
-    <div class="role-block__head"><span class="chip chip--adam">Adam</span>同<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>動作</div>
-    <ol class="step-list">
-      <li>Adam 自己準備一個過 50 MB 嘅 dummy 檔。可以係 padded zip、真大 PSD,或者 PowerShell 跑 <code>fsutil file createnew test.bin 62914560</code> 整一個 60 MB 嘅空檔。</li>
-      <li>Adam 自己將個檔放入共享資料夾嘅 sibling 位:<span class="path">[共享資料夾]\_external\[題目]\[檔名]</span>(<span class="path">_external\</span> 唔存在嘅話就建立)。</li>
-      <li>Adam 叫 Agent Adam 出個包,包入面 YAML 嘅 <code>ssot_refs:</code> 寫返條絕對路徑:</li>
-    </ol>
-    <pre>ssot_refs:
-  - "[Hub 絕對路徑]\\_external\\[題目]\\big_asset.psd"</pre>
-    <p class="copy-block__note">複製出嚟之後,將 <code>[Hub 絕對路徑]</code> 換做你部機掛載 Hub 嘅實際 absolute path(例 <code>G:\Cloud\AI_Public_Squares</code>),<code>[題目]</code> 換做呢個包嘅 snake_case 短主題(例 <code>logo_convergence</code>);<code>\\</code> 雙反斜線係 YAML escape,唔好改成 single backslash。</p>
-    <ol class="step-list" start="4">
-      <li>包入面正文寫清楚:檔係咩、點解放外面、Jay 應該點開。Adam 寫,Agent Adam 入檔。</li>
-      <li>Agent Adam 收尾報告標明:「Externalized: big_asset.psd (XX MB) at [Hub 絕對路徑]\_external\…」。</li>
-      <li>Adam 自己 WhatsApp Jay 同正常包一樣。</li>
-    </ol>
-  </div>
-
-  <div class="role-block role-block--jay">
-    <div class="role-block__head"><span class="chip chip--jay">Jay</span>同<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>收方</div>
-    <ol class="step-list">
-      <li>Jay 正常開新對話、貼模板。Agent Jay 啟動流程列出個包,同時要報埋外置檔嘅路徑畀 Jay 睇。</li>
-      <li>Jay <strong>親手</strong>喺自己部機 Drive 用 Explorer / 設計工具開個外置檔,確認檔可讀。Agent Jay 唔負責呢一步,因為佢只讀寫 Hub 入面嘅檔。</li>
-    </ol>
-    <div class="accept">包入面 <span class="path">attachments\</span> 冇任何檔過 50 MB;外置檔嘅通知出現喺 Agent Adam 收尾報告同 Agent Jay 啟動報告;Jay 可以用 Drive mount 開到個外置檔。</div>
+    <strong>頭次之總時間</strong>:Adam 由出包時刻至收結時刻之 wall-clock,試演同機為即時,真實跨機會包括兩次 Drive 同步 + Jay 之工作時間,可能數小時至數日不等。Jay 何時開啟新對話予 Agent Jay,由 Jay 用戶決定,並非 Agent Jay 主動 poll。
   </div>
 </section>
 
 <section id="s8">
-  <h2><span class="sec-num">8.</span>日常點用</h2>
-  <p class="lede">第 4 至 6 節跑通,APS 已上線。日常用法就係一個重複拍子,每次來回都係呢個十步。每個 pill 標明係用戶動作定 agent 動作。</p>
+  <h2><span class="sec-num">8.</span>大檔試跑(可選)</h2>
+  <p class="lede">驗證「逾 50 MB 之檔不放入包內,改放外面再於包中說明位置」此條規矩。試演未試過,第一份真實大檔出現之前必須試一次。</p>
+
+  <div class="role-block role-block--adam">
+    <div class="role-block__head"><span class="chip chip--adam">Adam</span>與<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>動作</div>
+    <ol class="step-list">
+      <li>Adam 自行準備一份逾 50 MB 之 dummy 檔。可為 padded zip、真實大 PSD,或 PowerShell 執行 <code>fsutil file createnew test.bin 62914560</code> 製造一個 60 MB 之空檔。</li>
+      <li>Adam 自行將該檔放入共享資料夾之 sibling 位:<span class="path">[共享資料夾]\_external\[題目]\[檔名]</span>(若 <span class="path">_external\</span> 不存在則建立)。</li>
+      <li>Adam 要求 Agent Adam 出一個 packet,packet 中之 YAML <code>ssot_refs:</code> 寫回此絕對路徑:</li>
+    </ol>
+    <pre>ssot_refs:
+  - "[Hub 絕對路徑]\\_external\\[題目]\\big_asset.psd"</pre>
+    <p class="copy-block__note">複製出來後,將 <code>[Hub 絕對路徑]</code> 換為你部機掛載 Hub 之實際 absolute path(例 <code>G:\Cloud\AI_Public_Squares</code>),<code>[題目]</code> 換為此 packet 之 snake_case 短主題(例 <code>logo_convergence</code>);<code>\\</code> 雙反斜線為 YAML escape,不要改為 single backslash。</p>
+    <ol class="step-list" start="4">
+      <li>Packet 內正文寫清楚:檔為何、為何放外面、Jay 應如何打開。Adam 撰寫,Agent Adam 入檔。</li>
+      <li>Agent Adam 收尾報告中標明:「Externalized: big_asset.psd (XX MB) at [Hub 絕對路徑]\_external\…」。</li>
+      <li>Adam 自行以 WhatsApp 通知 Jay,與正常 packet 同。</li>
+    </ol>
+  </div>
+
+  <div class="role-block role-block--jay">
+    <div class="role-block__head"><span class="chip chip--jay">Jay</span>與<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>收方</div>
+    <ol class="step-list">
+      <li>Jay 正常開啟新對話、貼模板。Agent Jay 啟動流程列出 packet,同時要報出外置檔之路徑予 Jay 閱讀。</li>
+      <li>Jay <strong>親手</strong>於自己部機 Drive 中以 Explorer / 設計工具打開外置檔,確認檔可讀。Agent Jay 不負責此步,因其只讀寫 Hub 之內檔案。</li>
+    </ol>
+    <div class="accept">Packet 內 <span class="path">attachments\</span> 無任何檔逾 50 MB;外置檔之通知出現於 Agent Adam 收尾報告與 Agent Jay 啟動報告;Jay 可以 Drive mount 打開外置檔。</div>
+  </div>
+</section>
+
+<section id="s9">
+  <h2><span class="sec-num">9.</span>日常使用</h2>
+  <p class="lede">第 5 至 7 節跑通,APS 已上線。日常用法為一個重複拍子,每次往返皆為此十步。每個 pill 標明為用戶動作或 agent 動作。</p>
 
   <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-daily-title flow-daily-desc">
-    <title id="flow-daily-title">日常用法七步</title>
-    <desc id="flow-daily-desc">七步喺四條 lane 入面交替走過,Adam 用戶、Agent Adam 程式、Agent Jay 程式、Jay 用戶。</desc>
+    <title id="flow-daily-title">日常用法十步</title>
+    <desc id="flow-daily-desc">十步於四條 lane 中交替走過:Adam 用戶、Agent Adam 程式、Agent Jay 程式、Jay 用戶。</desc>
 
     <defs>
       <marker id="daily-arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
@@ -1063,146 +1101,133 @@
       </marker>
     </defs>
 
-    <!-- Lane headers -->
     <text x="105" y="16" text-anchor="middle" class="flow-lane-header" fill="#2f5d7c">Adam 用戶</text>
     <text x="285" y="16" text-anchor="middle" class="flow-lane-header" fill="#2f5d7c">Agent Adam</text>
     <text x="475" y="16" text-anchor="middle" class="flow-lane-header" fill="#b56a23">Agent Jay</text>
     <text x="655" y="16" text-anchor="middle" class="flow-lane-header" fill="#b56a23">Jay 用戶</text>
 
-    <!-- Lane separators -->
     <path d="M 195 24 L 195 472" stroke="#d9d4c5" stroke-width="1" stroke-dasharray="2 6" fill="none"/>
     <path d="M 380 24 L 380 472" stroke="#d9d4c5" stroke-width="1" stroke-dasharray="2 6" fill="none"/>
     <path d="M 565 24 L 565 472" stroke="#d9d4c5" stroke-width="1" stroke-dasharray="2 6" fill="none"/>
 
-    <!-- ① Adam: 對話收尾,叫 agent 出包 (Adam lane) -->
     <g>
       <rect x="25" y="34" width="160" height="48" rx="6" fill="var(--adam-soft)" stroke="#2f5d7c" stroke-width="2"/>
-      <text x="105" y="62" text-anchor="middle" class="flow-step">① 叫 agent 出包</text>
+      <text x="105" y="62" text-anchor="middle" class="flow-step">① 要求 agent 出包</text>
     </g>
     <path d="M 185 58 L 205 58 L 205 92" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ② Agent Adam: 寫包入 Hub -->
     <g>
       <rect x="205" y="92" width="160" height="48" rx="6" fill="white" stroke="#2f5d7c" stroke-width="2" stroke-dasharray="5 3"/>
-      <text x="285" y="120" text-anchor="middle" class="flow-step">② 寫包入 Hub</text>
+      <text x="285" y="120" text-anchor="middle" class="flow-step">② 寫 packet 入 Hub</text>
     </g>
     <path d="M 205 116 L 105 116 L 105 152" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ③ Adam: 發 WhatsApp -->
     <g>
       <rect x="25" y="152" width="160" height="48" rx="6" fill="var(--adam-soft)" stroke="#2f5d7c" stroke-width="2"/>
       <text x="105" y="180" text-anchor="middle" class="flow-step">③ 發 WhatsApp</text>
     </g>
     <path d="M 185 176 L 575 176" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ④ Jay: 講 check Hub (mid-session) -->
     <g>
       <rect x="575" y="152" width="160" height="48" rx="6" fill="var(--jay-soft)" stroke="#b56a23" stroke-width="2"/>
       <text x="655" y="180" text-anchor="middle" class="flow-step">④ 講 check Hub</text>
     </g>
     <path d="M 575 176 L 555 176 L 555 212" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ⑤ Agent Jay: 撿包列待辦 -->
     <g>
       <rect x="395" y="212" width="160" height="48" rx="6" fill="white" stroke="#b56a23" stroke-width="2" stroke-dasharray="5 3"/>
       <text x="475" y="240" text-anchor="middle" class="flow-step">⑤ 撿包,列待辦</text>
     </g>
     <path d="M 555 236 L 575 236 L 575 272" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ⑥ Jay: 做工作 + 叫出回包 -->
     <g>
       <rect x="575" y="272" width="160" height="48" rx="6" fill="var(--jay-soft)" stroke="#b56a23" stroke-width="2"/>
-      <text x="655" y="300" text-anchor="middle" class="flow-step">⑥ 做完,叫出回包</text>
+      <text x="655" y="300" text-anchor="middle" class="flow-step">⑥ 完成,要求出回包</text>
     </g>
     <path d="M 575 296 L 555 296 L 555 332" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ⑦ Agent Jay: 寫回包 -->
     <g>
       <rect x="395" y="332" width="160" height="48" rx="6" fill="white" stroke="#b56a23" stroke-width="2" stroke-dasharray="5 3"/>
       <text x="475" y="360" text-anchor="middle" class="flow-step">⑦ 寫回包 + 登記</text>
     </g>
     <path d="M 555 356 L 575 356 L 575 392" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ⑧ Jay: 發 WhatsApp -->
     <g>
       <rect x="575" y="392" width="160" height="48" rx="6" fill="var(--jay-soft)" stroke="#b56a23" stroke-width="2"/>
       <text x="655" y="420" text-anchor="middle" class="flow-step">⑧ 發 WhatsApp</text>
     </g>
-    <!-- ⑧ → ⑨ 跨大 lane -->
     <path d="M 575 416 L 185 416" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ⑨ Adam: 講 check Hub (mid-session),agent 收結 -->
     <g>
       <rect x="25" y="392" width="160" height="48" rx="6" fill="var(--adam-soft)" stroke="#2f5d7c" stroke-width="2"/>
       <text x="105" y="420" text-anchor="middle" class="flow-step">⑨ 講 check Hub</text>
     </g>
     <path d="M 185 416 L 205 416 L 205 432" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ⑩ Agent Adam: 撿回包 + 收結 -->
     <g>
       <rect x="205" y="432" width="160" height="34" rx="6" fill="white" stroke="#2f5d7c" stroke-width="2" stroke-dasharray="5 3"/>
       <text x="285" y="454" text-anchor="middle" class="flow-step">⑩ 撿回包 + 收結</text>
     </g>
   </svg>
-  <p class="flow-caption">十步打完即係一條交接收結。實邊框係人,虛邊框係程式。一日唔一定行齊十步,可以中間 pause(例:Jay 慢慢做)。</p>
+  <p class="flow-caption">十步走完即一次交接收結。實邊框為人,虛邊框為程式。一日不一定走齊十步,可中途 pause(例:Jay 慢慢做)。</p>
 
-  <p>多條交接同時跑都係兩條呢個十步並行,共享資料夾入面嘅事件記錄同消化記錄表會記晒。</p>
-
-  <div class="callout">
-    <strong>日常 WhatsApp 短訊版</strong>。日常運作,WhatsApp 嗰句唔需要再貼完整模板畀對方再 paste 落 agent。一句「<code>Hub 有新嘢</code>」夠數通知對方;對方喺自己工作目錄,對住現有對話講一句「<code>check Hub</code>」即可,Agent 即刻撿包(呢個係默認嘅日常 primary pattern)。開新對話 + paste 整段模板係 fallback,只限第一次跨機(§6)或者你想 fresh start。完整英文模板(§6 嘅 <code>APS Hub has new traffic...</code>)保留畀第一次跨機交接做啟蒙教學;日常跑通之後一句「<code>check Hub</code>」就夠。
-  </div>
+  <p>多條交接同時進行則為兩條此十步並行,共享資料夾之事件記錄與消化記錄表會記齊。</p>
 
   <div class="callout">
-    <strong>頻率估計</strong>:Adam → Jay 方向通常一日一兩次。Jay 回包可能即日內,可能等明朝。一條交接嘅 wall-clock 大約 12–48 小時。緊急嘅交接,WhatsApp 加一句「即刻」就得,協定本身唔阻你即時催。
-  </div>
-</section>
-
-<section id="s9">
-  <h2><span class="sec-num">9.</span>中間想交換,唔等對話收結</h2>
-  <p class="lede">第 6 同 8 節入面講「對話收尾叫 agent 出包」,呢個係順手做嘅時機,唔係硬性。Adam 或者 Jay 嘅對話中間任何一刻,只要內容 ready,都可以即時交換。</p>
-
-  <div class="role-block role-block--adam">
-    <div class="role-block__head"><span class="chip chip--adam">Adam</span>同<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>· 想中途即時出包</div>
-    <p>Adam 喺對話中間講「我想而家 send 一份畀 Jay」,叫 Agent Adam 依出包流程做。Agent Adam 即刻寫包入共享資料夾 + 加事件記錄。包係不可變嘅 snapshot,Adam 之後喺對話入面做嘅工作,唔會倒灌入已出嘅包。</p>
-    <p>Adam 自己即刻發 WhatsApp 模板畀 Jay。然後繼續做下面嘅工作。</p>
-  </div>
-
-  <div class="role-block role-block--jay">
-    <div class="role-block__head"><span class="chip chip--jay">Jay</span>同<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>· 想中途撿啱啱到嘅包</div>
-    <p>Jay 喺對話中間收到 Adam WhatsApp,唔需要 close 個對話開新嘅。Jay 對 Agent Jay 講一句官方觸發詞:</p>
-    <ul>
-      <li><code>check Hub</code> — 官方觸發詞,最短最直接。Agent 認 case-insensitive(<code>check hub</code> / <code>Check Hub</code> 都得)。</li>
-    </ul>
-    <p>另外兩句同義講法 — <code>睇下 Hub 有冇新嘢</code>、<code>未消化</code> — Bridge Pack 都認,做 fuzzy 兜底(句入面含 <code>Hub</code> 連同 <code>新</code> / <code>未消化</code> / <code>check</code> 任一個字眼,即觸發同一個 handler)。用慣邊句都得,但官方一句係 <code>check Hub</code>。</p>
-    <p>觸發之後 Agent Jay 即刻去共享資料夾撿,計算差集,將新待辦呈現畀 Jay。Jay 揀做唔做、幾時做。</p>
+    <strong>日常 WhatsApp 短訊版</strong>。日常運作中,WhatsApp 之短訊無需再貼完整模板予對方再貼予 agent。一句「<code>Hub 有新嘢</code>」已足夠通知對方;對方於自己工作目錄之現有對話中講一句「<code>check Hub</code>」即可,Agent 立即撿包(此為默認之日常 primary pattern)。開啟新對話並貼整段模板為 fallback,僅限於第一次跨機(§7)或想重新開始。完整英文模板(§7 之 <code>APS Hub has new traffic...</code>)保留予首次跨機交接做啟蒙教學;日常跑通之後一句「<code>check Hub</code>」即可。
   </div>
 
   <div class="callout">
-    <strong>呢個係手動觸發,唔係自動推送</strong>。Agent Jay 唔會主動去 poll 共享資料夾 — 佢只係喺 Jay 開新對話啟動嗰陣、或者 Jay 中間叫一句嗰陣先去 check。換言之,Jay 唔開對話 / 唔叫,Agent Jay 永遠唔知有新嘢。
-  </div>
-
-  <div class="callout warn">
-    <strong>真係想自動推送(部機自動彈通知)?</strong>呢樣要本地 daemon 監察共享資料夾入面 outbox 嘅修改時間,出咗純檔案範圍嘅設計,加緊耦合 dependency。設計取捨上,WhatsApp 嘅人手叫一聲係故意保留,等收嘅人控制咩時候被打斷;自動推送嘅 cost 係噪音同中斷工作流。值唔值要視乎你哋實際用嘅頻率同緊急程度,Phase 4 落地之後睇返再決定。
+    <strong>頻率估計</strong>:Adam → Jay 方向通常一日一兩次。Jay 回包可能即日內,可能等次日。一條交接之 wall-clock 約 12-48 小時。緊急之交接,WhatsApp 加一句「即刻」即可,協定本身不阻你即時催。
   </div>
 </section>
 
 <section id="s10">
-  <h2><span class="sec-num">10.</span>出咗錯點救</h2>
+  <h2><span class="sec-num">10.</span>中途想交換,不等對話結束</h2>
+  <p class="lede">第 7 與 9 節中所講「對話收尾時要求 agent 出包」,此為順手做之時機,並非硬性。Adam 或 Jay 之對話中途任何時刻,只要內容 ready,皆可即時交換。</p>
 
-  <h3>10.1 出咗 Drive 衝突副本(file (1).md 之類)</h3>
-  <p>理論上唔應該發生,因為單寫道規矩。Bridge Pack 喺每次啟動同 <code>check Hub</code> 觸發嗰陣會自動掃共享資料夾,掃到任何含 <code>conflict</code> 字眼嘅檔即時報畀你睇 — 用戶唔需要主動跑命令查。如果 Agent 報咗,或者你自己肉眼見到:</p>
+  <div class="role-block role-block--adam">
+    <div class="role-block__head"><span class="chip chip--adam">Adam</span>與<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>· 想中途即時出包</div>
+    <p>Adam 於對話中途講「我想現在 send 一份予 Jay」,要求 Agent Adam 依出包流程做。Agent Adam 立即寫 packet 入共享資料夾 + 加事件記錄。Packet 為不可變之 snapshot,Adam 之後於對話中之工作,不會倒灌入已出之 packet。</p>
+    <p>Adam 親自立即發 WhatsApp 模板予 Jay,然後繼續下面之工作。</p>
+  </div>
+
+  <div class="role-block role-block--jay">
+    <div class="role-block__head"><span class="chip chip--jay">Jay</span>與<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>· 想中途撿剛到之 packet</div>
+    <p>Jay 於對話中途收到 Adam 之 WhatsApp,無需 close 對話再開啟新對話。Jay 對 Agent Jay 講一句官方觸發詞:</p>
+    <ul>
+      <li><code>check Hub</code> — 官方觸發詞,最短最直接。Agent 認 case-insensitive(<code>check hub</code> / <code>Check Hub</code> 皆可)。</li>
+    </ul>
+    <p>另兩句同義講法 — <code>睇下 Hub 有冇新嘢</code>、<code>未消化</code> — Bridge Pack 皆認,作 fuzzy 兜底(句中含 <code>Hub</code> 連同 <code>新</code> / <code>未消化</code> / <code>check</code> 任一字眼,即觸發同一個 handler)。慣用哪句皆可,但官方一句為 <code>check Hub</code>。</p>
+    <p>觸發之後 Agent Jay 立即去共享資料夾撿,計算差集,將新待辦呈現予 Jay。Jay 決定做與不做、何時做。</p>
+  </div>
+
+  <div class="callout">
+    <strong>此為手動觸發,並非自動推送</strong>。Agent Jay 不主動去 poll 共享資料夾 — 它只於 Jay 開啟新對話啟動時、或 Jay 中途要求一句時方去 check。換言之,Jay 不開對話 / 不要求,Agent Jay 永遠不知有新內容。
+  </div>
+
+  <div class="callout warn">
+    <strong>真的想自動推送(部機自動彈通知)?</strong>此事需要本地 daemon 監察共享資料夾中 outbox 之修改時間,超出純檔案範圍之設計,加重 coupling dependency。設計取捨上,WhatsApp 之人手叫一聲為刻意保留,讓收方控住何時被打斷;自動推送之 cost 為噪音與中斷工作流。值不值得視乎雙方實際使用之頻率與緊急程度,Phase 4 落地之後再評估。
+  </div>
+</section>
+
+<section id="s11">
+  <h2><span class="sec-num">11.</span>出錯處理</h2>
+
+  <h3>11.1 出現 Drive 衝突副本(file (1).md 之類)</h3>
+  <p>理論上不應發生,因有單寫道規矩。Bridge Pack 於每次啟動與 <code>check Hub</code> 觸發時皆自動掃描共享資料夾,掃到任何含 <code>conflict</code> 字眼之檔即時報予你閱讀 — 用戶無需主動跑命令查。若 Agent 報過,或你自行肉眼看到:</p>
   <ul>
-    <li>Adam 或 Jay <strong>唔好</strong>即時手動刪。</li>
-    <li>停手,寫低嗰個衝突檔嘅完整路徑同名。</li>
-    <li>對返單寫道規矩,搵出邊個 agent 程式寫咗對方通道嘅檔(通常嗰個就係根源 — Agent Adam 寫咗 from_jay,或者 Agent Jay 寫咗 from_adam)。</li>
-    <li>修返根源之後,先決定保留邊個版本(通常係原寫者嗰份),衝突副本移走或者更名做 <span class="path">.investigated</span>。</li>
+    <li>Adam 或 Jay <strong>不要</strong>即時手動刪。</li>
+    <li>停手,記下衝突檔之完整路徑與名稱。</li>
+    <li>對照單寫道規矩,找出哪個 agent 程式寫了對方通道之檔(通常此即為根源 — Agent Adam 寫了 from_jay,或 Agent Jay 寫了 from_adam)。</li>
+    <li>修正根源之後,先決定保留哪個版本(通常為原寫者之版本),衝突副本移走或更名為 <span class="path">.investigated</span>。</li>
   </ul>
 
-  <h3>10.2 出咗包但內容錯 / 想撤回</h3>
+  <h3>11.2 出包但內容錯 / 想撤回</h3>
 
   <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-recovery-title flow-recovery-desc">
-    <title id="flow-recovery-title">出咗錯點救嘅判斷</title>
-    <desc id="flow-recovery-desc">由用戶發現出錯開始,雙方一齊 check 對方消化記錄,然後由用戶決定方向,agent 執行撤回或者出新版本。</desc>
+    <title id="flow-recovery-title">出錯處理之判斷</title>
+    <desc id="flow-recovery-desc">由用戶發現出錯開始,雙方一同 check 對方消化記錄,然後由用戶決定方向,agent 執行撤回或出新版本。</desc>
 
     <defs>
       <marker id="rec-arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
@@ -1212,15 +1237,15 @@
 
     <g>
       <rect x="160" y="20" width="400" height="56" rx="8" fill="#fbf6e9" stroke="#8a6a23" stroke-width="2"/>
-      <text x="360" y="44" text-anchor="middle" class="flow-title">出咗包之後發現有錯</text>
+      <text x="360" y="44" text-anchor="middle" class="flow-title">出包之後發現有錯</text>
       <text x="360" y="62" text-anchor="middle" class="flow-meta">(用戶發現)</text>
     </g>
     <path d="M 360 76 L 360 116" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#rec-arrow)"/>
 
     <g>
       <rect x="160" y="116" width="400" height="56" rx="8" fill="#fbf6e9" stroke="#8a6a23" stroke-width="2"/>
-      <text x="360" y="140" text-anchor="middle" class="flow-title">對方有冇登記消化咗?</text>
-      <text x="360" y="158" text-anchor="middle" class="flow-meta">(叫 agent 讀對方 ack.json 查)</text>
+      <text x="360" y="140" text-anchor="middle" class="flow-title">對方是否登記消化過?</text>
+      <text x="360" y="158" text-anchor="middle" class="flow-meta">(要求 agent 讀對方 ack.json 查)</text>
     </g>
 
     <path d="M 360 172 L 360 214 L 185 214 L 185 250" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#rec-arrow)"/>
@@ -1231,99 +1256,98 @@
 
     <g>
       <rect x="40" y="250" width="290" height="130" rx="8" fill="#fbf6e9" stroke="#8a6a23" stroke-width="2"/>
-      <text x="185" y="276" text-anchor="middle" class="flow-title">叫 agent 寫多一行</text>
+      <text x="185" y="276" text-anchor="middle" class="flow-title">要求 agent 寫多一行</text>
       <text x="185" y="294" text-anchor="middle" class="flow-title">撤回事件</text>
-      <text x="185" y="316" text-anchor="middle" class="flow-sub">包資料夾保留,</text>
-      <text x="185" y="334" text-anchor="middle" class="flow-sub">但對方計算嗰陣會過濾走</text>
+      <text x="185" y="316" text-anchor="middle" class="flow-sub">Packet 資料夾保留,</text>
+      <text x="185" y="334" text-anchor="middle" class="flow-sub">但對方計算時會過濾走</text>
       <text x="185" y="358" text-anchor="middle" class="flow-meta">用戶決定 + agent 執行</text>
     </g>
 
     <g>
       <rect x="390" y="250" width="290" height="130" rx="8" fill="#fbf6e9" stroke="#8a6a23" stroke-width="2"/>
-      <text x="535" y="276" text-anchor="middle" class="flow-title">叫 agent 出新版本</text>
+      <text x="535" y="276" text-anchor="middle" class="flow-title">要求 agent 出新版本</text>
       <text x="535" y="298" text-anchor="middle" class="flow-sub">註明取代上版,</text>
       <text x="535" y="316" text-anchor="middle" class="flow-sub">對方下次撿到新版本</text>
       <text x="535" y="340" text-anchor="middle" class="flow-meta">用戶決定 + agent 執行</text>
       <text x="535" y="360" text-anchor="middle" class="flow-meta">只能修正補上</text>
     </g>
   </svg>
-  <p class="flow-caption">用戶發現錯,用戶 + agent 一齊 check 對方有冇登記,然後用戶決定,agent 執行。</p>
+  <p class="flow-caption">用戶發現錯,用戶與 agent 一同 check 對方是否登記,然後用戶決定,agent 執行。</p>
 
-  <p>撤回嘅一行寫法(由 agent 寫):</p>
+  <p>撤回之行寫法(由 agent 寫):</p>
   <pre>[時間] | withdraw | [時間戳]__[題目] v1 | reason:作者要求撤回原版</pre>
 
-  <h3>10.3 個 agent 撈錯通道(寫咗對方通道、寫咗對方消化記錄表)</h3>
-  <p>邊界硬規矩應該攔到。如果真係漏咗:</p>
+  <h3>11.3 Agent 撈錯通道(寫了對方通道、寫了對方消化記錄表)</h3>
+  <p>邊界硬規矩應該攔到。若真的漏了:</p>
   <ul>
-    <li>用戶即刻停手,唔好繼續叫 agent 出包。</li>
-    <li>用戶檢查嗰個誤寫究竟係 placeholder(可清)定真內容(由用戶決定點處理)。</li>
-    <li>用戶決定是否手動清除誤寫;事件 + 原因記入 <span class="path">SESSION_LOG.md</span>(由 agent 寫),等下次開新對話可以追溯。</li>
+    <li>用戶立即停手,不要繼續要求 agent 出包。</li>
+    <li>用戶檢查該誤寫究竟為 placeholder(可清)還是真實內容(由用戶決定如何處理)。</li>
+    <li>用戶決定是否手動清除誤寫;事件 + 原因記入 <span class="path">SESSION_LOG.md</span>(由 agent 寫),讓下次開啟新對話可追溯。</li>
   </ul>
 
-  <h3>10.4 忘記收結,thread 永遠掛緊待辦</h3>
-  <p>冇大件事。下次任何一邊開新對話,個 agent 啟動流程列佢做待辦,用戶叫 agent append 一行 <code>close</code> 事件就 OK。close 完之後再開新對話就係冇待辦狀態。</p>
+  <h3>11.4 忘記收結,thread 永遠掛緊待辦</h3>
+  <p>無大事。下次任何一邊開啟新對話,agent 啟動流程列其為待辦,用戶要求 agent append 一行 <code>close</code> 事件即可。close 完之後再開啟新對話即為無待辦狀態。</p>
 
-  <h3>10.5 Drive 同步延遲過五分鐘</h3>
-  <p>幾乎一定唔係協定問題。Adam 或 Jay 用戶順序檢查:</p>
+  <h3>11.5 Drive 同步延遲逾五分鐘</h3>
+  <p>幾乎一定不是協定問題。Adam 或 Jay 用戶依序檢查:</p>
   <ol>
-    <li>Drive 桌面版係咪 running、係咪 sign-in 緊?</li>
-    <li>個共享資料夾係咪設咗「可離線存取」?如果只係「串流」可能會延遲。</li>
-    <li>網絡頻寬足夠?大檔嘅話可能要再等。</li>
-    <li>對方部機係咪 online?Drive 唔會主動 push,要 receiver 嗰邊 Drive 客戶端 sync 先見到。</li>
+    <li>Drive 桌面版是否正在運行、是否已 sign-in?</li>
+    <li>共享資料夾是否已設「離線存取」?若僅為「串流」可能有延遲。</li>
+    <li>網絡頻寬是否足夠?大檔則可能須再等。</li>
+    <li>對方部機是否 online?Drive 不會主動 push,須 receiver 那邊之 Drive 客戶端 sync 方能見到。</li>
   </ol>
 </section>
 
-<section id="s11">
-  <h2><span class="sec-num">11.</span>完成之後喺邊度查咩</h2>
+<section id="s12">
+  <h2><span class="sec-num">12.</span>完成之後到哪裡查什麼</h2>
   <table class="params">
     <thead>
-      <tr><th>要查嘅嘢</th><th>位置</th></tr>
+      <tr><th>要查之事</th><th>位置</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td>協定本身嘅契約(畀 agent 程式讀)</td>
-        <td><span class="path">&lt;你部機嘅 Hub 絕對路徑&gt;\_hub\PROTOCOL.md</span></td>
+        <td>協定本身之契約(予 agent 程式閱讀)</td>
+        <td><span class="path">&lt;你部機之 Hub 絕對路徑&gt;\_hub\PROTOCOL.md</span></td>
       </tr>
       <tr>
         <td>技術版完整計劃</td>
         <td><a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md"><span class="path">docs\plans\2026-05-21-aps-phase4-plan.md</span></a></td>
       </tr>
       <tr>
-        <td>協定點解咁設計</td>
+        <td>協定為何如此設計</td>
         <td><a class="site-nav__link" href="../plans/2026-05-20-agent-public-square-design.md"><span class="path">docs\plans\2026-05-20-agent-public-square-design.md</span></a></td>
       </tr>
       <tr>
-        <td>試演跑通嘅驗證、Phase 4 同試演對照</td>
+        <td>試演跑通之驗證、Phase 4 與試演對照</td>
         <td><span class="path">docs\plans\2026-05-20-aps-mvp-verification.md</span></td>
       </tr>
       <tr>
-        <td>橋接小規則檔嘅 canonical 基線(MVP fixture,呢個 repo 隨附)</td>
-        <td><span class="path">[呢個 repo 嘅 sibling]\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md</span>(或 demo Jay-side 嗰份;procedural 內容一樣)</td>
+        <td>橋接小規則檔之 canonical 基線(MVP fixture,本 repo 隨附)</td>
+        <td><span class="path">examples/demo-agent-a/dev/rules/aps-bridge.md</span>(User A 角色)或 <span class="path">examples/demo-agent-b/dev/rules/aps-bridge.md</span>(User B 角色);procedural 內容相同</td>
       </tr>
       <tr>
-        <td>後續教學(大檔、第三個人、Notion 看板等)</td>
-        <td><a class="site-nav__link" href="index.html"><span class="path">docs\guides\index.html</span></a> 嘅「之後會逐步加」段</td>
+        <td>後續教學(大檔、第三人、Notion 看板等)</td>
+        <td><a class="site-nav__link" href="index.html"><span class="path">docs\guides\index.html</span></a> 之「之後逐步加」段</td>
       </tr>
     </tbody>
   </table>
 
   <div class="callout">
-    <strong>呢份教學讀完之後,如果發現邊度寫漏或寫錯</strong>:用戶直接喺 <span class="path">docs\guides\aps-onboarding-walkthrough.html</span> 入面改,順手喺 <span class="path">dev\DOC_SYNC_REGISTRY.md</span> 嗰行記低改動。呢頁係 living document,跟住每次真實跨機落地經驗 refine。
+    <strong>本教學讀畢之後,若發現有何遺漏或寫錯</strong>:用戶可直接於 <span class="path">docs\guides\aps-onboarding-walkthrough.html</span> 中修改,順手於 <span class="path">dev\DOC_SYNC_REGISTRY.md</span> 之該行記錄改動。此頁為 living document,跟隨每次真實跨機落地經驗 refine。
   </div>
 </section>
 
 <footer>
-  Agent Public Square · 完整落地教學 · 最新更新 2026-05-21
+  AI Public Squares · 完整落地教學 · 最新更新 2026-05-22
 </footer>
 
 </main>
 
 <script>
-  // 將所有 <pre> 包入 .copy-block,加複製按鈕。純前端,無外部依賴。
   (function () {
     var pres = document.querySelectorAll('main pre');
     pres.forEach(function (pre) {
-      if (pre.closest('.copy-block')) return; // 已包過就跳
+      if (pre.closest('.copy-block')) return;
 
       var wrap = document.createElement('div');
       wrap.className = 'copy-block';
@@ -1358,7 +1382,6 @@
           }, 1800);
         };
         var fail = function () {
-          // file:// 或舊 browser 嘅 fallback:自動 select 內容,等用戶 Ctrl+C
           try {
             var range = document.createRange();
             range.selectNodeContents(pre);
@@ -1366,7 +1389,7 @@
             sel.removeAllRanges();
             sel.addRange(range);
           } catch (e) { /* noop */ }
-          btn.textContent = '已揀晒 · 㩒 Ctrl+C';
+          btn.textContent = '已選取 · 請按 Ctrl+C';
           btn.classList.add('failed');
           setTimeout(function () {
             btn.textContent = '複製';
