@@ -511,17 +511,18 @@
   <h3>內容導航</h3>
   <ol>
     <li><a href="#s1">開始之前 — 你會走過怎樣的一條路</a></li>
-    <li><a href="#s2">安裝前置事項 — 4 件須先做</a></li>
-    <li><a href="#s3">概念熱身 — 教學中常見之詞</a></li>
-    <li><a href="#s4">先傾妥幾件事</a></li>
-    <li><a href="#s5">Adam 接駁自己部機</a></li>
-    <li><a href="#s6">Jay 接駁自己部機</a></li>
-    <li><a href="#s7">首次跨機交接</a></li>
-    <li><a href="#s8">大檔試跑(可選)</a></li>
-    <li><a href="#s9">日常使用</a></li>
-    <li><a href="#s10">中途想交換,不等對話結束</a></li>
-    <li><a href="#s11">出錯處理</a></li>
-    <li><a href="#s12">完成之後到哪裡查什麼</a></li>
+    <li><a href="#s2">安裝先決事項 — 4 件須先做</a></li>
+    <li><a href="#s3">準備你的項目工作目錄</a></li>
+    <li><a href="#s4">概念熱身 — 教學中常見之詞</a></li>
+    <li><a href="#s5">先傾妥幾件事</a></li>
+    <li><a href="#s6">Adam 接駁自己部機</a></li>
+    <li><a href="#s7">Jay 接駁自己部機</a></li>
+    <li><a href="#s8">首次跨機交接</a></li>
+    <li><a href="#s9">大檔試跑(可選)</a></li>
+    <li><a href="#s10">日常使用</a></li>
+    <li><a href="#s11">中途想交換,不等對話結束</a></li>
+    <li><a href="#s12">出錯處理</a></li>
+    <li><a href="#s13">完成之後到哪裡查什麼</a></li>
   </ol>
 </div>
 
@@ -599,7 +600,7 @@
   </div>
 
   <div class="callout warn">
-    <strong>用語慣例:方括號 placeholder 須 substitute</strong>。教學中所有方括號之短語 — 例如 <code>[項目代號]</code>、<code>[題目]</code>、<code>[時間戳]</code>、<code>[工作目錄]</code>、<code>[Jay 部機之共享資料夾絕對路徑]</code> — 皆為 placeholder,屬 forcing function。複製至規則檔、發送 WhatsApp 之前,須逐個換為你哋第 4 節拍板之實際值。協定本身通用,教學文字不列具體 value;具體 value 由雙方自行決定。
+    <strong>用語慣例:方括號 placeholder 須 substitute</strong>。教學中所有方括號之短語 — 例如 <code>[項目代號]</code>、<code>[題目]</code>、<code>[時間戳]</code>、<code>[工作目錄]</code>、<code>[Jay 部機之共享資料夾絕對路徑]</code> — 皆為 placeholder,屬 forcing function。複製至規則檔、發送 WhatsApp 之前,須逐個換為你哋第 5 節拍板之實際值。協定本身通用,教學文字不列具體 value;具體 value 由雙方自行決定。
   </div>
 
   <div class="callout">
@@ -615,7 +616,7 @@
 </section>
 
 <section id="s2">
-  <h2><span class="sec-num">2.</span>安裝前置事項 — 4 件須先做</h2>
+  <h2><span class="sec-num">2.</span>安裝先決事項 — 4 件須先做</h2>
   <p class="lede">完成此 4 件事之前,後面之步驟全部無法執行。雙方各自於自己部機完成。</p>
 
   <h3>第一件 — 安裝 Agent Handoff Kit(治理基礎)</h3>
@@ -623,9 +624,7 @@
   <div class="callout warn">
     <strong>無 Agent Handoff Kit = APS 無法運作。</strong>此為硬性前置。
   </div>
-  <p>前往 <a class="site-nav__link" href="https://adamchanadam.github.io/agent-handoff-kit">https://adamchanadam.github.io/agent-handoff-kit</a>,依其指引安裝。完成後於你計劃之工作目錄中執行:</p>
-  <pre>npx @adamchanadam/agent-handoff-kit init</pre>
-  <p>執行完畢後,該工作目錄會多出一系列 governance 檔案(<code>AGENTS.md</code>、<code>dev/SESSION_HANDOFF.md</code>、<code>dev/RULE_PACKS.md</code>、<code>dev/PROJECT_INDEX.md</code>、<code>dev/DOC_SYNC_REGISTRY.md</code> 等)。此為 APS 後續步驟所依賴之基礎結構。</p>
+  <p>前往 <a class="site-nav__link" href="https://adamchanadam.github.io/agent-handoff-kit">https://adamchanadam.github.io/agent-handoff-kit</a>,依其指引安裝。本工具透過 <code>npx</code> 機制全域可用,毋須額外 install — 於 §3 將會於你之工作目錄中執行其 <code>init</code> 命令。</p>
 
   <h3>第二件 — 安裝 Google Drive 桌面版</h3>
   <ul>
@@ -636,13 +635,13 @@
   <h3>第三件 — 安裝 Claude Code</h3>
   <ul>
     <li>前往 <a class="site-nav__link" href="https://claude.com/code">https://claude.com/code</a> 下載</li>
-    <li>登入後,於你之工作目錄中能開啟新對話;此對話中之 AI 即為 <code>Agent Adam</code>(若你扮 User A)或 <code>Agent Jay</code>(若你扮 User B)</li>
+    <li>登入後,於命令行可執行 <code>claude</code> 命令啟動對話 session</li>
   </ul>
 
   <h3>第四件 — 取得本工具(clone repo)</h3>
   <p>本教學引用之 demo Bridge Pack fixture 位於本 repo 之 <code>examples/</code> 資料夾。取得方式有兩種:</p>
   <ul>
-    <li><strong>推薦做法:<code>git clone</code></strong> — 於命令行執行 <code>git clone https://github.com/Adamchanadam/ai-public-squares.git</code>。clone 完成後可於 <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 找到 fixture</li>
+    <li><strong>推薦做法:<code>git clone</code></strong> — 於命令行執行 <code>git clone https://github.com/Adamchanadam/ai-public-squares.git</code>。clone 完成後可於 <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 找到 fixture。記低 clone 後之絕對路徑(例 <code>C:\Users\你\ai-public-squares</code>),§6 將會用到</li>
     <li><strong>替代做法:直接下載 zip</strong> — 於 GitHub repo 頁面點「Code」 → 「Download ZIP」。解壓後 fixture 同樣位於 <code>examples/</code> 中</li>
   </ul>
 
@@ -652,7 +651,43 @@
 </section>
 
 <section id="s3">
-  <h2><span class="sec-num">3.</span>概念熱身 — 教學中常見之詞</h2>
+  <h2><span class="sec-num">3.</span>準備你的項目工作目錄</h2>
+  <p class="lede">§2 4 件先決事完成之後,仍須 set up 你的項目工作目錄。本節做兩件事:創建一個 NEW folder 作為此合作項目之 root,並於該 folder 中初始化 Agent Handoff Kit。後面 §6、§7 全部步驟皆於此工作目錄之中進行。</p>
+
+  <div class="callout warn">
+    <strong>「工作目錄」與 ai-public-squares clone folder 不同</strong>。ai-public-squares 為參考 template 加 demo fixture,你只係從其中抄 fixture 入你的工作目錄;<strong>工作目錄為你此合作項目之實際工作空間</strong>,要 create 一個新 folder。例:你做 brand book,工作目錄可命名為 <code>branding_2026</code>;你做 design,可命名為 <code>logo_refresh</code>。
+  </div>
+
+  <p><strong>3.1 創建工作目錄</strong></p>
+  <p>於命令行執行(將 <code>branding_2026</code> 換為你項目之實際名稱;Windows 範例):</p>
+  <pre>mkdir C:\Work\branding_2026
+cd C:\Work\branding_2026</pre>
+  <p class="copy-block__note">macOS / Linux 範例:<code>mkdir -p ~/Work/branding_2026 &amp;&amp; cd ~/Work/branding_2026</code>。<br>路徑可揀任何位置,但建議避免:中文字符路徑(避免 Drive 同步邊緣 bug)、含空格之路徑(避免 shell escape 麻煩)、需要 admin 權限之系統位置(例 <code>C:\Program Files\</code>)。</p>
+
+  <p><strong>3.2 於工作目錄中初始化 Agent Handoff Kit</strong></p>
+  <p>於工作目錄之命令行執行:</p>
+  <pre>npx @adamchanadam/agent-handoff-kit init</pre>
+  <p>執行後該 folder 會多出一系列 governance 檔案:</p>
+  <ul style="font-size:13.5px;">
+    <li><code>AGENTS.md</code></li>
+    <li><code>dev/SESSION_HANDOFF.md</code></li>
+    <li><code>dev/SESSION_LOG.md</code></li>
+    <li><code>dev/PROJECT_INDEX.md</code></li>
+    <li><code>dev/RULE_PACKS.md</code></li>
+    <li><code>dev/DOC_SYNC_REGISTRY.md</code></li>
+  </ul>
+  <p>此為 APS 後續步驟所依賴之治理基礎結構。</p>
+
+  <p><strong>3.3 跑 doctor 驗證</strong></p>
+  <p>於工作目錄之命令行執行:</p>
+  <pre>npx @adamchanadam/agent-handoff-kit doctor</pre>
+  <p>預期 output:<code>Status: passed</code>,通過 34 / 34 項。若 status 為 <code>failed</code> 或通過項少於 34,將完整 output 貼予 <a class="site-nav__link" href="https://github.com/Adamchanadam/agent-handoff-kit/issues">Agent Handoff Kit 之 GitHub issue</a> 求助。</p>
+
+  <div class="accept">6 個 governance 檔案皆存在於工作目錄;doctor 通過 34 / 34;工作目錄與 ai-public-squares clone folder 為兩個不同 folders。完成此節進入 §4。</div>
+</section>
+
+<section id="s4">
+  <h2><span class="sec-num">4.</span>概念熱身 — 教學中常見之詞</h2>
   <p class="lede">後續各節會出現以下詞;此節一次過解釋,後面遇到時不再重複定義。</p>
 
   <table class="params">
@@ -666,7 +701,7 @@
       </tr>
       <tr>
         <td><strong>Bridge Pack</strong>(橋接小規則)</td>
-        <td>一份 markdown 規則檔(<code>dev/rules/aps-bridge.md</code>),教 AI 程式如何解讀 Hub 上之檔案。每位用戶之工作目錄都需要一份。此教學第 5 / 6 節即係安裝此檔。</td>
+        <td>一份 markdown 規則檔(<code>dev/rules/aps-bridge.md</code>),教 AI 程式如何解讀 Hub 上之檔案。每位用戶之工作目錄都需要一份。此教學第 6 / 7 節即係安裝此檔。</td>
       </tr>
       <tr>
         <td><strong>packet</strong>(交接包)</td>
@@ -700,8 +735,8 @@
   </table>
 </section>
 
-<section id="s4">
-  <h2><span class="sec-num">4.</span>先傾妥幾件事</h2>
+<section id="s5">
+  <h2><span class="sec-num">5.</span>先傾妥幾件事</h2>
   <p class="lede">不動任何檔案。十五分鐘左右之電話或 WhatsApp 傾妥即可 — 你哋實際要拍板者,只有三件;其餘三件皆有合理默認,沿用即可。此步為用戶之間之事,不涉及兩個 AI 程式。</p>
 
   <h3>須拍板之三件事</h3>
@@ -763,12 +798,12 @@
   </div>
 </section>
 
-<section id="s5">
-  <h2><span class="sec-num">5.</span>Adam 接駁自己部機</h2>
+<section id="s6">
+  <h2><span class="sec-num">6.</span>Adam 接駁自己部機</h2>
   <p class="lede">此節 Adam 於自己部機,要求 Agent Adam 協助執行;Jay 無需在場。完成後 Adam 之工作目錄已接好橋接小規則,但尚未交收任何 packet。</p>
 
   <div class="callout">
-    <strong>有 helper script(<code>tools/aps-onboard.ps1</code>)可一次過落 4 個檔案編輯</strong>(步驟 2-5 之機械部分 — Identity 連同 4 個 governance row 一齊裝)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>之 Tooling shortcut 段。步驟 1(read-only baseline check)與步驟 6(SESSION_HANDOFF Durable Anchors,涉判斷)仍須手做。下面手做版本仍為 authoritative reference,執行 script 之前可先閱讀明白每步在做什麼。
+    <strong>有 helper script(<code>tools/aps-onboard.ps1</code>)可一次過完成 6.2 至 6.5 步</strong>(機械部分 — Bridge Pack 抄 + Identity 改 + 3 個 governance row 一齊裝)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>之 Tooling shortcut 段。步驟 6.1(read-only baseline check)與步驟 6.6(SESSION_HANDOFF Durable Anchors,涉判斷)仍須手做。下面手做版本仍為 authoritative reference,執行 script 之前可先閱讀明白每步在做什麼。
   </div>
 
   <div class="role-block role-block--adam">
@@ -776,7 +811,7 @@
     <ol class="step-list">
       <li>
         <p><strong>Agent Adam 做唯讀檢查</strong></p>
-        <p>此步之目的:正式驗證 §2 之 4 件先決事完整、kit 健康、Claude Code 可與 Agent Adam 對話。Agent Adam 不會改任何檔。</p>
+        <p>此步之目的:正式驗證 §2 之 4 件先決事完整、§3 之工作目錄已 init、kit 健康、Claude Code 可與 Agent Adam 對話。Agent Adam 不會改任何檔。</p>
 
         <p><strong>1.1 打開命令行</strong></p>
         <p>Windows:打開 PowerShell 或 Windows Terminal。macOS / Linux:打開 Terminal。</p>
@@ -784,7 +819,7 @@
         <p><strong>1.2 <code>cd</code> 入你之工作目錄</strong></p>
         <p>於命令行執行(將路徑換為你 §3 中創建之實際路徑;Windows 範例):</p>
         <pre>cd C:\Work\branding_2026</pre>
-        <p class="copy-block__note">macOS / Linux 範例:<code>cd ~/Work/branding_2026</code>。如尚未創建工作目錄,先返回 §3「準備你嘅項目工作目錄」(待加入,§5 完成後 batch 補)完成創建。</p>
+        <p class="copy-block__note">macOS / Linux 範例:<code>cd ~/Work/branding_2026</code>。如尚未創建工作目錄,先返回 §3「準備你的項目工作目錄」完成創建。</p>
 
         <p><strong>1.3 啟動 Claude Code 對話</strong></p>
         <p>於工作目錄中執行:</p>
@@ -816,7 +851,7 @@
             <tr>
               <td>(a) 5 個 governance 檔案</td>
               <td>5 個 file 皆存在</td>
-              <td>§2 第一件之 <code>init</code> 命令未跑齊。返回 §2 第一件補做。</td>
+              <td>§3 之 <code>init</code> 命令未跑齊。返回 §3.2 補做。</td>
             </tr>
             <tr>
               <td>(b) doctor output</td>
@@ -834,43 +869,149 @@
         <div class="callout warn">
           <strong>若 doctor 失敗 / 通過項少於 34</strong>:常見原因為 kit 版本舊於 0.1.7。Doctor output 首行顯示 kit version。若版本顯示為 <code>0.1.5</code> 或更舊,將以下 prompt 貼予 Agent Adam:
           <pre>請執行 npx @adamchanadam/agent-handoff-kit@latest upgrade,將完整 output 報予我。</pre>
-          Upgrade 完成後重做 1.4 步驟,doctor 須通過 34 / 34 方可繼續第 2 步。其他失敗原因,將 doctor output 連同 Agent Adam 之報告貼予 <a href="https://github.com/Adamchanadam/agent-handoff-kit/issues" class="site-nav__link">Agent Handoff Kit 嘅 GitHub issue</a> 求助。
+          Upgrade 完成後重做 1.4 步驟,doctor 須通過 34 / 34 方可繼續第 2 步。其他失敗原因,將 doctor output 連同 Agent Adam 之報告貼予 <a href="https://github.com/Adamchanadam/agent-handoff-kit/issues" class="site-nav__link">Agent Handoff Kit 之 GitHub issue</a> 求助。
         </div>
 
         <div class="accept">5 個 governance 檔案皆存在;doctor 通過 34 / 34;git 已 init(或已決定不 init);Agent Adam 無做任何檔案改動。完成此步即可進入下一步(複製 Bridge Pack)。</div>
       </li>
 
       <li>
-        <p><strong>要求 Agent Adam 抄此 repo 隨附之 demo Bridge Pack 副本至工作目錄</strong></p>
-        <p>Adam 於對話中要求 Agent Adam 將本 repo <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 抄至工作目錄之 <span class="path">[工作目錄]\dev\rules\aps-bridge.md</span>(此即 Adam 角色之 Bridge Pack fixture,procedural 內容與 Jay 角色完全相同,只是 Identity 段不同)。除最上之 Identity 段之外,內容不變。</p>
-        <p>Identity 段改為 Adam 部機之實際值:</p>
-        <pre>- agent_id: adam
-- project_slug: [項目代號]
-- hub_root: [Adam 部機之共享資料夾絕對路徑]
-- other_agent_id: jay</pre>
-        <p class="copy-block__note">複製出來後,將 <code>[項目代號]</code> 換為第 4 節拍板之值(例 <code>branding_2026</code>);將 <code>[Adam 部機之共享資料夾絕對路徑]</code> 換為你部機掛載 Hub 之實際 absolute path(例 <code>G:\Cloud\AI_Public_Squares</code>),然後寫入規則檔。完整形狀規則見第 1 節「Placeholder 樣本」。</p>
-        <div class="accept">將工作目錄之小規則檔與 <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 比較,差異只應於 Identity 段。</div>
+        <p><strong>複製 Bridge Pack 至工作目錄 + 改 Identity 為你之實際值</strong></p>
+        <p>此步之目的:將本 repo 提供之 Bridge Pack 副本(MVP 驗證之 fixture)複製至你工作目錄之 <code>dev/rules/aps-bridge.md</code>,並修改 Identity section 為你部機之實際值。Bridge Pack 為一份 markdown 規則檔,教 Agent Adam 如何讀寫 Hub。</p>
+
+        <p><strong>2.1 確認你已 clone 本 repo</strong>(§2 第四件)</p>
+        <p>於 Claude Code 對話中複製貼上以下 prompt(將 <code>[ai-public-squares clone 之絕對路徑]</code> 換為你 §2 第四件 clone 之實際位置):</p>
+        <pre>請執行 `ls [ai-public-squares clone 之絕對路徑]/examples/demo-agent-a/dev/rules/aps-bridge.md`,
+報告 file 是否存在。若不存在,告知我並停手等指示。</pre>
+        <p class="copy-block__note">Windows 範例:<code>ls C:\Users\你\ai-public-squares\examples\demo-agent-a\dev\rules\aps-bridge.md</code>。<br>若 Agent Adam 報告 file 不存在,§2 第四件之 clone 未完成,返回 §2 補做。</p>
+
+        <p><strong>2.2 將以下 prompt 貼予 Agent Adam</strong></p>
+        <p>將 <code>[ai-public-squares clone 之絕對路徑]</code>、<code>[項目代號]</code>、<code>[Adam 部機之共享資料夾絕對路徑]</code> 換為你之實際值之後,複製貼上:</p>
+        <pre>請執行以下事:
+
+(a) 將 file `[ai-public-squares clone 之絕對路徑]/examples/demo-agent-a/dev/rules/aps-bridge.md`
+    複製至本工作目錄之 `dev/rules/aps-bridge.md`(如 `dev/rules/` 不存在,先創建)
+
+(b) 修改新複製之 `dev/rules/aps-bridge.md` 之 Identity section,
+    將佔位符換為以下實際值:
+    - agent_id: adam
+    - project_slug: [項目代號]
+    - hub_root: [Adam 部機之共享資料夾絕對路徑]
+    - other_agent_id: jay
+
+(c) 將修改後之新 file 與原 fixture 之 diff 報予我,確認只
+    Identity section 不同,其他 procedural 部分一致
+
+完成 (a)(b)(c) 之後停手等我指示。</pre>
+
+        <p><strong>2.3 Agent Adam 報出之內容應對照以下表</strong></p>
+        <table class="params">
+          <thead>
+            <tr><th>檢查項</th><th>預期結果</th><th>若不符合,如何處理</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>(a) 複製成功</td>
+              <td><code>dev/rules/aps-bridge.md</code> 已創建於工作目錄</td>
+              <td>若無,Agent Adam 之檔案 access 權限或路徑出錯,將 Agent Adam 報告貼予 ChatGPT 或 GitHub issue 求助</td>
+            </tr>
+            <tr>
+              <td>(b) Identity 改好</td>
+              <td>Identity section 4 行皆顯示你之實際值,無剩 <code>&lt;your_...&gt;</code> 佔位符</td>
+              <td>重做 2.2 prompt,確認 Identity 4 行皆換</td>
+            </tr>
+            <tr>
+              <td>(c) diff 結果</td>
+              <td>僅 Identity section 不同;其他 procedural body 完全一致</td>
+              <td>若 procedural body 有差,Agent Adam 抄錯。重做 2.1-2.2,確認 source 路徑正確</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="accept">工作目錄之 <code>dev/rules/aps-bridge.md</code> 存在;Identity 4 行為實際值;procedural body 與 fixture 一致。完成此步進入第 3 步。</div>
       </li>
 
       <li>
-        <p><strong>要求 Agent Adam 在路由表中註冊此小規則</strong></p>
-        <p>於 <span class="path">dev\RULE_PACKS.md</span> 之路由表加一行(<code>## Routing Rule</code> 之前),要求 Agent Adam 抄試演該行原文。</p>
+        <p><strong>於 RULE_PACKS.md 之路由表加一行</strong></p>
+        <p>此步之目的:讓 Agent Adam 知道當對話中提及與 APS 相關之觸發詞(例「check Hub」),即 load Bridge Pack 之內容。</p>
+
+        <p><strong>3.1 將以下 prompt 貼予 Agent Adam</strong></p>
+        <pre>請於工作目錄之 `dev/RULE_PACKS.md` 中,在 `## Routing Rule` heading 之前
+加一行,內容為:
+
+| Cross-machine handoff, APS, packet, lane, ack, Hub, 共享 inbox | `dev/rules/aps-bridge.md` | check Hub inbox at startup, publish packet at closeout |
+
+加完之後將更新後之 `dev/RULE_PACKS.md` 之完整內容報予我。</pre>
+
+        <p><strong>3.2 預期</strong></p>
+        <p><code>dev/RULE_PACKS.md</code> 之 <code>## Routing Rule</code> heading 之前新增一行,內容如上。其他行不變。</p>
+
+        <div class="accept">於 <code>dev/RULE_PACKS.md</code> 中 grep <code>aps-bridge</code> 應有一個 match。Agent Adam 報告之 file 內容對照確認。</div>
       </li>
 
       <li>
-        <p><strong>要求 Agent Adam 將共享資料夾登記為 External Source</strong></p>
-        <p>於 <span class="path">dev\PROJECT_INDEX.md</span> 之 External Sources 表加一行,將共享資料夾路徑與寫權範圍寫下。</p>
+        <p><strong>於 PROJECT_INDEX.md 之 External Sources 表加一行</strong></p>
+        <p>此步之目的:將共享資料夾登記為 External Source,讓 Agent Adam 啟動時知道此 location 之存在與寫權範圍。</p>
+
+        <p><strong>4.1 將以下 prompt 貼予 Agent Adam</strong></p>
+        <p>將 <code>[Adam 部機之共享資料夾絕對路徑]</code>、<code>[項目代號]</code>、<code>[今日 YYYY-MM-DD]</code> 換為實際值之後貼上:</p>
+        <pre>請於工作目錄之 `dev/PROJECT_INDEX.md` 之 External Sources 表中加一行
+(於 `## Local QC Commands` heading 之前),內容為:
+
+| APS Hub | 與 jay (另一 APS agent) 之共享交換區 | 每次 session 啟動;closeout 時 | `[Adam 部機之共享資料夾絕對路徑]` (Google Drive, 需離線存取) | single-writer per lane; 不寫 `from_jay/` 或 `_ack/jay.ack.json`; 項目 slug `[項目代號]` | [今日 YYYY-MM-DD] |
+
+加完之後將更新後之 file 內容報予我。</pre>
+
+        <p><strong>4.2 預期</strong></p>
+        <p><code>dev/PROJECT_INDEX.md</code> 之 External Sources 表中新增一行,內容如上。</p>
+
+        <div class="accept">於 <code>dev/PROJECT_INDEX.md</code> 中 grep <code>APS Hub</code> 應有一個 match。</div>
       </li>
 
       <li>
-        <p><strong>要求 Agent Adam 在同步登記表加兩行</strong></p>
-        <p>於 <span class="path">dev\DOC_SYNC_REGISTRY.md</span> 加兩行(「出包」一行 + 「消化登記」一行),抄試演原文即可。</p>
+        <p><strong>於 DOC_SYNC_REGISTRY.md 加兩行 APS 同步紀錄</strong></p>
+        <p>此步之目的:登記 APS 之出包與消化登記之同步契約,讓 Agent Adam 收尾時知道須更新哪些 file。</p>
+
+        <p><strong>5.1 將以下 prompt 貼予 Agent Adam</strong></p>
+        <pre>請於工作目錄之 `dev/DOC_SYNC_REGISTRY.md` 中,在 `## Registry Rule` heading
+之前加兩行,內容為:
+
+| APS packet publish | `<hub_root>/<project_slug>/from_<me>/packets/...`, `from_<me>/outbox.log.md`, local `SESSION_LOG.md` Sync line | packet 資料夾存在; outbox.log 有對應行; ack.json 已更新(若 consuming) |
+| APS packet consume | local `_ack/<me>.ack.json`, local `SESSION_LOG.md` Sync line | ack.consumed 含 (packet_id, version); result 字段已填 |
+
+加完之後將更新後之 file 內容報予我。</pre>
+
+        <p><strong>5.2 預期</strong></p>
+        <p><code>dev/DOC_SYNC_REGISTRY.md</code> 之 <code>## Registry Rule</code> heading 之前新增兩行,內容如上。</p>
+
+        <div class="accept">於 <code>dev/DOC_SYNC_REGISTRY.md</code> 中 grep <code>APS packet</code> 應有兩個 match。</div>
       </li>
 
       <li>
-        <p><strong>要求 Agent Adam 更新交接檔之 Durable Anchors</strong></p>
-        <p>於 <span class="path">dev\SESSION_HANDOFF.md</span> 之 Durable Anchors 與 Active Objective 各補一句,讓將來開啟新對話之 Agent Adam 一讀即知工作目錄已接通共享資料夾,啟動與收尾須跑兩步。</p>
-        <div class="accept">於 <span class="path">dev\SESSION_HANDOFF.md</span> 中搜「APS」至少有兩處提及。</div>
+        <p><strong>更新 SESSION_HANDOFF.md 之 Durable Anchors 與 Active Objective</strong></p>
+        <p>此步之目的:讓將來開啟新對話之 Agent Adam 一讀即知工作目錄已接通共享資料夾,啟動與收尾須跑 Bridge Pack 之兩步。</p>
+
+        <p><strong>6.1 將以下 prompt 貼予 Agent Adam</strong></p>
+        <p>將 <code>[Adam 部機之共享資料夾絕對路徑]</code>、<code>[項目代號]</code> 換為實際值之後貼上:</p>
+        <pre>請於工作目錄之 `dev/SESSION_HANDOFF.md` 中做以下事:
+
+(a) 於 Durable Anchors 段,新增一條:
+    「APS Bridge Pack 已啟用; agent_id=adam;
+    Hub 位於 `[Adam 部機之共享資料夾絕對路徑]`;
+    lane `[項目代號]/from_adam/`; 對方 agent_id=jay。」
+
+(b) 於 Active Objective(或對應 current-state)段,新增一句:
+    「APS Bridge 已納入啟動與收尾流程。」
+
+(c) 於 Sync Status(如存在)中加一行,將 "APS Hub" 標為 `confirmed`,
+    日期填 [今日 YYYY-MM-DD]。
+
+完成後將更新後之段落報予我,我確認。</pre>
+
+        <p><strong>6.2 預期</strong></p>
+        <p><code>dev/SESSION_HANDOFF.md</code> 之 Durable Anchors 與 Active Objective 各補一句,搜 <code>APS</code> 字眼至少有兩處提及。</p>
+
+        <div class="accept">於 <code>dev/SESSION_HANDOFF.md</code> 中 grep <code>APS</code> 應有 ≥ 2 個 match。</div>
       </li>
     </ol>
 
@@ -878,24 +1019,24 @@
   </div>
 
   <div class="callout">
-    <strong>此節完成之後</strong>:Adam 之工作目錄已接通,但因 Jay 那邊尚未接通,任何試出包皆未有 receiver。先等 Jay 完成第 6 節,然後第 7 節雙方一同跑。
+    <strong>此節完成之後</strong>:Adam 之工作目錄已接通,但因 Jay 那邊尚未接通,任何試出包皆未有 receiver。先等 Jay 完成 §7,然後 §8 雙方一同跑。
   </div>
 </section>
 
-<section id="s6">
-  <h2><span class="sec-num">6.</span>Jay 接駁自己部機</h2>
+<section id="s7">
+  <h2><span class="sec-num">7.</span>Jay 接駁自己部機</h2>
+  <p class="lede">此節 Jay 於自己部機,要求 Agent Jay 協助執行。Adam 之角色為預先以 WhatsApp 將兩件事傳予 Jay,隨後隨時答問。Adam 與 Agent Adam 皆不可代 Jay 跑命令。</p>
 
   <div class="callout">
-    <strong>Jay 那邊亦可使用同一個 helper script(<code>tools/aps-onboard.ps1</code>)</strong>(Adam 整完之後以 WhatsApp / Drive 連同 demo Jay pack 一齊傳給 Jay 執行)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>之 Tooling shortcut 段;Jay-side 之 invocation 以 <code>-AgentId "&lt;your_agent_id&gt;" -OtherAgentId "&lt;counterpart_agent_id&gt;"</code>(以本教學之 narrative 計,分別為 <code>jay</code> 與 <code>adam</code>),demo Jay pack 作為 <code>-DemoPackPath</code>。下面手做版本仍為 authoritative。
+    <strong>Jay 那邊亦可使用同一個 helper script(<code>tools/aps-onboard.ps1</code>)</strong>(Adam 於完成 §6 之後以 WhatsApp / Drive 將 script 傳予 Jay 執行)。Jay-side 之 invocation 以 <code>-AgentId "&lt;your_agent_id&gt;" -OtherAgentId "&lt;counterpart_agent_id&gt;"</code>(以本教學之 narrative 計分別為 <code>jay</code> 與 <code>adam</code>),demo Jay pack 作為 <code>-DemoPackPath</code>。下面手做版本仍為 authoritative。
   </div>
-  <p class="lede">此節 Jay 於自己部機,要求 Agent Jay 協助執行。Adam 之角色為預先以 WhatsApp 將試演之 Jay 版本之小規則檔與三行參數傳給 Jay,隨後隨時答問。Adam 與 Agent Adam 皆不可代 Jay 跑命令。</p>
 
   <div class="role-block role-block--adam">
-    <div class="role-block__head"><span class="chip chip--adam">Adam</span>預先準備</div>
-    <p>將兩件事傳給 Jay:</p>
+    <div class="role-block__head"><span class="chip chip--adam">Adam</span>預先準備:傳兩件事予 Jay</div>
+    <p>將兩件事以 WhatsApp 或 Drive 傳予 Jay:</p>
     <ul>
-      <li>本 repo 隨附之 demo Bridge Pack(Jay 角色之 fixture),路徑為 <span class="path">examples/demo-agent-b/dev/rules/aps-bridge.md</span> — 與 Adam 角色版本之 procedural 內容相同,只是 Identity 不同</li>
-      <li>一張短便箋,記錄第 4 節拍板之七行參數結果</li>
+      <li>本 repo 隨附之 demo Jay Bridge Pack 之路徑,形如:<code>[Adam 自己之 ai-public-squares clone 路徑]/examples/demo-agent-b/dev/rules/aps-bridge.md</code> — Jay 可由此複製。或者 Jay 已自行 clone 本 repo,則使用 Jay 自己 clone 之相應路徑</li>
+      <li>一張短便箋,記錄 §5 拍板之七行參數結果(項目代號、雙方 agent_id、雙方部機之 Hub 絕對路徑、大檔試跑是否進行)</li>
     </ul>
   </div>
 
@@ -903,33 +1044,92 @@
     <div class="role-block__head"><span class="chip chip--jay">Jay</span>與<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>逐步動作</div>
     <ol class="step-list">
       <li>
-        <p><strong>Jay 自行跑部機前置 checklist</strong></p>
-        <p>逐項打剔:Google Drive 桌面版已 sign-in、共享資料夾可見、共享資料夾已設「離線存取」、工作目錄已選好並完成 kit 初始化、doctor 通過。</p>
-        <p>完成後以一句 WhatsApp 答覆 Adam,例:<code>checklist OK · 工作目錄: D:\Work\[項目代號]_Jay</code>(將 placeholder 換為你部機之實際路徑)。</p>
+        <p><strong>Jay 自行跑部機前置 checklist + 創建工作目錄</strong></p>
+        <p>此步之目的:Jay 完成 §2 之 4 件先決事 + §3 之工作目錄創建。動作與 §2 / §3 之 Adam-side 完全 parallel。</p>
+
+        <p><strong>1.1 完成 §2 4 件先決事</strong></p>
+        <p>Jay 自行於自己部機:</p>
+        <ul>
+          <li>安裝 Agent Handoff Kit(同 §2 第一件)</li>
+          <li>安裝 Google Drive 桌面版 + 共享資料夾設「離線存取」(同 §2 第二件)</li>
+          <li>安裝 Claude Code(同 §2 第三件)</li>
+          <li>Clone ai-public-squares repo(同 §2 第四件)— 記下 clone 路徑</li>
+        </ul>
+
+        <p><strong>1.2 創建工作目錄 + init kit</strong>(同 §3)</p>
+        <p>於命令行執行(將 <code>branding_2026_jay</code> 換為 Jay 之實際工作目錄名稱;與 Adam 之工作目錄名稱不必相同):</p>
+        <pre>mkdir D:\Work\branding_2026_jay
+cd D:\Work\branding_2026_jay
+npx @adamchanadam/agent-handoff-kit init
+npx @adamchanadam/agent-handoff-kit doctor</pre>
+        <p class="copy-block__note">macOS / Linux 範例:<code>mkdir -p ~/Work/branding_2026_jay &amp;&amp; cd ~/Work/branding_2026_jay</code></p>
+
+        <p><strong>1.3 對照 expected output</strong></p>
+        <p>Doctor 預期 <code>Status: passed</code>,通過 34 / 34 項。</p>
+
+        <p><strong>1.4 以 WhatsApp 答覆 Adam</strong></p>
+        <p>例:<code>checklist OK · 工作目錄: D:\Work\branding_2026_jay · doctor 34/34 PASS</code>(將 placeholder 換為你部機之實際路徑)。</p>
+
+        <div class="accept">Jay 部機之 4 件先決事 + 工作目錄已 ready;doctor 通過 34 / 34;已以 WhatsApp 答覆 Adam。</div>
       </li>
 
       <li>
-        <p><strong>Jay 要求 Agent Jay 接駁小規則檔</strong></p>
-        <p>將 Adam 傳來之 fixture 儲存為 <span class="path">[工作目錄]\dev\rules\aps-bridge.md</span>,要求 Agent Jay 改 Identity 段:</p>
+        <p><strong>Agent Jay 接駁 Bridge Pack 與 governance 各 row</strong></p>
+        <p>此步之目的:於 Jay 之工作目錄完成 §6 步驟 1-6 等同動作。所有 prompt 皆 mirror §6,只需:</p>
+        <ul>
+          <li>將 prompt 中之 <code>agent_id</code> 由 <code>adam</code> 換為 <code>jay</code></li>
+          <li>將 <code>other_agent_id</code> 由 <code>jay</code> 換為 <code>adam</code></li>
+          <li>將 <code>hub_root</code> 換為 Jay 部機之 Hub 絕對路徑</li>
+          <li>將 Bridge Pack 之 source 由 <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 換為 <code>examples/demo-agent-b/dev/rules/aps-bridge.md</code></li>
+          <li>將 §6 步驟 4(PROJECT_INDEX External Source row)中之「不寫 <code>from_jay/</code> 或 <code>_ack/jay.ack.json</code>」改為「不寫 <code>from_adam/</code> 或 <code>_ack/adam.ack.json</code>」</li>
+          <li>將 §6 步驟 6(SESSION_HANDOFF Durable Anchors)中之 agent_id 與 other_agent_id 互換</li>
+        </ul>
+
+        <p><strong>2.1 啟動 Claude Code 對話</strong>(同 §6 步驟 1.1-1.3)</p>
+        <p>於 Jay 之工作目錄打開命令行,執行 <code>claude</code> 啟動對話。</p>
+
+        <p><strong>2.2 跑 §6 步驟 1.4 prompt</strong> 確認 5 個 governance 檔案 + doctor PASS + git status。</p>
+
+        <p><strong>2.3 跑 §6 步驟 2.2 prompt</strong>(Bridge Pack 抄 + Identity 改),Identity 之 4 行為:</p>
         <pre>- agent_id: jay
 - project_slug: [項目代號]
 - hub_root: [Jay 部機之共享資料夾絕對路徑]
 - other_agent_id: adam</pre>
-        <p class="copy-block__note">複製出來後,將 <code>[項目代號]</code> 換為第 4 節拍板之值(例 <code>branding_2026</code>);將 <code>[Jay 部機之共享資料夾絕對路徑]</code> 換為你部機之實際路徑(例 <code>D:\Work\AI_Public_Squares</code>;磁碟字母可能為 <code>H:\</code>、<code>D:\</code> 或其他)。完整形狀規則見第 1 節「Placeholder 樣本」。</p>
-        <p>隨後要求 Agent Jay 做與第 5 節步驟 3-6 對應之動作:路由表加一行、External Source 加一行(寫權範圍寫「永不寫 <span class="path">from_adam</span> 與 <span class="path">_ack\adam.ack.json</span>」)、同步登記表加兩行、交接檔更新 Durable Anchors。</p>
-        <div class="accept">Jay 跑 doctor 仍全部通過。以一句 WhatsApp 答覆 Adam:<code>接駁好,doctor OK</code>。</div>
+        <p>Bridge Pack source 改為 <code>[Jay 自己之 ai-public-squares clone 路徑]/examples/demo-agent-b/dev/rules/aps-bridge.md</code>。</p>
+
+        <p><strong>2.4 跑 §6 步驟 3.1 prompt</strong>(RULE_PACKS 加路由行)— prompt 不變。</p>
+
+        <p><strong>2.5 跑 §6 步驟 4.1 prompt</strong>(PROJECT_INDEX 加 External Source row)— prompt 中之 row 改為:</p>
+        <pre>| APS Hub | 與 adam (另一 APS agent) 之共享交換區 | 每次 session 啟動; closeout 時 | `[Jay 部機之共享資料夾絕對路徑]` (Google Drive, 需離線存取) | single-writer per lane; 不寫 `from_adam/` 或 `_ack/adam.ack.json`; 項目 slug `[項目代號]` | [今日 YYYY-MM-DD] |</pre>
+
+        <p><strong>2.6 跑 §6 步驟 5.1 prompt</strong>(DOC_SYNC_REGISTRY 加兩 row)— prompt 不變。</p>
+
+        <p><strong>2.7 跑 §6 步驟 6.1 prompt</strong>(SESSION_HANDOFF Durable Anchors 更新)— Identity 互換,Durable Anchors 寫法:</p>
+        <pre>「APS Bridge Pack 已啟用; agent_id=jay;
+Hub 位於 `[Jay 部機之共享資料夾絕對路徑]`;
+lane `[項目代號]/from_jay/`; 對方 agent_id=adam。」</pre>
+
+        <p><strong>2.8 跑 doctor 確認設置完整</strong></p>
+        <p>於 Jay 之命令行執行:</p>
+        <pre>npx @adamchanadam/agent-handoff-kit doctor</pre>
+        <p>仍預期 <code>Status: passed</code>,通過 34 / 34 項。</p>
+
+        <p><strong>2.9 以 WhatsApp 答覆 Adam</strong></p>
+        <p>例:<code>接駁好, doctor 仍 OK</code>。</p>
+
+        <div class="accept">Jay 之工作目錄之 5 個 governance 檔案皆已加 APS 相關 row;Bridge Pack 已抄入並 Identity 對應;doctor 仍通過 34 / 34;以 WhatsApp 答覆 Adam。</div>
       </li>
     </ol>
   </div>
 
   <div class="callout">
-    <strong>此節完成之後</strong>:雙方工作目錄皆已接通,但共享資料夾上尚未有真實 packet 過。第 7 節即為首次跨機交接之執行。
+    <strong>此節完成之後</strong>:雙方工作目錄皆已接通,但共享資料夾上尚未有真實 packet 過。§8 即為首次跨機交接之執行。
   </div>
 </section>
 
-<section id="s7">
-  <h2><span class="sec-num">7.</span>首次跨機交接</h2>
-  <p class="lede">由 Adam 發第一個真實 packet 開始,經 Agent Adam 寫入 Hub,Adam 以一句 WhatsApp 通知 Jay,Jay 要求 Agent Jay 撿包,Jay 完成後要求 Agent Jay 出回包,Jay 以一句 WhatsApp 通知 Adam,Adam 要求 Agent Adam 撿到回包並收結。選一個小型內容(一段品牌語氣 note、一個 logo spec 段落)做第一次,不要試大檔(該檔之測試為第 8 節)。</p>
+<section id="s8">
+  <h2><span class="sec-num">8.</span>首次跨機交接</h2>
+  <p class="lede">由 Adam 發第一個真實 packet 開始,經 Agent Adam 寫入 Hub,Adam 以一句 WhatsApp 通知 Jay,Jay 要求 Agent Jay 撿包,Jay 完成後要求 Agent Jay 出回包,Jay 以一句 WhatsApp 通知 Adam,Adam 要求 Agent Adam 撿到回包並收結。選一個小型內容(一段品牌語氣 note、一個 logo spec 段落)做第一次,不要試大檔(該檔之測試為 §9)。</p>
 
   <div class="actor-legend">
     <span class="lg"><span class="swatch swatch--adam-user"></span>Adam 用戶</span>
@@ -947,7 +1147,7 @@
   </div>
 
   <div class="callout">
-    <strong>首次跨機驗證 vs 日常運作</strong>。下面之完整十步為跨機接駁計劃<strong>第一次</strong>跑時所做之動作 — 包括 UTC 時間記錄(量度 Drive 同步延遲)與 WhatsApp 完整模板。此皆屬一次性驗收,跑通之後即有 baseline。日常運作精簡甚多 — WhatsApp 短訊一句、receiver 對著現有對話講 <code>check Hub</code> 即可,詳見 §9。
+    <strong>首次跨機驗證 vs 日常運作</strong>。下面之完整十步為跨機接駁計劃<strong>第一次</strong>跑時所做之動作 — 包括 UTC 時間記錄(量度 Drive 同步延遲)與 WhatsApp 完整模板。此皆屬一次性驗收,跑通之後即有 baseline。日常運作精簡甚多 — WhatsApp 短訊一句、receiver 對著現有對話講 <code>check Hub</code> 即可,詳見 §10。
   </div>
 
   <svg viewBox="0 0 760 760" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-handover-title flow-handover-desc">
@@ -1075,7 +1275,7 @@
     </ol>
     <pre>APS Hub has new traffic. Open a new session and paste this to your agent:
 "Read &lt;hub_root&gt;/[項目代號], follow APS PROTOCOL, process unconsumed items in from_adam."</pre>
-    <p class="copy-block__note">複製出來後,將 <code>[項目代號]</code> 換為第 4 節拍板之實際值(例 <code>branding_2026</code>),然後發予 Jay。<code>&lt;hub_root&gt;</code> 無需換 — 此字 literal 保留,Jay 之 Agent Jay 會以自己部機之實際 <code>hub_root</code> 解讀。</p>
+    <p class="copy-block__note">複製出來後,將 <code>[項目代號]</code> 換為 §5 拍板之實際值(例 <code>branding_2026</code>),然後發予 Jay。<code>&lt;hub_root&gt;</code> 無需換 — 此字 literal 保留,Jay 之 Agent Jay 會以自己部機之實際 <code>hub_root</code> 解讀。</p>
   </div>
 
   <div class="role-block role-block--jay">
@@ -1087,12 +1287,12 @@
       <li><strong>留意</strong>:Jay 於此新對話中並未解釋任何上下文,Agent Jay 自行讀畢。</li>
       <li>Jay 執行工作。完成後要求 Agent Jay 依收尾流程出回包:寫 <span class="path">from_jay\packets\[時間戳]__[題目]_reply__v1\packet.md</span>;append <span class="path">from_jay\outbox.log.md</span>;update <span class="path">_ack\jay.ack.json</span>(加一行記下消化了 Adam 之 packet)。</li>
       <li><strong>(首跑驗收一次性)</strong> Jay 記下 Agent Jay 偵測時刻與出回包時刻之 UTC 時間,稍後計算 Drive 同步延遲。日常 round-trip 無需做此。</li>
-      <li>Agent Jay 於啟動與 mid-session <code>check Hub</code> 時皆已自動掃描共享資料夾;若無衝突檔報告即可繼續。若有報告,停手依 §11.1 處理(用戶無需自行跑 <code>find</code>)。</li>
+      <li>Agent Jay 於啟動與 mid-session <code>check Hub</code> 時皆已自動掃描共享資料夾;若無衝突檔報告即可繼續。若有報告,停手依 §12.1 處理(用戶無需自行跑 <code>find</code>)。</li>
       <li>Jay <strong>親自</strong>以反方向之 WhatsApp 發予 Adam:</li>
     </ol>
     <pre>APS Hub has new traffic. Open a new session and paste this to your agent:
 "Read &lt;hub_root&gt;/[項目代號], follow APS PROTOCOL, process unconsumed items in from_jay."</pre>
-    <p class="copy-block__note">同上 — <code>[項目代號]</code> 換為第 4 節拍板之實際值(例 <code>branding_2026</code>);<code>&lt;hub_root&gt;</code> literal 保留。</p>
+    <p class="copy-block__note">同上 — <code>[項目代號]</code> 換為 §5 拍板之實際值(例 <code>branding_2026</code>);<code>&lt;hub_root&gt;</code> literal 保留。</p>
     <div class="accept">偵測順利、Drive 延遲少於五分鐘、共享資料夾無衝突檔。Jay 之 <span class="path">SESSION_LOG.md</span> 加同步行。</div>
   </div>
 
@@ -1115,8 +1315,8 @@
   </div>
 </section>
 
-<section id="s8">
-  <h2><span class="sec-num">8.</span>大檔試跑(可選)</h2>
+<section id="s9">
+  <h2><span class="sec-num">9.</span>大檔試跑(可選)</h2>
   <p class="lede">驗證「逾 50 MB 之檔不放入包內,改放外面再於包中說明位置」此條規矩。試演未試過,第一份真實大檔出現之前必須試一次。</p>
 
   <div class="role-block role-block--adam">
@@ -1146,9 +1346,9 @@
   </div>
 </section>
 
-<section id="s9">
-  <h2><span class="sec-num">9.</span>日常使用</h2>
-  <p class="lede">第 5 至 7 節跑通,APS 已上線。日常用法為一個重複拍子,每次往返皆為此十步。每個 pill 標明為用戶動作或 agent 動作。</p>
+<section id="s10">
+  <h2><span class="sec-num">10.</span>日常使用</h2>
+  <p class="lede">§6 至 §8 跑通,APS 已上線。日常用法為一個重複拍子,每次往返皆為此十步。每個 pill 標明為用戶動作或 agent 動作。</p>
 
   <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-daily-title flow-daily-desc">
     <title id="flow-daily-title">日常用法十步</title>
@@ -1233,7 +1433,7 @@
   <p>多條交接同時進行則為兩條此十步並行,共享資料夾之事件記錄與消化記錄表會記齊。</p>
 
   <div class="callout">
-    <strong>日常 WhatsApp 短訊版</strong>。日常運作中,WhatsApp 之短訊無需再貼完整模板予對方再貼予 agent。一句「<code>Hub 有新嘢</code>」已足夠通知對方;對方於自己工作目錄之現有對話中講一句「<code>check Hub</code>」即可,Agent 立即撿包(此為默認之日常 primary pattern)。開啟新對話並貼整段模板為 fallback,僅限於第一次跨機(§7)或想重新開始。完整英文模板(§7 之 <code>APS Hub has new traffic...</code>)保留予首次跨機交接做啟蒙教學;日常跑通之後一句「<code>check Hub</code>」即可。
+    <strong>日常 WhatsApp 短訊版</strong>。日常運作中,WhatsApp 之短訊無需再貼完整模板予對方再貼予 agent。一句「<code>Hub 有新嘢</code>」已足夠通知對方;對方於自己工作目錄之現有對話中講一句「<code>check Hub</code>」即可,Agent 立即撿包(此為默認之日常 primary pattern)。開啟新對話並貼整段模板為 fallback,僅限於第一次跨機(§8)或想重新開始。完整英文模板(§8 之 <code>APS Hub has new traffic...</code>)保留予首次跨機交接做啟蒙教學;日常跑通之後一句「<code>check Hub</code>」即可。
   </div>
 
   <div class="callout">
@@ -1241,9 +1441,9 @@
   </div>
 </section>
 
-<section id="s10">
-  <h2><span class="sec-num">10.</span>中途想交換,不等對話結束</h2>
-  <p class="lede">第 7 與 9 節中所講「對話收尾時要求 agent 出包」,此為順手做之時機,並非硬性。Adam 或 Jay 之對話中途任何時刻,只要內容 ready,皆可即時交換。</p>
+<section id="s11">
+  <h2><span class="sec-num">11.</span>中途想交換,不等對話結束</h2>
+  <p class="lede">§8 與 §10 中所講「對話收尾時要求 agent 出包」,此為順手做之時機,並非硬性。Adam 或 Jay 之對話中途任何時刻,只要內容 ready,皆可即時交換。</p>
 
   <div class="role-block role-block--adam">
     <div class="role-block__head"><span class="chip chip--adam">Adam</span>與<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>· 想中途即時出包</div>
@@ -1270,10 +1470,10 @@
   </div>
 </section>
 
-<section id="s11">
-  <h2><span class="sec-num">11.</span>出錯處理</h2>
+<section id="s12">
+  <h2><span class="sec-num">12.</span>出錯處理</h2>
 
-  <h3>11.1 出現 Drive 衝突副本(file (1).md 之類)</h3>
+  <h3>12.1 出現 Drive 衝突副本(file (1).md 之類)</h3>
   <p>理論上不應發生,因有單寫道規矩。Bridge Pack 於每次啟動與 <code>check Hub</code> 觸發時皆自動掃描共享資料夾,掃到任何含 <code>conflict</code> 字眼之檔即時報予你閱讀 — 用戶無需主動跑命令查。若 Agent 報過,或你自行肉眼看到:</p>
   <ul>
     <li>Adam 或 Jay <strong>不要</strong>即時手動刪。</li>
@@ -1282,7 +1482,7 @@
     <li>修正根源之後,先決定保留哪個版本(通常為原寫者之版本),衝突副本移走或更名為 <span class="path">.investigated</span>。</li>
   </ul>
 
-  <h3>11.2 出包但內容錯 / 想撤回</h3>
+  <h3>12.2 出包但內容錯 / 想撤回</h3>
 
   <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-recovery-title flow-recovery-desc">
     <title id="flow-recovery-title">出錯處理之判斷</title>
@@ -1336,7 +1536,7 @@
   <p>撤回之行寫法(由 agent 寫):</p>
   <pre>[時間] | withdraw | [時間戳]__[題目] v1 | reason:作者要求撤回原版</pre>
 
-  <h3>11.3 Agent 撈錯通道(寫了對方通道、寫了對方消化記錄表)</h3>
+  <h3>12.3 Agent 撈錯通道(寫了對方通道、寫了對方消化記錄表)</h3>
   <p>邊界硬規矩應該攔到。若真的漏了:</p>
   <ul>
     <li>用戶立即停手,不要繼續要求 agent 出包。</li>
@@ -1344,10 +1544,10 @@
     <li>用戶決定是否手動清除誤寫;事件 + 原因記入 <span class="path">SESSION_LOG.md</span>(由 agent 寫),讓下次開啟新對話可追溯。</li>
   </ul>
 
-  <h3>11.4 忘記收結,thread 永遠掛緊待辦</h3>
+  <h3>12.4 忘記收結,thread 永遠掛緊待辦</h3>
   <p>無大事。下次任何一邊開啟新對話,agent 啟動流程列其為待辦,用戶要求 agent append 一行 <code>close</code> 事件即可。close 完之後再開啟新對話即為無待辦狀態。</p>
 
-  <h3>11.5 Drive 同步延遲逾五分鐘</h3>
+  <h3>12.5 Drive 同步延遲逾五分鐘</h3>
   <p>幾乎一定不是協定問題。Adam 或 Jay 用戶依序檢查:</p>
   <ol>
     <li>Drive 桌面版是否正在運行、是否已 sign-in?</li>
@@ -1357,8 +1557,8 @@
   </ol>
 </section>
 
-<section id="s12">
-  <h2><span class="sec-num">12.</span>完成之後到哪裡查什麼</h2>
+<section id="s13">
+  <h2><span class="sec-num">13.</span>完成之後到哪裡查什麼</h2>
   <table class="params">
     <thead>
       <tr><th>要查之事</th><th>位置</th></tr>
