@@ -638,55 +638,74 @@
 
 <section id="s3">
   <h2><span class="sec-num">3.</span>先傾妥幾件嘢</h2>
-  <p class="lede">唔郁任何檔。一個半小時嘅電話或者 WhatsApp 傾妥,記低,落咗去技術版計劃文檔最尾嘅參數表入面。呢一步係用戶之間嘅事,唔涉及兩個 agent 程式。</p>
+  <p class="lede">唔郁任何檔。十五分鐘左右嘅電話或者 WhatsApp 傾妥即可 — 你哋實際要拍板嘅,只有三件;其餘四項都有合理默認,沿用即可。呢一步係用戶之間嘅事,唔涉及兩個 agent 程式。</p>
 
+  <h3>要拍板嘅三件事</h3>
   <table class="params">
     <thead>
-      <tr><th>要傾嘅嘢</th><th>建議默認</th><th>備註</th></tr>
+      <tr><th>要傾嘅嘢</th><th>建議</th><th>備註</th></tr>
     </thead>
     <tbody>
       <tr>
         <td>項目代號</td>
-        <td>沿用上次試演嘅項目代號,或揀新嘅 snake_case 短名(例:<code>branding_2026</code>、<code>logo_refresh</code>)</td>
-        <td>沿用嘅話,試演留低嗰兩個包要清咗先。想留住試演數據做 reference,就改一個新代號。樣本嘅完整形狀見第 1 節「Placeholder 樣本」。</td>
+        <td>揀新嘅 snake_case 短名(例:<code>branding_2026</code>、<code>logo_refresh</code>)</td>
+        <td>用新 slug 嘅好處:試演嗰兩個包原封不動留作 reference,唔需要清。要沿用試演 slug 都得,但要清舊資料 — 多咗一個 step,通常唔抵。樣本嘅完整形狀規則見第 1 節「Placeholder 樣本」。</td>
       </tr>
       <tr>
-        <td>Adam 嘅 agent 名</td>
-        <td><span class="path">adam</span></td>
-        <td>同試演一致,唔郁。</td>
-      </tr>
-      <tr>
-        <td>Jay 嘅 agent 名</td>
-        <td><span class="path">jay</span></td>
-        <td>同上。</td>
-      </tr>
-      <tr>
-        <td>Jay 嘅工作目錄</td>
-        <td>Jay 自己揀</td>
-        <td>例:<span class="path">D:\Work\[項目代號]_Jay\</span>。要 kit-init,doctor 跑得通。</td>
-      </tr>
-      <tr>
-        <td>Jay 嗰邊個共享資料夾路徑</td>
-        <td>Jay 自己 mount</td>
-        <td>磁碟字母可能唔同(例:Jay 可能係 <span class="path">H:\</span> 唔係 <span class="path">G:\</span>),呢個合理,個小規則檔內各自寫實際路徑,協定本身唔受影響。</td>
+        <td>Jay 部機路徑</td>
+        <td>Jay 自己揀工作目錄 + 喺自己部機 mount Hub</td>
+        <td>例:工作目錄 <span class="path">D:\Work\[項目代號]_Jay\</span>(要 kit-init,doctor 跑得通);Hub 磁碟字母可能唔同(例 <span class="path">H:\</span> 唔係 <span class="path">G:\</span>),呢個合理 — 個小規則檔內各自寫實際路徑,協定本身唔受影響。</td>
       </tr>
       <tr>
         <td>大檔試跑要唔要做</td>
         <td>建議做,可推遲</td>
-        <td>第一份真正過 50 MB 嘅資產之前,一定要做。如果近期都係文字材料,可以遲啲再補。</td>
+        <td>第一份真正過 50 MB 嘅資產之前一定要做。如果近期都係文字材料,可以遲啲再補。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>預設默認嘅四件事(唔郁就 OK)</h3>
+  <table class="params">
+    <thead>
+      <tr><th>項目</th><th>默認值</th><th>幾時要改默認</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Adam agent 名</td>
+        <td><span class="path">adam</span></td>
+        <td>幾乎冇情景需要改,沿用試演。</td>
+      </tr>
+      <tr>
+        <td>Jay agent 名</td>
+        <td><span class="path">jay</span></td>
+        <td>同上。</td>
+      </tr>
+      <tr>
+        <td>試演舊資料處理</td>
+        <td>留底唔郁(新 slug 預設下,試演嘅 lane 自然唔受影響)</td>
+        <td>只有揀沿用試演 slug 嗰陣才有得選清/留;用新 slug 就唔關事。</td>
+      </tr>
+      <tr>
+        <td>Adam 部機 Hub 路徑 + Drive 分享權限</td>
+        <td>沿用試演已設好嘅 <span class="path">[Adam 部機嘅共享資料夾絕對路徑]</span> 同現有共用權限</td>
+        <td>若試演時 Drive sharing 設喺 slug 子資料夾而唔係 <span class="path">AI_Public_Squares</span> root,新 slug 要新加 share。除此之外,沿用試演設定。</td>
       </tr>
     </tbody>
   </table>
 
   <div class="role-block role-block--both">
     <div class="role-block__head"><span class="chip chip--both">雙方</span>傾妥之後</div>
-    <p>Adam 打開技術版計劃文檔最尾嘅參數表,填齊七行。呢一刻就係呢一節完成。</p>
+    <p>Adam 打開技術版計劃文檔最尾嘅參數表,將拍板嘅嘢同確認嘅默認填齊。呢一刻就係呢一節完成。</p>
   </div>
 </section>
 
 <section id="s4">
   <h2><span class="sec-num">4.</span>Adam 接駁自己部機</h2>
   <p class="lede">呢一節 Adam 喺自己部機,叫 Agent Adam 幫手執行;Jay 唔需要喺度。完成之後 Adam 嘅工作目錄已接好個橋接小規則,但仲未交收過任何包。</p>
+
+  <div class="callout">
+    <strong>有 helper script(<code>tools/aps-onboard.ps1</code>)可以一次過落 4 個 file edit</strong>(步驟 2-5 嘅機械部分 — Identity 連 4 個 governance row 一齊裝)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>嘅 Tooling shortcut 段。步驟 1(read-only baseline check)同步驟 6(SESSION_HANDOFF Durable Anchors,涉判斷)仲係手做。下面手做版本仍然係 authoritative reference,跑 script 之前可以先睇明白每步做緊咩。
+  </div>
 
   <div class="role-block role-block--adam">
     <div class="role-block__head"><span class="chip chip--adam">Adam</span>同<span class="chip chip--agent-adam" style="margin-left:6px">Agent Adam</span>逐步動作</div>
@@ -742,6 +761,10 @@
 
 <section id="s5">
   <h2><span class="sec-num">5.</span>Jay 接駁自己部機</h2>
+
+  <div class="callout">
+    <strong>Jay 嗰邊都可以用同一個 helper script(<code>tools/aps-onboard.ps1</code>)</strong>(Adam 整完之後用 WhatsApp / Drive 連同 demo Jay pack 一齊傳過嚟畀 Jay 跑)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>嘅 Tooling shortcut 段;Jay-side invocation 用 <code>-AgentId "jay" -OtherAgentId "adam"</code>,demo Jay pack 做 <code>-DemoPackPath</code>。下面手做版本仍然係 authoritative。
+  </div>
   <p class="lede">呢一節 Jay 喺自己部機,叫 Agent Jay 幫手執行。Adam 嘅角色係預先 WhatsApp 將試演 Jay 嗰份小規則檔同三行參數 send 畀 Jay,然後隨時答問題。Adam 同 Agent Adam 都唔可以代 Jay 跑命令。</p>
 
   <div class="role-block role-block--adam">
@@ -798,6 +821,10 @@
 
   <div class="callout">
     <strong>用戶決定,Agent 執行 — 之間有一格</strong>。Agent Adam 同 Agent Jay 撿到包之後,係 propose 待辦畀對應嘅用戶睇,<strong>唔自動修改本地 SSOT 嘅檔</strong>。用戶揀做唔做、揀幾時做、揀做幾多,先叫個 agent 動手執行。Packet body 講「請更新 X」唔等於對方 agent 自動更新 X — 「propose → 用戶拍板 → execute」係故意保留嘅人手 step,等用戶控住每次工作流。
+  </div>
+
+  <div class="callout">
+    <strong>首次跨機驗證 vs 日常運作</strong>。下面嘅完整十步係跨機接駁計劃<strong>第一次</strong>跑做嘅動作 — 包括 UTC 時間記錄(量度 Drive 同步延遲)同 WhatsApp 完整模板。呢啲屬一次性驗收,跑通之後就有 baseline。日常運作精簡好多 — WhatsApp 短訊一句、receiver 對住現有對話講 <code>check Hub</code> 就得,詳見 §8。
   </div>
 
   <svg viewBox="0 0 760 760" xmlns="http://www.w3.org/2000/svg" class="flow" role="img" aria-labelledby="flow-handover-title flow-handover-desc">
@@ -941,7 +968,7 @@
     <ol class="step-list">
       <li>Adam 喺工作目錄開新對話,寫好想交畀 Jay 嘅內容。</li>
       <li>Adam 對話收尾,叫 Agent Adam 跟收尾流程出包:Agent Adam 喺共享資料夾下 <span class="path">[項目代號]\from_adam\packets\[時間戳]__[題目]__v1\</span> 寫 <span class="path">packet.md</span>;append 一行入 <span class="path">from_adam\outbox.log.md</span>;本地 <span class="path">SESSION_LOG.md</span> 加同步行。</li>
-      <li>Adam <strong>自己</strong>記低出包嗰刻嘅 UTC 時間(下一步計 Drive 延遲要用)。</li>
+      <li><strong>(首跑驗收一次性)</strong> Adam 自己記低出包嗰刻嘅 UTC 時間,落後計 Drive 同步延遲做接駁計劃嘅驗收。日常 round-trip 唔需要做。</li>
       <li>Adam <strong>自己</strong>發 WhatsApp 畀 Jay,貼下面呢句(<code>[項目代號]</code> 換做實際值)。WhatsApp 唔由 Agent Adam 發 — 係 Adam 親手發:</li>
     </ol>
     <pre>APS Hub has new traffic. Open a new session and paste this to your agent:
@@ -957,8 +984,8 @@
       <li>Agent Jay 跟啟動流程:讀 <span class="path">from_adam\outbox.log.md</span> + 自己 <span class="path">_ack\jay.ack.json</span>,差集計算 → 列出一個待辦項:Adam 嗰個包,連埋包入面寫嘅內容範圍同要做嘅項目。</li>
       <li><strong>留意</strong>:Jay 冇喺呢個新對話解釋過任何上下文,Agent Jay 自己讀晒。</li>
       <li>Jay 做工作。完成之後叫 Agent Jay 跟收尾流程出回包:寫 <span class="path">from_jay\packets\[時間戳]__[題目]_reply__v1\packet.md</span>;append <span class="path">from_jay\outbox.log.md</span>;update <span class="path">_ack\jay.ack.json</span>(加一行記低消化咗 Adam 嗰個包)。</li>
-      <li>Jay 記低 Agent Jay detection 同回包嘅 UTC 時間。</li>
-      <li>叫 Agent Jay 跑 <code>find</code> 確認共享資料夾冇出現任何 *conflict* 字眼嘅檔。</li>
+      <li><strong>(首跑驗收一次性)</strong> Jay 記低 Agent Jay detection 同回包嘅 UTC 時間,落後計 Drive 同步延遲。日常 round-trip 唔需要做。</li>
+      <li>Agent Jay 喺啟動同 mid-session <code>check Hub</code> 嗰陣已經自動掃過共享資料夾;冇報衝突檔即可繼續。如果報咗,停手按 §10.1 處理(用戶唔需要自己跑 <code>find</code>)。</li>
       <li>Jay <strong>自己</strong>反方向發 WhatsApp 畀 Adam:</li>
     </ol>
     <pre>APS Hub has new traffic. Open a new session and paste this to your agent:
@@ -1063,10 +1090,10 @@
     </g>
     <path d="M 185 176 L 575 176" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ④ Jay: 開新對話 paste -->
+    <!-- ④ Jay: 講 check Hub (mid-session) -->
     <g>
       <rect x="575" y="152" width="160" height="48" rx="6" fill="var(--jay-soft)" stroke="#b56a23" stroke-width="2"/>
-      <text x="655" y="180" text-anchor="middle" class="flow-step">④ 開新對話 paste</text>
+      <text x="655" y="180" text-anchor="middle" class="flow-step">④ 講 check Hub</text>
     </g>
     <path d="M 575 176 L 555 176 L 555 212" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
@@ -1099,10 +1126,10 @@
     <!-- ⑧ → ⑨ 跨大 lane -->
     <path d="M 575 416 L 185 416" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
-    <!-- ⑨ Adam: 開新對話 paste,agent 收結 -->
+    <!-- ⑨ Adam: 講 check Hub (mid-session),agent 收結 -->
     <g>
       <rect x="25" y="392" width="160" height="48" rx="6" fill="var(--adam-soft)" stroke="#2f5d7c" stroke-width="2"/>
-      <text x="105" y="420" text-anchor="middle" class="flow-step">⑨ 開新對話 paste</text>
+      <text x="105" y="420" text-anchor="middle" class="flow-step">⑨ 講 check Hub</text>
     </g>
     <path d="M 185 416 L 205 416 L 205 432" stroke="#4a5468" stroke-width="2" fill="none" marker-end="url(#daily-arrow)"/>
 
@@ -1115,6 +1142,10 @@
   <p class="flow-caption">十步打完即係一條交接收結。實邊框係人,虛邊框係程式。一日唔一定行齊十步,可以中間 pause(例:Jay 慢慢做)。</p>
 
   <p>多條交接同時跑都係兩條呢個十步並行,共享資料夾入面嘅事件記錄同消化記錄表會記晒。</p>
+
+  <div class="callout">
+    <strong>日常 WhatsApp 短訊版</strong>。日常運作,WhatsApp 嗰句唔需要再貼完整模板畀對方再 paste 落 agent。一句「<code>Hub 有新嘢</code>」夠數通知對方;對方喺自己工作目錄,對住現有對話講一句「<code>check Hub</code>」即可,Agent 即刻撿包(呢個係默認嘅日常 primary pattern)。開新對話 + paste 整段模板係 fallback,只限第一次跨機(§6)或者你想 fresh start。完整英文模板(§6 嘅 <code>APS Hub has new traffic...</code>)保留畀第一次跨機交接做啟蒙教學;日常跑通之後一句「<code>check Hub</code>」就夠。
+  </div>
 
   <div class="callout">
     <strong>頻率估計</strong>:Adam → Jay 方向通常一日一兩次。Jay 回包可能即日內,可能等明朝。一條交接嘅 wall-clock 大約 12–48 小時。緊急嘅交接,WhatsApp 加一句「即刻」就得,協定本身唔阻你即時催。
@@ -1133,13 +1164,12 @@
 
   <div class="role-block role-block--jay">
     <div class="role-block__head"><span class="chip chip--jay">Jay</span>同<span class="chip chip--agent-jay" style="margin-left:6px">Agent Jay</span>· 想中途撿啱啱到嘅包</div>
-    <p>Jay 喺對話中間收到 Adam WhatsApp,唔需要 close 個對話開新嘅。Jay 對 Agent Jay 講一句固定觸發詞:</p>
+    <p>Jay 喺對話中間收到 Adam WhatsApp,唔需要 close 個對話開新嘅。Jay 對 Agent Jay 講一句官方觸發詞:</p>
     <ul>
-      <li><code>check Hub</code></li>
-      <li><code>睇下 Hub 有冇新嘢</code></li>
-      <li><code>未消化</code></li>
+      <li><code>check Hub</code> — 官方觸發詞,最短最直接。Agent 認 case-insensitive(<code>check hub</code> / <code>Check Hub</code> 都得)。</li>
     </ul>
-    <p>三句 Agent Jay 都認得。Agent Jay 即刻去共享資料夾撿,計算差集,將新待辦呈現畀 Jay。Jay 揀做唔做、幾時做。</p>
+    <p>另外兩句同義講法 — <code>睇下 Hub 有冇新嘢</code>、<code>未消化</code> — Bridge Pack 都認,做 fuzzy 兜底(句入面含 <code>Hub</code> 連同 <code>新</code> / <code>未消化</code> / <code>check</code> 任一個字眼,即觸發同一個 handler)。用慣邊句都得,但官方一句係 <code>check Hub</code>。</p>
+    <p>觸發之後 Agent Jay 即刻去共享資料夾撿,計算差集,將新待辦呈現畀 Jay。Jay 揀做唔做、幾時做。</p>
   </div>
 
   <div class="callout">
@@ -1155,7 +1185,7 @@
   <h2><span class="sec-num">10.</span>出咗錯點救</h2>
 
   <h3>10.1 出咗 Drive 衝突副本(file (1).md 之類)</h3>
-  <p>理論上唔應該發生,因為單寫道規矩。如果見到:</p>
+  <p>理論上唔應該發生,因為單寫道規矩。Bridge Pack 喺每次啟動同 <code>check Hub</code> 觸發嗰陣會自動掃共享資料夾,掃到任何含 <code>conflict</code> 字眼嘅檔即時報畀你睇 — 用戶唔需要主動跑命令查。如果 Agent 報咗,或者你自己肉眼見到:</p>
   <ul>
     <li>Adam 或 Jay <strong>唔好</strong>即時手動刪。</li>
     <li>停手,寫低嗰個衝突檔嘅完整路徑同名。</li>

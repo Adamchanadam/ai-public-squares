@@ -36,6 +36,33 @@
 
 ---
 
+## Tooling shortcut (added 2026-05-21 S5)
+
+`tools/aps-onboard.ps1` automates T2-T5 in one idempotent invocation. T1 (read-only baseline check), T6 (SESSION_HANDOFF Durable Anchors — judgement-bearing), and T7-T8 prerequisites stay manual. The script was verified for the idempotency-skip path against `Demo_Agent_Adam_Public_Squares`; first real insertion-path verification will happen during Block 4A's first real run on `<RUNTIME_ADAM>`.
+
+Adam-side usage example (substitute `<PROJECT>` from T0):
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File <path-to-this-workspace>\tools\aps-onboard.ps1 `
+  -RuntimeRoot "<RUNTIME_ADAM>" `
+  -ProjectSlug "<PROJECT>" `
+  -AgentId "adam" `
+  -OtherAgentId "jay" `
+  -HubRoot "G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares" `
+  -DemoPackPath "C:\Users\adam\_claude_desktop\Demo_Agent_Adam_Public_Squares\dev\rules\aps-bridge.md" `
+  -DryRun  # remove this flag once dry-run output looks right
+```
+
+Jay-side invocation is symmetric: `-AgentId "jay" -OtherAgentId "adam"`, with the demo Jay pack as `-DemoPackPath`. Adam sends the script + the relevant demo pack to Jay via WhatsApp / Drive before Block 4B.
+
+After the script: do T6 manually per walkthrough §4 step 6 (Adam) or §5 (Jay) of `docs/guides/aps-onboarding-walkthrough.html`, then run `npx @adamchanadam/agent-handoff-kit doctor` in the runtime workspace to verify governance health.
+
+Manual fallback: the per-task steps below (T2-T5) remain authoritative. If PowerShell is unavailable or you prefer to see each edit, follow them by hand — the script's behaviour matches them line-for-line.
+
+Execution-policy note: if PowerShell refuses to run unsigned scripts, the `-ExecutionPolicy Bypass` flag in the invocation above applies per-process only (does not change system policy).
+
+---
+
 ## Phase 4 scope
 
 Four blocks, ten tasks. Block A is Adam-machine-only (independent). Block B is Jay-machine-only (independent). Block C requires A + B. Block D is recommended before any real branding asset >50 MB crosses.
@@ -58,17 +85,48 @@ Four blocks, ten tasks. Block A is Adam-machine-only (independent). Block B is J
 
 **Owner:** Adam decides, Jay confirms via WhatsApp.
 
-**Decide and write down (append as a short "Confirmed parameters" block at the bottom of this plan when settled):**
+**Decide and write down (append to the "Confirmed parameters" block at the bottom of this plan when settled). Layer 2 polish (2026-05-21 S4): real decision burden is 3 categories; remaining 4 are defaults with sensible inheritance from MVP.**
+
+**Decide (3 user decisions):**
 
 | Parameter | Constraint | Initial proposal |
 |---|---|---|
-| `<PROJECT>` (project_slug for real runtime) | lower snake_case, ≤ 30 chars, unique on Hub, must differ from any demo slug if demo data should not be reused | `mpedu_plus_branding` (reuse demo slug + clean lane data) OR `mpedu_branding_2026` (fresh slug, demo data left alone) |
-| Adam's `agent_id` | lower snake_case, stable across sessions | `adam` (matches demo) |
-| Jay's `agent_id` | lower snake_case, stable across sessions | `jay` (matches demo) |
-| `<RUNTIME_JAY>` | reachable + writable on Jay's machine, kit-init'd | TBD — Jay picks |
-| Hub permissions for Jay | read on `<HUB>` overall; write on `<HUB>\<PROJECT>\from_jay\…` and `<HUB>\<PROJECT>\_ack\jay.ack.json` only | TBD — Adam confirms current Drive share is sufficient |
+| `<PROJECT>` (project_slug for real runtime) | lower snake_case, ≤ 30 chars, unique on Hub | NEW slug recommended (e.g. `mpedu_branding_2026`); demo lane on Hub stays untouched. Reusing demo slug requires clearing demo lane data — extra step, usually not worth it. |
+| `<RUNTIME_JAY>` + `<RUNTIME_JAY_HUB>` | Jay's machine: workspace reachable + writable + kit-init'd; Hub mount set offline-available | TBD — Jay picks (may use a different drive letter than Adam's `G:\`; expected) |
+| T10 large-attachment dry-run | execute in Phase 4 / formally defer | Execute recommended before any real >50 MB asset. Acceptable to defer if near-term assets are all text. |
 
-**Acceptance:** all 5 rows decided and recorded in this plan before T1 begins. If `<PROJECT>` reuses the demo slug `mpedu_plus_branding`, lane data on Hub from MVP round-trip must be cleared (delete or move the two existing packet folders and the two ack files; reset both `outbox.log.md` to template). If `<PROJECT>` is a new slug, just create a fresh lane skeleton on Hub.
+**Defaults (no decision needed unless deviating):**
+
+| Parameter | Default | When to override |
+|---|---|---|
+| Adam's `agent_id` | `adam` (matches demo) | Almost never. |
+| Jay's `agent_id` | `jay` (matches demo) | Same. |
+| Demo slug data handling | Leave untouched (new-slug default means demo lane is independent) | Only relevant if reusing demo slug, in which case data must be cleared before T1 (see Acceptance below). |
+| Adam's `hub_root` + Drive share permissions for Jay | Inherit from MVP setup (read on `<HUB>`; write scoped to `<HUB>/<PROJECT>/from_jay/...` and `<HUB>/<PROJECT>/_ack/jay.ack.json`) | If MVP Drive share was at slug-folder level (not the parent `AI_Public_Squares` root), the new slug needs a new explicit share. Otherwise inherit. Not recorded as a separate row in Confirmed parameters because it's purely inherited. |
+
+**Acceptance:** 3 decisions settled (rows above) + 4 defaults confirmed (override only if needed); all 7 settled parameter slots recorded in the "Confirmed parameters" block at the bottom of this plan before T1 begins. If `<PROJECT>` reuses the demo slug `mpedu_plus_branding`, lane data on Hub from MVP round-trip must be cleared (delete or move the two existing packet folders and the two ack files; reset both `outbox.log.md` to template). If `<PROJECT>` is a new slug (recommended), just create a fresh lane skeleton on Hub.
+
+---
+
+### T0b — Bridge Pack Layer 1 polish (demo workspace prerequisite, added 2026-05-21)
+
+**Why:** Two startup-side behaviours land in the demo packs first so T2 / T8's "copy demo pack verbatim" naturally inherits them. Avoids repeating the polish per real-runtime onboarding, and removes friction the live S3 review surfaced (user no longer has to remember a shell `find` command; one canonical mid-session trigger instead of three).
+
+**Owner:** Adam. Executes in `Demo_Agent_Adam_Public_Squares` session, then mirrors to `Demo_Agent_Jay_Public_Squares` session. Independent of T0; can run any time before T2.
+
+**Behaviours to add to Bridge Pack (`dev/rules/aps-bridge.md` in each demo workspace), between the existing Identity section and the existing closeout-side-effect section:**
+
+1. **Conflict-file auto-scan.** On every session startup AND every `check Hub` mid-session trigger, the agent scans `<HUB>/<PROJECT>/` recursively for any filename containing `conflict` (case-insensitive). If any match, surface to user with the full path immediately. Never auto-delete; the existing user-recovery flow (walkthrough §10.1) handles the rest.
+
+2. **Canonical mid-session trigger.** Accept `check Hub` (case-insensitive) as the official trigger phrase. Continue to recognise synonyms by fuzzy match: a user utterance containing `Hub` plus any of `新` / `未消化` / `check` (case-insensitive) fires the same handler. Walkthrough §9 carries the user-facing version of this contract.
+
+**Acceptance:**
+
+- Both demo packs include the two behaviours. `grep -c "conflict" Demo_Agent_Adam_Public_Squares/dev/rules/aps-bridge.md` ≥ 1 and same for demo Jay.
+- Cross-pack diff (`diff -u <demo Adam pack> <demo Jay pack>`) shows only Identity-section differences (matches pre-Layer-1 baseline).
+- Each demo workspace's own `dev/SESSION_LOG.md` records the patch session and commits.
+
+**Note:** T2 step 1 ("Copy demo Adam's pack verbatim") and T8 step 1 inherit these once the demo packs are patched, so Block 4A / 4B do not need separate Bridge Pack code changes. If T0b is skipped or partially done, T2 / T8 must apply the two behaviours inline before the runtime onboarding is considered complete.
 
 ---
 
@@ -96,6 +154,8 @@ Mirrors MVP T4–T9 but runs against `<RUNTIME_ADAM>` instead of the demo worksp
 ---
 
 ### T2 — Install Bridge Pack into Adam's real runtime
+
+> **Tooling shortcut:** this step (and T3-T5) can be done by `tools/aps-onboard.ps1` — see Tooling shortcut at top of plan. The manual steps below remain authoritative.
 
 **Why:** Real runtime gets the same Bridge Pack as the demo, with one change: Identity values updated to real-runtime parameters from T0. PROTOCOL.md authoritative tie-breaker line preserved.
 
@@ -135,6 +195,8 @@ with only Identity section adapted to real runtime parameters.
 
 ### T3 — Wire Bridge Pack into Adam's `RULE_PACKS.md`
 
+> **Tooling shortcut:** done by `tools/aps-onboard.ps1` — see Tooling shortcut at top of plan. The manual steps below remain authoritative.
+
 Mirror MVP T6: add the routing row verbatim into `<RUNTIME_ADAM>\dev\RULE_PACKS.md` before the `## Routing Rule` section.
 
 Routing row content (same as MVP):
@@ -151,6 +213,8 @@ Routing row content (same as MVP):
 
 ### T4 — Register Hub as External Source in Adam's `PROJECT_INDEX.md`
 
+> **Tooling shortcut:** done by `tools/aps-onboard.ps1` — see Tooling shortcut at top of plan. The manual steps below remain authoritative.
+
 Mirror MVP T7: add or update the External Sources row with the chosen `<PROJECT>` from T0.
 
 Row content (substitute `<PROJECT>`):
@@ -166,6 +230,8 @@ Row content (substitute `<PROJECT>`):
 ---
 
 ### T5 — Add APS sync rows to Adam's `DOC_SYNC_REGISTRY.md`
+
+> **Tooling shortcut:** done by `tools/aps-onboard.ps1` — see Tooling shortcut at top of plan. The manual steps below remain authoritative.
 
 Mirror MVP T8 — two rows added before the `## Registry Rule` section:
 
@@ -379,6 +445,7 @@ APS Hub has new traffic. Open a new session and paste this to your agent:
 Phase 4 is done when all of the following hold:
 
 1. T0 parameters locked and appended to this plan.
+1b. T0b Bridge Pack Layer 1 polish (conflict auto-scan + canonical `check Hub` trigger) landed in demo Adam and demo Jay packs, so T2 / T8 inherit naturally. If T0b skipped, the two behaviours applied inline at T2 / T8 instead.
 2. `<RUNTIME_ADAM>` has Bridge Pack installed and registered in `RULE_PACKS.md` / `PROJECT_INDEX.md` / `DOC_SYNC_REGISTRY.md`. Kit doctor green there.
 3. `<RUNTIME_JAY>` (Jay's machine) has equivalent. Jay confirms doctor green there.
 4. One live `<PROJECT>` packet has crossed from Adam → Jay and a reply has come back, across two physical machines, with at most two WhatsApp trigger lines and no other human context relay.
@@ -432,15 +499,17 @@ These are listed so future planners do not try to fold them in:
 
 # Confirmed parameters (fill in at T0 close)
 
-| Parameter | Value | Decided on | By |
-|---|---|---|---|
-| `<PROJECT>` | TBD | TBD | Adam |
-| Adam `agent_id` | TBD | TBD | Adam |
-| Jay `agent_id` | TBD | TBD | Adam |
-| `<RUNTIME_JAY>` | TBD | TBD | Jay |
-| `<RUNTIME_JAY_HUB>` | TBD | TBD | Jay |
-| Demo slug data handling | TBD (keep / clear / new slug) | TBD | Adam |
-| T10 status | TBD (executed / deferred with reason) | TBD | Adam |
+Mirrors T0 section's 3 + 4 grouping. Decision rows first (4 slots: PROJECT + Jay 2 paths + T10); default rows after (3 slots: 2 agent_ids + demo slug data). Adam's hub_root + Drive permissions is purely inherited from MVP — no separate row.
+
+| Parameter | Value | Decided on | By | Type |
+|---|---|---|---|---|
+| `<PROJECT>` | TBD | TBD | Adam | decision |
+| `<RUNTIME_JAY>` | TBD | TBD | Jay | decision |
+| `<RUNTIME_JAY_HUB>` | TBD | TBD | Jay | decision |
+| T10 status | TBD (executed / deferred with reason) | TBD | Adam | decision |
+| Adam `agent_id` | `adam` (default unless deviating) | TBD | Adam | default |
+| Jay `agent_id` | `jay` (default unless deviating) | TBD | Adam | default |
+| Demo slug data handling | leave untouched (default, given new-slug recommendation) | TBD | Adam | default |
 
 ---
 
@@ -478,3 +547,6 @@ After each task, append acceptance evidence to dev/SESSION_LOG.md in this worksp
 ## File history
 
 - 2026-05-21: initial Phase 4 plan; drafted after MVP verification complete and demo workspaces aligned to kit v0.1.7.
+- 2026-05-21 (S3, same day, later): added T0b — Bridge Pack Layer 1 polish (conflict auto-scan + canonical `check Hub` trigger) as demo-workspace prerequisite. Updated acceptance criteria with #1b. Driven by Layer 1 of the user-flow simplification review; companion edits in `docs/guides/aps-onboarding-walkthrough.html` §6, §8, §9, §10.1.
+- 2026-05-21 (S4, same day, latest morning): Layer 2 polish — T0 table split into Decide (3) + Defaults (4), Acceptance text rewritten, bottom Confirmed parameters re-ordered with Type column. Companion edits in walkthrough §3 + §8.
+- 2026-05-21 (S5, same day, latest afternoon): added Tooling shortcut section (above Phase 4 scope) introducing `tools/aps-onboard.ps1` — PowerShell idempotent installer that automates T2-T5. T2-T5 each cross-link the shortcut; their manual steps remain authoritative. Script verified for idempotency-skip path against demo Adam; insertion-path real verification deferred to Block 4A first run. Companion edits: `tools/aps-onboard.ps1` (new), `dev/PROJECT_INDEX.md` (`tools/` Directory Map row), walkthrough §4 + §5 (short note pointing to shortcut).

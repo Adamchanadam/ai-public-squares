@@ -1,4 +1,4 @@
-Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (Phase 4 plan SSOT). Most actual Phase 4 execution will happen elsewhere — in C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\ (Adam real runtime) and on Jay's machine — once Phase 4 starts. If you intend to execute Phase 4 Block 4A, open a new session inside that real runtime workspace instead of this one.
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (Phase 4 plan SSOT). Most actual Phase 4 execution happens elsewhere — Adam real runtime at C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\ and Jay's machine. If you intend to execute Phase 4 Block 4A, open a new session inside that real runtime workspace instead of this one. If you intend to apply Bridge Pack T0b polish, do it inside Demo_Agent_Adam_Public_Squares / Demo_Agent_Jay_Public_Squares sessions (one each).
 
 Read in order:
 1. AGENTS.md
@@ -12,8 +12,13 @@ Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
-Current state (as of 2026-05-21): APS MVP verified on same-machine simulation; both demo workspaces aligned to Agent Handoff Kit v0.1.7; Phase 4 implementation plan complete; user-facing docs expanded with guides hub + onboarding walkthrough. Next task is Phase 4 execution itself — Block 4A (Adam real runtime; independent; new session there) is the first move; Block 4B (Jay machine) waits for Jay; Block 4C round-trip depends on both; Block 4D large-attachment dry-run optional.
+Current state (as of 2026-05-21 S5 closeout): APS MVP verified; both demo workspaces at kit v0.1.7; Phase 4 plan complete with T0b Bridge Pack prerequisite + Layer 2 T0 restructure (3 decisions + 4 defaults) + Layer 3 Tooling shortcut introducing tools/aps-onboard.ps1; user-facing walkthrough refined under all three layers — canonical mid-session trigger `check Hub` + 2 synonyms; daily WhatsApp short `Hub 有新嘢`; mid-session `check Hub` is the 默認嘅日常 primary pattern; auto-conflict-scan moved to Bridge Pack; UTC/find marked first-cross-machine verification only; T0 parameter decision burden cut from 5+ to 3; PowerShell helper script tools/aps-onboard.ps1 covers T2-T5 idempotently (T6 stays manual).
 
-User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html — written in everyday Cantonese-blended written Chinese (no internal codes as sentence subjects per user voice discipline), with four inline SVG flow diagrams (overview / cross-machine handover / daily 7-step / error-recovery decision). Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md. Shared nav link to the plan reads "跨機接駁計劃" across all three HTML pages.
+Next user-driven actions (3 independent threads):
+- T0b execution in Demo_Agent_Adam + Demo_Agent_Jay sessions: apply two Bridge Pack startup behaviours per Phase 4 plan T0b.
+- Block 4A in MPEdu_Plus_Branding real runtime: Layer 1 + Layer 2 + Layer 3 (with Tooling shortcut) + T0b pre-state ready. Block 4A first run is also the script's first real insertion-path verification.
+- T0 parameter lock with Jay: 3 user decisions (PROJECT / Jay 部機路徑 / T10) per Phase 4 plan T0 / walkthrough §3.
+
+User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md. PowerShell helper at tools/aps-onboard.ps1 with inline `Get-Help` documentation.
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.

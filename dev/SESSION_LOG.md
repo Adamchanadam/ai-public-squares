@@ -8,6 +8,235 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
+## 2026-05-21 (S5, latest, same day) — Layer 3: PowerShell onboarding helper
+
+- **ID:** S5
+- **Summary:** Landed Layer 3 of three-layer simplification per agreed staged-deadline plan (Layer 3 due pre-Block-4B, written ahead of schedule). One new file (`tools/aps-onboard.ps1`, ~225 lines PowerShell idempotent installer covering Phase 4 plan T2-T5) + cross-doc references in Phase 4 plan, walkthrough §4/§5, and `dev/PROJECT_INDEX.md`. User flagged S5's initial five-zone plan as「自檢不足，深入檢查」; refined plan caught 13 omissions across critical-tech / structure / minor / timing / verification before any file change.
+- **Changed:** This workspace only.
+  - New: `tools/aps-onboard.ps1` — PowerShell idempotent installer with `-DryRun`, automating T2-T5 (Bridge Pack copy + Identity substitute / RULE_PACKS routing row / PROJECT_INDEX External Sources row / DOC_SYNC_REGISTRY two sync rows). T6 (SESSION_HANDOFF Durable Anchors) intentionally manual. Inline help (CommentBasedHelp) covers usage + execution-policy guidance.
+  - Modified: `docs/plans/2026-05-21-aps-phase4-plan.md`:
+    - New "Tooling shortcut" section hoisted above Phase 4 scope, spec'd once; T2/T3/T4/T5 each gained a one-line cross-link pointing back to it (avoids 4-place spec duplication per §19 防漂移).
+    - File history appended (S5 entry + back-fill of S4).
+  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — §4 + §5 each gained a `.callout` introducing the helper script (`tools/aps-onboard.ps1` named inline) and linking to plan Tooling shortcut.
+  - Modified: `dev/PROJECT_INDEX.md` — Directory Map gained `tools/` row.
+  - Modified: `dev/SESSION_LOG.md` (this entry).
+  - Modified: `dev/SESSION_HANDOFF.md` (S5 closeout reconciliation).
+  - Regenerated: `START_NEXT_SESSION_PROMPT.txt`.
+- **Done:**
+  - Script design absorbs 13 self-audit gaps (critical-tech / structure / minor / timing / verification):
+    1. Newline preservation: `Get-FileNewline` detects CRLF / LF from raw bytes; inserted rows match.
+    2. Execution policy: inline help + Phase 4 plan Tooling shortcut both teach `-ExecutionPolicy Bypass` per-invocation pattern.
+    3. Section-missing handling: T3/T4/T5 each pre-check the anchor heading; throw with clear "Manual fallback: ..." message if absent.
+    4. Substitution count verify: `Set-IdentityField` throws if pattern match count = 0 (silent no-op prevented).
+    5. Cross-doc consistency: walkthrough §4 + §5 cross-link added; plan Tooling shortcut + manual T2-T5 + script self-help share single spec source.
+    6. Hoist-over-repeat: Tooling shortcut spec lives once; T2-T5 only cross-link.
+    7. PROJECT_INDEX row content spec'd explicitly: `tools/ | APS onboarding helper script (and future tooling); tools/aps-onboard.ps1 is the idempotent installer for Phase 4 plan T2-T5 | when onboarding a runtime to APS, or extending workspace tooling`.
+    8. Sync row mapping: new file covered by existing "New file or directory" registry row (PROJECT_INDEX Directory Map update satisfies it).
+    9. RuntimeRoot non-root validation: rejects paths ≤4 chars or matching `^[A-Za-z]:\\?$`.
+    10. Final-message doctor reminder: script's non-DryRun completion line tells user to run kit doctor.
+    11. T6 reminder bilingual (English + Cantonese).
+    12. Timing caveat: Layer 3 due pre-Block-4B; written ahead of schedule. Plan + S5 entry explicitly flag「Script verified for idempotency-skip path; insertion-path real verification deferred to Block 4A」.
+    13. Parse-check via `[scriptblock]::Create` instead of `Get-Command` (latter doesn't enforce parse on .ps1).
+  - Script verified: PowerShell parse PARSE_OK; dry-run against `Demo_Agent_Adam_Public_Squares` (already onboarded) reported 4 SKIPs + T6 bilingual reminder.
+- **QC:**
+  - Acceptance tests run: #1 (file exists ✓), #2 (parse PARSE_OK ✓), #3 (7 plan refs, expect ≥5 ✓), #4 (2 walkthrough refs after filename-inline fix ✓), #5 (PROJECT_INDEX row present ✓), #6 (dry-run against demo Adam: 4 SKIPs ✓), #8 (git status 7 M + 1 ?? ✓).
+  - Acceptance tests deferred per五區段 boundary: #7 (section-missing error path — need fake/empty workspace; not built here), #9 (insertion-path real verification — Block 4A first run on `<RUNTIME_ADAM>` will be the first real insertion).
+  - In-flight fix: initial walkthrough callouts mentioned "helper script" without `aps-onboard.ps1` filename inline, causing Test #4 to fail at 0 hits. Filename added inline in both §4 and §5 callouts; re-run hit 2 (passing).
+  - Voice / terminology discipline: walkthrough callouts kept Cantonese-narrative voice; `aps-onboard.ps1` appears as `<code>` reference (legitimate inline pointer, not sentence subject).
+  - PII / secrets scan: none.
+  - PowerShell tool used directly for parse-check + dry-run (Bash had backtick interpolation issue).
+- **Sync:**
+  - APS protocol / plan / verification change: confirmed — Tooling shortcut + T2-T5 cross-links + file history.
+  - APS user-facing docs change: confirmed — walkthrough §4 + §5 callouts; site-nav unchanged; Fact Base unchanged (no new HTML pages).
+  - New file or directory: confirmed — `tools/` added to PROJECT_INDEX Directory Map.
+- **Pending:**
+  - T0b execution in Demo_Agent_Adam + Demo_Agent_Jay sessions — independent.
+  - Phase 4 Block 4A — real `MPEdu_Plus_Branding` runtime onboarding. Will be the script's first real insertion-path test.
+  - T0 parameter lock with Jay.
+  - Three layers of simplification all done; no more polish work scheduled.
+- **Risks:** unchanged from S4. New surface introduced by `tools/aps-onboard.ps1` is bounded — script is idempotent, dry-run-capable, has clear fallback (manual T2-T5).
+- **Log maintenance:** kept; new entry at top; S4 + S3 + S2 + S1 retained as-is.
+
+### Next Session Opening Message
+
+📋 Next session: copy and paste the whole block below
+
+```text
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (Phase 4 plan SSOT). Most actual Phase 4 execution happens elsewhere — Adam real runtime at C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\ and Jay's machine. If you intend to execute Phase 4 Block 4A, open a new session inside that real runtime workspace instead of this one. If you intend to apply Bridge Pack T0b polish, do it inside Demo_Agent_Adam_Public_Squares / Demo_Agent_Jay_Public_Squares sessions (one each).
+
+Read in order:
+1. AGENTS.md
+2. dev/SESSION_HANDOFF.md
+3. dev/SESSION_LOG.md
+4. dev/PROJECT_INDEX.md
+5. dev/RULE_PACKS.md
+6. docs/plans/2026-05-21-aps-phase4-plan.md
+
+Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
+
+If this root does not match the expected project root, stop and ask for confirmation.
+
+Current state (as of 2026-05-21 S5 closeout): APS MVP verified; both demo workspaces at kit v0.1.7; Phase 4 plan complete with T0b Bridge Pack prerequisite + Layer 2 T0 restructure (3 decisions + 4 defaults) + Layer 3 Tooling shortcut introducing tools/aps-onboard.ps1; user-facing walkthrough refined under all three layers — canonical mid-session trigger `check Hub` + 2 synonyms; daily WhatsApp short `Hub 有新嘢`; mid-session `check Hub` is the 默認嘅日常 primary pattern; auto-conflict-scan moved to Bridge Pack; UTC/find marked first-cross-machine verification only; T0 parameter decision burden cut from 5+ to 3; PowerShell helper script tools/aps-onboard.ps1 covers T2-T5 idempotently (T6 stays manual).
+
+Next user-driven actions (3 independent threads):
+- T0b execution in Demo_Agent_Adam + Demo_Agent_Jay sessions: apply two Bridge Pack startup behaviours per Phase 4 plan T0b.
+- Block 4A in MPEdu_Plus_Branding real runtime: Layer 1 + Layer 2 + Layer 3 (with Tooling shortcut) + T0b pre-state ready. Block 4A first run is also the script's first real insertion-path verification.
+- T0 parameter lock with Jay: 3 user decisions (PROJECT / Jay 部機路徑 / T10) per Phase 4 plan T0 / walkthrough §3.
+
+User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md. PowerShell helper at tools/aps-onboard.ps1 with inline `Get-Help` documentation.
+
+After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
+```
+
+## 2026-05-21 (S4, latest, same day) — Layer 2 polish: T0 simplification + daily-default flip
+
+- **ID:** S4
+- **Summary:** Landed Layer 2 of three-layer simplification per S3 staged-deadline plan (Layer 2 due pre-Block-4A). Two design-level changes with zero protocol change: T0 parameter pinning collapsed from 5 implicit + 2 hidden = 7 to a 3-decision + 4-default explicit grouping; daily round-trip's default trigger flipped from "open new session + paste long template" to "mid-session `check Hub`". User flagged S4's initial five-zone plan as insufficient; refined plan caught 8 omissions before execution (documented inline below).
+- **Changed:** This workspace only — no demo workspace, Hub, or real-runtime edits.
+  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — 4 inline patches:
+    - §3 整段 rewrite: lede compressed from "一個半小時" to "十五分鐘左右" (matches reduced decision burden); single 6-row params table split into "要拍板嘅三件事" (3 rows: PROJECT / Jay 部機路徑 / T10) + "預設默認嘅四件事" (4 rows: 2 agent_ids / demo slug data / Adam Hub + permissions); default table column header "幾時要改默認" (純中文,no "override"); bottom "傾妥之後" paragraph simplified (no more brittle "七行" count).
+    - §8 SVG step ④ label: "④ 開新對話 paste" → "④ 講 check Hub" (mid-session as primary daily pattern).
+    - §8 SVG step ⑨ label: same flip for the Adam-side reply-collection step.
+    - §8 "日常 WhatsApp 短訊版" callout rewritten: mid-session `check Hub` is now explicitly the "默認嘅日常 primary pattern"; open-new-session + paste is demoted to "fallback,只限第一次跨機(§6)或者你想 fresh start".
+  - Modified: `docs/plans/2026-05-21-aps-phase4-plan.md` — 2 patches:
+    - T0 section table rewritten as "Decide (3 user decisions)" (PROJECT / `<RUNTIME_JAY>` + `<RUNTIME_JAY_HUB>` paired / T10) + "Defaults (no decision needed unless deviating)" (4 rows incl. new explicit row for Adam's `hub_root` + Drive share permissions, with edge-case note for slug-folder-level Drive sharing); Acceptance text rewritten to "3 decisions settled + 4 defaults confirmed".
+    - Bottom "Confirmed parameters" table re-ordered (decisions first, defaults after) and gained a Type column. Now 7 rows mirroring T0 mid-section's 3+4 grouping; explicit lead-in paragraph notes Adam's hub_root + permissions is purely inherited from MVP (not a Confirmed-parameters row).
+  - Modified: `dev/SESSION_LOG.md` (this entry).
+  - Modified: `dev/SESSION_HANDOFF.md` (S4 closeout reconciliation).
+  - Regenerated: `START_NEXT_SESSION_PROMPT.txt` (no content change actually needed — Active Objective now lists 4 threads instead of 5; updated for accuracy).
+- **Done:**
+  - Layer 2 fully landed in this workspace (covers S3 review items #5 and #6).
+  - Self-audit-before-execution discipline applied: user flagged initial five-zone plan as insufficient ("自檢不足，優化"); I re-audited and surfaced 8 gaps before any file change:
+    1. Drive sharing edge case at slug-folder level (added to default cell).
+    2. Lede time estimate stale (90 min → 15 min).
+    3. §3 ending pointer to技術版計劃文檔 not preserved in initial draft (preserved + simplified wording).
+    4. T0 Acceptance text change spec too vague ("微調") (made specific: "3 decisions settled + 4 defaults confirmed").
+    5. Column header "幾時要 override" used alien English (changed to「幾時要改默認」).
+    6. Acceptance test missing for §8 callout primary-phrase flip (added grep test).
+    7. Boundary didn't flag §6 SVG as deliberately kept (added to "唔做嘅嘢").
+    8. Bottom Confirmed parameters table structure not specified (added re-order plan).
+  - 10 grep acceptance tests all pass on first run.
+- **In-session iteration:** none (Layer 2 patches landed first pass after refined-plan acceptance; no follow-up flags yet).
+- **QC:**
+  - 10 grep acceptance checks all pass (counts as predicted, including "講 check Hub" = 4 because both SVG `<text>` element and adjacent `<!-- comment -->` line contain the phrase — expected, counts as教學評論 reinforcement).
+  - HTML preview panel rendered cleanly after each edit step.
+  - Voice / terminology discipline: §3 + §8 user-facing content uses everyday written Chinese; only internal codes appearing are `check Hub` (deliberate canonical trigger phrase per S3 Layer 1) and `<code>` references — none as sentence subjects.
+  - PII / secrets scan: none.
+  - Cross-doc consistency: §3 walkthrough's 3 decisions match Phase 4 plan T0's 3 decisions one-to-one; §3 4 defaults match T0 4 defaults; bottom Confirmed parameters table aligns with T0 mid-section grouping.
+  - kit doctor: to be run by user at convenience; managed-core block untouched.
+- **Sync:**
+  - APS protocol / plan / verification change: confirmed — Phase 4 plan T0 + Confirmed parameters restructured; covered by sync registry row 20 (path glob `docs/plans/2026-05-*.md`).
+  - APS user-facing docs change: confirmed — walkthrough §3 + §8 patches; covered by sync registry row 22.
+- **Pending:**
+  - Layer 3 (onboarding helper script for the 5 governance file edits per real runtime) — before Block 4B; can write in 4A-to-4B waiting window.
+  - T0b execution (Bridge Pack patches in `Demo_Agent_{Adam,Jay}_Public_Squares` sessions) — independent.
+  - Phase 4 Block 4A — real `MPEdu_Plus_Branding` runtime onboarding. Pre-state now polished: Layer 1 (S3) + Layer 2 (S4) both inherited via教學頁 + Phase 4 plan. Can start any time.
+  - T0 parameter lock with Jay — can happen here (plan SSOT workspace) or in parallel with 4A T1.
+- **Risks:** unchanged from S3. No new risks introduced (Layer 2 = text + table restructure only).
+- **Log maintenance:** kept; new entry at top; S3 + S2 + S1 retained as-is.
+
+### Next Session Opening Message
+
+📋 Next session: copy and paste the whole block below
+
+```text
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (Phase 4 plan SSOT). Most actual Phase 4 execution happens elsewhere — Adam real runtime at C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\ and Jay's machine. If you intend to execute Phase 4 Block 4A, open a new session inside that real runtime workspace instead of this one. If you intend to apply Bridge Pack T0b polish, do it inside Demo_Agent_Adam_Public_Squares / Demo_Agent_Jay_Public_Squares sessions (one each).
+
+Read in order:
+1. AGENTS.md
+2. dev/SESSION_HANDOFF.md
+3. dev/SESSION_LOG.md
+4. dev/PROJECT_INDEX.md
+5. dev/RULE_PACKS.md
+6. docs/plans/2026-05-21-aps-phase4-plan.md
+
+Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
+
+If this root does not match the expected project root, stop and ask for confirmation.
+
+Current state (as of 2026-05-21 S4 closeout): APS MVP verified on same-machine simulation; both demo workspaces at Agent Handoff Kit v0.1.7; Phase 4 plan complete with T0b Bridge Pack prerequisite + Layer 2 T0 restructure (3 decisions + 4 defaults); user-facing walkthrough refined under Layer 1 + Layer 2 polish — one canonical mid-session trigger `check Hub`; daily WhatsApp short version `Hub 有新嘢`; mid-session `check Hub` now the 默認嘅日常 primary pattern (open-new-session demoted to fallback); auto-conflict-scan moved to Bridge Pack; UTC/find marked first-cross-machine verification only; T0 parameter decision burden cut from 5+ to 3.
+
+Next user-driven actions (4 independent threads):
+- T0b execution in Demo_Agent_Adam + Demo_Agent_Jay sessions: apply two Bridge Pack startup behaviours per Phase 4 plan T0b.
+- Block 4A in MPEdu_Plus_Branding real runtime: Layer 1 + Layer 2 + T0b pre-state make it smooth.
+- T0 parameter lock with Jay: 3 user decisions (PROJECT / Jay 部機路徑 / T10) per Phase 4 plan T0 / walkthrough §3.
+- Layer 3 helper script (pre-Block-4B): write in 4A-to-4B waiting window.
+
+User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md.
+
+After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
+```
+
+## 2026-05-21 (later, same day) — Layer 1 polish: user-flow simplification review
+
+- **ID:** S3
+- **Summary:** Reviewed Adam-user and Jay-user actual operating workflow across walkthrough + Phase 4 plan; identified 10 friction points; user picked the three-layer simplification (all). Landed Layer 1 (text patches, zero protocol change). Layers 2 + 3 deferred per agreed staged deadlines (Layer 2 pre-4A, Layer 3 pre-4B).
+- **Changed:** This workspace only — no demo workspace, no Hub, no real-runtime edits.
+  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — 5 inline patches:
+    - §6 added "首次跨機驗證 vs 日常運作" callout (frame UTC + full template as one-time驗收 actions).
+    - §6 Adam UTC step prefixed "(首跑驗收一次性)".
+    - §6 Jay UTC step prefixed "(首跑驗收一次性)"; manual `find` step replaced by "Agent 啟動自動掃過,如報衝突按 §10.1" — user no longer needs to run shell command.
+    - §8 added "日常 WhatsApp 短訊版" callout — daily pattern uses `Hub 有新嘢` + receiver `check Hub`; long English template kept as §6 教學 reference only.
+    - §9 trigger phrases collapsed from 3 equal to 1 official (`check Hub`, case-insensitive) + 2 synonyms via fuzzy match (`睇下 Hub 有冇新嘢` / `未消化` — fuzzy rule: utterance contains `Hub` + one of 新/未消化/check).
+    - §10.1 added Bridge Pack auto-scan note at top — agent reports conflict files automatically; user no longer needs to query.
+  - Modified: `docs/plans/2026-05-21-aps-phase4-plan.md`:
+    - New T0b section between T0 and Block 4A (Bridge Pack Layer 1 polish demo-workspace prerequisite) — specs the two behaviours (conflict auto-scan + canonical `check Hub` trigger) to land in demo Adam + demo Jay packs so T2 / T8 inherit via "copy demo pack verbatim".
+    - Acceptance criteria #1b added.
+    - File history appended.
+  - Modified: `dev/SESSION_LOG.md` (this entry).
+  - Modified: `dev/SESSION_HANDOFF.md` (S3 closeout reconciliation).
+  - Modified: `dev/DOC_SYNC_REGISTRY.md` (row 20 path glob updated to cover 2026-05-* plans).
+  - Regenerated: `START_NEXT_SESSION_PROMPT.txt`.
+- **Done:**
+  - Live operations review across walkthrough §4–§9 + Phase 4 plan T0–T10; clustered 10 friction items into 3 layers (text polish / design trade-offs / tooling).
+  - User chose all three with staged deadlines: Layer 1 immediate, Layer 2 pre-4A, Layer 3 pre-4B.
+  - Layer 1 four items all landed in this session.
+  - Structural deviation from original five-zone plan: replaced "T2 / T8 inline instruction notes" with a cleaner T0b prerequisite section. Same content, better placement (avoids duplicating spec in two places; makes the demo-workspace dependency explicit). Flagged in this entry + Phase 4 plan file history for traceability.
+- **QC:**
+  - 6 grep acceptance checks: 5 pass as predicted; 1 (`APS Hub has new traffic` count) returned 3 instead of predicted 1 — but all 3 hits are valid 教學 references (§6 Adam→Jay template, §6 Jay→Adam template, §8 callout referencing §6's location). Test intent ("long template not in 日常 usage") satisfied; predicted count was wrong because S2 plan author forgot §6 has two templates for direction symmetry.
+  - HTML preview panel rendered cleanly after each edit (visible to user in Launch preview during execution).
+  - PII / secrets scan: none.
+  - Voice / terminology discipline: no internal codes as sentence subjects in user-facing content. T0b uses internal label per Phase 4 plan's own naming convention (legitimate technical-doc usage, not sentence subject).
+  - kit doctor: to be run by user at convenience. Managed-core block untouched.
+- **Sync:**
+  - APS protocol / plan / verification change: confirmed — Phase 4 plan T0b + acceptance + history landed.
+  - APS user-facing docs change: confirmed — walkthrough 5 inline patches; site-nav unchanged; Fact Base rows unchanged.
+- **Pending:**
+  - Layer 2 (T0 simplification + §8 daily default switching to mid-session trigger as primary pattern) — before Block 4A starts.
+  - Layer 3 (onboarding helper script for the 5 governance file edits) — before Block 4B (Jay machine onboarding).
+  - T0b execution (Bridge Pack patch in demo Adam + demo Jay packs) — separate sessions in those workspaces.
+  - Phase 4 execution itself — unchanged from S2 closeout.
+- **Risks:** unchanged from S2. No new risks introduced (Layer 1 = text patches only).
+- **Log maintenance:** kept; new entry at top; S2 + S1 entries retained as-is (S2 carries the Phase 4 plan + user-facing docs evidence, S1 the MVP build evidence — both still load-bearing).
+
+### Next Session Opening Message
+
+📋 Next session: copy and paste the whole block below
+
+```text
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (Phase 4 plan SSOT). Most actual Phase 4 execution will happen elsewhere — in C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\ (Adam real runtime) and on Jay's machine — once Phase 4 starts. If you intend to execute Phase 4 Block 4A, open a new session inside that real runtime workspace instead of this one.
+
+Read in order:
+1. AGENTS.md
+2. dev/SESSION_HANDOFF.md
+3. dev/SESSION_LOG.md
+4. dev/PROJECT_INDEX.md
+5. dev/RULE_PACKS.md
+6. docs/plans/2026-05-21-aps-phase4-plan.md
+
+Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
+
+If this root does not match the expected project root, stop and ask for confirmation.
+
+Current state (as of 2026-05-21 S3 closeout): APS MVP verified on same-machine simulation; both demo workspaces aligned to Agent Handoff Kit v0.1.7; Phase 4 implementation plan complete (now with T0b Bridge Pack Layer 1 polish prerequisite); user-facing walkthrough refined with Layer 1 polish (one canonical trigger phrase `check Hub`; daily WhatsApp short version; auto-conflict-scan moved to Bridge Pack; UTC/find marked first-cross-machine verification only). Layer 2 (T0 simplification + daily default trigger) due pre-4A. Layer 3 (onboarding helper script) due pre-4B. T0b Bridge Pack patch due in demo workspaces before T2 (separate sessions in those workspaces).
+
+Next user-driven action: either (a) continue Layer 2 patches in this workspace, (b) start T0b in Demo_Agent_Adam_Public_Squares + Demo_Agent_Jay_Public_Squares sessions, (c) launch Block 4A in MPEdu_Plus_Branding real runtime (Layer 2 not strictly blocking if user accepts current onboarding text).
+
+User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md. Shared nav link to the plan reads "跨機接駁計劃" across all three HTML pages.
+
+After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
+```
+
 ## 2026-05-21 — Phase 4 plan + user-facing docs expansion
 
 - **ID:** S2
