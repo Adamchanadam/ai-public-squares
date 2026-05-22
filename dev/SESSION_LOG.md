@@ -62,6 +62,54 @@ Before closeout, check whether older log detail should be kept, summarized, or a
   - Previously closed risks unchanged: demo workspaces kit alignment, generic-template pivot, no remote git
 - **Log maintenance:** kept;new entry at top;S8-S1 retained as-is.
 
+### S9 Continuation (2026-05-22 later, same session) — Voice rewrite × 5 + walkthrough concrete + demo fixtures + design doc reframe
+
+User Adam 於 S9 reconcile #1(`230503d`)之後 持續推進。下 8 個 commits 之 work:
+
+| 範圍 | Commit | 主要內容 |
+|---|---|---|
+| 主頁 README v1 | `166e1b3` | 站讀者立場 + 前置 Agent Handoff Kit(初版仍粵語) |
+| 主頁 README v2 | `d1013bc` | 全當代繁體書面語(Adam 三度 escalate「不得硬砌中文詞語,全面用當代繁體書面語」之後) |
+| 入口頁 docs/index.html | `fcc61ed` | 全 voice + 5 個核心設計 plain reframe + 加 Agent Handoff Kit prereq section |
+| 內部檢討 funnel audit | `cc8790a` | 全 voice;框架代號(Stage / Layer / Phase)留內部 SSOT;Phase X-1 標記已完成、Q1 npm distribution 拍板 |
+| 設置教學 walkthrough 第一輪 | `3636f7b` | 第一次 voice rewrite + ship `examples/demo-agent-{a,b}/dev/rules/aps-bridge.md` + `examples/README.md` |
+| §5 step 1 sample | `e92962d` | Concrete rewrite sample(Adam pattern preview) |
+| Walkthrough batch concrete | `2d9d40f` | Adam confirm sample pattern 之後:加 §3 工作目錄 + cascade renumber(11→13 sections)+ §6 全 6 step + §7 全 step concrete rewrite(子步驟 + prompt + expected output 表 + 失敗處理 callout + acceptance) |
+| 設計理據 design doc | `78b52eb` | 全 voice;header「第一個落地實例」→「example narrative」;§12.3 加「2026-05-20 歷史快照」 disclaimer;Bridge Pack reference 路徑保留不變 |
+
+**累積成果:**
+
+- 5 份人讀文檔(主頁、入口頁、設置教學、內部檢討、設計理據)全部當代繁體書面語化
+- Walkthrough wall 修補:新 §3「準備你嘅項目工作目錄」 + 修 §5 step 1 wrong instruction(「睇 AGENTS.md 頭幾行記低版本」 → 「執行 doctor 自動報版本」)+ ship demo fixtures(讀者 clone repo 即可揾到,不再依賴 maintainer 機嘅 sibling path)+ 每 step concrete actionable form
+- 新 memory file:`feedback-doc-voice.md`(三度 escalate 後 strict 「全用當代繁體書面語」 rule);`reference-agent-handoff-kit-prerequisite.md`(所有入門文件明寫 Agent Handoff Kit 前置)
+- Verbatim 用戶觸發句保留於 `<code>` blocks 內(「Hub 有新嘢」 / 「check Hub」 / 「未消化」 / 「睇下 Hub 有冇新嘢」)
+- 跨文檔 narrative consistency:Adam / Jay disclaimer / 痛點 → 安裝 → 使用 → 深入 之 pattern 一致
+
+**Git history this session 累積(19 commits, all pushed to origin/main):**
+
+- S8 + walkthrough audit + GitHub bootstrap(10 commits):`65456c0` / `3cc0b13` / `5f8d46e` / `3d1f716` / `5b0b94f` / `8a86dcb` / `62878d5` / `e6e38fd` / `b0255c1` / `89b3012`
+- S9 reconcile #1:`230503d`
+- S9 continuation(8 commits):`166e1b3` / `d1013bc` / `fcc61ed` / `cc8790a` / `3636f7b` / `e92962d` / `2d9d40f` / `78b52eb`
+
+**QC:**
+
+- 每 voice rewrite 後 grep 確認粵語 colloquial marker 0 hit(除 verbatim user trigger phrase 於 code blocks)
+- 跨文檔 narrative consistency 驗證:README + docs/index.html + walkthrough §1 disclaimer 之 「Adam / Jay = User A / User B」 framing 一致;§2 安裝先決事項 對齊;Agent Handoff Kit prereq wording 對齊
+- 8 個 push 全部 verify by remote ref update
+- Walkthrough §6 step 1 sample(`e92962d`)Adam confirmed pattern OK,後續 batch concrete rewrite 之 §6 / §7 跟同樣 pattern
+
+**Pending:**
+
+- Phase X-2 真 `init` orchestration 仍待建構
+- Phase X-3 skill setup subflow 仍未起手
+- 真實 user-flow test:Adam 可於 throw-away folder 嘗試跟 walkthrough §2 → §3 → §6 真做一次,撞 wall surface
+- Phase X-5 walkthrough §1 disclaimer 待 skill 落地後加「想 AI 帶你做就講 set up APS」 reframe
+
+**Risks(updated):**
+
+- Walkthrough §6 step 2-6 + §7 雖 concrete rewrite,但仍待真實 user 跑一次驗證 wording / pattern 是否真係跟得到 — 即係 sample pattern Adam confirmed OK,但全 batch 仲待 acceptance test
+- 設計理據 §12.3 仍保留 Adam-Jay specific path(有 disclaimer 標明 historical),將來如轉 public 應 sanitize
+
 ### Next Session Opening Message
 
 (regenerated in `dev/SESSION_HANDOFF.md` — see there. Convenience copy at `START_NEXT_SESSION_PROMPT.txt`.)
