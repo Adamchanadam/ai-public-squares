@@ -8,7 +8,65 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-21 (S8, latest, same day) — Stage 1 generic-template pivot + retroactive correction
+## 2026-05-22 (S9, latest) — Funnel-first vision shift + Layer A entry + npm bootstrap + GitHub remote
+
+- **ID:** S9
+- **Summary:** Major vision shift triggered by Adam: 「對 APS 零認知背景嘅用戶都用得到,本 repo 才算成功」. Repo 嘅 success criterion reframed 由「technical correctness」 → 「zero-knowledge user 5-minute outcome」. Three substantial deliverables landed:
+  1. Funnel-first audit doc + 6-phase build roadmap
+  2. GitHub remote + private repo bootstrap (Apache-2.0 license)
+  3. Layer A entry rewrite (README + docs/index.html 全 reframed) + npm package skeleton (`@adamchanadam/aps` v0.1.0 placeholder)
+- **Changed:** This workspace only.
+  - New: `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` (436 lines, Stage 0-7 funnel + Layer A/B/C/D map + 6-phase roadmap + 5 open question + 3 risk)
+  - New: `package.json` (npm scope @adamchanadam, bin entry `aps`, Apache-2.0, engines node ≥18)
+  - New: `bin/aps.js` (placeholder CLI: init / --help / unknown handlers, all functional)
+  - New: `.gitignore` (OS / editor / `.env` + `_*.txt` per GENERIC_OPERATIONAL_RUNBOOK §5i)
+  - New: `README.md` (placeholder → zero-knowledge entry: 痛點 hook + `npx @adamchanadam/aps init` + 3 步點用 + deep-dive references + Build status table)
+  - New: `LICENSE` (Apache-2.0 via GitHub UI initial commit merge)
+  - Rewritten: `docs/index.html` (maintainer dashboard → zero-knowledge entry; +95 / −182 lines; cover h1 + footer 「Agent Public Square」 → 「AI Public Squares」)
+  - Modified: 3 docs HTML (guides/index, walkthrough, governance-map) — site-nav brand text sync 「Agent Public Square」 → 「AI Public Squares」 (align README + repo name + npm scope)
+- **Distribution channel decision:** npm package (Adam confirmed). `@adamchanadam/aps` scope reserved; npm publish 留到真 `init` 邏輯落地一齊 publish 0.2.0
+- **Git history this session(10 commits, all pushed to origin/main):**
+  - `65456c0` — S8 stage 1 generic-template pivot + audit report
+  - `3cc0b13` — walkthrough audit 9 fixes (Adam/Jay agent_id defaults / asterisk render / step count / 試演 assumption cleanup)
+  - `5f8d46e` — GitHub bootstrap (.gitignore + README placeholder)
+  - `3d1f716` — Merge GitHub Initial commit (Apache-2.0 LICENSE)
+  - `5b0b94f` — README License section align Apache 2.0
+  - `8a86dcb` — .gitignore add `_*.txt` per runbook convention
+  - `62878d5` — zero-knowledge funnel audit (Stage 0-7 + Layer A/B/C/D + roadmap)
+  - `e6e38fd` — npm package bootstrap (@adamchanadam/aps v0.1.0 placeholder)
+  - `b0255c1` — docs/index.html rewrite as zero-knowledge entry
+  - `89b3012` — cross-doc site-nav brand sync (4 files)
+- **Sensitive content scan(pre-first-push):** clean — `i.adamchan.uk` 0 hit;`password|secret|api_key|.env` 全部 meta-reference (0 actual leak);`MPEdu`/`明報` hits 屬 labelled historical reference (S8 governance-clean) + historical SESSION_LOG audit trail (留底). Push-ready 無 mandatory scrub.
+- **QC:**
+  - Push verification: every push confirmed via remote ref update (10/10 success)
+  - GitHub credential auto-passed (Windows Credential Manager, no token prompt)
+  - npm CLI smoke test: `node bin/aps.js` with `--help` / `init` / unknown 3 path 全 work
+  - Cross-doc brand sync: 0 stale, 4 new across 4 docs HTML files
+  - Stale terminology purge in docs/index.html rewrite: 0 hit for Phase 4 / Block 4 / T0b / mpedu / 焙入啟動 / 不可變交接包 / from_adam / from_jay
+  - New install command (1 hit) + funnel audit reference (2 hits) present in docs/index.html
+  - PII / secrets scan: 0 introduced
+- **Sync:**
+  - APS user-facing docs change: confirmed (README + docs/index.html 全 rewrite + site-nav sync 4 file)
+  - New file or directory: confirmed (`bin/`, `package.json`, `LICENSE`, funnel audit doc — covered by existing registry rows + new entry layer row)
+  - Distribution channel: confirmed (npm @adamchanadam/aps;reserve; publish deferred)
+- **Pending(per funnel audit roadmap):**
+  - Phase X-2 真 `init` orchestration: detect Claude Code → install skill → greet (placeholder release 仲喺度;真實邏輯未做)
+  - Phase X-3 `skills/aps/SKILL.md` + setup subflow + dialogue script (conversational craft sub-deliverable)
+  - Phase X-4 daily-use subflow (publish / inbox-check / troubleshoot)
+  - Phase X-5 Layer D doc re-position (walkthrough §1 disclaimer + Phase 4 plan cross-reference)
+  - Phase X-6 auto-update mechanism
+- **Risks(updated):**
+  - npm publish 仲未做 — `npx @adamchanadam/aps init` 即時試會 404 until publish;acceptable trade-off (等真 `init` 邏輯齊一齊 publish 0.2.0,避免出 deceptive placeholder release)
+  - Distribution channel 拍板 done (npm); Phase X-2 unblocked
+  - Walkthrough Layer D re-position 仲未落 — 用戶可能仲會 stumble 入去當必讀(目前緊靠 README + docs/index.html 嘅 「deeper-dive reference」 framing 引導)
+  - Previously closed risks unchanged: demo workspaces kit alignment, generic-template pivot, no remote git
+- **Log maintenance:** kept;new entry at top;S8-S1 retained as-is.
+
+### Next Session Opening Message
+
+(regenerated in `dev/SESSION_HANDOFF.md` — see there. Convenience copy at `START_NEXT_SESSION_PROMPT.txt`.)
+
+## 2026-05-21 (S8, same day) — Stage 1 generic-template pivot + retroactive correction
 
 - **ID:** S8
 - **Summary:** User clarified that `MPEdu_Plus_Branding` (referenced throughout S2-S7 governance entries) is a **read-only reference example for AI orientation only** — NOT this repo's actual deployment target. The repo intent is **pure generic APS template** for any project, not Adam-Jay-MPEdu-specific. Stage 1 of architectural correction landed: removed Adam-Jay-MPEdu as implicit deployment target throughout active doc surface; reframed Block 4A / 4B / 4C / 4D as User A / User B roles; demo workspaces (Demo_Agent_Adam / Demo_Agent_Jay) reframed as MVP verification fixtures (canonical Bridge Pack source) rather than agent-specific sandboxes. Adam/Jay names preserved as example narrative protagonists in user-facing walkthrough + index entry page, with prominent disclaimer added at §1 of each. Triggered 🔴 全面檢 inner phase: 14-item checklist + audit report.

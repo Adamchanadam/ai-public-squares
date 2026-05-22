@@ -1,167 +1,150 @@
 # Session Handoff
 
-Last Updated: 2026-05-21 (session S8 closeout: Stage 1 generic-template pivot — removed Adam-Jay-MPEdu_Plus_Branding as implicit deployment target throughout active doc surface; reframed as User A / User B roles)
+Last Updated: 2026-05-22 (session S9 mid-session reconcile: funnel-first vision shift triggered by Adam;Layer A entry rewrite + npm package skeleton + GitHub remote + funnel audit doc all landed)
 
 <!-- ack:section:durable-anchors -->
 ## Durable Anchors
 
 Stable facts that should survive across sessions. Update only when they change, but verify they still match reality at closeout.
 
-1. Project root and boundary: `C:\Users\adam\_claude_desktop\AI_Public_Squares` — design / plan / verification SSOT workspace for the Agent Public Square (APS) project. Not a product runtime; carries the protocol design, the implementation plan, the MVP verification report, and the user-facing project entry page.
-2. Product/system identity: Agent Public Square (APS) — a cross-machine, cross-SSOT collaboration protocol for two (or more) AI agents working on the same project. Uses a Google-Drive-synced Hub Root with single-writer lanes, immutable versioned packets, an append-only ledger, and a thin Bridge Pack that wires inbox detection into each agent's agent-handoff-kit startup.
-3. Governance model: Agent Handoff Kit v0.1.7 managed-core block at `AGENTS.md` lines 1-127. External skill flows (superpowers chain), subagent plans, and demo-workspace closeouts are subordinate evidence per AGENTS.md §2 and §5; only the active project root's kit persistence completes a task.
-4. Source-of-truth ownership: this workspace owns the APS design + implementation plan + verification report + project entry HTML; the Drive Hub at `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\` owns runtime `PROTOCOL.md` + templates + lane data + CHANGELOG; the two Demo Agent workspaces (`C:\Users\adam\_claude_desktop\Demo_Agent_{Adam,Jay}_Public_Squares\`) own their per-agent Bridge Pack and round-trip session evidence.
-5. Release / publish boundary: none yet — APS is pre-Phase 4; not yet integrated into any production runtime; not yet published to a public registry.
+1. Project root and boundary: `C:\Users\adam\_claude_desktop\AI_Public_Squares` — design / plan / verification SSOT workspace for the AI Public Squares (APS) project. Not a product runtime;carries the protocol design, implementation plans, MVP verification report, user-facing entry pages (README + docs/index.html), npm package skeleton (`@adamchanadam/aps`), and zero-knowledge funnel build roadmap。
+2. Product / system identity: AI Public Squares (formerly "Agent Public Square") — a cross-machine collaboration protocol for two AI agents working on the same project, distributed as an npm package (`@adamchanadam/aps`, Apache-2.0)。Uses a Google-Drive-synced Hub Root with single-writer lanes, immutable versioned packets, an append-only ledger, and a thin Bridge Pack that wires inbox detection into each agent's agent-handoff-kit startup。Zero-knowledge user target: `npx @adamchanadam/aps init` 一條命令 install + skill 帶 setup + natural language daily ops。
+3. Governance model: Agent Handoff Kit v0.1.7 managed-core block at `AGENTS.md` lines 1-127。External skill flows, subagent plans, and demo-workspace closeouts are subordinate evidence per AGENTS.md §2 and §5;only the active project root's kit persistence completes a task。
+4. Source-of-truth ownership: this workspace owns the APS design + implementation plan + verification report + project entry HTML + README + npm package source (`bin/aps.js`) + zero-knowledge funnel audit roadmap;the Drive Hub at `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\` owns runtime `PROTOCOL.md` + templates + lane data + CHANGELOG;the two Demo Agent workspaces (`C:\Users\adam\_claude_desktop\Demo_Agent_{Adam,Jay}_Public_Squares\`) own their per-agent Bridge Pack and round-trip session evidence。GitHub remote `origin` at `https://github.com/Adamchanadam/ai-public-squares.git` (private,Apache-2.0)。
+5. Release / publish boundary: GitHub `origin/main` 已 push (private repo,11 commits 截至 2026-05-22 S9 mid-session reconcile);npm `@adamchanadam/aps` 0.1.0 placeholder local 完成但 **未 publish** — 留到 Phase X-2 真 `init` orchestration 齊一齊 publish 0.2.0。Walkthrough Layer D re-position 未做。
 
 <!-- ack:section:closeout-reconciled-state -->
 ## Closeout-Reconciled State
 
 This is the current-state area. At every full closeout, rewrite or explicitly confirm every section below. Do not append a new state snapshot under an old one.
 
+**Note:** S9 (2026-05-22) is a **mid-session reconcile** — vision shift major,但 session 仲未正式收工 (Adam 講 「唔收工,仲有大量 context windows,繼續」)。Downstream Phase X-3 work 可能 same session 內推進。
+
 <!-- ack:section:current-baseline -->
 ## Current Baseline
 
-1. Project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares` (Windows; git branch `main`; check `git log -1 --format=%h` for current HEAD).
-2. Product/system state: APS MVP complete and round-trip-verified on same-machine simulation. Phase 4 (real cross-machine handoff between Adam's `MPEdu_Plus_Branding` runtime and Jay's machine) **planned in full** (`docs/plans/2026-05-21-aps-phase4-plan.md`, including T0b Bridge Pack Layer 1 polish prerequisite + Layer 2 T0 restructure + Layer 3 Tooling shortcut) but **execution not started**. All three layers of user-flow simplification landed in S3-S5; S6 added 分層 QC trigger vocabulary (🟢快檢 / 🟡外發前檢 / 🔴全面檢) at `dev/qc/triggers.md` (SSOT) + `docs/qc/governance-map.html` (reference card), wrapping the 6 existing QC mechanisms into 3 trigger entry points with 嵌套 + 反問 rules.
-3. Governance state: Agent Handoff Kit v0.1.7 managed-core in place; `AGENTS.md` clean; kit doctor self-check 34/34 passing as of last verified run; this file plus `SESSION_LOG.md`, `PROJECT_INDEX.md`, `DOC_SYNC_REGISTRY.md` all reflect current state as of 2026-05-21. Demo workspaces (`Demo_Agent_{Adam,Jay}_Public_Squares`) confirmed by user as aligned to kit v0.1.7 (Risk #3 closed this session).
-4. Source-of-truth notes: APS design + MVP plan + MVP verification + Phase 4 plan under `docs/plans/`; user-facing entry at `docs/index.html`; user-facing teaching pages under `docs/guides/` (hub at `docs/guides/index.html`; first guide at `docs/guides/aps-onboarding-walkthrough.html`). No code; this workspace is governance + documentation only.
+1. Project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares` (Windows;git branch `main`;latest pushed HEAD `89b3012` cross-doc site-nav brand sync;11 commits total this session — see SESSION_LOG S9 entry for full chain)。
+2. Product / system state: APS MVP complete + Layer A entry rewrite done。**Funnel-first vision shift landed 2026-05-22**: repo intent reframed from "Phase 4 落地計劃 + manual walkthrough" to "zero-knowledge user 5-minute outcome via `npx @adamchanadam/aps init` + skill orchestration"。Layer A 嘅 README + docs/index.html 全 rewrite (zero-knowledge entry);npm package skeleton (`@adamchanadam/aps` v0.1.0 placeholder,real `init` 邏輯未做);GitHub remote 已 bootstrap + 10 commits push 哂(11 with S9 governance reconcile commit);cross-doc site-nav brand sync 「Agent Public Square」 → 「AI Public Squares」 跨 4 個 docs HTML files 落咗。**Distribution channel 拍板:npm package (Adam confirmed)**;Phase X-2 unblocked。
+3. Governance state: Agent Handoff Kit v0.1.7 managed-core in place;`AGENTS.md` clean;kit doctor self-check 34/34 passing as of last verified run;SESSION_HANDOFF / SESSION_LOG / PROJECT_INDEX / DOC_SYNC_REGISTRY 全部已 reflect S9 mid-session reconcile state (2026-05-22)。Demo workspaces (`Demo_Agent_{Adam,Jay}_Public_Squares`) 仍 aligned to kit v0.1.7。
+4. Source-of-truth notes: 新增 `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` 做 funnel-first build roadmap SSOT;`README.md` + `docs/index.html` 對齊 zero-knowledge entry;`package.json` + `bin/aps.js` 做 npm CLI source;`LICENSE` 係 Apache-2.0。其餘檔不變。
 
 <!-- ack:section:task-understanding-summary -->
 ## Task Understanding Summary
 
 <!-- ack:field:user-intent -->
-- User intent: build a reusable cross-machine AI-agent collaboration protocol (APS) that removes the manual file-shuffle and context-relay burden when Adam (branding text) and Jay (visual design) work together on the same project from two different machines.
+- User intent (refined 2026-05-22): originally 「build a reusable cross-machine AI-agent collaboration protocol」;**S9 vision shift refined**: 「對 APS 零認知背景嘅用戶都用得到,本 repo 才算成功 — AI 工具係畀非技術人員用先有價值」。即係 protocol-correctness 唔再係 success criterion;zero-knowledge user 嘅 5-minute setup-to-daily-use outcome 先係 final yardstick。
 <!-- ack:field:task-essence -->
-- Task essence: design + implement + verify a protocol whose core failure modes (Drive conflicted copies, wrong-version reference, SSOT contamination) are eliminated by structure rather than by user discipline.
-- User value: future cross-machine handoffs need only one fixed WhatsApp template line; everything else (file shuffle, context re-explain, status sync) is carried by the protocol.
+- Task essence: protocol design + MVP done (S1-S8 work);funnel-first product layer build (S9+ work) — 由 「technical doc + manual walkthrough」 升級做 「`npx ... init` + skill 帶 setup + natural language daily ops」。
+- User value: zero-knowledge user 唔需要先讀 walkthrough / Phase 4 plan / Bridge Pack 等 deep-dive doc;一條命令 install + skill 自動引導。Walkthrough / plan / Bridge Pack / PROTOCOL.md 變 Layer D (protocol spec) — 維護者 reference,user invisible。
 <!-- ack:field:success-criteria -->
-- Success criteria: (1) two-agent same-machine round-trip executed end-to-end without human relay; (2) zero Drive conflicted copies; (3) both demo workspaces' kit governance done per kit standard; (4) this workspace's kit governance done per AGENTS.md v0.1.7 §2 closeout contract; (5) user-facing entry page exists for non-developer reference.
-- Key background already read: AGENTS.md v0.1.7 managed core; the four APS docs under `docs/plans/`; both demo Bridge Packs; Hub `_hub/PROTOCOL.md` v1.0 + `_hub/CHANGELOG.md`.
-- Background still unread or blocked: real `MPEdu_Plus_Branding` runtime workspace state on Adam's machine (not in scope this session); Jay's machine setup (requires Jay's cooperation; not yet contacted).
-- Non-goals / boundaries: this workspace owns Phase 4 plan + user-facing docs, **NOT** the real-runtime onboarding execution itself. When Phase 4 starts, the Adam-side execution happens in `C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\` (a separate workspace; opens a new session there) and the Jay-side execution happens on Jay's machine. This workspace remains the SSOT for the plan + the verification report. Do NOT push to any remote (none configured). Do NOT touch demo workspaces' files except as referenced (they are stable v0.1.7 sandboxes).
+- Success criteria (updated S9): (1) Layer A entry — README + docs/index.html 對 zero-knowledge user 30 秒 hook + actionable;(2) Layer B install — 一行 command 跑得;(3) Layer C skill — setup 5-7 條 plain-words 問題完成 setup + 日常 natural language ops;(4) Layer D 維持 protocol spec audit trail 嘅 governance integrity。
+- Key background already read: AGENTS.md v0.1.7 managed core;4 個 APS docs;both demo Bridge Packs;Hub `_hub/PROTOCOL.md` v1.0 + `_hub/CHANGELOG.md`;`GENERIC_OPERATIONAL_RUNBOOK.md` (Cowork / Claude Desktop 環境參考)。
+- Background still unread or blocked: 真實 user runtime workspace state (各 user 自己機,out of scope for template SSOT);Claude Code skill install convention 嘅 official spec (Phase X-2 / X-3 之前要查實);npm publish 嘅實際 flow (Adam 已熟,需要時自己跑 `npm login` + `npm publish`)。
+- Non-goals / boundaries: 本 workspace 唔做 npm publish action (留 Adam 自己跑);唔做對方 user 機嘅 onboarding (out of scope);GitHub `origin` push 已 enabled 但 **唔做 force-push / non-main branch push without Adam 明示**。
 
 <!-- ack:section:active-objective -->
 ## Active Objective
 
-APS MVP is complete and verified. Three-layer user-flow simplification fully landed (S3 / S4 / S5, all 2026-05-21):
-- Layer 1 (S3) — canonical mid-session trigger `check Hub` + 2 fuzzy synonyms; daily WhatsApp short `Hub 有新嘢`; Bridge Pack auto-scans Drive conflict files at startup; UTC time-recording + manual `find` marked first-cross-machine verification only.
-- Layer 2 (S4) — T0 parameter pinning split into 3 explicit user decisions + 4 documented defaults (with Drive-share edge case noted); §8 daily-flow default trigger flipped to mid-session `check Hub` (open-new-session demoted to fallback).
-- Layer 3 (S5) — `tools/aps-onboard.ps1` PowerShell idempotent installer automates Phase 4 plan T2-T5; T6 stays manual; Tooling shortcut section in Phase 4 plan + walkthrough §4/§5 callouts spec the usage; written ahead of staged pre-4B deadline.
+S9 mid-session reconcile 之後嘅 active objective:**入 Phase X-3 build,起 `skills/aps/SKILL.md` + setup subflow + dialogue script first draft**。
 
-**Next user-driven actions** (3 independent threads — note: S8 Stage 1 generic-template pivot reframed all "Block 4A in MPEdu_Plus_Branding" narrative; `MPEdu_Plus_Branding` is read-only reference only, NOT this repo's deployment target):
+Funnel audit doc (`dev/qc/2026-05-22-zero-knowledge-funnel-audit.md`) 嘅 6 phase build order:
+- ✅ Phase X-1 Layer A entry (README rewrite + docs/index.html rewrite + cross-doc site-nav brand sync) — **done**
+- 🔄 Phase X-2 npm package + 一行 install 命令 — **package skeleton done** (placeholder 0.1.0);**real `init` orchestration pending** (detect Claude Code → install skill → greet)
+- ⏳ Phase X-3 skill setup subflow + dialogue script (conversational craft sub-deliverable) — **next**
+- ⏳ Phase X-4 skill daily-use + recovery subflow
+- ⏳ Phase X-5 Layer D doc re-position (walkthrough §1 disclaimer + Phase 4 plan cross-reference)
+- ⏳ Phase X-6 auto-update mechanism
 
-- **T0b execution** in the two demo workspace fixtures shipped with this repo (`Demo_Agent_Adam_Public_Squares` + `Demo_Agent_Jay_Public_Squares` siblings) — apply two Bridge Pack startup behaviours (conflict auto-scan + canonical `check Hub`) per Phase 4 plan T0b. Each runs in its own demo workspace session per AGENTS.md §2 active-project-root rule. Result: both demo packs become canonical Bridge Pack source for downstream T2 / T8 of any user's real runtime onboarding.
-- **Phase 4 Block 4A** (User A's real runtime onboarding) — happens in User A's own project workspace (NOT this template repo; NOT `MPEdu_Plus_Branding` which is a read-only reference). Independent of User B. Pre-state polished: Layer 1 + Layer 2 + Layer 3 (with Tooling shortcut + helper script) inherited via教學頁 + Phase 4 plan; T0b once done means Bridge Pack auto-inherits via demo-pack copy step. Block 4A's first real run will also be the helper script's first insertion-path verification.
-- **T0 parameter lock with User B** — 3 user decisions (PROJECT / User B's runtime + Hub paths / T10) per Phase 4 plan T0 / walkthrough §3. Can happen here (template SSOT) or in parallel with 4A T1.
-
-Phase 4 execution itself has not started. Block 4B / 4C / 4D unchanged from S2-S4 — wait for User B's machine availability or for upstream blocks.
+之前 S8 嘅 3 個 independent thread (T0b execution / Block 4A / T0 lock with User B) 仍然有效但 **deferred**:Phase X-3 (skill setup subflow) 落地之後,Bridge Pack T0b polish 可以由 skill 自動處理 (skill 第一次跑時自動 patch demo workspace 嘅 Bridge Pack) — 即係 T0b 唔再係 manual thread,變 skill 嘅 first step。Block 4A 同 T0 lock 都會由 skill orchestrate。
 
 <!-- ack:section:completed-this-session -->
 ## Completed This Session
 
-Record only work actually completed in the current session (S6, 2026-05-21 latest same day).
+Record only work actually completed in the current session (S9, 2026-05-22, mid-session reconcile point).
 
-1. Built 分層 QC trigger vocabulary based on reference pattern from `file:///C:/Users/adam/_claude_desktop/_Prompt_Template/ai-session-governance_v2_WORK/docs/GOVERNANCE_MAP.html` but project-specific re-mapped to APS context (no npm publish / no CI / no remote git):
-   - New: `dev/qc/triggers.md` SSOT (~165 lines) — three tiers (🟢快檢 / 🟡外發前檢 / 🔴全面檢) each with 6 attributes (別名 / 時機 / 覆蓋 / 驗收 / 時間 / 失敗處理); 嵌套規矩 (outer 必含 inner); 反問規矩 (含混詞「全套 QC / 完整 QC / 做 QC / 跑驗收 / Audit / QC 單字」觸發停手反問); 典型用法; 既有 6 層 mechanism by-reference 表 (kit doctor / rule packs / plan acceptance / Bridge Pack runtime / tool self-check / 五區段紀律).
-   - New: `docs/qc/governance-map.html` reference card (~310 lines) — same design tokens as `docs/index.html` + walkthrough; three coloured boxes (green/amber/red) using existing --ok / --pending / --warn variables; how-to-invoke section; SSOT cross-link.
-   - Modified: `docs/index.html` + `docs/guides/index.html` + `docs/guides/aps-onboarding-walkthrough.html` — site-nav 5th link「分層 QC」added (relative path varies per location).
-   - Modified: `dev/RULE_PACKS.md` — 9th routing row matches QC trigger keywords → loads `dev/qc/triggers.md`.
-   - Modified: `dev/PROJECT_INDEX.md` — Directory Map +2 rows (`dev/qc/` + `docs/qc/`); Fact Base +2 rows (SSOT + card).
-2. Pre-execution self-audit caught 11 design questions before any file change (SSOT placement vs `dev/rules/` / startup-load path / cross-page site-nav consistency / mechanism reuse-by-reference / 反問 keyword boundary / HTML design system / scope creep / TaskCreate decision / commit handling / doctor schema risk / inaugural demo).
-3. Inaugural 🟢 跑快檢 demo executed live as proof-of-actionability: kit doctor 35/35 PASS + git status matches HANDOFF Workspace Identity + 7 grep acceptance tests all green on first run + script step skipped (no script change this session).
-4. Structural notes documented in S6 entry: SSOT can't live in AGENTS.md (kit-managed); routes via RULE_PACKS row instead. `dev/qc/` chosen over `dev/rules/qc-triggers.md` to leave room for future qc/ sub-docs (audit reports, retro logs).
+S9 work landed across 11 commits (10 already pushed to origin/main as of mid-session reconcile;final 1 commit landing S9 governance reconcile pending at end of this turn):
 
-Note: S5 (Layer 3 tooling), S4 (Layer 2 polish), S3 (Layer 1 polish), S2 (Phase 4 plan + user-facing docs), and S1 (APS design / MVP build) details remain in `dev/SESSION_LOG.md` 2026-05-21 + 2026-05-20 entries; not duplicated here.
+1. **Funnel-first audit doc** — new `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` (436 lines):Stage 0-7 friction map + Layer A/B/C/D classification + 6-phase build roadmap + 5 open question + 3 risk + acceptance criteria reframe + conversational craft carve-out。
+2. **GitHub remote bootstrap** — `https://github.com/Adamchanadam/ai-public-squares.git` (private + Apache-2.0):pre-push sensitive scan clean;`.gitignore` (OS + editor + `.env` + `_*.txt`) 新建;README placeholder → 正式 zero-knowledge entry rewrite (痛點 hook + `npx @adamchanadam/aps init` + 3 步點用 + deep-dive references + Build status table);LICENSE Apache-2.0 via GitHub UI initial commit merge。
+3. **npm package skeleton** — `package.json` (scope `@adamchanadam`, bin entry `aps`, Apache-2.0, engines node ≥18) + `bin/aps.js` (placeholder CLI with `init` / `--help` / unknown handlers, all functional)。Smoke test (3 path) all pass。
+4. **docs/index.html zero-knowledge rewrite** — +95 / −182 lines;maintainer dashboard → zero-knowledge entry page;cover h1 + footer 「Agent Public Square」 → 「AI Public Squares」;removed sections (實際跑過一次點樣 / Phase 4 等住做嘅嘢 / Drive structure / 維護筆記);reframed 5 個 design 招數 用 plain words。
+5. **Cross-doc site-nav brand sync** — 4 個 docs HTML files 嘅 `site-nav__brand` text 「Agent Public Square」 → 「AI Public Squares」 統一 (docs/index, guides/index, walkthrough, governance-map)。
+6. **Distribution channel decision** — npm package (Adam 拍板);scope `@adamchanadam/aps` reserved local;npm publish 留到 0.2.0 真 `init` 邏輯齊。
+7. **Governance reconcile (this turn)** — SESSION_LOG S9 entry;PROJECT_INDEX Stack / Directory Map / Entry Points / Fact Base / External Sources / Workspace Identity / Local QC Commands 多 section update;DOC_SYNC_REGISTRY +2 new row;SESSION_HANDOFF 完整 overwrite;START_NEXT_SESSION_PROMPT regenerate。
+
+S8 (2026-05-21) work 仍保留 SESSION_LOG 嘅 S8 entry;S9 唔重複。
 
 <!-- ack:section:next-priorities -->
 ## Next Priorities
 
-Priority labels reflect dependencies after S6 closeout + S8 Stage 1 generic-template pivot. All three simplification layers done; repo intent clarified as **pure generic APS template** (S8). T0b + Block 4A + T0 lock are the only three independent threads remaining in this workspace's purview. Block 4A's first real run is also `tools/aps-onboard.ps1`'s first insertion-path verification.
+Per funnel audit roadmap 順序,update for post-S9 mid-session reconcile:
 
-1. **T0b execution** (in the two demo workspace fixtures shipped with this repo — `Demo_Agent_Adam_Public_Squares` + `Demo_Agent_Jay_Public_Squares` siblings; preferred before Block-4A) — apply two Bridge Pack startup behaviours (conflict auto-scan + canonical `check Hub` trigger) per Phase 4 plan T0b. Each demo workspace's own session per AGENTS.md §2 active-project-root rule. If T0b is skipped, Phase 4 plan acceptance #1b dictates the two behaviours applied inline at T2 / T8 of Block 4A / 4B.
-2. **Phase 4 Block 4A execution** — User A's real project runtime onboarding (Phase 4 plan T1-T6). Independent of User B. Executes in User A's own real-runtime workspace (NOT this template repo; NOT `MPEdu_Plus_Branding` which is a read-only reference example). Three options for T2-T5 execution: (a) run `tools/aps-onboard.ps1 -DryRun` first to preview, then without `-DryRun` to apply; (b) follow manual T2-T5 steps from Phase 4 plan; (c) hybrid — script for T2-T5, manual for T6. Inherits Layer 1-3 polish via教學頁 + Phase 4 plan; Bridge Pack inherits T0b polish via demo-pack copy step (script does this for you if T0b done first).
-3. **T0 parameter lock with User B** — 3 user decisions per Phase 4 plan T0 / walkthrough §3: `<PROJECT>` (new slug recommended; user-chosen) + `<RUNTIME_B>` & `<HUB on B's machine>` (User B reports) + T10 in/out. 4 defaults sit at their inherited values unless deviating. May happen here (template SSOT workspace) or in parallel with 4A T1.
-4. **Phase 4 Block 4B** — User-B-machine prerequisite checklist + Bridge Pack install. Requires User B's availability; User A relays `tools/aps-onboard.ps1` + the chosen demo starter pack (with Layer 1 + T0b polish baked in) via WhatsApp / Drive.
-5. **Phase 4 Block 4C** — first live cross-machine round-trip. Depends on Block 4A + 4B done.
-6. **Phase 4 Block 4D** (optional but recommended before first real >50 MB asset) — externalization dry-run.
-7. **Phase 4 verification report** — after Block 4C closes, write `docs/plans/2026-MM-DD-aps-phase4-verification.md` (mirror MVP verification report structure).
-8. **Class-C placeholder audit** (deferred from S2 iteration 5) — two cross-workspace reviews of `_hub/PROTOCOL.md` and both demo packs' procedural sections. Each audit runs in the owning workspace's own session per AGENTS.md §2.
+1. **Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow first draft + dialogue script** (next big substantive work)。Sub-deliverables:
+   - SKILL.md frontmatter (`name` / `description` 用 plain-words trigger broad / multi-trigger)
+   - Setup subflow conversational flow first pass (greeting + intent confirm + prerequisite interactive + T0 3 decisions + T1-T6 file ops + cross-side packaging + first-use dry-run test)
+   - Dialogue script (Cantonese + English 雙語;tone guide;5-7 條 plain-word 問題嘅 wording + variants;概念 inject 順序 map)
+2. **Phase X-2 完整 — 真 `init` orchestration**:detect Claude Code → install skill → greet (currently `bin/aps.js` 係 placeholder)。Phase X-3 同 X-2 之間有 dependency 互動 — skill 邏輯先 design 完,init 命令再 wire up。可考慮並行 first-pass。
+3. **Phase X-4 — daily-use subflow** (publish / inbox-check / troubleshoot):natural language routing。
+4. **Phase X-5 — Layer D doc re-position**:walkthrough §1 disclaimer 加 「想 AI 帶你做就講 set up APS」 + Phase 4 plan 加 「Skill-driven UX layer (Layer C)」 cross-reference 一節。
+5. **Phase X-6 — auto-update mechanism**:`npx @adamchanadam/aps update` + skill startup auto-check Bridge Pack version (可延後)。
+6. **npm publish action** — Adam 自己跑 `npm login` + `npm publish` 一次;Phase X-2 真 `init` 邏輯齊嗰陣一齊出 0.2.0 (避免出 deceptive placeholder release)。
+7. **Walkthrough re-positioning** (Phase X-5 sub):由 「user 必讀 + 跟做」 → 「protocol 深入了解 + 維護者 reference」 嘅 framing shift。
+8. **Demo workspace T0b polish** (deferred):skill 落地後由 skill 自動執行,唔再係 manual thread。如果想 preview,可手做於 Demo_Agent_Adam + Demo_Agent_Jay sessions。
 
 <!-- ack:section:next-task-required-reading -->
 ## Next Task Required Reading
 
-Before acting on the next task, read or mark blocked:
+Before acting on the next task (Phase X-3 — SKILL.md + setup subflow), read or mark blocked:
 
 | Source | Why required | Status |
 |---|---|---|
 | `AGENTS.md` (this workspace) | Active governance contract v0.1.7 | confirmed |
 | `dev/SESSION_HANDOFF.md` (this file) | Current state | confirmed |
 | `dev/PROJECT_INDEX.md` | Workspace map and entry points | confirmed |
-| `docs/plans/2026-05-21-aps-phase4-plan.md` | Phase 4 implementation plan; SSOT for next session's execution | confirmed |
-| `docs/plans/2026-05-20-aps-mvp-verification.md` | What was done in MVP; Phase 4 carry-over items | confirmed |
-| `docs/index.html` | User-facing project explainer | confirmed |
-| `docs/guides/aps-onboarding-walkthrough.html` | User-facing teaching page; Adam + Jay can read alongside the Phase 4 plan during execution | confirmed |
-| `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\_hub\PROTOCOL.md` | APS runtime contract v1.0 | confirmed |
-| `C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\` | Target for Phase 4 Block 4A; will be the active project root when 4A executes (not from THIS workspace) | pending — Phase 4 Block 4A entry |
-| Jay's machine state (Drive mount, kit version, `<RUNTIME_JAY>` path) | Required for Phase 4 Block 4B + 4C | blocked — requires Jay |
+| `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` | Funnel-first build roadmap SSOT — Phase X-3 spec | confirmed |
+| `bin/aps.js` (current placeholder) | Phase X-2 entry — Phase X-3 嘅 skill 要 install / be triggered by 呢個 CLI | confirmed |
+| `docs/guides/aps-onboarding-walkthrough.html` (especially §3 T0 拍板 + §4-§5 T2-T6 steps + §9 mid-session trigger + §10 recovery) | Skill setup subflow 嘅 source content (要 reframe 做 conversational dialogue) | confirmed |
+| `docs/plans/2026-05-21-aps-phase4-plan.md` T0 / T0b / T2-T5 sections | Skill setup subflow 嘅 spec source | confirmed |
+| `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\_hub\PROTOCOL.md` | APS runtime contract v1.0 — skill output 要對齊 | confirmed |
+| Claude Code skill install convention 嘅 official docs | `.claude/skills/<name>/SKILL.md` 結構;cross-OS path;skill discovery 機制 | pending — first read pending Phase X-3 entry |
+| `C:\Users\adam\_claude_desktop\GENERIC_OPERATIONAL_RUNBOOK.md` | Future GitHub 操作嘅 patterns;npm publish reference | mental load 已入返 (S9 reconcile) |
 
 <!-- ack:section:risks-blockers -->
 ## Risks / Blockers
 
-1. **Counterpart's machine setup unconfirmed (User B side)** — design doc §12.3 still flags "User B 本機: 同一資料夾 mount 並設「可離線存取」 (尚未確認)" as the template's standing precondition for any real cross-machine round-trip. Phase 4 Block 4B + 4C cannot run without it. Walkthrough §2 has the prerequisite checklist User B needs to satisfy.
-2. **Cross-machine Drive sync latency unknown under real load** — MVP round-trip was same-machine simulation only. Block 4C T9b is where this gets measured (acceptance threshold: ≤ 5 minutes).
-3. ~~Demo workspaces at older kit version~~ — **CLOSED 2026-05-21**: user confirmed both `Demo_Agent_{Adam,Jay}_Public_Squares` aligned to kit v0.1.7.
-4. **No remote git configured anywhere** — this workspace and both demo workspaces are local-only repos. Single-disk single-point-of-failure. Remote setup is recommended before Phase 4 Block 4C produces real protocol-evidence commits.
-5. **Real-runtime kit version unknown** — Each user's real project workspace kit version is unknown until Phase 4 T1 (the read-only inspection step). Out of scope for this template SSOT.
+Updated for S9 vision shift:
+
+1. **npm publish 仲未做** — `npx @adamchanadam/aps init` 即時試會 404 until publish;acceptable trade-off (等真 `init` 邏輯齊 publish 0.2.0,避免出 deceptive placeholder release)。**Mitigation**:README / docs/index.html / funnel audit doc 都 explicit 標 「v0.1.0 placeholder,真 init 後台起緊」。
+2. **Distribution channel locked (npm)** — Phase X-2 unblocked,但 phase 順序仍 require Phase X-3 (skill) 設計先做,Phase X-2 嘅 install command 真 orchestration 跟住 wire up。
+3. **Walkthrough Layer D re-position 仲未做** — 用戶可能仲會 stumble 入 walkthrough 當必讀。**Mitigation**:README + docs/index.html 嘅 「deeper-dive reference」 framing 暫時引導;Phase X-5 落實 walkthrough §1 disclaimer。
+4. **Conversational craft 質素未驗** — Phase X-3 嘅 dialogue script 係 craft layer,反覆 iterate 可能 underestimate timeline。**Mitigation**:Phase X-3 setup subflow MVP 先求 「能用」 (粗糙 dialogue + 自動 file ops 跑得通),然後 X-4 後做 dialogue polish 嘅 second pass。
+5. **GitHub repo 仲係 private** — 將來如轉 public,所有 historical commit 同 SESSION_LOG 入面嘅 「Adam Chan」 / `MPEdu` / `C:\Users\adam` 等 user-specific 內容會 expose。**Mitigation**:將來 if-and-when 轉 public 之前做一次 `git filter-repo` rewrite history pass;呢個 destructive operation 需 Adam 明示批准。
+6. **Counterpart's machine setup unconfirmed (User B side)** — design doc §12.3 standing precondition;Phase 4 Block 4B + 4C cannot run without it。Phase X-3 (skill) 落地後由 skill 嘅 cross-side packaging 處理。
+7. **Cross-machine Drive sync latency unknown under real load** — MVP round-trip same-machine only;Block 4C T9b is where 呢個 measured (acceptance: ≤ 5 min)。Skill recovery subflow 應該 detect + propose recovery。
+8. **Real-runtime kit version unknown** — Each user's real project workspace kit version unknown until skill's first runtime check。Out of scope for template SSOT;skill 內部要 detect。
+
+Previously closed risks (still closed): demo workspaces kit alignment (v0.1.7 confirmed), generic-template pivot (S8), no remote git (S9 fixed)。
 
 <!-- ack:section:validation-qc -->
 ## Validation / QC
 
-- Checks run this session (S6, 2026-05-21 latest):
-  - **Inaugural 🟢 跑快檢 demo**: live execution of the new vocabulary as proof-of-actionability. 4 quick-check items: (1) kit doctor → 35/35 PASS; (2) `git status` matches handoff Workspace Identity narrative; (3) 7 grep acceptance tests all green on first run; (4) script step skipped (no tools/ change this session).
-  - 7 grep acceptance tests passed first run: file existence ×2 (triggers.md + governance-map.html); 9 emoji hits 🟢🟡🔴 in SSOT; 3 required sub-section headings present; site-nav 「分層 QC」 1 hit × 3 HTML pages; RULE_PACKS row added; PROJECT_INDEX 4 references (2 Directory Map + 2 Fact Base).
-  - Pre-execution self-audit: caught 11 design questions before any file change (`dev/qc/` vs `dev/rules/` placement / AGENTS.md routing path / cross-page site-nav / mechanism by-reference / 反問 keyword set boundary / HTML design tokens / scope creep / TaskCreate decision / commit handling / doctor schema risk / inaugural demo).
-  - HTML preview-panel render: `docs/qc/governance-map.html` renders clean; site-nav consistent across all 5 docs/*.html pages.
-  - Voice / terminology discipline: trigger keywords 中英並用; 反問 keyword set lists 含混詞 explicitly; no internal codes as sentence subjects in user-facing prose.
-  - PII / secrets scan: none introduced.
-- Checks run earlier (S5, 2026-05-21):
-  - Script PowerShell parse-check (Test #2): `[scriptblock]::Create((Get-Content tools/aps-onboard.ps1 -Raw))` → PARSE_OK.
-  - Script dry-run (Test #6): run against `Demo_Agent_Adam_Public_Squares` (already onboarded) reported 4 SKIPs (T2/T3/T4/T5 idempotency-skip path) + T6 bilingual reminder. Confirms idempotency logic works.
-  - Grep tests #1/#3/#5/#8: all pass on first run.
-  - Grep test #4: failed first run (0 hits in walkthrough) → walkthrough callouts patched to mention `tools/aps-onboard.ps1` filename inline → re-run hit 2 (passing).
-  - Tests deferred: #7 section-missing error path (requires fake/empty workspace not built in this session); #9 insertion-path real verification (deferred to Block 4A first real run per五區段 boundary).
-  - Self-audit-before-execution: original五區段 flagged by user as「自檢不足，深入檢查」; refined plan caught 13 omissions across 5 categories (critical-tech 5: newline / execution-policy / section-missing / substitution-verify / cross-doc consistency; structure 3: hoist-vs-repeat / PROJECT_INDEX row spec / sync mapping; minor 3: non-root validation / doctor reminder / bilingual T6; timing 1: pre-4B not pre-4A; verification 1: parse-check method). All 13 addressed in revised plan, then executed.
-  - HTML preview-panel render: clean after each Edit step.
-  - Voice / terminology discipline: walkthrough §4 + §5 callouts kept Cantonese-narrative voice; `aps-onboard.ps1` appears as `<code>` reference (inline pointer, not sentence subject).
-  - PowerShell tool used directly for parse + dry-run; Bash had backtick-interpolation issue with PowerShell-style heredocs.
-  - PII / secrets scan: none introduced.
-- Checks run earlier (S4, 2026-05-21):
-  - 10 grep acceptance checks per the refined five-zone plan: all pass on first run. Notable: "講 check Hub" count = 4 (predicted ≥ 2) — both SVG `<text>` element and adjacent `<!-- comment -->` line in §8 contain the phrase for each of two steps; expected and reinforces self-documenting code.
-  - Self-audit-before-execution: original五區段 flagged by user as「自檢不足」; refined plan caught 8 omissions (Drive sharing edge case / lede time / preserved pointer / Acceptance text spec / column header / missing test / boundary gap / Confirmed parameters re-order). Documented in SESSION_LOG S4 entry.
-  - HTML preview-panel render: clean after each Edit step.
-  - Voice / terminology discipline: §3 + §8 patches use everyday written Chinese; column header「幾時要改默認」純中文 (rejected initial「override」alien-English).
-  - Cross-doc consistency: walkthrough §3 "3 decisions" rows match Phase 4 plan T0 "Decide" rows one-to-one; walkthrough §3 "4 defaults" match T0 "Defaults" rows; bottom Confirmed parameters table aligns with T0 mid-section's 3+4 grouping (with explicit lead-in clarifying Adam hub_root + permissions is inherited).
-  - PII / secrets scan: none introduced.
-- Checks run earlier (S3, 2026-05-21):
-  - 6 grep acceptance checks per the five-zone plan: 5 pass as predicted; the 6th (`APS Hub has new traffic` count: predicted 1, actual 3) — all 3 hits are legitimate 教學 references (§6 has two templates for direction symmetry; §8 callout references §6 by quoting the opening line as a pointer). Test intent ("long template not in 日常 usage") satisfied.
-  - HTML preview-panel render: clean after each Edit step (visible to user during execution).
-  - Voice / terminology discipline: re-scanned walkthrough Layer 1 patches; no internal codes as sentence subjects in user-facing prose. T0b in Phase 4 plan uses internal label per legitimate technical-doc naming convention.
-  - PII / secrets scan: none introduced.
-  - Structural deviation flagged: original five-zone plan said "T2 / T8 inline notes" for Bridge Pack startup spec; executed as cleaner T0b prerequisite section. Documented in 3 places (`SESSION_LOG.md` S3 entry, Phase 4 plan file history, this Validation/QC block).
-- Checks run earlier (S2, 2026-05-21):
-  - Cross-doc consistency: Phase 4 plan task numbers (T0, T1–T10) mirror walkthrough section narrative (sections 3–7). Confirmed by author cross-read.
-  - HTML link audit (manual): three-way nav `index.html` ↔ `guides/index.html` ↔ `aps-onboarding-walkthrough.html` resolves on local filesystem; markdown plan links resolve via the user's markdown viewer / IDE.
-  - File path accuracy: all absolute paths in walkthrough verified against `dev/PROJECT_INDEX.md` Fact Base + Demo Adam / Demo Jay `dev/rules/aps-bridge.md` references.
-  - PII / secrets scan: no credentials, no API keys in any new file (Phase 4 plan, guides hub, walkthrough).
-  - Voice / terminology discipline check (post-rewrite, this session iteration 2): grep for `Block 4`, `Bridge Pack`, `round-trip` across both guides pages returns 0 sentence-subject hits; `PROTOCOL.md` and `Phase 4` retained only as path / link metadata, not as subjects. Conforms to CLAUDE.md §17 用語紀律 hard rule.
-  - SVG flow-diagram count in walkthrough: 4 (overview / cross-machine handover swimlane / daily 7-step / error-recovery decision tree); all inline, no JS, Adam-blue / Jay-orange / 雙方-purple palette aligned with existing role chips.
-  - Iteration 3 actor disambiguation check: walkthrough header `meta` now lists 4 chip variants (Adam 用戶 / Agent Adam / Agent Jay / Jay 用戶); cross-machine handover SVG uses solid-border lanes for humans and dashed-border lanes for agent programs; design doc §11 now contains the canonical Actor 區分 definition + two parallel channel mapping (Hub IO channel between two agent programs; WhatsApp channel between two human users).
-  - Section count in walkthrough: 11 (was 10; new Section 9 "中間想交換,唔等對話收結" added for mid-session exchange).
-  - Design doc patch verification: §11 Actor 區分 sub-section grep'd present;§4 cross-ref to §11 grep'd present;§7 mid-session trigger caveat grep'd present;file-history 2026-05-21 entry grep'd present.
-- Checks deferred to user / next session:
-  - `npx @adamchanadam/agent-handoff-kit doctor` — to be run by user at convenience; expected 34/34 still passes since AGENTS.md managed core untouched and only governance files reconciled + new docs added under `docs/plans/` and `docs/guides/`.
-  - Phase 4 execution acceptance checks — by definition Phase 4 itself.
-- Handoff evidence location: this file (durable continuity), `dev/SESSION_LOG.md` 2026-05-21 entry (this session's evidence), `docs/plans/2026-05-21-aps-phase4-plan.md` (forward execution contract).
+S9 (2026-05-22, mid-session reconcile) QC summary:
+
+- **Pre-first-push sensitive content scan**: 7 pattern × multi-file scan = 0 actual secret leak;`MPEdu` / `明報` hits 全部 governance-clean labelled reference + historical audit trail;`i.adamchan.uk` 0 hit;`password|secret|api_key|.env` 全部 meta-reference。Push-ready 無 mandatory scrub。
+- **GitHub push verification**: every push confirmed via remote ref update (10/10 success;`b336f4f` initial GitHub commit merged with `65456c0`-`89b3012` via `3d1f716` merge commit)。GitHub credential auto-passed (Windows Credential Manager,no token prompt)。
+- **npm CLI smoke test**: `node bin/aps.js` with `--help` / `init` / unknown 3 path 全 work;exit code 0/0/1 對應預期。
+- **Cross-doc brand sync verification**: grep `site-nav__brand">Agent Public Square` = 0 hits;grep `site-nav__brand">AI Public Squares` = 4 hits 涵蓋 4 個 docs HTML files。
+- **Stale terminology purge in docs/index.html rewrite**: 0 hit for `Phase 4` / `Block 4` / `T0b` / `mpedu` / `焙入啟動` / `不可變交接包` / `from_adam` / `from_jay` (全部 internal-term sentence subjects removed)。
+- **New content verification in docs/index.html**: `npx @adamchanadam/aps init` 1 hit;`funnel audit` 2 hits。
+- **PII / secrets scan**: 0 introduced 喺 S9 work。
+- **kit doctor**: 留俾 Adam 自行跑 at convenience;managed-core block 未郁,expected still 34/34 pass。
+
+Checks deferred to user / next session:
+- Phase X-3 嘅 skill conversational quality review (subjective,iterative)
+- npm publish action (Adam 跑 `npm login` + `npm publish` 自己)
+- Phase 4 真實跨機 execution acceptance (Phase 4 itself,unaffected by S9 vision shift other than skill orchestrate it)
+
+Handoff evidence location: this file (durable continuity);`dev/SESSION_LOG.md` 2026-05-22 S9 entry (this session's evidence);`dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` (forward execution roadmap);GitHub commit history (10 commits + 1 governance reconcile = 11 total this session at `https://github.com/Adamchanadam/ai-public-squares/commits/main`)。
 
 <!-- ack:section:workspace-identity -->
 ## Workspace Identity
@@ -169,38 +152,41 @@ Before acting on the next task, read or mark blocked:
 Expected project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares`
 Git root: same
 Branch: `main`
-Commit history: post-S5 bundle was first committed; post-S5 work (S3/S4/S5 + handoff drift reconciliation + abstract-hash second amend) is folded into one commit (`docs(aps): three-layer user-flow simplification + onboarding helper`). S6 work (this session — QC vocabulary) is NOT yet committed. Run `git log -1 --format='%h %s'` to see current HEAD.
-Worktree / parallel workspace status: none (no `git worktree add`); two sibling demo workspaces (`Demo_Agent_Adam_Public_Squares`, `Demo_Agent_Jay_Public_Squares`) and the Drive Hub are separate repos / data stores. Each user's real project runtime workspace is a separate workspace (lives on their own machine; Phase 4 Block 4A executes there, not in this template SSOT). The `MPEdu_Plus_Branding` path referenced in S2-S7 governance entries is a read-only reference example (not this repo's deployment target — clarified in S8).
-Uncommitted changes summary: S6 work pending commit. 10 entries in working tree per `git status --short`: 8 modified (`docs/index.html`, `docs/guides/index.html`, `docs/guides/aps-onboarding-walkthrough.html`, `dev/RULE_PACKS.md`, `dev/PROJECT_INDEX.md`, `dev/SESSION_LOG.md`, this file, `START_NEXT_SESSION_PROMPT.txt`) + 2 untracked directories (`dev/qc/` containing `triggers.md`, `docs/qc/` containing `governance-map.html`). Commit decision pending user (amend post-S5 bundle vs new S6 commit).
+Latest pushed commit: `89b3012` (cross-doc site-nav brand sync) as of mid-session reconcile;**11th commit landing S9 governance reconcile (this file + SESSION_LOG + PROJECT_INDEX + DOC_SYNC_REGISTRY + START_NEXT_SESSION_PROMPT updates) pending at end of this turn**。
+Remote: `origin` = `https://github.com/Adamchanadam/ai-public-squares.git` (private, Apache-2.0, HTTPS via Windows Credential Manager)。
+Worktree / parallel workspace status: none (no `git worktree add`);siblings (`Demo_Agent_{Adam,Jay}_Public_Squares` MVP fixtures + Drive Hub) 仍 independent stores;real runtime workspaces 仲喺 each user's own machine (out of repo)。
+Uncommitted changes summary: 5 governance files 待 commit (SESSION_HANDOFF / SESSION_LOG / PROJECT_INDEX / DOC_SYNC_REGISTRY / START_NEXT_SESSION_PROMPT) — will commit at end of this turn as the 11th commit of S9。
 
 <!-- ack:section:sync-status -->
 ## Sync Status
 
 Use statuses from `dev/DOC_SYNC_REGISTRY.md`: `confirmed`, `unverified`, `pending`, `blocked`, `not_applicable`.
 
-- Project index: `confirmed` (this session — Directory Map +2 rows for `dev/qc/` + `docs/qc/`; Fact Base +2 rows for SSOT + card).
-- Doc sync registry: `confirmed` (no change this session — `dev/qc/` + `docs/qc/` covered by existing "New file or directory" row → PROJECT_INDEX listing).
-- Public docs / README: `not_applicable` — no README; user-facing entry is `docs/index.html`.
-- External knowledge tools: `confirmed` — Drive Hub offline-available on Adam's side; Jay-side mirror `blocked` (Phase 4 Block 4B T7 prerequisite).
-- APS plan / verification docs: `confirmed` (no change this session — S5 Tooling shortcut + S4 T0 split + S3 T0b carry forward).
-- APS user-facing docs (`docs/index.html` + `docs/guides/`): `confirmed` (this session — site-nav 5th link「分層 QC」added consistently across 3 HTML pages; S3-S5 callouts carry forward).
-- Tooling: `confirmed` — `tools/aps-onboard.ps1` from S5 unchanged.
-- QC vocabulary: `confirmed` (this session — new `dev/qc/triggers.md` SSOT + `docs/qc/governance-map.html` card; routed via `dev/RULE_PACKS.md` 9th row; inaugural 跑快檢 demo passes 7/7 grep + doctor 35/35).
+- Project index: `confirmed` (this turn — Stack 5 row update for Node + npm + smoke test + Deploy command;Directory Map +6 row for new files;Entry Points +2 row for npm CLI + Build roadmap;Fact Base +2 row for funnel audit + README;External Sources +2 row for GitHub + npm;Workspace Identity refreshed;Local QC Commands +1 row for npm smoke test)。
+- Doc sync registry: `confirmed` (this turn — 2 new row added:「Repo entry layer change (Layer A)」 + 「npm package change」)。
+- Public docs / README: `confirmed` (README rewrite + docs/index.html rewrite + 4 docs HTML site-nav sync,all pushed to origin/main)。
+- External knowledge tools: `confirmed` — Drive Hub 仍 offline-available on Adam's side;Jay-side mirror `blocked` (real cross-machine onboarding pending Phase X-3 落地後 skill orchestrate)。
+- APS plan / verification docs: `confirmed` (no change this session — S5 Tooling shortcut + S4 T0 split + S3 T0b carry forward;Phase 4 plan 仍 valid spec reference for skill setup subflow)。
+- APS user-facing docs (`docs/index.html` + `docs/guides/` + README): `confirmed` (this turn — docs/index.html zero-knowledge rewrite;cross-doc brand sync;README zero-knowledge entry rewrite)。
+- Tooling: `confirmed` — `tools/aps-onboard.ps1` from S5 unchanged;`bin/aps.js` new (Phase X-2 placeholder);`tools/` 同 `bin/` 平行存在(`tools/` 處理 governance file ops;`bin/` 係 npm CLI)。
+- QC vocabulary: `confirmed` (no change this turn)。
+- npm package: `confirmed` (skeleton local;publish action 留 Adam)。
+- GitHub remote: `confirmed` (origin/main 10 commits pushed;11th pending end of this turn)。
 
 <!-- ack:section:state-reconciliation-check -->
 ## State Reconciliation Check
 
 At full closeout, complete this check after updating the state sections above.
 
-- Reconciled at: 2026-05-21 S2 closeouts (iterations 1-5); 2026-05-21 same-day S3 closeout (Layer 1 polish); 2026-05-21 same-day S4 closeout (Layer 2 polish); 2026-05-21 same-day S5 closeout (Layer 3 — PowerShell helper script); 2026-05-21 same-day S6 closeout (分層 QC trigger vocabulary — `dev/qc/triggers.md` + `docs/qc/governance-map.html` + site-nav 5th link + RULE_PACKS 9th routing row; 11-question pre-audit + inaugural 跑快檢 demo).
+- Reconciled at: 2026-05-21 S2-S8 closeouts;**2026-05-22 S9 mid-session reconcile** (呢個 reconcile 唔係正式 closeout — Adam 講 「唔收工」;但 vision shift major 所以全部 state section 都 reconcile 過,等下一 session 可以接得返)。
 <!-- ack:field:state-sections-rewritten-or-confirmed -->
-- State sections rewritten or confirmed current (S5 pass): Last Updated header (S5); Durable Anchors (still current; verified); Current Baseline (§2 product state updated — all three layers done); Task Understanding Summary (still current; verified); Active Objective (rewritten — three-layer simplification fully done, next-action list narrowed to 3 independent threads); Completed This Session (replaced with S5 work; S4 + S3 + S2 + S1 archived in SESSION_LOG); Next Priorities (rewritten 8 entries; T0b + Block 4A + T0 at top, Layer 3 removed since done); Next Task Required Reading (still current); Risks (still current — no new risks introduced by tooling addition; `tools/aps-onboard.ps1` is idempotent + dry-run-capable + manual-fallback-available, so surface is bounded); Validation/QC (S5 checks added on top, S4 + S3 + S2 retained); Workspace Identity (commit + uncommitted summary updated for S5); Sync Status (refreshed + Tooling row added); State Reconciliation Check (this field); Handoff Sufficiency Check (re-confirmed); Next Session Opening Message (regenerated for S5).
+- State sections rewritten or confirmed current (S9 mid-session pass): Last Updated header (S9 mid-session);Durable Anchors (item 1, 2, 4, 5 updated for funnel-first vision + GitHub remote + npm package + product name shift;item 3 unchanged);Closeout-Reconciled State (intro note added explaining mid-session reconcile);Current Baseline (rewritten — funnel-first vision + Layer A done + npm skeleton + GitHub remote);Task Understanding Summary (user intent refined + success criteria updated);Active Objective (rewritten — Phase X-3 next;Phase X-1 done;Phase X-2 partial);Completed This Session (replaced with S9 work);Next Priorities (rewritten 8 entries reflecting funnel roadmap);Next Task Required Reading (10 sources updated for Phase X-3 entry);Risks (rewritten 8 risks reflecting new state);Validation/QC (S9 checks);Workspace Identity (commit + uncommitted summary updated for S9);Sync Status (refreshed);State Reconciliation Check (this field);Handoff Sufficiency Check (re-confirmed);Next Session Opening Message (regenerated for S9)。
 <!-- ack:field:stale-snapshots-left -->
-- Stale snapshots left in this handoff: none. S4 + S3 + S2 + S1 details preserved in `dev/SESSION_LOG.md` 2026-05-21 + 2026-05-20 entries.
+- Stale snapshots left in this handoff: none。S8-S1 details preserved in `dev/SESSION_LOG.md` 2026-05-21 + 2026-05-20 entries。
 <!-- ack:field:opening-message-matches-current-state -->
-- Opening message matches current state: yes — `START_NEXT_SESSION_PROMPT.txt` regenerated from the fenced block below as part of this closeout.
+- Opening message matches current state: yes — `START_NEXT_SESSION_PROMPT.txt` regenerated 喺 end of this turn 對應呢個 reconcile state。
 <!-- ack:field:next-ai-can-continue -->
-- Next AI can continue from `AGENTS.md`, this handoff, `dev/PROJECT_INDEX.md` (with `tools/`), `docs/plans/2026-05-21-aps-phase4-plan.md` (with Tooling shortcut + T0b + Layer 2 T0 split), and needed rule packs without searching old log history: yes — Active Objective (3 independent next-action threads), Next Priorities (8 entries), Risks (5 entries unchanged), and Required Reading (10 sources) are all in this file; Phase 4 plan is self-contained; `tools/aps-onboard.ps1` has inline `Get-Help`.
+- Next AI can continue from `AGENTS.md`, this handoff, `dev/PROJECT_INDEX.md` (with `bin/` + npm package), `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` (Phase X-3 spec), and needed rule packs without searching old log history: yes — Active Objective (Phase X-3 起手),Next Priorities (8 entries reflecting funnel roadmap),Risks (8 entries updated),and Required Reading (10 sources updated for Phase X-3 entry) 都 in this file。
 
 If any answer is no, blocked, or uncertain, fix this handoff before declaring handoff ready.
 
@@ -209,10 +195,11 @@ If any answer is no, blocked, or uncertain, fix this handoff before declaring ha
 
 Can the next AI continue from `AGENTS.md`, this handoff, `dev/PROJECT_INDEX.md`, and needed rule packs without searching old log history?
 
-Answer: yes.
+Answer: yes (assuming this S9 mid-session reconcile is accepted as the handoff point for any next session that may start before the current session formally closes out)。
+
 If no, update this handoff before closeout.
 
-Continuity rule: this file carries current state and next action. `dev/SESSION_LOG.md` carries recent evidence only. Archive old detail only when needed; do not create an archive directory by default.
+Continuity rule: this file carries current state and next action。`dev/SESSION_LOG.md` carries recent evidence only。Archive old detail only when needed;do not create an archive directory by default。
 
 <!-- ack:section:next-session-opening-message -->
 ## Next Session Opening Message
@@ -220,7 +207,9 @@ Continuity rule: this file carries current state and next action. `dev/SESSION_L
 📋 Next session: copy and paste the whole block below
 
 ```text
-Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template; not bound to any specific project). Real Phase 4 execution happens in each user's own real-runtime workspace (User A in their own project workspace; User B in theirs). The `MPEdu_Plus_Branding` path in S2-S7 governance entries is a read-only reference example (clarified in S8), NOT this repo's deployment target. If you intend to execute Phase 4 Block 4A, open a new session inside User A's own real-runtime workspace. If you intend to apply Bridge Pack T0b polish, do it inside Demo_Agent_Adam_Public_Squares / Demo_Agent_Jay_Public_Squares sessions (one each).
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template;not bound to any specific project;published as `@adamchanadam/aps` npm package + GitHub repo `Adamchanadam/ai-public-squares`).
+
+S9 (2026-05-22) 嘅 funnel-first vision shift 已 landed:由 "Phase 4 落地計劃 + manual walkthrough" 變做 "zero-knowledge user 5-minute outcome via `npx @adamchanadam/aps init` + skill orchestration". Layer A entry rewrite done (README + docs/index.html zero-knowledge);npm package skeleton ready (placeholder 0.1.0,真 init 邏輯未做);GitHub remote bootstrap;cross-doc brand sync 「AI Public Squares」 全 4 個 docs HTML files. Distribution channel: npm (confirmed).
 
 Read in order:
 1. AGENTS.md
@@ -228,7 +217,7 @@ Read in order:
 3. dev/SESSION_LOG.md
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
-6. docs/plans/2026-05-21-aps-phase4-plan.md
+6. dev/qc/2026-05-22-zero-knowledge-funnel-audit.md (Phase X-3 spec source)
 
 Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
 
@@ -236,14 +225,11 @@ QC vocabulary (S6): if user invokes 「跑快檢 / 跑外發前檢 / 跑全面�
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
-Current state (as of 2026-05-21 S8 closeout): APS MVP verified; both demo workspaces at kit v0.1.7; Phase 4 plan complete with T0b Bridge Pack prerequisite + Layer 2 T0 restructure + Layer 3 Tooling shortcut (tools/aps-onboard.ps1); user-facing walkthrough refined under all three layers — canonical mid-session trigger `check Hub` + 2 synonyms; daily WhatsApp short `Hub 有新嘢`; mid-session `check Hub` is the 默認嘅日常 primary pattern; auto-conflict-scan moved to Bridge Pack; UTC/find marked first-cross-machine verification only; T0 parameter decision burden cut from 5+ to 3; PowerShell helper script tools/aps-onboard.ps1 covers T2-T5 idempotently (T6 stays manual). S6: 分層 QC vocabulary established — dev/qc/triggers.md SSOT + docs/qc/governance-map.html card; 三 tier 🟢快檢 / 🟡外發前檢 / 🔴全面檢 wraps the 6 existing QC mechanisms with 嵌套 + 反問 rules. NEW S8 Stage 1: generic-template pivot — repo intent clarified as pure generic APS template; Adam-Jay-MPEdu_Plus_Branding removed as implicit deployment target throughout active doc surface; reframed as User A / User B roles; placeholder discipline applied across Phase 4 plan / walkthrough / index / tool / governance state.
+GitHub remote `origin` at https://github.com/Adamchanadam/ai-public-squares.git (private, Apache-2.0, HTTPS via Windows Credential Manager auto-auth). Future GitHub 操作參考 mental-load `C:\Users\adam\_claude_desktop\GENERIC_OPERATIONAL_RUNBOOK.md` (但本 repo 喺 Claude Code on Windows, runbook 嘅 VM / Cowork tier strategy 大部分唔 apply).
 
-Next user-driven actions (3 independent threads):
-- T0b execution in Demo_Agent_Adam + Demo_Agent_Jay sessions (the demo fixtures shipped with this repo): apply two Bridge Pack startup behaviours per Phase 4 plan T0b.
-- Block 4A in User A's own real-runtime workspace (not this template SSOT; not MPEdu_Plus_Branding reference): Layer 1-3 polish + T0b pre-state ready. Block 4A first run is also the script's first real insertion-path verification.
-- T0 parameter lock with User B: 3 user decisions per Phase 4 plan T0 / walkthrough §3.
+Next active objective: **Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow first draft + dialogue script first pass (conversational craft sub-deliverable)**. Phase X-1 done;Phase X-2 partial (npm skeleton done, real init orchestration pending);Phase X-3 next.
 
-User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html (Adam/Jay used as example narrative protagonists with disclaimer at §1). Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md (User A / User B template form). PowerShell helper at tools/aps-onboard.ps1 (placeholder .EXAMPLE block). QC trigger vocabulary card at docs/qc/governance-map.html (SSOT at dev/qc/triggers.md).
+User-facing entry: README.md (GitHub first-impression) + docs/index.html (hosted entry). Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md.
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
 ```

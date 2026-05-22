@@ -1,4 +1,6 @@
-Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template; not bound to any specific project). Real Phase 4 execution happens in each user's own real-runtime workspace (User A in their own project workspace; User B in theirs). The `MPEdu_Plus_Branding` path in S2-S7 governance entries is a read-only reference example (clarified in S8), NOT this repo's deployment target. If you intend to execute Phase 4 Block 4A, open a new session inside User A's own real-runtime workspace. If you intend to apply Bridge Pack T0b polish, do it inside Demo_Agent_Adam_Public_Squares / Demo_Agent_Jay_Public_Squares sessions (one each).
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template;not bound to any specific project;published as `@adamchanadam/aps` npm package + GitHub repo `Adamchanadam/ai-public-squares`).
+
+S9 (2026-05-22) 嘅 funnel-first vision shift 已 landed:由 "Phase 4 落地計劃 + manual walkthrough" 變做 "zero-knowledge user 5-minute outcome via `npx @adamchanadam/aps init` + skill orchestration". Layer A entry rewrite done (README + docs/index.html zero-knowledge);npm package skeleton ready (placeholder 0.1.0,真 init 邏輯未做);GitHub remote bootstrap;cross-doc brand sync 「AI Public Squares」 全 4 個 docs HTML files. Distribution channel: npm (confirmed).
 
 Read in order:
 1. AGENTS.md
@@ -6,7 +8,7 @@ Read in order:
 3. dev/SESSION_LOG.md
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
-6. docs/plans/2026-05-21-aps-phase4-plan.md
+6. dev/qc/2026-05-22-zero-knowledge-funnel-audit.md (Phase X-3 spec source)
 
 Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
 
@@ -14,13 +16,10 @@ QC vocabulary (S6): if user invokes 「跑快檢 / 跑外發前檢 / 跑全面�
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
-Current state (as of 2026-05-21 S8 closeout): APS MVP verified; both demo workspaces at kit v0.1.7; Phase 4 plan complete with T0b Bridge Pack prerequisite + Layer 2 T0 restructure + Layer 3 Tooling shortcut (tools/aps-onboard.ps1); user-facing walkthrough refined under all three layers — canonical mid-session trigger `check Hub` + 2 synonyms; daily WhatsApp short `Hub 有新嘢`; mid-session `check Hub` is the 默認嘅日常 primary pattern; auto-conflict-scan moved to Bridge Pack; UTC/find marked first-cross-machine verification only; T0 parameter decision burden cut from 5+ to 3; PowerShell helper script tools/aps-onboard.ps1 covers T2-T5 idempotently (T6 stays manual). S6: 分層 QC vocabulary established — dev/qc/triggers.md SSOT + docs/qc/governance-map.html card; 三 tier 🟢快檢 / 🟡外發前檢 / 🔴全面檢 wraps the 6 existing QC mechanisms with 嵌套 + 反問 rules. NEW S8 Stage 1: generic-template pivot — repo intent clarified as pure generic APS template; Adam-Jay-MPEdu_Plus_Branding removed as implicit deployment target throughout active doc surface; reframed as User A / User B roles; placeholder discipline applied across Phase 4 plan / walkthrough / index / tool / governance state.
+GitHub remote `origin` at https://github.com/Adamchanadam/ai-public-squares.git (private, Apache-2.0, HTTPS via Windows Credential Manager auto-auth). Future GitHub 操作參考 mental-load `C:\Users\adam\_claude_desktop\GENERIC_OPERATIONAL_RUNBOOK.md` (但本 repo 喺 Claude Code on Windows, runbook 嘅 VM / Cowork tier strategy 大部分唔 apply).
 
-Next user-driven actions (3 independent threads):
-- T0b execution in Demo_Agent_Adam + Demo_Agent_Jay sessions (the demo fixtures shipped with this repo): apply two Bridge Pack startup behaviours per Phase 4 plan T0b.
-- Block 4A in User A's own real-runtime workspace (not this template SSOT; not MPEdu_Plus_Branding reference): Layer 1-3 polish + T0b pre-state ready. Block 4A first run is also the script's first real insertion-path verification.
-- T0 parameter lock with User B: 3 user decisions per Phase 4 plan T0 / walkthrough §3.
+Next active objective: **Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow first draft + dialogue script first pass (conversational craft sub-deliverable)**. Phase X-1 done;Phase X-2 partial (npm skeleton done, real init orchestration pending);Phase X-3 next.
 
-User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html (Adam/Jay used as example narrative protagonists with disclaimer at §1). Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md (User A / User B template form). PowerShell helper at tools/aps-onboard.ps1 (placeholder .EXAMPLE block). QC trigger vocabulary card at docs/qc/governance-map.html (SSOT at dev/qc/triggers.md).
+User-facing entry: README.md (GitHub first-impression) + docs/index.html (hosted entry). Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md.
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
