@@ -92,11 +92,11 @@ Record this at closeout so the next AI can detect wrong-root or workspace drift.
 
 | Field | Value | Last verified |
 |---|---|---|
-| Expected project root | `C:\Users\adam\_claude_desktop\AI_Public_Squares` | 2026-05-22 |
-| Git root | same as above | 2026-05-22 |
-| Branch / commit | `main` / current HEAD via `git log -1 --format=%h` (latest pushed: `89b3012` cross-doc site-nav brand sync;10 commits pushed to origin/main this session — see SESSION_LOG S9 entry for full list) | 2026-05-22 |
-| Worktree or parallel workspace | none from this workspace; siblings `Demo_Agent_{Adam,Jay}_Public_Squares` (MVP fixtures) and the Drive Hub are independent stores; GitHub `origin` remote 已新加 (Apache-2.0 private repo) | 2026-05-22 |
-| Uncommitted change summary | S9 mid-session governance reconcile work pending commit (SESSION_LOG / PROJECT_INDEX / DOC_SYNC_REGISTRY / SESSION_HANDOFF / START_NEXT_SESSION_PROMPT) — will commit at end of this turn | 2026-05-22 |
+| Expected project root | `C:\Users\adam\_claude_desktop\AI_Public_Squares` | 2026-05-23 |
+| Git root | same as above | 2026-05-23 |
+| Branch / commit | `main` / latest pushed `01f748f`(S9 reconcile #2,2026-05-22);**S10 batch (此 closeout) uncommitted,將 push 為 23rd 累積 commit** | 2026-05-23 |
+| Worktree or parallel workspace | none from this workspace; siblings `Demo_Agent_{Adam,Jay}_Public_Squares` (MVP fixtures) and the Drive Hub are independent stores; GitHub `origin` remote 已 public(Apache-2.0,2026-05-23 由 private 轉 public);GitHub Pages enabled at `https://adamchanadam.github.io/ai-public-squares/` (serving `/ (root)` of `main`) | 2026-05-23 |
+| Uncommitted change summary | S10 batch — 10 files modified across npm package + 4 HTML + README + design doc + 2 governance file + START_NEXT_SESSION_PROMPT(plus 2 memory files out of repo)— will commit at end of this turn as single commit | 2026-05-23 |
 
 ## Change Hotspots
 

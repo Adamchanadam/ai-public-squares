@@ -8,7 +8,61 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-22 (S9, latest) — Funnel-first vision shift + Layer A entry + npm bootstrap + GitHub remote
+## 2026-05-23 (S10, latest) — Repo public + GitHub Pages + npm bridge-pack + Layer D HTML strip + audit cascade
+
+- **ID:** S10
+- **Summary:** 跨多輪 audit + scope expansion 嘅累積 batch。核心拍板:Adam 提出 「HTML 入面 .md hyperlink 屬 broken UX(瀏覽器顯示 plain text);若內容係新手必讀就放 HTML 頁,放 HTML 範圍嘅必須係 HTML,非 .md」 之 design principle。Strip 全部公開面 .md hyperlink 並重新定位 「設計理據 + 跨機接駁計劃」 為 「AI / 維護者層 spec source」(Layer D)。順手做 audit cascade — 日期 / brand sync / Agent Handoff Kit 網址 fix / 設計理據 §13 階段 1-3 reframe / npm package 加 `bridge-pack` sub-command 取代 clone repo prereq / 設置教學 §2 由 4 件先決事改 3 件(取消 clone)/ pre-release banner / repo 轉 public / GitHub Pages enable / README 嘅 HTML link 改 absolute GitHub Pages URL。Voice rewrite scope 擴至包含 `docs/guides/index.html` + `docs/qc/governance-map.html`(原 Tier 3 deferred items)。
+- **Adam principle 確立(documentation governance):** HTML = 公開人類面 polished surface;Notion = Adam 個人 R&D 知識庫;.md(`docs/plans/`、`dev/`)= AI / 維護者 spec substrate。HTML site-nav 不 link 任何 .md;HTML body 如要 reference .md,strip hyperlink 留 plain `<span class="path">` 顯示。
+- **Changed:** This workspace + 2 memory files.
+  - Modified: `bin/aps.js` — 加 `bridge-pack` sub-command(支援 `--role A/B`);help text + init text 對齊新 capability。
+  - Modified: `package.json` — files 加 `"examples/"`(npm tarball ship Bridge Pack fixture)。
+  - Modified: `README.md` — pre-release banner(「⚠️ 前期測試階段」)+ 「想深入了解」 list 分兩層 + 3 個 HTML link 改 absolute GitHub Pages URL + Agent Handoff Kit 網址 fix。
+  - Modified: `docs/index.html` — site-nav strip 2 .md;body table 3 row + 正文 funnel audit hyperlink strip 改 plain path + (AI / 維護者層 .md) 標記;site-nav hint + hero meta + footer 日期 → 2026-05-23;Agent Handoff Kit 網址 fix;加 pre-release banner;voice 已 align。
+  - Modified: `docs/guides/index.html` — site-nav strip 2 .md;site-nav hint + footer 日期 → 2026-05-23;footer brand 「AI Public Squares」 sync;3 sections / 12 處粵語 colloquial reword(原 voice scope 漏網)。
+  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — site-nav strip 2 .md;body callout × 2 + table × 1 hyperlink strip + 加 (AI / 維護者層 .md) 標記;site-nav hint + footer 日期 → 2026-05-23;Agent Handoff Kit 網址 fix;§2 4 件 → 3 件先決事(取消 clone repo prereq + 加 npm bridge-pack callout);§6 step 2 全 rewrite(由 clone path → `npx @adamchanadam/aps bridge-pack` command);§7 Adam 預先準備 + 1.1 / 2.3 / 5-bullet reframe + cascade 「4 件」 → 「3 件」 across TOC / §3 lede / §6 step 1 head / §7 step 1 / 1.1 head / accept 句;§5 / §3 callout 之 「你哋」 → 「你們」 voice fix(原 voice scope 漏網)。
+  - Modified: `docs/qc/governance-map.html` — site-nav strip 2 .md;site-nav hint → 2026-05-23;footer brand + `<title>` brand 「AI Public Squares」 sync;13 處粵語 colloquial reword(原 voice scope 漏網 Tier 3 F6)。
+  - Modified: `docs/plans/2026-05-20-agent-public-square-design.md` — §13 階段 1 + 3 + 4 全 reframe(`Adam` / `Jay` → User A / B + `mpedu_plus_branding` → `<project_slug>` placeholder)。
+  - Modified: `dev/DOC_SYNC_REGISTRY.md` — 新 row 「HTML 公開面 .md hyperlink strip」;npm package change row smoke test 涵蓋 `bridge-pack` 加 files `examples/`。
+  - Modified (memory): `MEMORY.md` + `reference-agent-handoff-kit-prerequisite.md` — Agent Handoff Kit 網址 由 `adamchanadam.github.io/agent-handoff-kit`(錯誤,不存在)改 `https://github.com/Adamchanadam/agent-handoff-kit`(repo URL,正確)。
+- **External actions by Adam (out of session):**
+  - GitHub repo `Adamchanadam/ai-public-squares` 由 private 轉 public(2026-05-23)。
+  - GitHub Pages enable(`Settings → Pages → Source: Deploy from a branch, Branch: main, Folder: / (root)`)。
+  - Pages URL `https://adamchanadam.github.io/ai-public-squares/` 可達(Adam confirmed with screenshot)。
+- **QC: 🟡 外發前檢 + inner 🟢 — 5/5 items 全綠:**
+  - 🟢 quick-check: kit doctor baseline maintained;grep acceptance 全綠(`.md` hyperlink × 0 hit on `docs/**/*.html` / `Agent Public Square` × 0 hit on `docs/**/*.html` / `2026-05-2[12]` 剩餘 hits 為 filename date 或 「建立日期」 intentional history)。
+  - 🟡 release-check 5 items:
+    - **Placeholder audit ✅** active 公開面 0 hit `MPEdu_Plus_Branding`;historical files(MVP plan / verification / S8 audit report)hits 屬 S8 governance-clean labelled,acceptable expose since repo public。
+    - **Cross-read ✅** 跨 7 個 user-facing 檔 narrative consistency 一致:site-nav brand / 日期 / 「3 件先決事」 cascade / npm bridge-pack command 路徑 / README ↔ docs/index.html ↔ walkthrough 對齊。
+    - **HTML preview render ✅** 各 HTML 經 Launch preview visible;banner + nav + table 結構 visual confirmed;無 broken markup。
+    - **PII / secrets sweep ✅** 0 actual leak(`i.adamchan.uk` / `password=` / `secret=` / `api_key` / `client_secret` 0 hit,剩 2 hits 屬 historical scan record meta-mention)。
+    - **Voice discipline scan ✅** 7 個讀者面 HTML / MD 全 align(verbatim user trigger phrase quote 內保留 per voice rule)。
+  - 🔴 全面檢 NOT triggered(此 batch 無 protocol 改動,無 cross-workspace 範圍變更)。
+- **npm smoke test ✅:** `node bin/aps.js [--help|init|bridge-pack|bridge-pack --role B|bogus]` 5 paths exit code 對應預期(前 4 exit 0,bogus exit 1);`bridge-pack` output 開首 `# APS Bridge Pack`;`npm pack --dry-run` ship `examples/demo-agent-{a,b}/dev/rules/aps-bridge.md` 雙 fixture(各 6.6 KB)。
+- **Sync:**
+  - HTML 公開面 .md hyperlink strip change: confirmed(4 個 HTML site-nav + body link 全 strip;新 DOC_SYNC_REGISTRY row)。
+  - npm package change: confirmed(`bridge-pack` sub-command + files 含 `examples/`;Adam 將自跑 `npm publish` 出 0.2.0)。
+  - Repo entry layer change(Layer A): confirmed(README + docs/index.html 加 pre-release banner;README HTML link 改 absolute GitHub Pages URL)。
+  - APS user-facing docs change: confirmed(跨 4 HTML site-nav 對齊 + voice 對齊 + 日期 sync)。
+- **Pending:**
+  - npm publish 0.2.0(Adam 自跑 `npm login + npm publish`)— publish 後 `npx @adamchanadam/aps bridge-pack` 命令真實 work。
+  - Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow + dialogue script。
+  - 真實 user-flow test:Adam 可於 throw-away folder 跟 walkthrough §2 → §3 → §6 真做一次(npm bridge-pack 路徑下測試)。
+  - Phase X-5 Layer D 文檔重新定位(設置教學 §1 disclaimer 加「想 AI 帶你做就講 set up APS」 + Phase 4 plan 加 「Skill-driven UX layer」 cross-reference 一節)。
+  - Phase X-4 Layer C 日常使用 + recovery subflow。
+  - Phase X-6 自動升級機制。
+- **Risks (updated):**
+  - npm 0.2.0 未 publish — `npx @adamchanadam/aps bridge-pack` 即時試會 404 until publish。Mitigation:README + docs/index.html banner 已標 pre-release。
+  - 設置教學 npm bridge-pack 路徑未經真實使用者跑一次驗證(無 user-flow test acceptance)。
+  - 設計理據 §12.3 + §9 仍保留 Adam-Jay specific path 加 `G:\…\Adam 工作目錄` 個人 Drive path(有 header disclaimer 標明 example narrative);repo 已 public,呢個 path 已 expose(屬 acceptable expose since header disclaimer cover example narrative scope)。
+  - Historical SESSION_LOG / HANDOFF entries 含 `MPEdu_Plus_Branding` / Adam-specific path / `i.adamchan.uk` historical scan reference / `Adam Chan` 等 — repo 已 public,呢類 historical content 已 expose;將來如想徹底 cleanup 須 `git filter-repo` rewrite history(destructive,需 Adam 明示批准)。
+  - Previously closed risks unchanged。
+- **Log maintenance:** kept;new entry at top;S9 demoted from `latest` tag。
+
+### Next Session Opening Message
+
+(regenerated in `dev/SESSION_HANDOFF.md` — see there. Convenience copy at `START_NEXT_SESSION_PROMPT.txt`.)
+
+## 2026-05-22 (S9) — Funnel-first vision shift + Layer A entry + npm bootstrap + GitHub remote
 
 - **ID:** S9
 - **Summary:** Major vision shift triggered by Adam: 「對 APS 零認知背景嘅用戶都用得到,本 repo 才算成功」. Repo 嘅 success criterion reframed 由「technical correctness」 → 「zero-knowledge user 5-minute outcome」. Three substantial deliverables landed:

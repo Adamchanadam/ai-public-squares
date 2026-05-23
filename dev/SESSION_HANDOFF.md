@@ -1,6 +1,6 @@
 # Session Handoff
 
-Last Updated: 2026-05-22 (session S9 extended reconcile #2: 5 份人讀文檔 voice rewrite 全完成 + walkthrough concrete rewrite + ship demo fixtures + design doc reframe;19 commits pushed,20th 為此 reconcile)
+Last Updated: 2026-05-23 (session S10 formal closeout: Layer D HTML strip + npm bridge-pack + repo public + GitHub Pages + audit cascade;S9 累積 22 commits pushed,S10 batch 為此 closeout 自身)
 
 <!-- ack:section:durable-anchors -->
 ## Durable Anchors
@@ -11,22 +11,22 @@ Stable facts that should survive across sessions. Update only when they change, 
 2. Product / system identity: AI Public Squares (formerly "Agent Public Square") — a cross-machine collaboration protocol for two AI agents working on the same project, distributed as an npm package (`@adamchanadam/aps`, Apache-2.0)。Uses a Google-Drive-synced Hub Root with single-writer lanes, immutable versioned packets, an append-only ledger, and a thin Bridge Pack that wires inbox detection into each agent's agent-handoff-kit startup。Zero-knowledge user target: `npx @adamchanadam/aps init` 一條命令 install + skill 帶 setup + natural language daily ops。
 3. Governance model: Agent Handoff Kit v0.1.7 managed-core block at `AGENTS.md` lines 1-127。External skill flows, subagent plans, and demo-workspace closeouts are subordinate evidence per AGENTS.md §2 and §5;only the active project root's kit persistence completes a task。
 4. Source-of-truth ownership: this workspace owns the APS design + implementation plan + verification report + project entry HTML + README + npm package source (`bin/aps.js`) + zero-knowledge funnel audit roadmap;the Drive Hub at `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\` owns runtime `PROTOCOL.md` + templates + lane data + CHANGELOG;the two Demo Agent workspaces (`C:\Users\adam\_claude_desktop\Demo_Agent_{Adam,Jay}_Public_Squares\`) own their per-agent Bridge Pack and round-trip session evidence。GitHub remote `origin` at `https://github.com/Adamchanadam/ai-public-squares.git` (private,Apache-2.0)。
-5. Release / publish boundary: GitHub `origin/main` 已 push (private repo,11 commits 截至 2026-05-22 S9 mid-session reconcile);npm `@adamchanadam/aps` 0.1.0 placeholder local 完成但 **未 publish** — 留到 Phase X-2 真 `init` orchestration 齊一齊 publish 0.2.0。Walkthrough Layer D re-position 未做。
+5. Release / publish boundary: GitHub `origin/main` 已 push (**public repo since 2026-05-23,Apache-2.0**);GitHub Pages enabled (`Settings → Pages → Source: Deploy from a branch, Branch: main, Folder: / (root)`);Pages URL `https://adamchanadam.github.io/ai-public-squares/` 可達。npm `@adamchanadam/aps` local 已加 `bridge-pack` sub-command + files ship `examples/`,但 **未 publish 0.2.0** — Adam 自跑 `npm login + npm publish` 即生效。Walkthrough Layer D re-position(§1 disclaimer 「想 AI 帶你做」 reframe)留 Phase X-5 落地之後處理。
 
 <!-- ack:section:closeout-reconciled-state -->
 ## Closeout-Reconciled State
 
 This is the current-state area. At every full closeout, rewrite or explicitly confirm every section below. Do not append a new state snapshot under an old one.
 
-**Note:** S9 (2026-05-22) is a **mid-session reconcile** — vision shift major,但 session 仲未正式收工 (Adam 講 「唔收工,仲有大量 context windows,繼續」)。Downstream Phase X-3 work 可能 same session 內推進。
+**Note:** S10 (2026-05-23) **formal closeout reconcile**。S9(2026-05-22)累積之 funnel-first vision shift + Layer A entry + voice rewrite 全完成並 push;S10 跨多輪 audit + scope expansion(HTML 公開面 .md hyperlink strip + npm bridge-pack sub-command + 設置教學 取消 clone repo prereq + repo 轉 public + GitHub Pages enable + README absolute URL + voice 額外 scope + Agent Handoff Kit 網址 fix)。SESSION_LOG S10 entry 記錄完整 work。
 
 <!-- ack:section:current-baseline -->
 ## Current Baseline
 
-1. Project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares` (Windows;git branch `main`;latest pushed HEAD `89b3012` cross-doc site-nav brand sync;11 commits total this session — see SESSION_LOG S9 entry for full chain)。
-2. Product / system state: APS MVP complete + Layer A entry rewrite done。**Funnel-first vision shift landed 2026-05-22**: repo intent reframed from "Phase 4 落地計劃 + manual walkthrough" to "zero-knowledge user 5-minute outcome via `npx @adamchanadam/aps init` + skill orchestration"。Layer A 嘅 README + docs/index.html 全 rewrite (zero-knowledge entry);npm package skeleton (`@adamchanadam/aps` v0.1.0 placeholder,real `init` 邏輯未做);GitHub remote 已 bootstrap + 19 commits push (latest `78b52eb`);cross-doc site-nav brand sync 「Agent Public Square」 → 「AI Public Squares」 跨 4 個 docs HTML files 落咗。**Distribution channel 拍板:npm package (Adam confirmed)**;Phase X-2 unblocked。**S9 continuation (later same session,8 more commits)**:5 份人讀文檔(主頁 README、入口頁 docs/index.html、設置教學 walkthrough、內部檢討 funnel audit、設計理據 design doc)全部當代繁體書面語化;walkthrough 結構重整(加 §3「準備你嘅項目工作目錄」、cascade renumber 11→13 sections、§6/§7 全部 step concrete rewrite — 子步驟 + prompt + expected output 表 + 失敗處理 callout + acceptance);ship demo Bridge Pack fixtures 入 `examples/demo-agent-{a,b}/`(讀者 clone repo 即可揾到,不再依賴 maintainer 機 sibling path);修 walkthrough §5 step 1 wrong instruction(由「睇 AGENTS.md 頭幾行記低版本」 → 「執行 doctor 自動報版本」)。
-3. Governance state: Agent Handoff Kit v0.1.7 managed-core in place;`AGENTS.md` clean;kit doctor self-check 34/34 passing as of last verified run;SESSION_HANDOFF / SESSION_LOG / PROJECT_INDEX / DOC_SYNC_REGISTRY 全部已 reflect S9 mid-session reconcile state (2026-05-22)。Demo workspaces (`Demo_Agent_{Adam,Jay}_Public_Squares`) 仍 aligned to kit v0.1.7。
-4. Source-of-truth notes: 新增 `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` 做 funnel-first build roadmap SSOT;`README.md` + `docs/index.html` 對齊 zero-knowledge entry;`package.json` + `bin/aps.js` 做 npm CLI source;`LICENSE` 係 Apache-2.0。其餘檔不變。
+1. Project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares` (Windows;git branch `main`;**repo public since 2026-05-23**;latest pushed HEAD `01f748f` S9 reconcile #2(2026-05-22);S10 batch(此 closeout)仍 uncommitted,將於此 turn 末 commit + push 為 23rd commit)。
+2. Product / system state: APS MVP complete + Layer A entry done + Layer B partial(npm package 加 `bridge-pack` sub-command,真 `init` orchestration 仍 placeholder;0.2.0 ready 待 Adam publish)。**S10 (2026-05-23) Layer D HTML strip + audit cascade**:Adam 拍板 「HTML 入面 .md hyperlink 屬 broken UX」 之 documentation governance principle;strip 全部公開面 .md hyperlink(4 個 HTML site-nav + body callout / table)並重新定位 「設計理據 + 跨機接駁計劃 + funnel audit」 為 AI / 維護者層 spec source;設置教學 §2 取消 clone repo prereq(由 4 件 → 3 件先決事),改為 `npx @adamchanadam/aps bridge-pack > dev/rules/aps-bridge.md` 一條命令取 fixture;設計理據 §13 階段 1-3 reframe(`Adam`/`Jay` → User A/B、`mpedu_plus_branding` → `<project_slug>`);README + docs/index.html 加 pre-release banner;cross-doc 日期 / brand sync;voice scope expand 至 `docs/guides/index.html` + `docs/qc/governance-map.html`(原 Tier 3 deferred);Agent Handoff Kit reference URL 由 `adamchanadam.github.io/agent-handoff-kit`(錯誤,不存在)改為 `https://github.com/Adamchanadam/agent-handoff-kit`(repo URL);Adam 外部操作:repo 轉 public + GitHub Pages enable + Pages URL `https://adamchanadam.github.io/ai-public-squares/` 可達;README 「想深入了解」 HTML link 改 absolute Pages URL。
+3. Governance state: Agent Handoff Kit v0.1.7 managed-core in place;`AGENTS.md` clean;kit doctor self-check 34/34 passing as of last verified run;SESSION_HANDOFF / SESSION_LOG / PROJECT_INDEX / DOC_SYNC_REGISTRY 全部已 reflect S10 formal closeout state (2026-05-23)。Demo workspaces (`Demo_Agent_{Adam,Jay}_Public_Squares`) 仍 aligned to kit v0.1.7。
+4. Source-of-truth notes: 新增 `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` 做 funnel-first build roadmap SSOT;`README.md` + `docs/index.html` 對齊 zero-knowledge entry + pre-release banner;`package.json` + `bin/aps.js` 做 npm CLI source(0.2.0 ready with `bridge-pack`);`examples/demo-agent-{a,b}/dev/rules/aps-bridge.md` 為 Bridge Pack fixture canonical source(npm package ship 入 tarball);`LICENSE` 係 Apache-2.0。其餘檔不變。
 
 <!-- ack:section:task-understanding-summary -->
 ## Task Understanding Summary
@@ -152,10 +152,10 @@ Handoff evidence location: this file (durable continuity);`dev/SESSION_LOG.md` 2
 Expected project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares`
 Git root: same
 Branch: `main`
-Latest pushed commit: `01f748f`(S9 reconcile #2 governance update)as of formal closeout;**22nd commit landing formal closeout state reconciliation pending at end of this turn**。21 commits accumulated this session(S8 stage 1 → 設計理據 voice → S9 reconcile #2),22nd 為此 closeout 自身。
-Remote: `origin` = `https://github.com/Adamchanadam/ai-public-squares.git` (private, Apache-2.0, HTTPS via Windows Credential Manager)。
+Latest pushed commit: `01f748f`(S9 reconcile #2 governance update,2026-05-22);**S10 batch (此 closeout) uncommitted,將 commit + push 為 23rd 累積 commit + 此 turn 之 single commit**。
+Remote: `origin` = `https://github.com/Adamchanadam/ai-public-squares.git` (**public repo since 2026-05-23**, Apache-2.0, HTTPS via Windows Credential Manager;GitHub Pages enabled serving `/ (root)` 之 `main` branch)。
 Worktree / parallel workspace status: none (no `git worktree add`);siblings (`Demo_Agent_{Adam,Jay}_Public_Squares` MVP fixtures + Drive Hub) 仍 independent stores;real runtime workspaces 仲喺 each user's own machine (out of repo)。
-Uncommitted changes summary: 1 governance file 待 commit(SESSION_HANDOFF.md formal closeout 之 State Reconciliation Check + Workspace Identity 微調)— will commit at end of this turn as the 22nd commit of session,working tree clean 之後即正式收工。
+Uncommitted changes summary: S10 batch — 10 files modified(`bin/aps.js` + `package.json` + `README.md` + `docs/index.html` + `docs/guides/index.html` + `docs/guides/aps-onboarding-walkthrough.html` + `docs/qc/governance-map.html` + `docs/plans/2026-05-20-agent-public-square-design.md` + `dev/DOC_SYNC_REGISTRY.md` + `dev/SESSION_LOG.md` + `dev/SESSION_HANDOFF.md`),plus `START_NEXT_SESSION_PROMPT.txt` regen 待跑;memory files `MEMORY.md` + `reference-agent-handoff-kit-prerequisite.md`(out of repo)。將於此 turn 末 commit + push 為 single batch。
 
 <!-- ack:section:sync-status -->
 ## Sync Status
@@ -178,7 +178,7 @@ Use statuses from `dev/DOC_SYNC_REGISTRY.md`: `confirmed`, `unverified`, `pendin
 
 At full closeout, complete this check after updating the state sections above.
 
-- Reconciled at: 2026-05-21 S2-S8 closeouts;**2026-05-22 S9 reconcile #1**(mid-session,commit `230503d`)— funnel-first vision shift + Layer A done + npm bootstrap + GitHub remote 落地;**2026-05-22 S9 reconcile #2**(commit `01f748f`)— 5 份人讀文檔 voice rewrite + walkthrough concrete rewrite(Adam pattern confirmed)+ ship demo fixtures 入 `examples/` + design doc reframe + 加 §3 工作目錄 + cascade renumber 11→13 sections;**2026-05-22 formal closeout**(此 turn)— Adam 拍板收工,reconcile #2 之後再 update State Reconciliation Check + Workspace Identity 反映 21 commits 累積。
+- Reconciled at: 2026-05-21 S2-S8 closeouts;**2026-05-22 S9 reconcile #1**(commit `230503d`)— funnel-first vision shift + Layer A done + npm bootstrap + GitHub remote 落地;**2026-05-22 S9 reconcile #2**(commit `01f748f`)— 5 份人讀文檔 voice rewrite + walkthrough concrete rewrite + ship demo fixtures 入 `examples/` + design doc reframe;**2026-05-23 S10 formal closeout**(此 turn)— Adam 拍板 「HTML .md hyperlink 屬 broken UX」 + 設置教學 取消 clone repo prereq + npm bridge-pack sub-command + repo public + GitHub Pages enable + 多輪 audit cascade + Voice scope expand + Agent Handoff Kit 網址 fix。
 <!-- ack:field:state-sections-rewritten-or-confirmed -->
 - State sections rewritten or confirmed current (S9 mid-session pass): Last Updated header (S9 mid-session);Durable Anchors (item 1, 2, 4, 5 updated for funnel-first vision + GitHub remote + npm package + product name shift;item 3 unchanged);Closeout-Reconciled State (intro note added explaining mid-session reconcile);Current Baseline (rewritten — funnel-first vision + Layer A done + npm skeleton + GitHub remote);Task Understanding Summary (user intent refined + success criteria updated);Active Objective (rewritten — Phase X-3 next;Phase X-1 done;Phase X-2 partial);Completed This Session (replaced with S9 work);Next Priorities (rewritten 8 entries reflecting funnel roadmap);Next Task Required Reading (10 sources updated for Phase X-3 entry);Risks (rewritten 8 risks reflecting new state);Validation/QC (S9 checks);Workspace Identity (commit + uncommitted summary updated for S9);Sync Status (refreshed);State Reconciliation Check (this field);Handoff Sufficiency Check (re-confirmed);Next Session Opening Message (regenerated for S9)。
 <!-- ack:field:stale-snapshots-left -->
@@ -207,14 +207,14 @@ Continuity rule: this file carries current state and next action。`dev/SESSION_
 📋 Next session: copy and paste the whole block below
 
 ```text
-Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template;not bound to any specific project;published as `@adamchanadam/aps` npm package + GitHub repo `Adamchanadam/ai-public-squares`).
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template;not bound to any specific project;published as `@adamchanadam/aps` npm package + GitHub repo Adamchanadam/ai-public-squares — **public since 2026-05-23**;GitHub Pages enabled at https://adamchanadam.github.io/ai-public-squares/).
 
-S9 (2026-05-22 整 session) 已大量推進:funnel-first vision shift 已 landed;5 份人讀文檔(主頁 README、入口頁 docs/index.html、設置教學 walkthrough、內部檢討 funnel audit、設計理據 design doc)全部當代繁體書面語化;walkthrough 結構重整(加 §3「準備你嘅項目工作目錄」、cascade renumber 11→13 sections、§6/§7 全部 step concrete rewrite — 子步驟 + prompt + expected output 表 + 失敗處理 callout + acceptance);ship demo Bridge Pack fixtures 入 `examples/demo-agent-{a,b}/`(讀者 clone repo 即可揾到);修 walkthrough §5 step 1 wrong instruction;GitHub remote `origin` 已 bootstrap + 20 commits 累積 push。Distribution channel: npm (confirmed)。
+S10 (2026-05-23) 完成:Adam 拍板 documentation governance principle 「HTML = 公開人類面 / Notion = 個人 R&D 知識庫 / .md = AI / 維護者層 spec substrate;HTML site-nav 不 link .md(broken UX)」;strip 全部公開面 .md hyperlink 並重新定位「設計理據 + 跨機接駁計劃 + funnel audit」為 AI / 維護者層 spec source;npm package 加 `bridge-pack` sub-command(支援 `--role A/B`)取代 clone repo prereq;設置教學 §2 由 4 件 → 3 件先決事;設計理據 §13 階段 1-3 全 reframe;README + docs/index.html 加 pre-release banner;repo 轉 public + GitHub Pages enable + README 「想深入了解」 HTML link 改 absolute Pages URL;voice scope expand;Agent Handoff Kit URL fix。S9 累積 22 commits + S10 batch(此 closeout)為 23rd commit 將 push。
 
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md(含 S9 continuation block)
+3. dev/SESSION_LOG.md(含 S10 entry at top)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/qc/2026-05-22-zero-knowledge-funnel-audit.md (Phase X-3 spec source)
@@ -225,13 +225,15 @@ QC vocabulary (S6): if user invokes 「跑快檢 / 跑外發前檢 / 跑全面�
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
-GitHub remote `origin` at https://github.com/Adamchanadam/ai-public-squares.git (private, Apache-2.0, HTTPS via Windows Credential Manager auto-auth)。
+GitHub remote `origin` at https://github.com/Adamchanadam/ai-public-squares.git (public, Apache-2.0, HTTPS via Windows Credential Manager auto-auth);GitHub Pages serving `/ (root)` of `main` branch at https://adamchanadam.github.io/ai-public-squares/。
 
 Voice hard rule (per memory feedback-doc-voice + feedback-plain-language):所有寫畀人睇嘅文檔嚴格用當代繁體書面語;粵語 colloquial(嘅 / 嗰 / 咗 / 唔 / 呢個 等)只容許於 verbatim 用戶觸發句 quote 之內(「Hub 有新嘢」 / 「check Hub」 等)。Chat reply 同樣 plain,internal framework name(Phase X / Layer A/B/C/D / Stage 0-7)不做句子主體。
 
-Next active objective: **Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow first draft + dialogue script first pass**;亦可考慮先做 **真實 user-flow test**(於 throw-away folder 跟 walkthrough §2 → §3 → §6 真做一次,撞 wall surface 即修)。
+Documentation governance hard rule (per S10 Adam principle):HTML 內(site-nav / body callout / body table)不 link 任何 .md 檔(瀏覽器顯示 plain text,broken UX);如要 reference .md 用 plain `<span class="path">` 顯示。.md 屬 AI / 維護者層 spec source。
 
-User-facing entry: README.md (GitHub first-impression) + docs/index.html (hosted entry)。設置教學 walkthrough 內 §3 工作目錄 + §6/§7 全 concrete rewrite 已落地;讀者 clone repo 即可揾到 `examples/demo-agent-{a,b}/dev/rules/aps-bridge.md` 之 Bridge Pack fixtures。Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
+Next active objective: **Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow first draft + dialogue script first pass**。其他 pending:Adam 自跑 `npm publish` 出 0.2.0(令 `npx @adamchanadam/aps bridge-pack` 命令真實 work);真實 user-flow test(於 throw-away folder 跟 walkthrough §2 → §3 → §6 真做一次);Phase X-5 Layer D 文檔重新定位。
+
+User-facing entry: README.md (GitHub first-impression with pre-release banner) + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。設置教學 walkthrough 已 cascade 對齊 npm bridge-pack path;讀者執行 `npx @adamchanadam/aps bridge-pack > dev/rules/aps-bridge.md` 即取 fixture(0.2.0 publish 之後生效)。Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
 ```

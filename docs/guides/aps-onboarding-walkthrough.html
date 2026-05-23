@@ -484,11 +484,9 @@
   <span class="site-nav__brand">AI Public Squares<span class="site-nav__brand-tag">APS</span></span>
   <a class="site-nav__link" href="../index.html">入口</a>
   <a class="site-nav__link" href="index.html">教學中心</a>
-  <a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">跨機接駁計劃</a>
-  <a class="site-nav__link" href="../plans/2026-05-20-agent-public-square-design.md">設計理據</a>
   <a class="site-nav__link" href="../qc/governance-map.html">分層 QC</a>
   <span class="site-nav__spacer"></span>
-  <span class="site-nav__hint">2026-05-22</span>
+  <span class="site-nav__hint">2026-05-23</span>
 </nav>
 
 <header class="cover">
@@ -511,7 +509,7 @@
   <h3>內容導航</h3>
   <ol>
     <li><a href="#s1">開始之前 — 你會走過怎樣的一條路</a></li>
-    <li><a href="#s2">安裝先決事項 — 4 件須先做</a></li>
+    <li><a href="#s2">安裝先決事項 — 3 件須先做</a></li>
     <li><a href="#s3">準備你的項目工作目錄</a></li>
     <li><a href="#s4">概念熱身 — 教學中常見之詞</a></li>
     <li><a href="#s5">先傾妥幾件事</a></li>
@@ -596,11 +594,11 @@
   <p class="flow-caption">五個方格之詳細做法,下面段落逐個展開。實線表示須等上一步完成;虛線表示可推遲。</p>
 
   <div class="callout">
-    本教學寫予真人閱讀,結合敘事與實際範例。執行步驟之精準版本(包括 AI 程式須依照之技術細節)見 <a class="site-nav__link" style="font-size:14px;" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃文檔</a>,兩份對讀則最為完整。
+    本教學寫予真人閱讀,結合敘事與實際範例。執行步驟之精準版本(包括 AI 程式須依照之技術細節)為 <span class="path">docs\plans\2026-05-21-aps-phase4-plan.md</span>(AI / 維護者層 .md 檔,瀏覽器開為 plain text;由 AI 程式直接讀)。
   </div>
 
   <div class="callout warn">
-    <strong>用語慣例:方括號 placeholder 須 substitute</strong>。教學中所有方括號之短語 — 例如 <code>[項目代號]</code>、<code>[題目]</code>、<code>[時間戳]</code>、<code>[工作目錄]</code>、<code>[Jay 部機之共享資料夾絕對路徑]</code> — 皆為 placeholder,屬 forcing function。複製至規則檔、發送 WhatsApp 之前,須逐個換為你哋第 5 節拍板之實際值。協定本身通用,教學文字不列具體 value;具體 value 由雙方自行決定。
+    <strong>用語慣例:方括號 placeholder 須 substitute</strong>。教學中所有方括號之短語 — 例如 <code>[項目代號]</code>、<code>[題目]</code>、<code>[時間戳]</code>、<code>[工作目錄]</code>、<code>[Jay 部機之共享資料夾絕對路徑]</code> — 皆為 placeholder,屬 forcing function。複製至規則檔、發送 WhatsApp 之前,須逐個換為你們第 5 節拍板之實際值。協定本身通用,教學文字不列具體 value;具體 value 由雙方自行決定。
   </div>
 
   <div class="callout">
@@ -616,15 +614,15 @@
 </section>
 
 <section id="s2">
-  <h2><span class="sec-num">2.</span>安裝先決事項 — 4 件須先做</h2>
-  <p class="lede">完成此 4 件事之前,後面之步驟全部無法執行。雙方各自於自己部機完成。</p>
+  <h2><span class="sec-num">2.</span>安裝先決事項 — 3 件須先做</h2>
+  <p class="lede">完成此 3 件事之前,後面之步驟全部無法執行。雙方各自於自己部機完成。</p>
 
   <h3>第一件 — 安裝 Agent Handoff Kit(治理基礎)</h3>
   <p>APS 之檔案結構依靠 Agent Handoff Kit 之 managed-core block、doctor 與 upgrade 機制。未先安裝,APS 之檔案結構無法獨立運作。</p>
   <div class="callout warn">
     <strong>無 Agent Handoff Kit = APS 無法運作。</strong>此為硬性前置。
   </div>
-  <p>前往 <a class="site-nav__link" href="https://adamchanadam.github.io/agent-handoff-kit">https://adamchanadam.github.io/agent-handoff-kit</a>,依其指引安裝。本工具透過 <code>npx</code> 機制全域可用,毋須額外 install — 於 §3 將會於你之工作目錄中執行其 <code>init</code> 命令。</p>
+  <p>前往 <a class="site-nav__link" href="https://github.com/Adamchanadam/agent-handoff-kit">https://github.com/Adamchanadam/agent-handoff-kit</a>,依其指引安裝。本工具透過 <code>npx</code> 機制全域可用,毋須額外 install — 於 §3 將會於你之工作目錄中執行其 <code>init</code> 命令。</p>
 
   <h3>第二件 — 安裝 Google Drive 桌面版</h3>
   <ul>
@@ -638,24 +636,21 @@
     <li>登入後,於命令行可執行 <code>claude</code> 命令啟動對話 session</li>
   </ul>
 
-  <h3>第四件 — 取得本工具(clone repo)</h3>
-  <p>本教學引用之 demo Bridge Pack fixture 位於本 repo 之 <code>examples/</code> 資料夾。取得方式有兩種:</p>
-  <ul>
-    <li><strong>推薦做法:<code>git clone</code></strong> — 於命令行執行 <code>git clone https://github.com/Adamchanadam/ai-public-squares.git</code>。clone 完成後可於 <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 找到 fixture。記低 clone 後之絕對路徑(例 <code>C:\Users\你\ai-public-squares</code>),§6 將會用到</li>
-    <li><strong>替代做法:直接下載 zip</strong> — 於 GitHub repo 頁面點「Code」 → 「Download ZIP」。解壓後 fixture 同樣位於 <code>examples/</code> 中</li>
-  </ul>
+  <div class="callout">
+    <strong>Bridge Pack fixture 由 npm 取,無需 clone repo</strong>。本教學 §6 步驟 2 將執行命令 <code>npx @adamchanadam/aps bridge-pack > dev/rules/aps-bridge.md</code> 由 npm registry 取 fixture 寫入工作目錄。Node.js / npm 已包含於 Agent Handoff Kit 安裝要求(<code>npx</code> 命令依賴 Node ≥18),即第一件已 satisfy。
+  </div>
 
   <div class="callout warn">
-    <strong>4 件事尚未完成?</strong>各個官方網頁皆有逐步指引。先完成全部 4 件,再返回繼續第 3 節。
+    <strong>3 件事尚未完成?</strong>各個官方網頁皆有逐步指引。先完成全部 3 件,再返回繼續第 3 節。
   </div>
 </section>
 
 <section id="s3">
   <h2><span class="sec-num">3.</span>準備你的項目工作目錄</h2>
-  <p class="lede">§2 4 件先決事完成之後,仍須 set up 你的項目工作目錄。本節做兩件事:創建一個 NEW folder 作為此合作項目之 root,並於該 folder 中初始化 Agent Handoff Kit。後面 §6、§7 全部步驟皆於此工作目錄之中進行。</p>
+  <p class="lede">§2 3 件先決事完成之後,仍須 set up 你的項目工作目錄。本節做兩件事:創建一個 NEW folder 作為此合作項目之 root,並於該 folder 中初始化 Agent Handoff Kit。後面 §6、§7 全部步驟皆於此工作目錄之中進行。</p>
 
-  <div class="callout warn">
-    <strong>「工作目錄」與 ai-public-squares clone folder 不同</strong>。ai-public-squares 為參考 template 加 demo fixture,你只係從其中抄 fixture 入你的工作目錄;<strong>工作目錄為你此合作項目之實際工作空間</strong>,要 create 一個新 folder。例:你做 brand book,工作目錄可命名為 <code>branding_2026</code>;你做 design,可命名為 <code>logo_refresh</code>。
+  <div class="callout">
+    <strong>工作目錄為此合作項目之專用 folder</strong>,要 create 一個新 folder,不要 reuse 既有 project folder。例:你做 brand book,工作目錄可命名為 <code>branding_2026</code>;你做 design,可命名為 <code>logo_refresh</code>。Bridge Pack fixture 將由 §6 步驟 2 之 <code>npx</code> 命令寫入此工作目錄之 <code>dev/rules/</code>。
   </div>
 
   <p><strong>3.1 創建工作目錄</strong></p>
@@ -683,7 +678,7 @@ cd C:\Work\branding_2026</pre>
   <pre>npx @adamchanadam/agent-handoff-kit doctor</pre>
   <p>預期 output:<code>Status: passed</code>,通過 34 / 34 項。若 status 為 <code>failed</code> 或通過項少於 34,將完整 output 貼予 <a class="site-nav__link" href="https://github.com/Adamchanadam/agent-handoff-kit/issues">Agent Handoff Kit 之 GitHub issue</a> 求助。</p>
 
-  <div class="accept">6 個 governance 檔案皆存在於工作目錄;doctor 通過 34 / 34;工作目錄與 ai-public-squares clone folder 為兩個不同 folders。完成此節進入 §4。</div>
+  <div class="accept">6 個 governance 檔案皆存在於工作目錄;doctor 通過 34 / 34;工作目錄為此合作項目專用之 NEW folder。完成此節進入 §4。</div>
 </section>
 
 <section id="s4">
@@ -737,7 +732,7 @@ cd C:\Work\branding_2026</pre>
 
 <section id="s5">
   <h2><span class="sec-num">5.</span>先傾妥幾件事</h2>
-  <p class="lede">不動任何檔案。十五分鐘左右之電話或 WhatsApp 傾妥即可 — 你哋實際要拍板者,只有三件;其餘三件皆有合理默認,沿用即可。此步為用戶之間之事,不涉及兩個 AI 程式。</p>
+  <p class="lede">不動任何檔案。十五分鐘左右之電話或 WhatsApp 傾妥即可 — 你們實際要拍板者,只有三件;其餘三件皆有合理默認,沿用即可。此步為用戶之間之事,不涉及兩個 AI 程式。</p>
 
   <h3>須拍板之三件事</h3>
   <table class="params">
@@ -803,7 +798,7 @@ cd C:\Work\branding_2026</pre>
   <p class="lede">此節 Adam 於自己部機,要求 Agent Adam 協助執行;Jay 無需在場。完成後 Adam 之工作目錄已接好橋接小規則,但尚未交收任何 packet。</p>
 
   <div class="callout">
-    <strong>有 helper script(<code>tools/aps-onboard.ps1</code>)可一次過完成 6.2 至 6.5 步</strong>(機械部分 — Bridge Pack 抄 + Identity 改 + 3 個 governance row 一齊裝)。詳見<a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">技術版計劃</a>之 Tooling shortcut 段。步驟 6.1(read-only baseline check)與步驟 6.6(SESSION_HANDOFF Durable Anchors,涉判斷)仍須手做。下面手做版本仍為 authoritative reference,執行 script 之前可先閱讀明白每步在做什麼。
+    <strong>有 helper script(<code>tools/aps-onboard.ps1</code>)可一次過完成 6.2 至 6.5 步</strong>(機械部分 — Bridge Pack 抄 + Identity 改 + 3 個 governance row 一齊裝)。詳見 <span class="path">docs\plans\2026-05-21-aps-phase4-plan.md</span> 之 Tooling shortcut 段(AI / 維護者層 .md 檔)。步驟 6.1(read-only baseline check)與步驟 6.6(SESSION_HANDOFF Durable Anchors,涉判斷)仍須手做。下面手做版本仍為 authoritative reference,執行 script 之前可先閱讀明白每步在做什麼。
   </div>
 
   <div class="role-block role-block--adam">
@@ -811,7 +806,7 @@ cd C:\Work\branding_2026</pre>
     <ol class="step-list">
       <li>
         <p><strong>Agent Adam 做唯讀檢查</strong></p>
-        <p>此步之目的:正式驗證 §2 之 4 件先決事完整、§3 之工作目錄已 init、kit 健康、Claude Code 可與 Agent Adam 對話。Agent Adam 不會改任何檔。</p>
+        <p>此步之目的:正式驗證 §2 之 3 件先決事完整、§3 之工作目錄已 init、kit 健康、Claude Code 可與 Agent Adam 對話。Agent Adam 不會改任何檔。</p>
 
         <p><strong>1.1 打開命令行</strong></p>
         <p>Windows:打開 PowerShell 或 Windows Terminal。macOS / Linux:打開 Terminal。</p>
@@ -876,59 +871,60 @@ cd C:\Work\branding_2026</pre>
       </li>
 
       <li>
-        <p><strong>複製 Bridge Pack 至工作目錄 + 改 Identity 為你之實際值</strong></p>
-        <p>此步之目的:將本 repo 提供之 Bridge Pack 副本(MVP 驗證之 fixture)複製至你工作目錄之 <code>dev/rules/aps-bridge.md</code>,並修改 Identity section 為你部機之實際值。Bridge Pack 為一份 markdown 規則檔,教 Agent Adam 如何讀寫 Hub。</p>
+        <p><strong>由 npm 取 Bridge Pack fixture + 改 Identity 為你之實際值</strong></p>
+        <p>此步之目的:由 npm registry 取 Bridge Pack fixture(MVP 驗證之 canonical 版本)寫入你工作目錄之 <code>dev/rules/aps-bridge.md</code>,並修改 Identity section 為你部機之實際值。Bridge Pack 為一份 markdown 規則檔,教 Agent Adam 如何讀寫 Hub。</p>
 
-        <p><strong>2.1 確認你已 clone 本 repo</strong>(§2 第四件)</p>
-        <p>於 Claude Code 對話中複製貼上以下 prompt(將 <code>[ai-public-squares clone 之絕對路徑]</code> 換為你 §2 第四件 clone 之實際位置):</p>
-        <pre>請執行 `ls [ai-public-squares clone 之絕對路徑]/examples/demo-agent-a/dev/rules/aps-bridge.md`,
-報告 file 是否存在。若不存在,告知我並停手等指示。</pre>
-        <p class="copy-block__note">Windows 範例:<code>ls C:\Users\你\ai-public-squares\examples\demo-agent-a\dev\rules\aps-bridge.md</code>。<br>若 Agent Adam 報告 file 不存在,§2 第四件之 clone 未完成,返回 §2 補做。</p>
-
-        <p><strong>2.2 將以下 prompt 貼予 Agent Adam</strong></p>
-        <p>將 <code>[ai-public-squares clone 之絕對路徑]</code>、<code>[項目代號]</code>、<code>[Adam 部機之共享資料夾絕對路徑]</code> 換為你之實際值之後,複製貼上:</p>
+        <p><strong>2.1 將以下 prompt 貼予 Agent Adam</strong></p>
+        <p>將 <code>[項目代號]</code>、<code>[Adam 部機之共享資料夾絕對路徑]</code> 換為你之實際值之後,複製貼上:</p>
         <pre>請執行以下事:
 
-(a) 將 file `[ai-public-squares clone 之絕對路徑]/examples/demo-agent-a/dev/rules/aps-bridge.md`
-    複製至本工作目錄之 `dev/rules/aps-bridge.md`(如 `dev/rules/` 不存在,先創建)
+(a) 執行命令(如 `dev/rules/` 不存在,先創建):
+    Windows PowerShell:
+      New-Item -ItemType Directory -Force dev\rules
+      npx @adamchanadam/aps bridge-pack | Set-Content dev\rules\aps-bridge.md
+    macOS / Linux:
+      mkdir -p dev/rules
+      npx @adamchanadam/aps bridge-pack > dev/rules/aps-bridge.md
+    此命令由 npm registry 取 Bridge Pack fixture(User A 角色)寫入工作目錄。
 
-(b) 修改新複製之 `dev/rules/aps-bridge.md` 之 Identity section,
+(b) 修改新寫入之 `dev/rules/aps-bridge.md` 之 Identity section,
     將佔位符換為以下實際值:
     - agent_id: adam
     - project_slug: [項目代號]
     - hub_root: [Adam 部機之共享資料夾絕對路徑]
     - other_agent_id: jay
 
-(c) 將修改後之新 file 與原 fixture 之 diff 報予我,確認只
-    Identity section 不同,其他 procedural 部分一致
+(c) 驗證 Identity 4 行皆已換為實際值,無剩 `<your_...>` 佔位符,
+    報告 Identity section 完整內容予我。
 
 完成 (a)(b)(c) 之後停手等我指示。</pre>
+        <p class="copy-block__note">命令 <code>npx @adamchanadam/aps bridge-pack</code> 由 npm registry 取 fixture stdout,寫入 <code>dev/rules/aps-bridge.md</code>。如命令出錯(網絡 / npm cache 問題),將 Agent Adam 報告貼予 <a href="https://github.com/Adamchanadam/ai-public-squares/issues" class="site-nav__link">GitHub issue</a> 求助。</p>
 
-        <p><strong>2.3 Agent Adam 報出之內容應對照以下表</strong></p>
+        <p><strong>2.2 Agent Adam 報出之內容應對照以下表</strong></p>
         <table class="params">
           <thead>
             <tr><th>檢查項</th><th>預期結果</th><th>若不符合,如何處理</th></tr>
           </thead>
           <tbody>
             <tr>
-              <td>(a) 複製成功</td>
-              <td><code>dev/rules/aps-bridge.md</code> 已創建於工作目錄</td>
-              <td>若無,Agent Adam 之檔案 access 權限或路徑出錯,將 Agent Adam 報告貼予 ChatGPT 或 GitHub issue 求助</td>
+              <td>(a) 命令執行成功</td>
+              <td><code>dev/rules/aps-bridge.md</code> 已創建於工作目錄,file size &gt; 0</td>
+              <td>若無:檢查 <code>npx</code> 命令可用 / 網絡通 / npm cache 健康;Agent Adam 報告錯誤,貼予 GitHub issue 求助</td>
             </tr>
             <tr>
               <td>(b) Identity 改好</td>
               <td>Identity section 4 行皆顯示你之實際值,無剩 <code>&lt;your_...&gt;</code> 佔位符</td>
-              <td>重做 2.2 prompt,確認 Identity 4 行皆換</td>
+              <td>重做 2.1 (b),確認 Identity 4 行皆換</td>
             </tr>
             <tr>
-              <td>(c) diff 結果</td>
-              <td>僅 Identity section 不同;其他 procedural body 完全一致</td>
-              <td>若 procedural body 有差,Agent Adam 抄錯。重做 2.1-2.2,確認 source 路徑正確</td>
+              <td>(c) procedural body 完整</td>
+              <td>File 含 「<code>## When this pack is loaded</code>」 / 「<code>## Startup addendum</code>」 / 「<code>## Closeout addendum</code>」 / 「<code>## Boundaries</code>」 等 section,約 120 行</td>
+              <td>若不完整,2.1 (a) 之 npm 命令未完整 run,重做(可能 redirect 時 truncated 或 partial write)</td>
             </tr>
           </tbody>
         </table>
 
-        <div class="accept">工作目錄之 <code>dev/rules/aps-bridge.md</code> 存在;Identity 4 行為實際值;procedural body 與 fixture 一致。完成此步進入第 3 步。</div>
+        <div class="accept">工作目錄之 <code>dev/rules/aps-bridge.md</code> 存在;Identity 4 行為實際值;procedural body 完整。完成此步進入第 3 步。</div>
       </li>
 
       <li>
@@ -1033,10 +1029,10 @@ cd C:\Work\branding_2026</pre>
 
   <div class="role-block role-block--adam">
     <div class="role-block__head"><span class="chip chip--adam">Adam</span>預先準備:傳兩件事予 Jay</div>
-    <p>將兩件事以 WhatsApp 或 Drive 傳予 Jay:</p>
+    <p>將一張短便箋以 WhatsApp 或 Drive 傳予 Jay,內含:</p>
     <ul>
-      <li>本 repo 隨附之 demo Jay Bridge Pack 之路徑,形如:<code>[Adam 自己之 ai-public-squares clone 路徑]/examples/demo-agent-b/dev/rules/aps-bridge.md</code> — Jay 可由此複製。或者 Jay 已自行 clone 本 repo,則使用 Jay 自己 clone 之相應路徑</li>
-      <li>一張短便箋,記錄 §5 拍板之七行參數結果(項目代號、雙方 agent_id、雙方部機之 Hub 絕對路徑、大檔試跑是否進行)</li>
+      <li>§5 拍板之七行參數結果(項目代號、雙方 agent_id、雙方部機之 Hub 絕對路徑、大檔試跑是否進行) — Jay 之 Identity section 用到</li>
+      <li>Bridge Pack 取得命令:<code>npx @adamchanadam/aps bridge-pack --role B</code>(User B 角色,redirect 入工作目錄之 <code>dev/rules/aps-bridge.md</code>)— Jay 自行於自己工作目錄執行,無需任何 clone 或 file path</li>
     </ul>
   </div>
 
@@ -1045,15 +1041,14 @@ cd C:\Work\branding_2026</pre>
     <ol class="step-list">
       <li>
         <p><strong>Jay 自行跑部機前置 checklist + 創建工作目錄</strong></p>
-        <p>此步之目的:Jay 完成 §2 之 4 件先決事 + §3 之工作目錄創建。動作與 §2 / §3 之 Adam-side 完全 parallel。</p>
+        <p>此步之目的:Jay 完成 §2 之 3 件先決事 + §3 之工作目錄創建。動作與 §2 / §3 之 Adam-side 完全 parallel。</p>
 
-        <p><strong>1.1 完成 §2 4 件先決事</strong></p>
+        <p><strong>1.1 完成 §2 3 件先決事</strong></p>
         <p>Jay 自行於自己部機:</p>
         <ul>
           <li>安裝 Agent Handoff Kit(同 §2 第一件)</li>
           <li>安裝 Google Drive 桌面版 + 共享資料夾設「離線存取」(同 §2 第二件)</li>
           <li>安裝 Claude Code(同 §2 第三件)</li>
-          <li>Clone ai-public-squares repo(同 §2 第四件)— 記下 clone 路徑</li>
         </ul>
 
         <p><strong>1.2 創建工作目錄 + init kit</strong>(同 §3)</p>
@@ -1070,7 +1065,7 @@ npx @adamchanadam/agent-handoff-kit doctor</pre>
         <p><strong>1.4 以 WhatsApp 答覆 Adam</strong></p>
         <p>例:<code>checklist OK · 工作目錄: D:\Work\branding_2026_jay · doctor 34/34 PASS</code>(將 placeholder 換為你部機之實際路徑)。</p>
 
-        <div class="accept">Jay 部機之 4 件先決事 + 工作目錄已 ready;doctor 通過 34 / 34;已以 WhatsApp 答覆 Adam。</div>
+        <div class="accept">Jay 部機之 3 件先決事 + 工作目錄已 ready;doctor 通過 34 / 34;已以 WhatsApp 答覆 Adam。</div>
       </li>
 
       <li>
@@ -1080,7 +1075,7 @@ npx @adamchanadam/agent-handoff-kit doctor</pre>
           <li>將 prompt 中之 <code>agent_id</code> 由 <code>adam</code> 換為 <code>jay</code></li>
           <li>將 <code>other_agent_id</code> 由 <code>jay</code> 換為 <code>adam</code></li>
           <li>將 <code>hub_root</code> 換為 Jay 部機之 Hub 絕對路徑</li>
-          <li>將 Bridge Pack 之 source 由 <code>examples/demo-agent-a/dev/rules/aps-bridge.md</code> 換為 <code>examples/demo-agent-b/dev/rules/aps-bridge.md</code></li>
+          <li>將 Bridge Pack 取得命令由 <code>npx @adamchanadam/aps bridge-pack</code> 換為 <code>npx @adamchanadam/aps bridge-pack --role B</code>(User B 角色)</li>
           <li>將 §6 步驟 4(PROJECT_INDEX External Source row)中之「不寫 <code>from_jay/</code> 或 <code>_ack/jay.ack.json</code>」改為「不寫 <code>from_adam/</code> 或 <code>_ack/adam.ack.json</code>」</li>
           <li>將 §6 步驟 6(SESSION_HANDOFF Durable Anchors)中之 agent_id 與 other_agent_id 互換</li>
         </ul>
@@ -1090,12 +1085,12 @@ npx @adamchanadam/agent-handoff-kit doctor</pre>
 
         <p><strong>2.2 跑 §6 步驟 1.4 prompt</strong> 確認 5 個 governance 檔案 + doctor PASS + git status。</p>
 
-        <p><strong>2.3 跑 §6 步驟 2.2 prompt</strong>(Bridge Pack 抄 + Identity 改),Identity 之 4 行為:</p>
+        <p><strong>2.3 跑 §6 步驟 2.1 prompt</strong>(由 npm 取 Bridge Pack + Identity 改),Identity 之 4 行為:</p>
         <pre>- agent_id: jay
 - project_slug: [項目代號]
 - hub_root: [Jay 部機之共享資料夾絕對路徑]
 - other_agent_id: adam</pre>
-        <p>Bridge Pack source 改為 <code>[Jay 自己之 ai-public-squares clone 路徑]/examples/demo-agent-b/dev/rules/aps-bridge.md</code>。</p>
+        <p>Bridge Pack 取得命令改為 <code>npx @adamchanadam/aps bridge-pack --role B</code>(User B 角色),redirect 入 <code>dev/rules/aps-bridge.md</code>。</p>
 
         <p><strong>2.4 跑 §6 步驟 3.1 prompt</strong>(RULE_PACKS 加路由行)— prompt 不變。</p>
 
@@ -1569,12 +1564,12 @@ lane `[項目代號]/from_jay/`; 對方 agent_id=adam。」</pre>
         <td><span class="path">&lt;你部機之 Hub 絕對路徑&gt;\_hub\PROTOCOL.md</span></td>
       </tr>
       <tr>
-        <td>技術版完整計劃</td>
-        <td><a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md"><span class="path">docs\plans\2026-05-21-aps-phase4-plan.md</span></a></td>
+        <td>技術版完整計劃(AI / 維護者層 .md)</td>
+        <td><span class="path">docs\plans\2026-05-21-aps-phase4-plan.md</span></td>
       </tr>
       <tr>
-        <td>協定為何如此設計</td>
-        <td><a class="site-nav__link" href="../plans/2026-05-20-agent-public-square-design.md"><span class="path">docs\plans\2026-05-20-agent-public-square-design.md</span></a></td>
+        <td>協定為何如此設計(AI / 維護者層 .md)</td>
+        <td><span class="path">docs\plans\2026-05-20-agent-public-square-design.md</span></td>
       </tr>
       <tr>
         <td>試演跑通之驗證、Phase 4 與試演對照</td>
@@ -1597,7 +1592,7 @@ lane `[項目代號]/from_jay/`; 對方 agent_id=adam。」</pre>
 </section>
 
 <footer>
-  AI Public Squares · 完整落地教學 · 最新更新 2026-05-22
+  AI Public Squares · 完整落地教學 · 最新更新 2026-05-23
 </footer>
 
 </main>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>分層 QC — 觸發詞彙 · Agent Public Square</title>
+<title>分層 QC — 觸發詞彙 · AI Public Squares</title>
 <style>
   :root {
     --ink: #1b2230;
@@ -227,11 +227,9 @@
   <span class="site-nav__brand">AI Public Squares<span class="site-nav__brand-tag">APS</span></span>
   <a class="site-nav__link" href="../index.html">入口</a>
   <a class="site-nav__link" href="../guides/index.html">教學中心</a>
-  <a class="site-nav__link" href="../plans/2026-05-21-aps-phase4-plan.md">跨機接駁計劃</a>
-  <a class="site-nav__link" href="../plans/2026-05-20-agent-public-square-design.md">設計理據</a>
   <a class="site-nav__link site-nav__link--active" href="governance-map.html">分層 QC</a>
   <span class="site-nav__spacer"></span>
-  <span class="site-nav__hint">2026-05-21</span>
+  <span class="site-nav__hint">2026-05-23</span>
 </nav>
 
 <header class="cover">
@@ -247,8 +245,8 @@
 
 <section>
   <h2>設計意圖</h2>
-  <p class="lede">過往「全套 QC / 完整 QC / 跑驗收 / 整體 audit」呢類含混詞令人類同 AI 對驗收 scope 嘅理解漂移。三 tier vocabulary 鎖定三件事：每個 tier 嘅覆蓋同時間 explicit，outer 自動含 inner，含混詞觸發停手反問。</p>
-  <p>本卡片只係日常閱讀同操作參考；trigger keyword、tier 定義、覆蓋範圍嘅 canonical 真源喺 <code>dev/qc/triggers.md</code>。如本 HTML 同 SSOT 有 drift，SSOT 文件 wins。</p>
+  <p class="lede">過往「全套 QC / 完整 QC / 跑驗收 / 整體 audit」此類含混詞令人類與 AI 對驗收 scope 之理解漂移。三 tier vocabulary 鎖定三件事:每個 tier 之覆蓋與時間 explicit,outer 自動含 inner,含混詞觸發停手反問。</p>
+  <p>本卡片只屬日常閱讀與操作參考;trigger keyword、tier 定義、覆蓋範圍之 canonical 真源於 <code>dev/qc/triggers.md</code>。如本 HTML 與 SSOT 有 drift,SSOT 文件 wins。</p>
 </section>
 
 <section>
@@ -301,7 +299,7 @@
     <article class="tier amber">
       <h3>🟡 外發前檢</h3>
       <p><strong>別名</strong>：<code>跑外發前檢</code> / <code>release-check</code> / <code>handover-verify</code></p>
-      <p><strong>時機</strong>：物件離開呢個 workspace 之前(push remote / 分享 plan / 傳 Bridge Pack 俾 Jay)。</p>
+      <p><strong>時機</strong>:物件離開本 workspace 之前(push remote / 分享 plan / 傳 Bridge Pack 予 Jay)。</p>
       <p><strong>覆蓋</strong>：快檢 4 項 + 5 項：</p>
       <ul>
         <li>跨工作目錄 placeholder audit</li>
@@ -338,7 +336,7 @@
     <li>跑外發前檢 <strong>必自動跑</strong> 快檢 4 項先</li>
     <li>跑全面檢 <strong>必自動跑</strong> 外發前檢(即連 inner 快檢都跑埋)</li>
   </ul>
-  <p>AI 唔可以喺被 outer trigger 觸發後省略 inner layer。</p>
+  <p>AI 不可於被 outer trigger 觸發後省略 inner layer。</p>
 </section>
 
 <section>
@@ -355,21 +353,21 @@
       <tr><td><code>QC</code>(單字)</td><td>反問</td></tr>
     </tbody>
   </table>
-  <p>未喺以上 list 嘅含混表達，按字面 + context 解；如仍有 ambiguity 寧反問。</p>
+  <p>未列於以上 list 之含混表達,按字面 + context 解;如仍有 ambiguity 寧反問。</p>
 </section>
 
 <section>
   <h2>典型用法</h2>
   <ul>
-    <li><strong>🟢 快檢</strong>：commit 前 spot-check；五區段執行完之後嘅 baseline 驗證；改完 doc 試 anchor 唔斷</li>
-    <li><strong>🟡 外發前檢</strong>：push remote 之前；Adam 傳 Bridge Pack 俾 Jay 之前；新 Phase plan 分享俾外人之前</li>
+    <li><strong>🟢 快檢</strong>:commit 前 spot-check;五區段執行完之後之 baseline 驗證;改完 doc 試 anchor 不斷</li>
+    <li><strong>🟡 外發前檢</strong>:push remote 之前;Adam 傳 Bridge Pack 予 Jay 之前;新 Phase plan 分享予外人之前</li>
     <li><strong>🔴 全面檢</strong>：跨機 round-trip 落地之前；協定升版之前；引入新 agent 之前；連跑 N 個 session 後重置 baseline</li>
   </ul>
 </section>
 
 <section>
   <h2>既有 mechanism mapping</h2>
-  <p class="lede">呢套 vocabulary <strong>唔重複定義</strong>既有 6 層 mechanism；下表只係話「邊個 mechanism 觸發喺邊個 tier」。詳細 spec 各 own SSOT。</p>
+  <p class="lede">此套 vocabulary <strong>不重複定義</strong>既有 6 層 mechanism;下表只為說明「哪個 mechanism 觸發於哪個 tier」。詳細 spec 各 own SSOT。</p>
   <table class="params">
     <thead>
       <tr><th>Mechanism</th><th>SSOT 位</th><th>觸發 tier</th></tr>
@@ -392,12 +390,12 @@
       </tr>
       <tr>
         <td>Bridge Pack runtime addendum</td>
-        <td>Demo / runtime workspace 嘅 <code>dev/rules/aps-bridge.md</code></td>
-        <td>runtime auto，唔屬 tier</td>
+        <td>Demo / runtime workspace 之 <code>dev/rules/aps-bridge.md</code></td>
+        <td>runtime auto,不屬 tier</td>
       </tr>
       <tr>
         <td>Tool inline self-check</td>
-        <td><code>tools/aps-onboard.ps1</code> 嘅 parse / DryRun / idempotency</td>
+        <td><code>tools/aps-onboard.ps1</code> 之 parse / DryRun / idempotency</td>
         <td>🟢</td>
       </tr>
       <tr>
@@ -415,15 +413,15 @@
   <ul>
     <li>「<strong>跑快檢</strong>」— AI 跑 doctor + git status + grep set</li>
     <li>「<strong>跑外發前檢</strong>」— AI 跑快檢 + 五項外發 audit</li>
-    <li>「<strong>跑全面檢</strong>」— AI 跑外發前檢 + 五項全面 audit；如涉跨 workspace，AI 列出要喺 owner workspace 開新 session 嘅 sub-task</li>
+    <li>「<strong>跑全面檢</strong>」— AI 跑外發前檢 + 五項全面 audit;如涉跨 workspace,AI 列出需於 owner workspace 開新 session 之 sub-task</li>
   </ul>
   <div class="callout warn">
-    <strong>講含混詞 = 觸發反問</strong>。如果用「做 QC / 跑驗收 / 整體 audit」呢類詞，AI 會停手問「你指快檢 / 外發前檢 / 全面檢?」。呢個係紀律，唔係出 bug — 防止 scope 漂移。
+    <strong>講含混詞 = 觸發反問</strong>。如果用「做 QC / 跑驗收 / 整體 audit」此類詞,AI 會停手問「你指快檢 / 外發前檢 / 全面檢?」。此乃紀律,不為出 bug — 防止 scope 漂移。
   </div>
 </section>
 
 <footer>
-  Agent Public Square · 分層 QC reference card · 2026-05-21 S6 · SSOT 喺 <code>dev/qc/triggers.md</code>
+  AI Public Squares · 分層 QC reference card · 2026-05-21 S6 · SSOT 於 <code>dev/qc/triggers.md</code>
 </footer>
 
 </main>

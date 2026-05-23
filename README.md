@@ -1,5 +1,12 @@
 # AI Public Squares
 
+> **⚠️ 前期測試階段(pre-release)**
+>
+> 本工具仍處於早期建構期 — npm 套件 `@adamchanadam/aps` 之 `init` 命令仍為佔位符,完整對話流程尚未落地;真實跨機 round-trip 尚未驗證。
+>
+> **適合**:觀察、提建議、留 feedback、tracking 建構進度。
+> **不適合**:生產 use、依賴於 critical workflow。
+
 兩個人,各自在自己的電腦上,以 AI 共同製作一份品牌指引、撰寫一份報告、設計一個項目。
 
 最常遇到的問題:
@@ -29,7 +36,7 @@ npx @adamchanadam/aps init
 
 **未先安裝 Agent Handoff Kit,APS 的檔案結構將無法獨立運作。**
 
-前往 https://adamchanadam.github.io/agent-handoff-kit,依其指引安裝。一條命令即可:
+前往 https://github.com/Adamchanadam/agent-handoff-kit,依其指引安裝。一條命令即可:
 
 ```
 npx @adamchanadam/agent-handoff-kit init
@@ -75,10 +82,16 @@ npx @adamchanadam/agent-handoff-kit init
 
 ## 想深入了解
 
-下列各份文檔屬技術參考,**無需先閱讀即可使用**。希望深入了解設計理念 / 自行手動執行某個步驟 / 出錯時診斷問題,再回到此處查閱。
+下列分兩層。**HTML 兩份為 polished 人類面文檔**(瀏覽器直接讀);**其餘三份 .md 為 AI / 維護者層技術文檔**,人類讀者一般無需閱讀(於 GitHub web 自動 render,本地 clone 用 browser 開為 plain text;主要供 AI 程式直接讀,或維護者改 protocol / 升 Bridge Pack 時 reference)。
 
-- [入口頁(docs/index.html)](docs/index.html) — 由零認知讀者起步的項目簡介
-- [設置教學](docs/guides/aps-onboarding-walkthrough.html) — 完整落地步驟(由前置到日常使用)
+人類面(HTML,GitHub Pages hosted — click 即開 rendered 頁):
+
+- [入口頁](https://adamchanadam.github.io/ai-public-squares/docs/index.html) — 由零認知讀者起步的項目簡介
+- [設置教學](https://adamchanadam.github.io/ai-public-squares/docs/guides/aps-onboarding-walkthrough.html) — 完整落地步驟(由前置到日常使用)
+- [分層 QC](https://adamchanadam.github.io/ai-public-squares/docs/qc/governance-map.html) — 三 tier 觸發詞彙 reference card
+
+AI / 維護者層(.md,予 AI 程式 / repo 維護者讀):
+
 - [跨機接駁實作計劃](docs/plans/2026-05-21-aps-phase4-plan.md) — 實現跨機協作的技術步驟
 - [協定設計理據](docs/plans/2026-05-20-agent-public-square-design.md) — 5 個設計取捨的理由
 - [內部檢討文件](dev/qc/2026-05-22-zero-knowledge-funnel-audit.md) — 「本 repo 須令零認知讀者也能使用」 的檢討與修補路線
