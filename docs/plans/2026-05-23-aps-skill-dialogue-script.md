@@ -2,13 +2,13 @@
 
 **日期:** 2026-05-23
 **作者:** Adam Chan(本項目維護者)+ Claude Code(協同作者)
-**狀態:** 第一版 ship — Section 1-6 中文版 first draft;Section 7 英文版待後續 expand
+**狀態:** 第一版 ship — Section 1-6 中文版 first draft;Section 7 英文版待後續 expand。此文件是 wording bank 與目標體驗草稿,不是目前公開 npm CLI 已支援的 runtime 承諾。
 
 ---
 
 ## 用途
 
-此文件為 `skills/aps/SKILL.md` 嘅 dialogue companion。Claude 觸發 skill 時若不知具體 wording,即可翻查此處取 sample。SKILL.md body 屬 orchestration spec(對 Claude 嘅 instructions),此文件屬 wording bank(對 Claude 嘅 wording reference)。兩者分工:SKILL.md 講「做甚麼 + 順序」,本文件講「具體點講」。
+此文件為 `skills/aps/SKILL.md` 的 dialogue companion。Claude 觸發 skill 時若不知具體 wording,即可翻查此處取 sample。SKILL.md body 屬 orchestration spec(對 Claude 的 instructions),此文件屬 wording bank(對 Claude 的 wording reference)。兩者分工:SKILL.md 講「做甚麼 + 順序」,本文件講「具體怎樣說」。
 
 ---
 
@@ -109,13 +109,13 @@
 
 ### 1.6 跨方 packaging — starter pack + WhatsApp 短訊
 
-> 下一步是生成 Jay 的 starter pack(我自動為對方生成的安裝指引 + 已決定的代號 + Bridge Pack 副本一份)。我會打包成一個 zip,自動 copy 到雲端硬碟 `_hub` 內,Jay 在他電腦的 Google Drive 同步完之後就可以解開。
+> 下一步是生成 Jay 的 starter pack(我自動為對方生成的安裝指引 + 已決定的代號 + Bridge Pack 副本一份)。目前目標格式是一份 markdown 指引,寫到雲端硬碟 `_hub` 內;若日後真的需要 zip,須先在 CLI 中實作並測試。
 >
 > 我亦會生成一段 WhatsApp 短訊,你 copy 後傳給 Jay,告訴他 starter pack 在哪 + 大致怎做:
 >
 > > 「APS 嗰邊我裝好咗。Starter pack 我已經放喺 Google Drive 我哋共用個 brand-refresh 資料夾入面的 `_hub` 子資料夾,你 sync 一陣就見到。內有 install 指令,你跑完之後喺 Claude Code 講『我同 Adam 一齊裝 APS』就會自動接續。有問題即傳我。」
 >
-> 短訊已 copy 到你的 clipboard(系統如不支援可手動 copy 上面文字)。
+> 以下是要傳給 Jay 的短訊。請手動複製後傳送;skill 不承諾直接操作系統 clipboard。
 
 ### 1.7 首次 dry-run + 收尾
 
@@ -153,7 +153,7 @@
 >
 > 完成 ✓
 >
-> WhatsApp 短訊(已 copy 到 clipboard):
+> WhatsApp 短訊:
 >
 > > 「Jay,Q1 文案 draft 1 我啱啱 publish 咗去 APS Hub,你 sync 一陣就見到。Subject 係『Q1 文案 draft 1』,你方便嘅時候 review 完返一個 ack 我知就 OK 啦。」
 >
@@ -276,7 +276,7 @@
 > 我這邊是 v1.0,Jay 那邊是 v0.9。建議 Jay 跑:
 >
 > ```
-> npx @adamchanadam/aps update
+> 目前尚未提供自動 update 命令。請先使用雙方確認過的同一份 Bridge Pack fixture;若 package 發佈後有正式更新命令,再依當時 README 或 release note 執行。
 > ```
 >
 > 升級之後 v0.9 → v1.0,再驗證:雙方 Claude Code 重啟一次 session,確認觸發短語一致。

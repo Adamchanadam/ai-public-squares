@@ -1,9 +1,9 @@
 {
   "name": "@adamchanadam/aps",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Set up two AI agents on two machines to collaborate over a shared Google Drive folder. Cantonese / English aware.",
   "bin": {
-    "aps": "./bin/aps.js"
+    "aps": "bin/aps.js"
   },
   "scripts": {
     "test": "echo \"No tests yet\" && exit 0"

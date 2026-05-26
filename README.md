@@ -2,10 +2,10 @@
 
 > **⚠️ 前期測試階段(pre-release)**
 >
-> 本工具仍處於早期建構期 — npm 套件 `@adamchanadam/aps` 之 `init` 命令仍為佔位符,完整對話流程尚未落地;真實跨機 round-trip 尚未驗證。
+> 本工具仍處於早期建構期。npm 套件 `@adamchanadam/aps` 的 0.1.1 初版提供 `bridge-pack` fixture 輸出;`init` 命令仍為佔位符,完整對話流程尚未落地;真實跨機往返尚未驗證。
 >
-> **適合**:觀察、提建議、留 feedback、tracking 建構進度。
-> **不適合**:生產 use、依賴於 critical workflow。
+> **適合**:觀察、提出建議、留下回饋、追蹤建構進度。
+> **不適合**:正式生產用途,或依賴於不可中斷的重要流程。
 
 兩個人,各自在自己的電腦上,以 AI 共同製作一份品牌指引、撰寫一份報告、設計一個項目。
 
@@ -16,13 +16,14 @@
 - Google Drive 出現衝突副本,不知該保留哪一份
 - 每次往返都要透過 WhatsApp 通知一次,然後在新對話從頭交代上下文
 
-本工具的目標:**一條命令完成安裝,之後在對話中以日常粵語或英文與 AI 溝通即可**。背後的檔案管理、版本控制、待辦處理、衝突避免,由工具自行承擔。
+本工具的目標:**一條命令完成安裝,之後在對話中以自然語句與 AI 溝通即可**。背後的檔案管理、版本控制、待辦處理、衝突避免,由工具自行承擔。
 
 ```
-npx @adamchanadam/aps init
+npm install --save-dev @adamchanadam/aps
+npx aps init
 ```
 
-> **目前狀態**:這條命令的後台仍在建構中。試行版執行時會顯示「尚未完成」的訊息,引導使用者前往設置教學手動安裝。完整可用之前,本頁與設置教學會逐步補完。
+> **目前狀態**:這是目標入口命令;0.1.1 初版的 `init` 執行時只會顯示「尚未完成」訊息。完整可用之前,請把本頁視為產品方向與開發狀態說明,不要把此命令當作已可完成設置的安裝器。
 
 ---
 
@@ -52,18 +53,20 @@ npx @adamchanadam/agent-handoff-kit init
 
 ---
 
-## 開始使用
+## 目前可以怎樣試
 
-完成上述安裝之後:
+目前仍未提供一鍵安裝。你可以做三件事:
 
-1. 在你計劃進行此項目的資料夾內執行:`npx @adamchanadam/aps init`
-2. 工具會詢問數個問題:使用哪個 Google Drive 資料夾作為共享、項目名稱、協作夥伴的識別名等
-3. 執行完畢之後,在 Claude Code 對話中以日常粵語或英文與 AI 溝通:
+1. 閱讀本 repo,理解 APS 想解決的跨機協作問題。
+2. 參考下方「想深入了解」中的設置教學,了解目前手動設置流程。
+3. 先執行 `npm install --save-dev @adamchanadam/aps`,再用 `npx aps bridge-pack` 取得 Bridge Pack fixture;若已 clone 本 repo,亦可用 `node bin/aps.js bridge-pack` 測試本地 CLI。
+
+目標體驗完成之後,使用者會在自己的項目資料夾內執行 `npx aps init`,然後由工具詢問 Google Drive 資料夾、項目名稱、協作夥伴識別名等。設置完成後,使用者可在 Claude Code 對話中以自然語句與 AI 溝通:
    - 「我有嘢俾 Jay」 → 工具自動將內容打包,並生成一句 WhatsApp 通知句供你發送
    - 「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦
    - 「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法
 
-全程無需先閱讀任何技術文檔。
+上述三個日常流程仍在建構中,目前不可視為已發佈功能。
 
 ---
 
@@ -100,6 +103,6 @@ AI / 維護者層(.md,予 AI 程式 / repo 維護者讀):
 
 ## License 與反饋
 
-[Apache License 2.0](LICENSE)。目前為私人 repo,但 license 已預先設定,將來轉為公開時即時生效。
+[Apache License 2.0](LICENSE)。本 repo 已公開,可按 Apache-2.0 條款閱讀、引用與參與改進。
 
 遇到錯誤、想試用、或有功能建議?前往 [GitHub issues](https://github.com/Adamchanadam/ai-public-squares/issues) 留言。

@@ -1,0 +1,6 @@
+*/edge-profile*/
+*/edge-profile-nosandbox*/
+*.tgz
+install-probe-*/
+npx-cache-*/
+npm-exec-cache-*/

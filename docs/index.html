@@ -322,7 +322,7 @@
   <a class="site-nav__link" href="guides/index.html">教學中心</a>
   <a class="site-nav__link" href="qc/governance-map.html">分層 QC</a>
   <span class="site-nav__spacer"></span>
-  <span class="site-nav__hint">2026-05-23</span>
+  <span class="site-nav__hint">2026-05-26</span>
 </nav>
 
 <header class="cover">
@@ -330,15 +330,15 @@
   <h1>AI Public Squares</h1>
   <p class="subtitle">兩個人,各自在自己的電腦上,以 AI 共同製作一份品牌指引、撰寫一份報告、設計一個項目 — 但檔案來去往返、上下文重複交代?</p>
   <div class="meta">
-    <span class="badge ok">試行版 0.1.0</span>
+    <span class="badge ok">試行版 0.1.1</span>
     <span class="badge pending">init 後台仍在建構</span>
     <span>建立 2026-05-20</span>
-    <span>最新更新 2026-05-23</span>
+    <span>最新更新 2026-05-26</span>
   </div>
 </header>
 
 <div class="callout warn">
-  <strong>⚠️ 前期測試階段(pre-release)</strong> — 本工具仍處於早期建構期。npm 套件 <code>@adamchanadam/aps</code> 之 <code>init</code> 命令仍為佔位符,完整對話流程尚未落地;真實跨機 round-trip 尚未驗證。適合觀察、提建議、留 feedback;不建議生產 use。
+  <strong>⚠️ 前期測試階段(pre-release)</strong> — 本工具仍處於早期建構期。npm 套件 <code>@adamchanadam/aps</code> 的 0.1.1 初版提供 <code>bridge-pack</code> fixture 輸出;<code>init</code> 命令仍為佔位符,完整對話流程尚未落地;真實跨機往返尚未驗證。適合觀察、提出建議、留下回饋;不建議用於正式生產或不可中斷的重要流程。
 </div>
 
 <section>
@@ -391,25 +391,25 @@
 </section>
 
 <section>
-  <h2>開始使用</h2>
-  <p class="lede">完成上述安裝之後:</p>
-  <div class="install-block"><span class="prompt">$</span>npx @adamchanadam/aps init</div>
+  <h2>目前可以怎樣試</h2>
+  <p class="lede">一鍵安裝仍未完成。下方命令是目標入口,不是目前可完成設置的安裝器。</p>
+  <div class="install-block"><span class="prompt">$</span>npm install --save-dev @adamchanadam/aps<br><span class="prompt">$</span>npx aps init</div>
   <ol class="step-list">
-    <li>在你計劃進行此項目的資料夾內執行上述命令。</li>
-    <li>工具會詢問數個問題:使用哪個 Google Drive 資料夾作為共享、項目名稱、協作夥伴的識別名等。</li>
-    <li>執行完畢之後,在 Claude Code 對話中以日常粵語或英文與 AI 溝通:
-      <ul style="margin-top:6px;">
-        <li>「我有嘢俾 Jay」 → 工具自動將內容打包,生成一句 WhatsApp 通知句供你發送</li>
-        <li>「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦</li>
-        <li>「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法</li>
-      </ul>
-    </li>
+    <li>目前可先閱讀本頁,理解 APS 解決的跨機協作問題。</li>
+    <li>如想看細節,可前往下方「完整設置教學」了解手動流程。</li>
+    <li>先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps bridge-pack</code> 取得 Bridge Pack fixture;若你是維護者,亦可 clone repo 後在本地執行 <code>node bin/aps.js init</code> 或 <code>node bin/aps.js bridge-pack</code> 測試 CLI 試行版。</li>
   </ol>
+  <p>目標體驗完成後,工具會詢問數個問題:使用哪個 Google Drive 資料夾作為共享、項目名稱、協作夥伴的識別名等。設置完成後,使用者可在 Claude Code 對話中以自然語句與 AI 溝通:</p>
+  <ul>
+    <li>「我有嘢俾 Jay」 → 工具自動將內容打包,生成一句 WhatsApp 通知句供你發送</li>
+    <li>「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦</li>
+    <li>「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法</li>
+  </ul>
   <div class="callout">
-    <strong>全程無需先閱讀任何技術文檔。</strong>工具自行處理 Google Drive 上的檔案、版本、待辦、衝突避免。
+    <strong>最終目標是全程無需先閱讀任何技術文檔。</strong>目前仍處於前期測試階段,公開頁先呈現方向與手動參考。
   </div>
   <div class="callout warn">
-    <strong>目前狀態</strong>:這條 <code>aps init</code> 命令的後台仍在建構中。試行版(0.1.0)執行時會顯示「尚未完成」的訊息,引導你前往設置教學手動安裝。完整可用之前,本頁與設置教學會逐步補完。
+    <strong>目前狀態</strong>:<code>bridge-pack</code> fixture 可由 npm 取得;<code>aps init</code> 的後台仍在建構中。請勿把本頁當成已可生產使用的安裝說明。
   </div>
 </section>
 
@@ -463,12 +463,24 @@
   <ul class="status-list">
     <li><span class="mark done">✓</span><span>協定設計與 MVP 在同一部電腦上跑通(2026-05-20)</span></li>
     <li><span class="mark done">✓</span><span>完整的手動設置教學(技術參考,供深入了解使用)</span></li>
-    <li><span class="mark done">✓</span><span>初步 npm 套件 — <code>@adamchanadam/aps</code> 試行版 0.1.0</span></li>
+    <li><span class="mark done">✓</span><span>npm package 初版 — <code>@adamchanadam/aps</code> 0.1.1 提供 <code>bridge-pack</code> fixture</span></li>
+    <li><span class="mark wait">⏳</span><span><code>npx aps init</code> 仍為佔位功能,尚未完成一鍵設置</span></li>
     <li><span class="mark wait">⏳</span><span><code>aps init</code> 的對話流程後台仍在建構中</span></li>
     <li><span class="mark wait">⏳</span><span>Claude 自動帶你完成的日常流程(出包 / 撿包 / 出錯處理)仍在建構中</span></li>
     <li><span class="mark wait">⏳</span><span>實際兩部電腦跨機運作(等對話流程完成之後試行)</span></li>
   </ul>
   <p style="margin-top:14px;">完整建構路線見 <span class="path">dev\qc\2026-05-22-zero-knowledge-funnel-audit.md</span>(AI / 維護者層 .md 檔;目前以技術術語為主,正在重寫對齊讀者)。</p>
+</section>
+
+<section>
+  <h2>本項目如何驗收</h2>
+  <p class="lede">本項目以「全面檢」守住三件事:公開承諾一致性、發佈前可信度、協定實際運行正確性。意思是:人類入口寫了什麼,CLI 與橋接規則包便要支撐到什麼;尚未完成者必須清楚標示為前期測試或目標體驗。</p>
+  <ul>
+    <li><strong>公開承諾一致性</strong>:本頁、README、教學中心、完整落地教學、CLI help 與 skill spec 不可互相矛盾。</li>
+    <li><strong>發佈前可信度</strong>:README、GitHub Pages、npm package、橋接規則包與教學頁在外發前須能讓外部讀者按當前狀態理解與操作。</li>
+    <li><strong>協定實際運行正確性</strong>:Hub、單寫通道、交接包、收件記錄、收結 / 撤回與啟動時待處理計算須有實際操作記錄;未能驗證者須清楚標為受阻。</li>
+  </ul>
+  <p>全面檢亦須走通四條主要使用流程:零認知讀者入口流程、手動設置流程、日常協作流程、出錯補救流程。具體規則見 <a href="qc/governance-map.html" class="site-nav__link">分層 QC</a>;AI / 維護者層真源為 <span class="path">dev\qc\triggers.md</span>。</p>
 </section>
 
 <section>
@@ -480,7 +492,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>執行 init 之後的完整使用步驟</td>
+        <td>目前手動設置與目標使用流程</td>
         <td><a href="guides/aps-onboarding-walkthrough.html" class="site-nav__link">完整設置教學</a>(技術參考)</td>
       </tr>
       <tr>
@@ -509,12 +521,12 @@
 
 <section>
   <h2>License 與反饋</h2>
-  <p><a class="site-nav__link" href="https://github.com/Adamchanadam/ai-public-squares/blob/main/LICENSE">Apache License 2.0</a>。目前為私人 repo,但 license 已預先設定,將來轉為公開時即時生效。</p>
+  <p><a class="site-nav__link" href="https://github.com/Adamchanadam/ai-public-squares/blob/main/LICENSE">Apache License 2.0</a>。本 repo 已公開,可按 Apache-2.0 條款閱讀、引用與參與改進。</p>
   <p>遇到錯誤、想試用、或有功能建議?前往 <a class="site-nav__link" href="https://github.com/Adamchanadam/ai-public-squares/issues">GitHub issues</a> 留言。</p>
 </section>
 
 <footer>
-  AI Public Squares · 試行版 0.1.0 · 最新更新 2026-05-23
+  AI Public Squares · 試行版 0.1.1 · 最新更新 2026-05-26
 </footer>
 
 </main>

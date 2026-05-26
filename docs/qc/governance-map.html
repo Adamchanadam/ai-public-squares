@@ -229,31 +229,31 @@
   <a class="site-nav__link" href="../guides/index.html">教學中心</a>
   <a class="site-nav__link site-nav__link--active" href="governance-map.html">分層 QC</a>
   <span class="site-nav__spacer"></span>
-  <span class="site-nav__hint">2026-05-23</span>
+  <span class="site-nav__hint">2026-05-26</span>
 </nav>
 
 <header class="cover">
-  <div class="eyebrow">QC 機制 · Reference card</div>
+  <div class="eyebrow">QC 機制 · 參考卡</div>
   <h1>分層 QC — 觸發詞彙</h1>
-  <p class="subtitle">三 tier vocabulary 將既有 6 層 QC mechanism 收口成 3 個 trigger entry point。</p>
+  <p class="subtitle">三級觸發詞彙將既有 6 層 QC 機制收口成 3 個入口。</p>
   <div class="meta">
-    <span>本卡片：reference</span>
-    <span>SSOT：<code>dev/qc/triggers.md</code></span>
+    <span>本卡片：參考</span>
+    <span>單一真源：<code>dev/qc/triggers.md</code></span>
     <span>建立：2026-05-21 S6</span>
   </div>
 </header>
 
 <section>
   <h2>設計意圖</h2>
-  <p class="lede">過往「全套 QC / 完整 QC / 跑驗收 / 整體 audit」此類含混詞令人類與 AI 對驗收 scope 之理解漂移。三 tier vocabulary 鎖定三件事:每個 tier 之覆蓋與時間 explicit,outer 自動含 inner,含混詞觸發停手反問。</p>
-  <p>本卡片只屬日常閱讀與操作參考;trigger keyword、tier 定義、覆蓋範圍之 canonical 真源於 <code>dev/qc/triggers.md</code>。如本 HTML 與 SSOT 有 drift,SSOT 文件 wins。</p>
+  <p class="lede">過往「全套 QC / 完整 QC / 跑驗收 / 整體 audit」此類含混詞容易令人類與 AI 對驗收範圍理解不一致。三級觸發詞彙鎖定三件事:每級的覆蓋範圍與時間、較高級別自動包含較低級別、含混詞觸發停手反問。</p>
+  <p>本卡片只屬日常閱讀與操作參考;觸發詞、級別定義、覆蓋範圍之單一真源為 <code>dev/qc/triggers.md</code>。若本 HTML 與該檔內容不一致,以該檔為準。</p>
 </section>
 
 <section>
-  <h2>三 tier 速覽</h2>
+  <h2>三級速覽</h2>
   <table class="params">
     <thead>
-      <tr><th>Tier</th><th>觸發 keyword</th><th>時機</th><th>時間預算</th></tr>
+      <tr><th>級別</th><th>觸發詞</th><th>時機</th><th>時間預算</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -265,13 +265,13 @@
       <tr>
         <td>🟡 外發前檢</td>
         <td><code>跑外發前檢</code> / <code>release-check</code> / <code>handover-verify</code></td>
-        <td>push remote / 分享 plan / 跨 workspace 傳檔之前</td>
+        <td>推送遠端 / 分享計劃 / 跨工作目錄傳檔之前</td>
         <td>5–10 分鐘</td>
       </tr>
       <tr>
         <td>🔴 全面檢</td>
         <td><code>跑全面檢</code> / <code>full-check</code> / <code>full-audit</code></td>
-        <td>跨機 round-trip / PROTOCOL.md 改版 / kit major upgrade 之前</td>
+        <td>跨機往返測試 / 協定改版 / 治理工具重大升級之前</td>
         <td>30+ 分鐘</td>
       </tr>
     </tbody>
@@ -279,7 +279,7 @@
 </section>
 
 <section>
-  <h2>三 tier 詳述</h2>
+  <h2>三級詳述</h2>
   <div class="tier-grid">
 
     <article class="tier green">
@@ -288,7 +288,7 @@
       <p><strong>時機</strong>：session 收工前；五區段執行完之後；commit / amend 之前。</p>
       <p><strong>覆蓋</strong>（4 項）：</p>
       <ul>
-        <li><code>kit doctor</code> 報 status: passed</li>
+        <li><code>kit doctor</code> 報 <code>status: passed</code></li>
         <li><code>git status</code> 同 handoff Workspace Identity 一致</li>
         <li>當次 session 所有 grep acceptance 全部命中</li>
         <li>有 script 改動：parse-check + DryRun against demo</li>
@@ -299,14 +299,14 @@
     <article class="tier amber">
       <h3>🟡 外發前檢</h3>
       <p><strong>別名</strong>：<code>跑外發前檢</code> / <code>release-check</code> / <code>handover-verify</code></p>
-      <p><strong>時機</strong>:物件離開本 workspace 之前(push remote / 分享 plan / 傳 Bridge Pack 予 Jay)。</p>
+      <p><strong>時機</strong>:物件離開本工作目錄之前(推送遠端 / 分享計劃 / 傳橋接規則包予 Jay)。</p>
       <p><strong>覆蓋</strong>：快檢 4 項 + 5 項：</p>
       <ul>
-        <li>跨工作目錄 placeholder audit</li>
-        <li>plan / 教學頁 / Bridge Pack 三處 cross-read</li>
+        <li>跨工作目錄佔位符審核</li>
+        <li>計劃 / 教學頁 / 橋接規則包三處交叉閱讀</li>
         <li>HTML preview 視覺確認</li>
         <li>PII / secrets sweep</li>
-        <li>Voice / terminology discipline 掃描</li>
+        <li>語氣與用語紀律掃描</li>
       </ul>
       <p><strong>驗收</strong>：9 項全過。<br><strong>失敗</strong>：handover stop。</p>
     </article>
@@ -314,14 +314,14 @@
     <article class="tier red">
       <h3>🔴 全面檢</h3>
       <p><strong>別名</strong>：<code>跑全面檢</code> / <code>full-check</code> / <code>full-audit</code></p>
-      <p><strong>時機</strong>：跨機 round-trip / 協定升版 / 引入新 agent / kit major upgrade 之前。</p>
-      <p><strong>覆蓋</strong>：外發前檢 + 5 項人工 / 跨 workspace：</p>
+      <p><strong>時機</strong>：跨機往返測試 / 協定升版 / 引入新 AI 程式 / 治理工具重大升級之前。</p>
+      <p><strong>覆蓋</strong>：外發前檢 + 5 項人工 / 跨工作目錄：</p>
       <ul>
-        <li>Class-C 跨 workspace audit</li>
-        <li>MVP-style round-trip regression</li>
-        <li>Bridge Pack startup 行為 trace</li>
+        <li>跨工作目錄審核</li>
+        <li>MVP 形式往返流程回歸測試</li>
+        <li>橋接規則包啟動行為記錄</li>
         <li>五區段 / 自審 retrospective</li>
-        <li>Audit report 輸出</li>
+        <li>審核報告輸出</li>
       </ul>
       <p><strong>驗收</strong>：14 項 + report committed。<br><strong>失敗</strong>：逐條列阻擋項。</p>
     </article>
@@ -330,13 +330,72 @@
 </section>
 
 <section>
+  <h2>APS 全面檢三條主線</h2>
+  <p class="lede">AI Public Squares 的全面檢不只是多跑幾條命令,而是要證明公開說法、外發物可信度與協定實際行為三者一致。狀態須逐項標示為通過、失敗、受阻或接受風險。</p>
+  <table class="params">
+    <thead>
+      <tr><th>主線</th><th>要核對之事</th><th>不通過時代表什麼</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>公開承諾一致性</td>
+        <td>README、入口頁、教學中心、完整落地教學、本頁、CLI help、skill spec 對「目前可用」「目標體驗」「手動替代路徑」「npm publish 狀態」描述一致。</td>
+        <td>公開面可能把未發佈或未實作能力寫成已可用。</td>
+      </tr>
+      <tr>
+        <td>發佈前可信度</td>
+        <td>任何會離開本工作目錄的內容,包括 README、GitHub Pages、npm package、Bridge Pack、walkthrough、QC 卡片,皆須讓外部讀者理解並按當前狀態操作。</td>
+        <td>外人可能照文件操作卻撞上未核實、未發佈或不完整流程。</td>
+      </tr>
+      <tr>
+        <td>協定實際運行正確性</td>
+        <td>Hub 協定、橋接規則包樣板、示範與實際工作目錄、發件記錄、收件記錄、單寫通道、交接包版本、啟動時待處理計算、收結 / 撤回行為須有實際操作記錄或對應工作目錄證據。</td>
+        <td>文檔說得通,但實際共享資料夾流程未必跑得通。</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>主要使用流程走通</h2>
+  <p class="lede">全面檢須按情景走讀者真正會走的路。不能跑的情景不可當作通過,只能標示為受阻並寫明缺少哪一項證據。</p>
+  <table class="params">
+    <thead>
+      <tr><th>情景</th><th>驗收焦點</th><th>主要入口</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>零認知讀者入口流程</td>
+        <td>讀者由 README 進入後,能分清「目前可試」與「目標體驗」。</td>
+        <td><code>README.md</code>、<a class="site-nav__link" href="../index.html">入口</a>、<a class="site-nav__link" href="../guides/index.html">教學中心</a></td>
+      </tr>
+      <tr>
+        <td>手動設置流程</td>
+        <td>由前置事項、工作目錄、橋接規則包、治理列到首次交接包,每一步不依賴不存在的 npm package 或私有本機路徑。</td>
+        <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html">完整落地教學</a></td>
+      </tr>
+      <tr>
+        <td>日常協作流程</td>
+        <td>發出內容、WhatsApp 通知、收方檢查 Hub、收件 / 消化、回覆 / 收結能追蹤同一條邏輯。</td>
+        <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html#s10">完整落地教學第 10 節</a></td>
+      </tr>
+      <tr>
+        <td>出錯補救流程</td>
+        <td>Drive 同步延遲、衝突副本、寫錯通道、交接包格式錯誤、版本不對齊,皆有偵測、停手、用戶確認、修復或升級路徑。</td>
+        <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html#s12">完整落地教學第 12 節</a></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
   <h2>嵌套規矩</h2>
-  <p>三 tier 嚴格嵌套：</p>
+  <p>三級嚴格嵌套：</p>
   <ul>
     <li>跑外發前檢 <strong>必自動跑</strong> 快檢 4 項先</li>
-    <li>跑全面檢 <strong>必自動跑</strong> 外發前檢(即連 inner 快檢都跑埋)</li>
+    <li>跑全面檢 <strong>必自動跑</strong> 外發前檢(即同時包含快檢)</li>
   </ul>
-  <p>AI 不可於被 outer trigger 觸發後省略 inner layer。</p>
+  <p>AI 不可在較高級別檢查被觸發後省略較低級別檢查。</p>
 </section>
 
 <section>
@@ -361,16 +420,16 @@
   <ul>
     <li><strong>🟢 快檢</strong>:commit 前 spot-check;五區段執行完之後之 baseline 驗證;改完 doc 試 anchor 不斷</li>
     <li><strong>🟡 外發前檢</strong>:push remote 之前;Adam 傳 Bridge Pack 予 Jay 之前;新 Phase plan 分享予外人之前</li>
-    <li><strong>🔴 全面檢</strong>：跨機 round-trip 落地之前；協定升版之前；引入新 agent 之前；連跑 N 個 session 後重置 baseline</li>
+    <li><strong>🔴 全面檢</strong>：跨機往返落地之前；協定升版之前；引入新 AI 程式之前；連續多輪工作後重置基線</li>
   </ul>
 </section>
 
 <section>
   <h2>既有 mechanism mapping</h2>
-  <p class="lede">此套 vocabulary <strong>不重複定義</strong>既有 6 層 mechanism;下表只為說明「哪個 mechanism 觸發於哪個 tier」。詳細 spec 各 own SSOT。</p>
+  <p class="lede">此套詞彙<strong>不重複定義</strong>既有 6 層機制;下表只說明「哪個機制觸發於哪個級別」。詳細規格各有自己的單一真源。</p>
   <table class="params">
     <thead>
-      <tr><th>Mechanism</th><th>SSOT 位</th><th>觸發 tier</th></tr>
+      <tr><th>機制</th><th>單一真源位置</th><th>觸發級別</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -389,9 +448,9 @@
         <td>🟢 / 🟡 視 scope</td>
       </tr>
       <tr>
-        <td>Bridge Pack runtime addendum</td>
-        <td>Demo / runtime workspace 之 <code>dev/rules/aps-bridge.md</code></td>
-        <td>runtime auto,不屬 tier</td>
+        <td>橋接規則包實際運行補充規則</td>
+        <td>示範工作區或實際工作區之 <code>dev/rules/aps-bridge.md</code></td>
+        <td>實際運行時自動觸發,不屬於檢查級別</td>
       </tr>
       <tr>
         <td>Tool inline self-check</td>
@@ -413,7 +472,7 @@
   <ul>
     <li>「<strong>跑快檢</strong>」— AI 跑 doctor + git status + grep set</li>
     <li>「<strong>跑外發前檢</strong>」— AI 跑快檢 + 五項外發 audit</li>
-    <li>「<strong>跑全面檢</strong>」— AI 跑外發前檢 + 五項全面 audit;如涉跨 workspace,AI 列出需於 owner workspace 開新 session 之 sub-task</li>
+    <li>「<strong>跑全面檢</strong>」— AI 跑外發前檢 + 五項全面審核;如涉及跨工作目錄,AI 列出需於對應工作目錄另開新對話處理的子任務</li>
   </ul>
   <div class="callout warn">
     <strong>講含混詞 = 觸發反問</strong>。如果用「做 QC / 跑驗收 / 整體 audit」此類詞,AI 會停手問「你指快檢 / 外發前檢 / 全面檢?」。此乃紀律,不為出 bug — 防止 scope 漂移。
@@ -421,7 +480,7 @@
 </section>
 
 <footer>
-  AI Public Squares · 分層 QC reference card · 2026-05-21 S6 · SSOT 於 <code>dev/qc/triggers.md</code>
+  AI Public Squares · 分層 QC 參考卡 · 建立 2026-05-21 S6 · 同步 2026-05-26 · 單一真源於 <code>dev/qc/triggers.md</code>
 </footer>
 
 </main>

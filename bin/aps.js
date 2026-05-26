@@ -20,16 +20,19 @@ APS — AI Public Squares
 Two-machine AI agent collaboration via a shared Google Drive folder.
 
 Usage:
-  npx @adamchanadam/aps init                    Set up APS in current workspace (placeholder)
-  npx @adamchanadam/aps bridge-pack             Print Bridge Pack fixture (User A default)
-  npx @adamchanadam/aps bridge-pack --role B    Print Bridge Pack fixture for User B role
-  npx @adamchanadam/aps --help                  Show this help
+  npx aps init                    Set up APS in current workspace (placeholder)
+  npx aps bridge-pack             Print Bridge Pack fixture (User A default)
+  npx aps bridge-pack --role B    Print Bridge Pack fixture for User B role
+  npx aps --help                  Show this help
 
 bridge-pack writes fixture content to stdout — redirect to your workspace's
 Bridge Pack location, e.g.:
-  npx @adamchanadam/aps bridge-pack > dev/rules/aps-bridge.md
+  npx aps bridge-pack > dev/rules/aps-bridge.md
 
-Status: bridge-pack available; full \`init\` orchestration coming.
+Local source test:
+  node bin/aps.js bridge-pack > dev/rules/aps-bridge.md
+
+Status: bridge-pack is available. Full \`init\` orchestration is still coming.
 Repo: https://github.com/Adamchanadam/ai-public-squares
 `);
   process.exit(0);
@@ -47,7 +50,9 @@ The full \`init\` command will:
      and partner-machine onboarding starter pack.
 
 For now:
-  - Use \`npx @adamchanadam/aps bridge-pack\` to get the Bridge Pack fixture.
+  - Install the package with \`npm install --save-dev @adamchanadam/aps\`.
+  - Use \`npx aps bridge-pack\` to get the Bridge Pack fixture.
+  - Maintainers can also run \`node bin/aps.js bridge-pack\` inside this repo.
   - See the manual setup walkthrough at:
     https://github.com/Adamchanadam/ai-public-squares/blob/main/docs/guides/aps-onboarding-walkthrough.html
 
@@ -78,5 +83,5 @@ if (subcommand === 'bridge-pack') {
 }
 
 console.error(`Unknown subcommand: ${subcommand}`);
-console.error('Try: npx @adamchanadam/aps --help');
+console.error('Try: npx aps --help');
 process.exit(1);

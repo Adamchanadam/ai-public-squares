@@ -8,7 +8,33 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-23 (S10, latest) — Repo public + GitHub Pages + npm bridge-pack + Layer D HTML strip + audit cascade
+## 2026-05-25 (S11, latest) — APS public promise consistency root-fix
+
+- **ID:** S11
+- **Summary:** 按 Adam 指示,本次 QC 聚焦 AI Public Squares 本身,不審 Agent Handoff Kit 治理層。先建立 `dev/qc/2026-05-25-aps-full-consistency-audit.md`,再逐項 root-fix 5 個 blocker:repo public 狀態漂移、npm 未 publish 與 walkthrough 命令衝突、`aps init` 目標體驗被寫似已可用、skill / dialogue script 含未實作承諾、walkthrough doctor `34 / 34` 過時數字。
+- **Changed:** This workspace only.
+  - Modified: `README.md` — 改為 repo 已公開;明確 npm package 尚未 publish;「開始使用」改為「目前可以怎樣試」+「目標體驗」分離。
+  - Modified: `docs/index.html` — 同步 public repo / npm 未 publish / `init` coming-soon 邊界;狀態表新增 registry 未發佈邊界。
+  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — `bridge-pack` 改為正式 publish 後使用 npm;前期測試只供維護者以 clone 後本地 `node bin/aps.js bridge-pack` 測試;doctor 驗收改用 `Status: passed`。
+  - Modified: `skills/aps/SKILL.md` — 標為 target orchestration spec,不是 current runtime guarantee;未實作 update / bundled PROTOCOL source / zip 承諾全部改成邊界語句。
+  - Modified: `docs/plans/2026-05-23-aps-skill-dialogue-script.md` — 標為 wording bank + 目標體驗草稿;移除 clipboard / zip / update 作為已可執行承諾。
+  - Modified: `dev/DOC_SYNC_REGISTRY.md` — 新增 APS product consistency audit / public promise drift row。
+  - Modified: `dev/PROJECT_INDEX.md` — 新增 APS consistency audit entry;README / skill rows 改成 current-vs-target boundary。
+  - Modified: `dev/qc/2026-05-25-aps-full-consistency-audit.md` — 追加 root-fix pass 與重跑驗收結果。
+  - Modified: `dev/qc/triggers.md` — 將 APS 全面檢深化為三條主線:公開承諾一致性、發佈前可信度、協定 runtime 正確性;新增四條主 user journey 走通要求。
+  - Modified: `docs/qc/governance-map.html` — 同步三條主線與四條 journey,將公開 reference card 對齊 SSOT。
+  - Modified: `docs/index.html` + `docs/guides/index.html` + `docs/guides/aps-onboarding-walkthrough.html` — 公開入口、教學中心、完整落地教學加入 APS 驗收機制與 journey 定位;日期同步至 2026-05-25。
+  - Modified: `dev/DOC_SYNC_REGISTRY.md` — APS product consistency audit row 擴充為三條主線 + 四條 journey 之同步規則。
+  - Modified: `docs/index.html` + `docs/guides/index.html` + `docs/guides/aps-onboarding-walkthrough.html` + `docs/qc/governance-map.html` + `dev/qc/triggers.md` + `dev/DOC_SYNC_REGISTRY.md` — 按 Adam 要求將剛加入的快速溝通語與英文工作語改為公開文檔可用的當代繁體書面語:「journey」→「流程」,「runtime」→「實際運行」,「SSOT」→「單一真源」,「actor」→「參與者」,「trace / evidence」→「操作記錄 / 證據」。
+- **QC:** `node bin/aps.js --help` pass;`node bin/aps.js init` pass and still coming soon;`node bin/aps.js bridge-pack --role B` pass;`node bin/aps.js bogus` negative path pass(exit 1);`npm pack --dry-run --json` pass;`npm view @adamchanadam/aps ...` still E404 and now documented as publish timing boundary;grep `private repo|私人 repo|34 / 34|34/34|C:\Users\adam|href=.*\.md` on README + public docs = 0 hit;grep `npx @adamchanadam/aps update|copy 到 clipboard|protocol-v1.0.md` = 0 hit;secret sweep found only safety-rule mentions, no actual credential;`npx @adamchanadam/agent-handoff-kit doctor` pass(46 checks),with non-blocking note that tool / npm latest v0.3.11 differs from project record v0.3.10. Later same session:APS 全面檢 governance deepening added and re-verified by grep across `dev/qc/triggers.md`,4 個入口 HTML,plus `.md` hyperlink audit.
+- **Sync:** DOC_SYNC_REGISTRY updated with durable rule for future APS public promise drift checks. No GitHub push, npm publish, Pages deployment, or external write performed.
+- **Pending:** npm publish remains Adam-controlled; until publish, public docs must keep the registry-not-published boundary. Next substantive work may proceed to skill / setup / dialogue design, using the corrected boundary.
+- **Continuation — full audit requested by Adam:** Created `dev/qc/2026-05-25-aps-full-audit.md` and indexed it in `dev/PROJECT_INDEX.md`. This stricter full audit separates public/document consistency from actual cross-workspace proof. Result: local public surface + CLI checks pass, but the full audit is not a complete pass because doctor, browser render, Class-C cross-workspace audit, round-trip regression, Bridge Pack startup behavior trace, and report commit remain unverified or explicitly not performed in this workspace session. Browser render was attempted through the local JavaScript environment, but `playwright` is unavailable.
+- **Environment note added:** `C:\tmp` is not writable in the current Codex desktop execution environment. Recorded in `dev/PROJECT_INDEX.md` Workspace Identity and this audit report; subsequent QC evidence for this session uses project-local `dev/qc/evidence/2026-05-25-full-audit/`.
+- **Root-fix continuation:** Public wording cleanup removed mixed-language phrases from README + HTML entry surfaces. HTML preview evidence was generated with Microsoft Edge headless and saved under `dev/qc/evidence/2026-05-25-full-audit/`. A project-local temporary Hub regression completed Adam publish → Jay ack → Jay reply → Adam ack → Adam close, and `startup-trace-check.cjs` confirmed both Adam and Jay have no pending items after close. Doctor remains blocked because sandbox execution lacks npm cache and sandbox-out execution of npm code was rejected by safety review.
+- **Release continuation (2026-05-26):** Published `@adamchanadam/aps@0.1.0`, then immediately found that one-off `npx @adamchanadam/aps@0.1.0 ...` was not a reliable verified path in this Windows/npm environment. Root-fix landed as `0.1.1`: public docs + CLI help now use the verified flow `npm install --save-dev @adamchanadam/aps` then `npx aps ...`. Published `@adamchanadam/aps@0.1.1`; `npm view` confirms `latest` = 0.1.1, bin = `aps`, fileCount = 8; a temporary install probe confirms `aps.cmd --help` and `aps.cmd bridge-pack --role B` work.
+
+## 2026-05-23 (S10) — Repo public + GitHub Pages + npm bridge-pack + Layer D HTML strip + audit cascade
 
 - **ID:** S10
 - **Summary:** 跨多輪 audit + scope expansion 嘅累積 batch。核心拍板:Adam 提出 「HTML 入面 .md hyperlink 屬 broken UX(瀏覽器顯示 plain text);若內容係新手必讀就放 HTML 頁,放 HTML 範圍嘅必須係 HTML,非 .md」 之 design principle。Strip 全部公開面 .md hyperlink 並重新定位 「設計理據 + 跨機接駁計劃」 為 「AI / 維護者層 spec source」(Layer D)。順手做 audit cascade — 日期 / brand sync / Agent Handoff Kit 網址 fix / 設計理據 §13 階段 1-3 reframe / npm package 加 `bridge-pack` sub-command 取代 clone repo prereq / 設置教學 §2 由 4 件先決事改 3 件(取消 clone)/ pre-release banner / repo 轉 public / GitHub Pages enable / README 嘅 HTML link 改 absolute GitHub Pages URL。Voice rewrite scope 擴至包含 `docs/guides/index.html` + `docs/qc/governance-map.html`(原 Tier 3 deferred items)。

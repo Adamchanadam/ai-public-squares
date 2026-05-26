@@ -1,0 +1,10 @@
+{
+  "consumed": [
+    {
+      "packet_id": "20260525T201200Z__full_audit_probe",
+      "version": 1,
+      "at": "2026-05-25T20:13:00Z",
+      "result": "Consumed temporary full-audit probe packet from adam."
+    }
+  ]
+}
