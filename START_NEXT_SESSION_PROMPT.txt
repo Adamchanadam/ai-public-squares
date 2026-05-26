@@ -1,11 +1,15 @@
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template;not bound to any specific project;published as `@adamchanadam/aps` npm package + GitHub repo Adamchanadam/ai-public-squares — **public since 2026-05-23**;GitHub Pages enabled at https://adamchanadam.github.io/ai-public-squares/).
 
-S10 (2026-05-23) 完成:Adam 拍板 documentation governance principle 「HTML = 公開人類面 / Notion = 個人 R&D 知識庫 / .md = AI / 維護者層 spec substrate;HTML site-nav 不 link .md(broken UX)」;strip 全部公開面 .md hyperlink 並重新定位「設計理據 + 跨機接駁計劃 + funnel audit」為 AI / 維護者層 spec source;npm package 加 `bridge-pack` sub-command(支援 `--role A/B`)取代 clone repo prereq;設置教學 §2 由 4 件 → 3 件先決事;設計理據 §13 階段 1-3 全 reframe;README + docs/index.html 加 pre-release banner;repo 轉 public + GitHub Pages enable + README 「想深入了解」 HTML link 改 absolute Pages URL;voice scope expand;Agent Handoff Kit URL fix。S9 累積 22 commits + S10 batch(此 closeout)為 23rd commit 將 push。
+Current closeout (2026-05-26): `@adamchanadam/aps` v0.1.1 is published and verified as npm latest;commit `838d85a` is pushed to `origin/main`;tag `v0.1.1` is pushed;GitHub release is live at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.1.1;GitHub Pages `docs/index.html` returned HTTP 200 and contains the v0.1.1 install wording. Current verified package path is `npm install --save-dev @adamchanadam/aps` then `npx aps bridge-pack`;full `npx aps init` orchestration remains pending.
+
+Codex global MCP config now includes `chrome-devtools` (`chrome-devtools-mcp@latest`, usage statistics disabled) and `context7` (`@upstash/context7-mcp`, no API key stored). They may require a new Codex session or Codex Desktop restart before appearing in the active tool list.
+
+Agent Handoff Kit v0.3.11 status: main APS workspace doctor passes after this wrap-up;`Demo_Agent_Adam_Public_Squares` and `Demo_Agent_Jay_Public_Squares` also pass v0.3.11 doctor(46 checks each). Demo workspaces still have their own uncommitted governance upgrade files;do not edit them from this APS root unless explicitly asked.
 
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md(含 S10 entry at top)
+3. dev/SESSION_LOG.md(含 2026-05-26 wrap-up entry at top)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/qc/2026-05-22-zero-knowledge-funnel-audit.md (Phase X-3 spec source)
@@ -22,8 +26,8 @@ Voice hard rule (per memory feedback-doc-voice + feedback-plain-language):所有
 
 Documentation governance hard rule (per S10 Adam principle):HTML 內(site-nav / body callout / body table)不 link 任何 .md 檔(瀏覽器顯示 plain text,broken UX);如要 reference .md 用 plain `<span class="path">` 顯示。.md 屬 AI / 維護者層 spec source。
 
-Next active objective: **Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow first draft + dialogue script first pass**。其他 pending:Adam 自跑 `npm publish` 出 0.2.0(令 `npx @adamchanadam/aps bridge-pack` 命令真實 work);真實 user-flow test(於 throw-away folder 跟 walkthrough §2 → §3 → §6 真做一次);Phase X-5 Layer D 文檔重新定位。
+Next active objective: **Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow first draft + dialogue script first pass**。Other pending:real user-flow test in a throw-away folder using v0.1.1 install path;Phase X-5 Layer D document repositioning;real cross-machine Drive round-trip evidence.
 
-User-facing entry: README.md (GitHub first-impression with pre-release banner) + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。設置教學 walkthrough 已 cascade 對齊 npm bridge-pack path;讀者執行 `npx @adamchanadam/aps bridge-pack > dev/rules/aps-bridge.md` 即取 fixture(0.2.0 publish 之後生效)。Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
+User-facing entry: README.md + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。設置教學 walkthrough 已對齊 npm package 0.1.1 path;讀者先執行 `npm install --save-dev @adamchanadam/aps`,再執行 `npx aps bridge-pack > dev/rules/aps-bridge.md` 取得 fixture。Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.

@@ -6,11 +6,11 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 
 | Field | Value | Last verified |
 |---|---|---|
-| Agent Handoff Kit template version | 0.3.11 | 2026-05-21 |
+| Agent Handoff Kit template version | 0.3.11 | 2026-05-26 |
 | Runtime | Node.js ≥18 (for `bin/aps.js` placeholder CLI); static HTML for user-facing docs under `docs/` | 2026-05-22 |
 | Framework | None — no build step; HTML hand-maintained; CLI is plain Node | 2026-05-22 |
 | Package manager | npm (`@adamchanadam/aps` 0.1.1 published; `bridge-pack` available, `init` still placeholder) | 2026-05-26 |
-| Test command | `node bin/aps.js --help`, `node bin/aps.js init`, `node bin/aps.js bridge-pack --role B`, and `node bin/aps.js bogus` smoke test; `agent-handoff-kit doctor` for governance when execution is allowed; manual HTML link audit | 2026-05-25 |
+| Test command | `node bin/aps.js --help`, `node bin/aps.js init`, `node bin/aps.js bridge-pack --role B`, and `node bin/aps.js bogus` smoke test; local v0.3.11 `agent-handoff-kit doctor --root <path>` for governance; manual HTML link audit | 2026-05-26 |
 | Build command | None — no build step | 2026-05-22 |
 | Deploy command | `npm publish --access public`; GitHub push via `git push origin main` (auto-auth via Windows Credential Manager) | 2026-05-26 |
 
@@ -23,6 +23,7 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 | `GEMINI.md` | Gemini CLI bridge to the same startup path | Gemini CLI startup |
 | `START_NEXT_SESSION_PROMPT.txt` | convenience copy of next-session opening message (regenerated from `dev/SESSION_HANDOFF.md` per AGENTS.md §4 step 10) | session startup, when user pastes the opening block |
 | `dev/` | governance state (handoff, log, index, sync registry) | session startup / closeout |
+| `dev/SESSION_LOG_archive/` | archived raw session-log entries moved out of the hot log by the SESSION_LOG N-rule | when tracing older session evidence no longer kept in the hot log |
 | `dev/rules/` | rule packs loaded per task signal from `dev/RULE_PACKS.md` | per task, per pack-loading routing rule |
 | `dev/release-notes/` | GitHub release note source files for tagged APS releases | before creating or reviewing a GitHub release |
 | `dev/governance_migrations/<UTC>/` | kit upgrade backup + migration reports; one folder per `agent-handoff-kit upgrade` invocation | reference only; not for routine reads |
@@ -83,8 +84,10 @@ Reachable means the source can be found. It does not mean the source has been re
 | Demo Agent workspace (User-A-side fixture) | MVP verification sandbox; canonical Bridge Pack source for downstream T2 | re-running the MVP demo, onboarding a third agent, or validating a PROTOCOL change | local path `C:\Users\adam\_claude_desktop\Demo_Agent_Adam_Public_Squares` (sibling directory; name reflects MVP fixture's example agent_id) | independent git repo; do NOT modify from this workspace | 2026-05-21 |
 | Demo Agent workspace (User-B-side fixture) | same as above (mirror of User-A-side fixture; differs only in Identity section) | same | local path `C:\Users\adam\_claude_desktop\Demo_Agent_Jay_Public_Squares` (sibling directory; name reflects MVP fixture's example counterpart agent_id) | independent git repo; do NOT modify from this workspace | 2026-05-21 |
 | User-chosen real runtime workspace(s) | Phase 4 target(s) — each user picks own | Phase 4 only — out of scope until that plan opens, and out-of-process for this template repo (real runtime exists on each user's own machine, not in this repo) | per-user absolute path (template; example shape: `MPEdu_Plus_Branding` from the read-only reference workspace used in S2-S7 sessions) | read-only reference from this workspace; never modify any user's real runtime from here | not verified — out of scope for template SSOT |
-| GitHub remote `origin` | private repo hosting full git history + LICENSE + future release tarballs (Apache-2.0;may flip public after Layer A/B/C落地) | every push / pull during Layer A/B/C build; before any Phase X-2 publish | `https://github.com/Adamchanadam/ai-public-squares.git` (HTTPS;auth via Windows Credential Manager,auto-pass) | `git push origin main` (no force-push without Adam 明示);never push to non-main branches without explicit need | 2026-05-22 (10 commits pushed,latest `89b3012` site-nav brand sync) |
+| GitHub remote `origin` | public repo hosting full git history, release tags, GitHub Pages, and Apache-2.0 license | every push / pull; before any GitHub release or Pages verification | `https://github.com/Adamchanadam/ai-public-squares.git` (HTTPS;auth via Windows Credential Manager,auto-pass) | `git push origin main` and version tag pushes only with explicit release intent;no force-push without Adam 明示 | 2026-05-26 (`main` and tag `v0.1.1` point to `838d85a`) |
 | npm registry — `@adamchanadam/aps` scope | distribution channel for the APS CLI package | before documenting npm commands or changing package version | npm registry `https://www.npmjs.com/package/@adamchanadam/aps` (`latest` = 0.1.1 verified 2026-05-26) | `npm publish --access public` from this workspace root; verify with `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json` | 2026-05-26 |
+| GitHub release `v0.1.1` | public release record for APS package version 0.1.1 | before telling users v0.1.1 is released through GitHub | `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.1.1` | create / update only with explicit release intent | 2026-05-26 |
+| GitHub Pages | hosted public HTML entry surface | after pushing public docs changes | `https://adamchanadam.github.io/ai-public-squares/docs/index.html` | writes happen via `main` branch push only | 2026-05-26 (HTTP 200;contains `0.1.1` and verified install command) |
 
 ## Installed Integrations` | read-back required / manual only / no write | TBD |
 
@@ -107,6 +110,8 @@ Reachable means the source can be found. It does not mean the source has been re
 | Server | Source | Project Usage | Credential Location | Declared | Last Verified |
 |--------|--------|---------------|---------------------|----------|---------------|
 | TBD | TBD（譬如 GitHub repo URL） | TBD | TBD（譬如 `Claude Code MCP config + env var`） | TBD | TBD |
+| Codex `chrome-devtools` | `chrome-devtools-mcp@latest` | Chrome / DevTools browser inspection in future Codex sessions;usage statistics disabled | Codex global MCP config (`~/.codex/config.toml`);no project credential | 2026-05-26 | 2026-05-26 |
+| Codex `context7` | `@upstash/context7-mcp` | current library / framework / SDK documentation lookup in future Codex sessions | Codex global MCP config (`~/.codex/config.toml`);no API key stored | 2026-05-26 | 2026-05-26 |
 
 ### Plugins（Claude Code plugin bundle）
 
@@ -135,7 +140,7 @@ Reachable means the source can be found. It does not mean the source has been re
 
 | Check | Command | Run before | Last verified |
 |---|---|---|---|
-| Agent Handoff Kit doctor | `npx @adamchanadam/agent-handoff-kit doctor` | every closeout, every governance file change, before declaring an `upgrade` complete per AGENTS.md §2.1 | 2026-05-21 (34/34 passed) |
+| Agent Handoff Kit doctor | `node C:\Users\adam\_claude_desktop\_Prompt_Template\ai-session-governance_v2\bin\agent-handoff-kit.mjs doctor --root <path>` (local v0.3.11 CLI;avoids fresh npm execution) | every closeout, every governance file change, before declaring an `upgrade` complete per AGENTS.md §2.1 | 2026-05-26 (main root rechecked after prompt regeneration;demo Adam and demo Jay passed 46/46) |
 | npm CLI smoke test | `node bin/aps.js --help`; `node bin/aps.js init`; `node bin/aps.js bridge-pack --role B`; `node bin/aps.js bogus` | every time `bin/aps.js` changes, before committing the change | 2026-05-25 (4 paths pass; `bogus` correctly exits 1) |
 | Project governance check | N/A — kit doctor covers handoff / log / index / registry health; APS-specific governance is encoded in `docs/plans/2026-05-20-agent-public-square-design.md` and Hub `_hub/PROTOCOL.md` (no runnable script) | reference, not a runnable check | 2026-05-21 |
 
@@ -145,12 +150,12 @@ Record this at closeout so the next AI can detect wrong-root or workspace drift.
 
 | Field | Value | Last verified |
 |---|---|---|
-| Expected project root | `C:\Users\adam\_claude_desktop\AI_Public_Squares` | 2026-05-23 |
-| Git root | same as above | 2026-05-23 |
-| Branch / commit | `main` / latest pushed `01f748f`(S9 reconcile #2,2026-05-22);**S10 batch (此 closeout) uncommitted,將 push 為 23rd 累積 commit** | 2026-05-23 |
-| Worktree or parallel workspace | none from this workspace; siblings `Demo_Agent_{Adam,Jay}_Public_Squares` (MVP fixtures) and the Drive Hub are independent stores; GitHub `origin` remote 已 public(Apache-2.0,2026-05-23 由 private 轉 public);GitHub Pages enabled at `https://adamchanadam.github.io/ai-public-squares/` (serving `/ (root)` of `main`) | 2026-05-23 |
+| Expected project root | `C:\Users\adam\_claude_desktop\AI_Public_Squares` | 2026-05-26 |
+| Git root | same as above | 2026-05-26 |
+| Branch / commit | `main` / latest pushed `838d85a` (`release: 發佈 AI Public Squares v0.1.1`);tag `v0.1.1` pushed | 2026-05-26 |
+| Worktree or parallel workspace | none from this workspace; siblings `Demo_Agent_{Adam,Jay}_Public_Squares` are independent stores and both pass v0.3.11 doctor, but each has its own uncommitted governance upgrade files; GitHub Pages enabled at `https://adamchanadam.github.io/ai-public-squares/` | 2026-05-26 |
 | Execution environment note | `C:\tmp` is not writable in the current Codex desktop execution environment. For temporary evidence or QC artifacts, use a project-local path such as `dev/qc/evidence/<date>-<scope>/` unless the user explicitly authorizes another writable location. | 2026-05-25 |
-| Uncommitted change summary | S10 batch — 10 files modified across npm package + 4 HTML + README + design doc + 2 governance file + START_NEXT_SESSION_PROMPT(plus 2 memory files out of repo)— will commit at end of this turn as single commit | 2026-05-23 |
+| Uncommitted change summary | Current wrap-up updates governance continuity only: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/PROJECT_INDEX.md`, and regenerated `START_NEXT_SESSION_PROMPT.txt`;not yet committed unless Adam requests it | 2026-05-26 |
 
 ## Change Hotspots
 
@@ -168,7 +173,7 @@ Record this at closeout so the next AI can detect wrong-root or workspace drift.
 | Service | Scope | Verification source | Last verified |
 |---|---|---|---|
 | Google Drive for Desktop | provides the Hub Root mount (any drive letter — `G:` / `H:` etc. per machine) for cross-machine APS sync; must be set "offline-available" on every participating machine (per design doc §12.1) | Drive for Desktop client status on each participating machine; design doc §12 verified facts with Google official documentation links | 2026-05-21 |
-| `@adamchanadam/agent-handoff-kit` npm package | source of `AGENTS.md` managed core, governance file templates, doctor and upgrade commands | npm registry `https://www.npmjs.com/package/@adamchanadam/agent-handoff-kit`; installed via `npx @adamchanadam/agent-handoff-kit@latest upgrade` | 2026-05-21 (v0.1.7) |
+| `@adamchanadam/agent-handoff-kit` npm package | source of `AGENTS.md` managed core, governance file templates, doctor and upgrade commands | npm registry `https://www.npmjs.com/package/@adamchanadam/agent-handoff-kit`;local CLI source at `C:\Users\adam\_claude_desktop\_Prompt_Template\ai-session-governance_v2\bin\agent-handoff-kit.mjs` | 2026-05-26 (npm latest and local CLI v0.3.11) |
 
 ## Maintenance Rule
 

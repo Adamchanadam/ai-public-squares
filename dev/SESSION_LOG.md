@@ -8,6 +8,21 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
+## 2026-05-26 (S12, latest) — v0.1.1 release closeout + MCP setup + kit consistency check
+
+- **ID:** S12
+- **Summary:** Completed the APS v0.1.1 release path and then performed a formal wrap-up because `START_NEXT_SESSION_PROMPT.txt` had drifted from `dev/SESSION_HANDOFF.md`. Also installed two Codex MCP servers and checked Agent Handoff Kit v0.3.11 consistency across the main APS root and both demo roots.
+- **Changed:** This workspace only for wrap-up continuity.
+  - Modified: `dev/SESSION_HANDOFF.md` — current release state, MCP state, v0.3.11 doctor evidence, next objective, risks, sync status, and opening message refreshed.
+  - Modified: `dev/SESSION_LOG.md` — this entry.
+  - Modified: `dev/PROJECT_INDEX.md` — release state, workspace identity, doctor command, npm / GitHub / MCP facts refreshed.
+  - Regenerated: `START_NEXT_SESSION_PROMPT.txt` from the handoff opening message.
+- **External actions completed earlier in this session:** npm publish `@adamchanadam/aps@0.1.1`;git commit `838d85a`;push `origin/main`;tag push `v0.1.1`;GitHub release `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.1.1`;GitHub Pages readback.
+- **MCP setup:** Codex global MCP config now includes `chrome-devtools` (`chrome-devtools-mcp@latest`, usage statistics disabled) and `context7` (`@upstash/context7-mcp`, no API key stored). Both package help commands launched successfully after forcing npm out of offline mode. Tool availability may require a new Codex session or Codex Desktop restart.
+- **QC:** `npm view @adamchanadam/aps ...` confirms `latest = 0.1.1`;`npm pack --dry-run --json` confirms 8 expected package files;remote `main` and `v0.1.1` both point to `838d85a`;GitHub release verified non-draft and non-prerelease;GitHub Pages returned HTTP 200 and contained `0.1.1` plus the verified install command. Agent Handoff Kit v0.3.11 doctor passed for both demo workspaces;main workspace doctor is re-run after prompt regeneration in this wrap-up.
+- **Pending:** Phase X-3 skill setup subflow + dialogue script remains next substantive work;throw-away-folder user-flow test still pending;Phase X-5 Layer D document repositioning remains pending;real cross-machine Drive round-trip evidence remains pending.
+- **Sync:** Closeout/startup contract, workspace identity, release, npm package, and MCP setup are reflected in handoff / index / prompt copy. No product files changed in this wrap-up.
+
 ## 2026-05-25 (S11, latest) — APS public promise consistency root-fix
 
 - **ID:** S11
@@ -638,67 +653,6 @@ Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
 Current state (as of 2026-05-21): APS MVP verified on same-machine simulation; both demo workspaces aligned to Agent Handoff Kit v0.1.7; Phase 4 implementation plan complete; user-facing docs expanded with guides hub + onboarding walkthrough. Next task is Phase 4 execution itself — Block 4A (Adam real runtime) is independent and can start any time; Block 4B (Jay's machine) requires Jay's availability; Block 4C round-trip depends on both; Block 4D (large-attachment dry-run) optional.
 
 User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md.
-
-After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
-```
-
-## 2026-05-20 — APS design, MVP build + verification, kit 0.1.5→0.1.7 upgrade chain
-
-- **ID:** S1
-- **Summary:** Created Agent Public Square (APS) — design, plan, MVP implementation, MVP verification, user-facing entry page; also restored kit governance hygiene on this workspace after three rounds of kit upgrade culminating in v0.1.7's `§2.1 Upgrade Done Contract`.
-- **Changed:** Across three local workspaces plus one Drive Hub.
-  - This workspace (`AI_Public_Squares`): `docs/plans/2026-05-20-{agent-public-square-design,aps-mvp-implementation,aps-mvp-verification}.md`, `docs/index.html`, `AGENTS.md` (cleaned by 0.1.7), `dev/SESSION_HANDOFF.md` (filled), `dev/SESSION_LOG.md` (this entry), `dev/PROJECT_INDEX.md` (filled), `dev/DOC_SYNC_REGISTRY.md` (+1 APS row), `START_NEXT_SESSION_PROMPT.txt` (regenerated from handoff), `NEXT_SESSION_HANDOFF_PROMPT.txt` (deleted 0-byte orphan), four `dev/governance_migrations/<UTC>/` folders.
-  - Demo Agent Adam (`Demo_Agent_Adam_Public_Squares`): full kit governance + Bridge Pack + APS round-trip ledger across 9 commits.
-  - Demo Agent Jay (`Demo_Agent_Jay_Public_Squares`): full kit governance + Bridge Pack mirrored from Adam (identity-only diff) + APS round-trip ledger across 8 commits.
-  - Drive Hub `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\`: `_hub/PROTOCOL.md` v1.0, `_hub/CHANGELOG.md`, four templates, `mpedu_plus_branding/` lane skeleton + two real packets (kickoff + reply) + both `ack.json` files. (Drive files not git-tracked; runtime data store.)
-- **Done:**
-  - APS design (5-section brainstorm) → 15-task MVP implementation plan → full subagent-driven execution with per-task spec + code-quality review.
-  - Complete same-machine round-trip with steady-state verification (both lanes pending = empty after close).
-  - Gate review verdict "Approved for MVP" with 4 Important items: 3 fixed in-session (`_hub/CHANGELOG.md` created, PROTOCOL.md-authoritative tie-breaker added to Bridge Pack, verification report commit-count corrected); 1 deferred to Phase 4 (cross-machine validation, requires Jay's machine).
-  - Three kit upgrades: 0.1.5 (appended sandwich-dup managed core), 0.1.6 (no-op due to dup-detection bug), 0.1.7 (replaced sandwich correctly + added `§2.1 Upgrade Done Contract` to prevent recurrence).
-  - This workspace's governance fill-in to satisfy AGENTS.md v0.1.7 §2 — active project root must persist before task is complete.
-- **QC:**
-  - `npx @adamchanadam/agent-handoff-kit doctor` v0.1.7: 34/34 passed (17 files + 9 anchors + 7 schema + 1 prompt mirror) after 0.1.7 upgrade; re-checked after governance fill-in.
-  - Spec + code-quality review per task across 16 MVP tasks; T1 PROTOCOL.md needed 6-fix re-review (C1/C2/C3 critical + 3 important); T5 Bridge Pack needed 10-fix re-review (3 critical + 5 important + safety addition).
-  - Round-trip protocol-conformance PASS on both legs; zero conflicted copies on Drive Hub verified by `find ... -iname "*conflict*"` returning empty.
-  - Acceptance checks for this governance fill-in: see Sync field below + the 8 grep tests in `docs/plans/2026-05-20-aps-mvp-implementation.md` §13 + 5-section plan check #4.
-- **Sync:**
-  - APS publish: 20260520T082121Z__aps_kickoff v1 (Adam → Jay).
-  - APS reply / publish: 20260520T082642Z__aps_kickoff_reply v1 (Jay → Adam).
-  - APS close: 20260520T082121Z__aps_kickoff v1 (Adam, after Jay's reply ack'd).
-  - APS consume: both directions, each `ack.json` carries one consumed entry referencing the counterpart's packet.
-  - Project index updated (this commit); doc sync registry updated with one APS row (this commit); `docs/index.html` + design/plan/verification docs created and committed in earlier commits this session; demo workspaces and Drive Hub recorded in `PROJECT_INDEX.md` External Services.
-- **Pending:**
-  - Phase 4 — real cross-machine handoff with Jay (separate plan; requires Jay's cooperation for her machine setup).
-  - Bridge Pack integration into Adam's real `MPEdu_Plus_Branding` runtime workspace (single-machine task, can be done independently if Adam wants to be ready before Jay).
-  - Large-attachment dry-run (>50 MB) to validate Bridge Pack externalization rule before real branding assets cross.
-  - Optional kit upgrade for the two demo workspaces (still at pre-0.1.5; low priority since they're sandboxes).
-- **Risks:**
-  - Jay's machine setup unconfirmed (Drive mount + offline-available pending Jay's action).
-  - Cross-machine Drive sync latency and conflict behavior unproven (same-machine simulation only so far).
-  - No remote git on any of the three workspaces — single-disk single-point-of-failure.
-  - Demo workspaces lack v0.1.7's skill-arbitration rule; not blocking since they're sandboxes, but worth tracking if they get reused.
-- **Log maintenance:** kept; first real entry. Future Phase 4 sessions should add new entries at the top of this file, not amend this one.
-
-### Next Session Opening Message
-
-📋 Next session: copy and paste the whole block below
-
-```text
-Work in C:\Users\adam\_claude_desktop\AI_Public_Squares.
-
-Read in order:
-1. AGENTS.md
-2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md
-4. dev/PROJECT_INDEX.md
-5. dev/RULE_PACKS.md
-
-Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
-
-If this root does not match the expected project root, stop and ask for confirmation.
-
-Current state (as of 2026-05-21): APS MVP complete and verified on same-machine simulation. AGENTS.md is at kit v0.1.7 (clean, doctor 34/34 passing). Next task is Phase 4 — real cross-machine handoff with Jay; not yet started. See docs/plans/2026-05-20-aps-mvp-verification.md for the Phase 4 open items, and docs/index.html for the user-facing project explainer.
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
 ```
