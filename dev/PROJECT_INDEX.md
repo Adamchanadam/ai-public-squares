@@ -7,10 +7,10 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 | Field | Value | Last verified |
 |---|---|---|
 | Agent Handoff Kit template version | 0.3.11 | 2026-05-26 |
-| Runtime | Node.js ≥18 (for `bin/aps.js` placeholder CLI); static HTML for user-facing docs under `docs/` | 2026-05-22 |
+| Runtime | Node.js ≥18 (for `bin/aps.js` CLI); static HTML for user-facing docs under `docs/` | 2026-05-26 |
 | Framework | None — no build step; HTML hand-maintained; CLI is plain Node | 2026-05-22 |
-| Package manager | npm (`@adamchanadam/aps` 0.1.1 published; `bridge-pack` available, `init` still placeholder) | 2026-05-26 |
-| Test command | `node bin/aps.js --help`, `node bin/aps.js init`, `node bin/aps.js bridge-pack --role B`, and `node bin/aps.js bogus` smoke test; local v0.3.11 `agent-handoff-kit doctor --root <path>` for governance; manual HTML link audit | 2026-05-26 |
+| Package manager | npm (`@adamchanadam/aps` 0.1.1 published; local `package.json` is now 0.2.0 candidate with `init` as a Claude Code / Codex skill installer + initial Hub skeleton generator; local CLI now has minimal `publish` / `inbox` / `consume` / `close` round-trip commands; isolated skill-level daily-use rehearsal and throw-away zero-knowledge flow passed; real cross-machine Drive verification still pending) | 2026-05-26 |
+| Test command | `node bin/aps.js --help`, `node bin/aps.js init --dry-run`, `node bin/aps.js bridge-pack --role B`, disposable Hub `publish` → `inbox` → `consume` → reply → `close`, throw-away zero-knowledge tarball install flow, and `node bin/aps.js bogus` smoke test; local v0.3.11 `agent-handoff-kit doctor --root <path>` for governance; manual HTML link audit | 2026-05-26 |
 | Build command | None — no build step | 2026-05-22 |
 | Deploy command | `npm publish --access public`; GitHub push via `git push origin main` (auto-auth via Windows Credential Manager) | 2026-05-26 |
 
@@ -27,14 +27,15 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 | `dev/rules/` | rule packs loaded per task signal from `dev/RULE_PACKS.md` | per task, per pack-loading routing rule |
 | `dev/release-notes/` | GitHub release note source files for tagged APS releases | before creating or reviewing a GitHub release |
 | `dev/governance_migrations/<UTC>/` | kit upgrade backup + migration reports; one folder per `agent-handoff-kit upgrade` invocation | reference only; not for routine reads |
-| `dev/qc/evidence/` | local QC evidence artifacts such as screenshots, temporary Hub fixtures, and startup trace scripts; generated browser profiles are ignored | when checking a completed QC report's supporting evidence |
+| `dev/qc/evidence/` | local QC evidence artifacts such as screenshots, temporary Hub fixtures, startup trace scripts, and throw-away zero-knowledge flow folders; generated browser profiles are ignored | when checking a completed QC report's supporting evidence |
 | `docs/plans/` | APS design, MVP implementation plan, MVP verification report, Phase 4 implementation plan | before any APS-related task; before declaring MVP scope complete; before opening or executing Phase 4 |
 | `docs/index.html` | user-facing project entry page (Cantonese, hand-maintained); top-level nav links to guides hub and key plans | when explaining APS to a non-developer |
 | `docs/guides/` | user-facing teaching pages (HTML); guides hub at `docs/guides/index.html` lists current + planned walkthroughs | when onboarding a user to APS or adding a new teaching page |
 | `tools/` | APS onboarding helper script (and future tooling); `tools/aps-onboard.ps1` is the idempotent installer for Phase 4 plan T2-T5 | when onboarding a runtime to APS, or extending workspace tooling |
 | `examples/` | Demo Bridge Pack fixtures shipped 入 repo,讀者 clone 後即可揾到 source。`examples/demo-agent-a/dev/rules/aps-bridge.md` (User A 角色) + `examples/demo-agent-b/dev/rules/aps-bridge.md` (User B 角色) + `examples/README.md`;procedural body 完全相同,只 Identity 角色標註不同 | 設置教學 §6 step 2 / §7 之 source path;將來新加 fixture 時擴展 |
-| `bin/` | npm package executable entry; `bin/aps.js` exposes `aps`; current verified path is `npm install --save-dev @adamchanadam/aps` then `npx aps bridge-pack` (real `init` orchestration deferred) | when iterating on install / setup flow, or before npm publish |
-| `skills/` | APS skill source — `skills/aps/SKILL.md` 是 target orchestration spec, not current runtime guarantee;中文版 Section 1-8 已存在,`init` 仍 placeholder,未經 runtime testing | 設計或修改 skill 觸發詞、子流程 orchestration、voice 規矩之前 |
+| `bin/` | npm package executable entry; `bin/aps.js` exposes `aps`; current verified published path is `npm install --save-dev @adamchanadam/aps` then `npx aps bridge-pack`;local next change makes `init` install APS skill files for Claude Code / Codex, create initial Hub skeleton / Bridge Pack / starter pack when setup flags are supplied, and run a minimal CLI `publish` / `inbox` / `consume` / `close` round-trip | when iterating on install / setup flow, CLI packet flow, or before npm publish |
+| `skills/` | APS skill source — `skills/aps/SKILL.md` 是 target orchestration spec;`skills/aps/references/setup-dialogue.md` 是隨 npm package 出貨的 setup wording bank;local `init` copies this folder into supported AI tool skill directories. Setup and daily publish / inbox / consume / close are aligned to the local 0.2.0 candidate CLI, and isolated skill-level rehearsal plus throw-away zero-knowledge flow passed;real cross-machine Drive evidence remains pending | 設計或修改 skill 觸發詞、子流程 orchestration、voice 規矩之前 |
+| `resources/` | APS bundled runtime resources — `resources/protocol/PROTOCOL.md` and `resources/protocol/templates/*` are package sources used by `aps init` to create `_hub/PROTOCOL.md`, `_hub/CHANGELOG.md`, templates, ack files, lane skeletons, Bridge Pack, and starter pack | when changing protocol skeleton, Hub setup output, or package file list |
 | `package.json` | npm package manifest (`@adamchanadam/aps`, Apache-2.0, Node ≥18, bin entry `aps`) | when adjusting package metadata, version, or publish channel |
 | `README.md` | GitHub first-impression entry — zero-knowledge friendly 痛點 hook + pre-release boundary;separates current `bridge-pack` package path from target `npx aps init` experience | when shipping a Layer A change (entry framing / install command / status table) |
 | `LICENSE` | Apache License 2.0 (added via GitHub UI initial commit merge on 2026-05-22) | only when changing license (high-impact;needs Adam 拍板) |
@@ -46,14 +47,14 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 
 | Entry | Path | Notes |
 |---|---|---|
-| App entry | `bin/aps.js` (npm package CLI; 0.1.1 — `bridge-pack` functional, `init` placeholder, unknown path functional) | when iterating on install / setup orchestration |
+| App entry | `bin/aps.js` (npm package CLI; 0.1.1 published has `bridge-pack`;local 0.2.0 candidate has `init --target claude|codex|both` + `--dry-run` skill installer, `--hub-root --project --agent-id --other-agent-id --role` Hub skeleton setup, plus minimal `publish` / `inbox` / `consume` / `close` commands; unknown path functional) | when iterating on install / setup orchestration |
 | Main config | `AGENTS.md` (kit-managed core block) | always — defines startup read order and closeout contract |
 | Test suite | N/A — see Stack `Test command` for smoke test pattern | n/a |
 | Runbook | `docs/plans/2026-05-20-aps-mvp-implementation.md` | when re-executing the MVP plan or auditing what was done |
 | Public docs | `README.md` (GitHub first-impression) + `docs/index.html` (zero-knowledge entry page) | when introducing APS to a non-developer; first stop is README for repo visitors, then docs/index.html for hosted entry |
 | Build roadmap | `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` (Stage 0-7 funnel + Layer A/B/C/D + 6-phase phase order) | when planning next build phase or auditing repo progress against zero-knowledge user vision |
 | APS consistency audit | `dev/qc/2026-05-25-aps-full-consistency-audit.md` | when checking public promise drift across README / docs HTML / CLI / skill / Bridge Pack fixtures before continuing APS feature work |
-| APS full audit | `dev/qc/2026-05-25-aps-full-audit.md` | when checking whether APS can be treated as fully verified before cross-workspace work, protocol promotion, public release, or new-agent introduction |
+| APS full audit | `dev/qc/2026-05-26-aps-full-audit.md` (latest 0.2.0 candidate release-prep audit); historical prior report at `dev/qc/2026-05-25-aps-full-audit.md` | when checking whether APS can be treated as fully verified before cross-workspace work, protocol promotion, public release, or new-agent introduction |
 
 ## Fact Base
 
@@ -71,9 +72,10 @@ Reachable means the source can be found. It does not mean the source has been re
 | `dev/qc/triggers.md` | QC trigger vocabulary SSOT — 三 tier 定義 + 嵌套規矩 + 反問規矩 + 既有 mechanism mapping | any QC trigger invocation; designing new QC checks; resolving QC scope ambiguity | local path | 2026-05-21 |
 | `docs/qc/governance-map.html` | user-facing QC reference card (mirrors SSOT for visual reading); shared site-nav across docs/ pages | explaining QC tier system to humans; onboarding new contributors to the QC discipline | local path | 2026-05-21 |
 | `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` | Funnel-first audit — Stage 0-7 friction map + Layer A/B/C/D classification + 6-phase build roadmap + open questions + risks. SSOT for the zero-knowledge user vision pivot (2026-05-22 S9) | planning next build phase; auditing repo progress against zero-knowledge user vision; understanding Layer 分類 嘅 deliverable map | local path | 2026-05-22 |
-| `docs/plans/2026-05-23-aps-skill-dialogue-script.md` | APS skill dialogue companion — `skills/aps/SKILL.md` 之 wording bank reference;Setup / 發佈 / 收件 / 補救 4 子流程 sample dialogue(中文版 land,英文版 defer);概念 inject 順序圖 + 語氣指南(做與不做) | 設計或修改 skill 觸發後對用戶之 voice / 對話順序 / 概念解釋之前 | local path | 2026-05-23 |
+| `docs/plans/2026-05-23-aps-skill-dialogue-script.md` | APS skill dialogue companion — `skills/aps/SKILL.md` 之 wording bank reference;Setup / 發佈 / 收件 / 補救 4 子流程 sample dialogue now aligned to the local 0.2.0 candidate CLI packet folder / outbox / ack model(中文版 land,英文版 defer);概念 inject 順序圖 + 語氣指南(做與不做) | 設計或修改 skill 觸發後對用戶之 voice / 對話順序 / 概念解釋之前 | local path | 2026-05-26 |
 | `dev/qc/2026-05-25-aps-full-consistency-audit.md` | APS product consistency audit — root-fix record for public promise drift across README / docs HTML / CLI / skill / dialogue script / Bridge Pack fixtures | before continuing APS feature work after public entry, CLI, or skill promise changes | local path | 2026-05-25 |
-| `dev/qc/2026-05-25-aps-full-audit.md` | APS full audit report — records which full-check items passed, which remain unverified, and why the result is not yet a complete pass | before cross-workspace work, protocol promotion, public release, or new-agent introduction | local path | 2026-05-25 |
+| `dev/qc/2026-05-26-aps-full-audit.md` | Latest APS full audit report for the local 0.2.0 candidate — records release-prep checks, same-machine regression, cross-workspace read-only audit, accepted cross-machine Drive risk, and the remaining commit-before-publish gate | before committing, pushing, releasing, or publishing 0.2.0 | local path | 2026-05-26 |
+| `dev/qc/2026-05-25-aps-full-audit.md` | Historical APS full audit report — records which full-check items passed, which remained unverified at that time, and why the result was not yet a complete pass | historical reference | local path | 2026-05-25 |
 | `README.md` | GitHub repo first-impression entry — zero-knowledge friendly 痛點 hook + pre-release boundary + current vs target experience split + deep-dive references | first stop for any visitor to the GitHub repo; Layer A primary deliverable | local path + https://github.com/Adamchanadam/ai-public-squares#readme | 2026-05-25 |
 
 ## External Sources
@@ -141,7 +143,7 @@ Reachable means the source can be found. It does not mean the source has been re
 | Check | Command | Run before | Last verified |
 |---|---|---|---|
 | Agent Handoff Kit doctor | `node C:\Users\adam\_claude_desktop\_Prompt_Template\ai-session-governance_v2\bin\agent-handoff-kit.mjs doctor --root <path>` (local v0.3.11 CLI;avoids fresh npm execution) | every closeout, every governance file change, before declaring an `upgrade` complete per AGENTS.md §2.1 | 2026-05-26 (main root rechecked after prompt regeneration;demo Adam and demo Jay passed 46/46) |
-| npm CLI smoke test | `node bin/aps.js --help`; `node bin/aps.js init`; `node bin/aps.js bridge-pack --role B`; `node bin/aps.js bogus` | every time `bin/aps.js` changes, before committing the change | 2026-05-25 (4 paths pass; `bogus` correctly exits 1) |
+| npm CLI smoke test | `node bin/aps.js --help`; `node bin/aps.js init --dry-run`; `node bin/aps.js bridge-pack --role B`; disposable Hub `publish` → `inbox` → `consume` → reply → `close`; throw-away zero-knowledge tarball install flow; `node bin/aps.js bogus` | every time `bin/aps.js` changes, before committing the change | 2026-05-26 (source path, packed-tarball path, isolated skill-level rehearsal, local package smoke checks, throw-away zero-knowledge flow, formal 🟡 外發前檢, and 🔴 全面檢 evidence pass; release still requires report commit and Adam's explicit commit / push / publish instruction) |
 | Project governance check | N/A — kit doctor covers handoff / log / index / registry health; APS-specific governance is encoded in `docs/plans/2026-05-20-agent-public-square-design.md` and Hub `_hub/PROTOCOL.md` (no runnable script) | reference, not a runnable check | 2026-05-21 |
 
 ## Workspace Identity
@@ -155,7 +157,7 @@ Record this at closeout so the next AI can detect wrong-root or workspace drift.
 | Branch / commit | `main` / latest pushed `838d85a` (`release: 發佈 AI Public Squares v0.1.1`);tag `v0.1.1` pushed | 2026-05-26 |
 | Worktree or parallel workspace | none from this workspace; siblings `Demo_Agent_{Adam,Jay}_Public_Squares` are independent stores and both pass v0.3.11 doctor, but each has its own uncommitted governance upgrade files; GitHub Pages enabled at `https://adamchanadam.github.io/ai-public-squares/` | 2026-05-26 |
 | Execution environment note | `C:\tmp` is not writable in the current Codex desktop execution environment. For temporary evidence or QC artifacts, use a project-local path such as `dev/qc/evidence/<date>-<scope>/` unless the user explicitly authorizes another writable location. | 2026-05-25 |
-| Uncommitted change summary | Current wrap-up updates governance continuity only: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/PROJECT_INDEX.md`, and regenerated `START_NEXT_SESSION_PROMPT.txt`;not yet committed unless Adam requests it | 2026-05-26 |
+| Uncommitted change summary | Current local 0.2.0 candidate changes and continuity updates remain uncommitted;throw-away zero-knowledge evidence lives under `dev/qc/evidence/2026-05-26-zero-knowledge-flow/`;`adamchanadam-aps-0.2.0.tgz` was generated by `npm pack` in the repo root and should not be committed unless Adam explicitly wants to keep a tarball artifact | 2026-05-26 |
 
 ## Change Hotspots
 

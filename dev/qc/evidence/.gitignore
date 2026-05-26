@@ -4,3 +4,10 @@
 install-probe-*/
 npx-cache-*/
 npm-exec-cache-*/
+*-installer-smoke/
+2026-05-26-roundtrip-cli-*/
+2026-05-26-skill-rehearsal-*/
+2026-05-26-zero-knowledge-flow/
+2026-05-26-release-check-html/
+2026-05-26-full-check-regression*/
+2026-05-26-real-drive-cross-machine/

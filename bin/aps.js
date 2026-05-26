@@ -3,8 +3,8 @@
  * APS — AI Public Squares
  * Bootstrap CLI for setting up cross-machine AI agent collaboration.
  *
- * Status: bridge-pack fixture provision available;
- * full `init` orchestration (Phase X-2) still in progress.
+ * Status: bridge-pack fixture provision, skill install, Hub skeleton setup,
+ * and local publish / inbox / consume / close smoke flow are available.
  *
  * Roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md in repo.
  */
@@ -13,6 +13,406 @@ const path = require('path');
 const fs = require('fs');
 
 const subcommand = process.argv[2];
+const args = process.argv.slice(3);
+
+function hasFlag(name) {
+  return args.includes(name);
+}
+
+function getFlagValue(name, fallback) {
+  const index = process.argv.indexOf(name);
+  if (index < 0 || !process.argv[index + 1]) return fallback;
+  return process.argv[index + 1];
+}
+
+function getRequiredFlagValue(name) {
+  const value = getFlagValue(name, null);
+  return value && !value.startsWith('--') ? value : null;
+}
+
+function homeDir() {
+  return process.env.HOME || process.env.USERPROFILE || null;
+}
+
+function copyDirectory(sourceDir, targetDir) {
+  fs.mkdirSync(targetDir, { recursive: true });
+  for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
+    const sourcePath = path.join(sourceDir, entry.name);
+    const targetPath = path.join(targetDir, entry.name);
+    if (entry.isDirectory()) {
+      copyDirectory(sourcePath, targetPath);
+    } else if (entry.isFile()) {
+      fs.copyFileSync(sourcePath, targetPath);
+    }
+  }
+}
+
+function writeFileIfMissing(filePath, content, dryRun) {
+  if (fs.existsSync(filePath)) {
+    return { ok: false, skipped: true, path: filePath, message: `exists; not overwriting (${filePath})` };
+  }
+  if (!dryRun) {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, content, 'utf8');
+  }
+  return { ok: true, skipped: false, path: filePath, message: dryRun ? `would write ${filePath}` : `wrote ${filePath}` };
+}
+
+function ensureDirectory(dirPath, dryRun) {
+  if (!dryRun) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+  return { ok: true, path: dirPath, message: dryRun ? `would create ${dirPath}` : `created ${dirPath}` };
+}
+
+function installSkill({ label, targetDir, dryRun }) {
+  const sourceDir = path.join(__dirname, '..', 'skills', 'aps');
+  if (!fs.existsSync(path.join(sourceDir, 'SKILL.md'))) {
+    return {
+      ok: false,
+      label,
+      targetDir,
+      message: `source skill not found at ${sourceDir}`,
+    };
+  }
+  if (fs.existsSync(targetDir)) {
+    return {
+      ok: false,
+      skipped: true,
+      label,
+      targetDir,
+      message: `target already exists; not overwriting (${targetDir})`,
+    };
+  }
+  if (!dryRun) {
+    try {
+      copyDirectory(sourceDir, targetDir);
+    } catch (err) {
+      return {
+        ok: false,
+        label,
+        targetDir,
+        message: `failed to install to ${targetDir}: ${err.message}`,
+      };
+    }
+  }
+  return {
+    ok: true,
+    label,
+    targetDir,
+    message: dryRun ? `would install to ${targetDir}` : `installed to ${targetDir}`,
+  };
+}
+
+function validateSnakeCase(label, value) {
+  if (!/^[a-z][a-z0-9_]{0,29}$/.test(value)) {
+    return `${label} must be lowercase snake_case, start with a letter, and be 1-30 characters. Got '${value}'.`;
+  }
+  return null;
+}
+
+function packetTimestamp(date = new Date()) {
+  return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+}
+
+function isoNow() {
+  return new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+}
+
+function validateTopic(topic) {
+  if (!/^[a-z][a-z0-9_]{0,39}$/.test(topic)) {
+    return `--topic must be lower_snake, start with a letter, and be 1-40 characters. Got '${topic}'.`;
+  }
+  return null;
+}
+
+function validatePacketId(packetId) {
+  if (!/^\d{8}T\d{6}Z__[a-z][a-z0-9_]{0,39}$/.test(packetId)) {
+    return `--packet-id must look like <UTC-yyyymmddThhmmssZ>__<short_snake_topic>. Got '${packetId}'.`;
+  }
+  return null;
+}
+
+function requireFlags(names) {
+  const missing = names.filter((name) => !getRequiredFlagValue(name));
+  if (missing.length > 0) {
+    console.error(`Missing required flags: ${missing.join(', ')}`);
+    process.exit(1);
+  }
+}
+
+function projectDir(hubRoot, projectSlug) {
+  return path.join(hubRoot, projectSlug);
+}
+
+function readJson(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function writeJson(filePath, value) {
+  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
+
+function appendLine(filePath, line) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.appendFileSync(filePath, `${line}\n`, 'utf8');
+}
+
+function ensureExistingFile(filePath, label) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`${label} not found: ${filePath}. Run \`aps init --hub-root ...\` first, or check the path and project slug.`);
+  }
+}
+
+function yamlDoubleQuote(value) {
+  return String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
+function parseOutboxLine(line) {
+  if (!line.trim() || line.trim().startsWith('<!--') || line.trim().startsWith('#')) return null;
+  const parts = line.split('|').map((part) => part.trim());
+  if (parts.length < 3) return null;
+  const packetVersion = parts[2].match(/^(.+)\s+v(\d+)$/);
+  if (!packetVersion) return null;
+  const kv = {};
+  for (const part of parts.slice(3)) {
+    const index = part.indexOf(':');
+    if (index > 0) kv[part.slice(0, index)] = part.slice(index + 1);
+  }
+  return {
+    at: parts[0],
+    verb: parts[1],
+    packetId: packetVersion[1],
+    version: Number(packetVersion[2]),
+    kv,
+  };
+}
+
+function readOutboxEvents(outboxPath) {
+  if (!fs.existsSync(outboxPath)) return [];
+  return fs.readFileSync(outboxPath, 'utf8')
+    .split(/\r?\n/)
+    .map(parseOutboxLine)
+    .filter(Boolean);
+}
+
+function readPacketSummary(hubRoot, projectSlug, senderId, packetId, version) {
+  const packetPath = path.join(projectDir(hubRoot, projectSlug), `from_${senderId}`, 'packets', `${packetId}__v${version}`, 'packet.md');
+  if (!fs.existsSync(packetPath)) {
+    return { packetPath, scope: '(packet.md not found)', items: [] };
+  }
+  const text = fs.readFileSync(packetPath, 'utf8');
+  const scopeMatch = text.match(/^scope:\s*"?(.+?)"?\s*$/m);
+  const itemMatches = [...text.matchAll(/^\s*-\s+id:\s*(.+?)\s*$/gm)].map((match) => match[1].trim());
+  return {
+    packetPath,
+    scope: scopeMatch ? scopeMatch[1] : '(scope not found)',
+    items: itemMatches,
+  };
+}
+
+function pendingPackets({ hubRoot, projectSlug, agentId, otherAgentId }) {
+  const outboxPath = path.join(projectDir(hubRoot, projectSlug), `from_${otherAgentId}`, 'outbox.log.md');
+  const ackPath = path.join(projectDir(hubRoot, projectSlug), '_ack', `${agentId}.ack.json`);
+  const ack = fs.existsSync(ackPath) ? readJson(ackPath) : { consumed: [] };
+  const consumed = new Set((ack.consumed || []).map((entry) => `${entry.packet_id}::${entry.version}`));
+  const groups = new Map();
+  for (const event of readOutboxEvents(outboxPath)) {
+    if (!groups.has(event.packetId)) groups.set(event.packetId, []);
+    groups.get(event.packetId).push(event);
+  }
+  const pending = [];
+  for (const [packetId, events] of groups.entries()) {
+    if (events.some((event) => event.verb === 'close')) continue;
+    const candidates = events.filter((event) => event.verb === 'publish' || event.verb === 'revise');
+    if (candidates.length === 0) continue;
+    candidates.sort((a, b) => b.version - a.version);
+    const latest = candidates[0];
+    const withdrawn = events.some((event) => event.verb === 'withdraw' && event.version === latest.version);
+    if (withdrawn) continue;
+    if (consumed.has(`${packetId}::${latest.version}`)) continue;
+    pending.push({
+      packetId,
+      version: latest.version,
+      event: latest,
+      ...readPacketSummary(hubRoot, projectSlug, otherAgentId, packetId, latest.version),
+    });
+  }
+  return pending;
+}
+
+function writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level }) {
+  const now = isoNow();
+  const packetId = `${packetTimestamp()}__${topic}`;
+  const outboxPath = path.join(projectDir(hubRoot, projectSlug), `from_${fromId}`, 'outbox.log.md');
+  ensureExistingFile(outboxPath, `from_${fromId} outbox`);
+  const packetDir = path.join(projectDir(hubRoot, projectSlug), `from_${fromId}`, 'packets', `${packetId}__v1`);
+  if (fs.existsSync(packetDir)) {
+    throw new Error(`packet folder already exists: ${packetDir}`);
+  }
+  fs.mkdirSync(packetDir, { recursive: true });
+  const scope = yamlDoubleQuote(body.split(/\r?\n/)[0].slice(0, 120) || topic);
+  const packetMd = `---\npacket_id: ${packetId}\nversion: 1\nfrom: ${fromId}\nto: ${toId}\nproject: ${projectSlug}\nlevel: ${level}\nsupersedes: null\ncreated_at: ${now}\nssot_refs: []\nscope: \"${scope}\"\nitems: []\n---\n\n# ${topic}\n\n${body}\n`;
+  fs.writeFileSync(path.join(packetDir, 'packet.md'), packetMd, 'utf8');
+  appendLine(outboxPath, `${now} | publish | ${packetId} v1 | to:${toId} | items:none`);
+  return { packetId, version: 1, packetDir };
+}
+
+function consumePacket({ hubRoot, projectSlug, agentId, packetId, version, result }) {
+  const ackPath = path.join(projectDir(hubRoot, projectSlug), '_ack', `${agentId}.ack.json`);
+  if (!fs.existsSync(ackPath)) {
+    throw new Error(`ack file not found: ${ackPath}`);
+  }
+  const ack = readJson(ackPath);
+  ack.consumed = ack.consumed || [];
+  const already = ack.consumed.some((entry) => entry.packet_id === packetId && Number(entry.version) === Number(version));
+  if (!already) {
+    ack.consumed.push({
+      packet_id: packetId,
+      version: Number(version),
+      at: isoNow(),
+      result,
+    });
+    writeJson(ackPath, ack);
+  }
+  return { ackPath, already };
+}
+
+function closePacket({ hubRoot, projectSlug, agentId, packetId, reason }) {
+  const outboxPath = path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'outbox.log.md');
+  ensureExistingFile(outboxPath, `from_${agentId} outbox`);
+  const events = readOutboxEvents(outboxPath).filter((event) => event.packetId === packetId);
+  if (events.length === 0) {
+    throw new Error(`packet ${packetId} was not found in from_${agentId}/outbox.log.md`);
+  }
+  if (events.some((event) => event.verb === 'close')) {
+    throw new Error(`packet ${packetId} is already closed in from_${agentId}/outbox.log.md`);
+  }
+  const candidates = events.filter((event) => event.verb === 'publish' || event.verb === 'revise');
+  if (candidates.length === 0) {
+    throw new Error(`packet ${packetId} has no publish or revise event in from_${agentId}/outbox.log.md`);
+  }
+  candidates.sort((a, b) => b.version - a.version);
+  const version = candidates[0].version;
+  appendLine(outboxPath, `${isoNow()} | close | ${packetId} v${version} | reason:${reason}`);
+  return { outboxPath, version };
+}
+
+function bridgePackContent(role, values) {
+  const fixtureDir = role === 'B' ? 'demo-agent-b' : 'demo-agent-a';
+  const fixturePath = path.join(__dirname, '..', 'examples', fixtureDir, 'dev', 'rules', 'aps-bridge.md');
+  let content = fs.readFileSync(fixturePath, 'utf8');
+  content = content.replace(/`<your_agent_id>`/g, `\`${values.agentId}\``);
+  content = content.replace(/`<your_project_slug>`/g, `\`${values.projectSlug}\``);
+  content = content.replace(/`<your_Drive_AI_Public_Squares_absolute_path>`/g, `\`${values.hubRoot}\``);
+  content = content.replace(/`<counterpart_agent_id>`/g, `\`${values.otherAgentId}\``);
+  return content;
+}
+
+function ackJson(agentId, projectSlug) {
+  return `${JSON.stringify({
+    agent: agentId,
+    project: projectSlug,
+    consumed: [],
+    open_questions: [],
+  }, null, 2)}\n`;
+}
+
+function packetsReadme(agentId) {
+  return `# from_${agentId} packets
+
+This directory holds immutable packet folders authored by agent \`${agentId}\`.
+Each packet folder is named \`<UTC-yyyymmddThhmmssZ>__<short_snake_topic>__v<N>/\`.
+After publish, packets are never edited. Revisions add a new \`__v<N+1>/\` folder.
+
+See \`<hub_root>/_hub/PROTOCOL.md\`.
+`;
+}
+
+function starterPackContent(values, counterpartRole) {
+  return `# APS Starter Pack for ${values.otherAgentId}
+
+This starter pack was generated by \`aps init\`.
+
+## Shared Decisions
+
+- project_slug: \`${values.projectSlug}\`
+- your agent_id: \`${values.otherAgentId}\`
+- counterpart agent_id: \`${values.agentId}\`
+- your role: \`${counterpartRole}\`
+- Hub root on your machine: replace this with your own Google Drive path
+
+## Install
+
+\`\`\`powershell
+npm install --save-dev @adamchanadam/aps
+npx aps init --target both --hub-root "<your Drive AI_Public_Squares path>" --project ${values.projectSlug} --agent-id ${values.otherAgentId} --other-agent-id ${values.agentId} --role ${counterpartRole}
+\`\`\`
+
+After install, restart Claude Code or Codex if the APS skill does not appear immediately.
+
+## Manual Bridge Pack Fallback
+
+If you only need the Bridge Pack:
+
+\`\`\`powershell
+npx aps bridge-pack --role ${counterpartRole} > dev/rules/aps-bridge.md
+\`\`\`
+
+## Daily Trigger
+
+When the other side tells you there is new traffic, open your AI tool and say:
+
+> check Hub
+`;
+}
+
+function setupHub(values, dryRun) {
+  const resourcesDir = path.join(__dirname, '..', 'resources', 'protocol');
+  const templatesDir = path.join(resourcesDir, 'templates');
+  const projectDir = path.join(values.hubRoot, values.projectSlug);
+  const steps = [];
+
+  for (const dirPath of [
+    path.join(values.hubRoot, '_hub'),
+    path.join(values.hubRoot, '_hub', 'templates'),
+    path.join(projectDir, `from_${values.agentId}`, 'packets'),
+    path.join(projectDir, `from_${values.otherAgentId}`, 'packets'),
+    path.join(projectDir, '_ack'),
+  ]) {
+    steps.push(ensureDirectory(dirPath, dryRun));
+  }
+
+  const protocolSource = path.join(resourcesDir, 'PROTOCOL.md');
+  const protocolTarget = path.join(values.hubRoot, '_hub', 'PROTOCOL.md');
+  steps.push(writeFileIfMissing(protocolTarget, fs.readFileSync(protocolSource, 'utf8'), dryRun));
+
+  const changelogTarget = path.join(values.hubRoot, '_hub', 'CHANGELOG.md');
+  steps.push(writeFileIfMissing(changelogTarget, '# APS Protocol Changelog\n\n- v1.0: Initial protocol bundled with `@adamchanadam/aps`.\n', dryRun));
+
+  for (const templateName of ['packet.md.template', 'outbox.log.md.template', 'ack.json.template', 'ack.json.example']) {
+    const source = path.join(templatesDir, templateName);
+    const target = path.join(values.hubRoot, '_hub', 'templates', templateName);
+    steps.push(writeFileIfMissing(target, fs.readFileSync(source, 'utf8'), dryRun));
+  }
+
+  const outboxTemplate = fs.readFileSync(path.join(templatesDir, 'outbox.log.md.template'), 'utf8');
+  steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.agentId}`, 'outbox.log.md'), outboxTemplate, dryRun));
+  steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.otherAgentId}`, 'outbox.log.md'), outboxTemplate, dryRun));
+  steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.agentId}`, 'packets', 'README.md'), packetsReadme(values.agentId), dryRun));
+  steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.otherAgentId}`, 'packets', 'README.md'), packetsReadme(values.otherAgentId), dryRun));
+  steps.push(writeFileIfMissing(path.join(projectDir, '_ack', `${values.agentId}.ack.json`), ackJson(values.agentId, values.projectSlug), dryRun));
+  steps.push(writeFileIfMissing(path.join(projectDir, '_ack', `${values.otherAgentId}.ack.json`), ackJson(values.otherAgentId, values.projectSlug), dryRun));
+
+  const bridgeTarget = path.join(process.cwd(), 'dev', 'rules', 'aps-bridge.md');
+  steps.push(writeFileIfMissing(bridgeTarget, bridgePackContent(values.role, values), dryRun));
+
+  const counterpartRole = values.role === 'A' ? 'B' : 'A';
+  const starterTarget = path.join(values.hubRoot, '_hub', `starter-pack-${values.otherAgentId}.md`);
+  steps.push(writeFileIfMissing(starterTarget, starterPackContent(values, counterpartRole), dryRun));
+
+  return steps;
+}
 
 if (!subcommand || subcommand === '--help' || subcommand === '-h') {
   console.log(`
@@ -20,7 +420,20 @@ APS — AI Public Squares
 Two-machine AI agent collaboration via a shared Google Drive folder.
 
 Usage:
-  npx aps init                    Set up APS in current workspace (placeholder)
+  npx aps init                    Install APS skill for Claude Code and Codex
+  npx aps init --target claude    Install APS skill for Claude Code only
+  npx aps init --target codex     Install APS skill for Codex only
+  npx aps init --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
+                                  Install skill and create APS Hub skeleton
+  npx aps init --dry-run          Show planned install paths without writing
+  npx aps publish --hub-root <path> --project <slug> --from <id> --to <id> --topic <snake> --body <text>
+                                  Publish a v1 packet and append outbox
+  npx aps inbox --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id>
+                                  List pending packets from the other agent
+  npx aps consume --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --version <n> --result <text>
+                                  Mark a packet consumed in my ack file
+  npx aps close --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --reason <text>
+                                  Append a close event to my outbox
   npx aps bridge-pack             Print Bridge Pack fixture (User A default)
   npx aps bridge-pack --role B    Print Bridge Pack fixture for User B role
   npx aps --help                  Show this help
@@ -32,34 +445,122 @@ Bridge Pack location, e.g.:
 Local source test:
   node bin/aps.js bridge-pack > dev/rules/aps-bridge.md
 
-Status: bridge-pack is available. Full \`init\` orchestration is still coming.
+Status: bridge-pack, skill install, initial Hub setup, and a minimal
+publish / inbox / consume / close flow are available. This pre-release has one
+Adam/Jay Google Drive round-trip verification, but each real project still
+needs its own project-specific verification.
 Repo: https://github.com/Adamchanadam/ai-public-squares
 `);
   process.exit(0);
 }
 
 if (subcommand === 'init') {
-  console.log(`
-APS init — coming soon (full orchestration in Phase X-2).
+  const validTargets = ['claude', 'codex', 'both'];
+  const target = getFlagValue('--target', 'both').toLowerCase();
+  const dryRun = hasFlag('--dry-run');
+  const setupValues = {
+    hubRoot: getRequiredFlagValue('--hub-root'),
+    projectSlug: getRequiredFlagValue('--project'),
+    agentId: getRequiredFlagValue('--agent-id'),
+    otherAgentId: getRequiredFlagValue('--other-agent-id'),
+    role: (getFlagValue('--role', '') || '').toUpperCase(),
+  };
+  const setupFlags = [setupValues.hubRoot, setupValues.projectSlug, setupValues.agentId, setupValues.otherAgentId, setupValues.role].filter(Boolean);
+  if (!validTargets.includes(target)) {
+    console.error(`Invalid --target value: must be claude, codex, or both (got '${target}').`);
+    process.exit(1);
+  }
+  if (setupFlags.length > 0 && setupFlags.length < 5) {
+    console.error('Hub setup requires all flags: --hub-root, --project, --agent-id, --other-agent-id, and --role A|B.');
+    process.exit(1);
+  }
+  if (setupFlags.length === 5) {
+    const errors = [
+      validateSnakeCase('--project', setupValues.projectSlug),
+      validateSnakeCase('--agent-id', setupValues.agentId),
+      validateSnakeCase('--other-agent-id', setupValues.otherAgentId),
+      setupValues.role === 'A' || setupValues.role === 'B' ? null : `--role must be A or B (got '${setupValues.role}').`,
+    ].filter(Boolean);
+    if (errors.length > 0) {
+      for (const error of errors) console.error(error);
+      process.exit(1);
+    }
+  }
 
-The full \`init\` command will:
-  1. Detect your Claude Code installation.
-  2. Install the APS skill into .claude/skills/aps/.
-  3. Greet you with a setup conversation (Cantonese or English).
-  4. Walk you through your shared Drive folder, project name,
-     and partner-machine onboarding starter pack.
+  const root = homeDir();
+  if (!root) {
+    console.error('Could not detect your home directory. Set HOME or USERPROFILE, then rerun `npx aps init`.');
+    process.exit(1);
+  }
 
-For now:
-  - Install the package with \`npm install --save-dev @adamchanadam/aps\`.
-  - Use \`npx aps bridge-pack\` to get the Bridge Pack fixture.
-  - Maintainers can also run \`node bin/aps.js bridge-pack\` inside this repo.
-  - See the manual setup walkthrough at:
-    https://github.com/Adamchanadam/ai-public-squares/blob/main/docs/guides/aps-onboarding-walkthrough.html
+  const installTargets = [];
+  if (target === 'claude' || target === 'both') {
+    installTargets.push({
+      label: 'Claude Code',
+      targetDir: path.join(root, '.claude', 'skills', 'aps'),
+    });
+  }
+  if (target === 'codex' || target === 'both') {
+    installTargets.push({
+      label: 'Codex',
+      targetDir: path.join(root, '.codex', 'skills', 'aps'),
+    });
+  }
 
-Build status + roadmap:
-  https://github.com/Adamchanadam/ai-public-squares/blob/main/dev/qc/2026-05-22-zero-knowledge-funnel-audit.md
-`);
-  process.exit(0);
+  console.log(`APS init — skill installer${setupFlags.length === 5 ? ' + Hub setup' : ''}${dryRun ? ' (dry run)' : ''}`);
+  console.log('');
+  console.log('This command installs the APS skill files for AI tools.');
+  if (setupFlags.length === 5) {
+    console.log('It also creates the initial APS Hub skeleton and local Bridge Pack.');
+    console.log('Minimal CLI publish / inbox / consume / close commands are available for local smoke tests.');
+    console.log('Natural-language daily use remains pending; each real project still needs its own Google Drive verification.');
+  } else {
+    console.log('Provide --hub-root, --project, --agent-id, --other-agent-id, and --role to create the Hub skeleton.');
+  }
+  console.log('');
+
+  const results = installTargets.map((item) => installSkill({ ...item, dryRun }));
+  for (const result of results) {
+    const prefix = result.ok ? 'ok' : result.skipped ? 'skip' : 'fail';
+    console.log(`${prefix}  ${result.label}: ${result.message}`);
+  }
+
+  const failed = results.filter((result) => !result.ok && !result.skipped);
+  const setupResults = [];
+  if (setupFlags.length === 5) {
+    console.log('');
+    console.log('Hub setup:');
+    try {
+      setupResults.push(...setupHub(setupValues, dryRun));
+      for (const result of setupResults) {
+        const prefix = result.skipped ? 'skip' : 'ok';
+        console.log(`${prefix}  ${result.message}`);
+      }
+    } catch (err) {
+      console.error(`Hub setup failed: ${err.message}`);
+      process.exit(1);
+    }
+  }
+  console.log('');
+  const skipped = [
+    ...results.filter((result) => result.skipped),
+    ...setupResults.filter((result) => result.skipped),
+  ];
+  if (failed.length > 0) {
+    console.log('Install failed for one or more required targets. Existing files were left untouched where possible.');
+  } else if (skipped.length > 0) {
+    console.log('Install complete with safe skips. Existing files were left untouched.');
+    console.log('To refresh an existing install, remove or rename the existing target first, then rerun this command.');
+  } else if (dryRun) {
+    console.log('Dry run complete. Rerun without `--dry-run` to install.');
+  } else {
+    console.log('Install complete. Restart Claude Code or Codex if the skill does not appear immediately.');
+    console.log('Next: open your AI tool and say "set up APS" or "教我用 APS".');
+  }
+  console.log('');
+  console.log('Manual Bridge Pack fallback remains available:');
+  console.log('  npx aps bridge-pack > dev/rules/aps-bridge.md');
+  process.exit(failed.length > 0 ? 1 : 0);
 }
 
 if (subcommand === 'bridge-pack') {
@@ -78,6 +579,124 @@ if (subcommand === 'bridge-pack') {
     process.exit(0);
   } catch (err) {
     console.error(`Failed to read Bridge Pack fixture at ${fixturePath}: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+if (subcommand === 'publish') {
+  requireFlags(['--hub-root', '--project', '--from', '--to', '--topic', '--body']);
+  const hubRoot = getRequiredFlagValue('--hub-root');
+  const projectSlug = getRequiredFlagValue('--project');
+  const fromId = getRequiredFlagValue('--from');
+  const toId = getRequiredFlagValue('--to');
+  const topic = getRequiredFlagValue('--topic');
+  const body = getRequiredFlagValue('--body');
+  const level = getFlagValue('--level', 'L2-handoff');
+  const errors = [
+    validateSnakeCase('--project', projectSlug),
+    validateSnakeCase('--from', fromId),
+    validateSnakeCase('--to', toId),
+    validateTopic(topic),
+  ].filter(Boolean);
+  if (errors.length > 0) {
+    for (const error of errors) console.error(error);
+    process.exit(1);
+  }
+  try {
+    const result = writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level });
+    console.log(`Published ${result.packetId} v${result.version}`);
+    console.log(result.packetDir);
+    process.exit(0);
+  } catch (err) {
+    console.error(`Publish failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+if (subcommand === 'inbox') {
+  requireFlags(['--hub-root', '--project', '--agent-id', '--other-agent-id']);
+  const hubRoot = getRequiredFlagValue('--hub-root');
+  const projectSlug = getRequiredFlagValue('--project');
+  const agentId = getRequiredFlagValue('--agent-id');
+  const otherAgentId = getRequiredFlagValue('--other-agent-id');
+  const errors = [
+    validateSnakeCase('--project', projectSlug),
+    validateSnakeCase('--agent-id', agentId),
+    validateSnakeCase('--other-agent-id', otherAgentId),
+  ].filter(Boolean);
+  if (errors.length > 0) {
+    for (const error of errors) console.error(error);
+    process.exit(1);
+  }
+  try {
+    const pending = pendingPackets({ hubRoot, projectSlug, agentId, otherAgentId });
+    if (pending.length === 0) {
+      console.log(`APS Hub: no pending items for ${agentId}`);
+    } else {
+      console.log(`APS Hub: ${pending.length} pending item(s) for ${agentId}`);
+      for (const item of pending) {
+        console.log(`- ${item.packetId} v${item.version} | scope:${item.scope} | items:${item.items.join(',') || '(none)'}`);
+      }
+    }
+    process.exit(0);
+  } catch (err) {
+    console.error(`Inbox failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+if (subcommand === 'consume') {
+  requireFlags(['--hub-root', '--project', '--agent-id', '--packet-id', '--version', '--result']);
+  const hubRoot = getRequiredFlagValue('--hub-root');
+  const projectSlug = getRequiredFlagValue('--project');
+  const agentId = getRequiredFlagValue('--agent-id');
+  const packetId = getRequiredFlagValue('--packet-id');
+  const version = Number(getRequiredFlagValue('--version'));
+  const result = getRequiredFlagValue('--result');
+  const errors = [
+    validateSnakeCase('--project', projectSlug),
+    validateSnakeCase('--agent-id', agentId),
+    validatePacketId(packetId),
+    Number.isInteger(version) && version >= 1 ? null : '--version must be an integer >= 1.',
+  ].filter(Boolean);
+  if (errors.length > 0) {
+    for (const error of errors) console.error(error);
+    process.exit(1);
+  }
+  try {
+    const output = consumePacket({ hubRoot, projectSlug, agentId, packetId, version, result });
+    console.log(output.already ? `Already consumed ${packetId} v${version}` : `Consumed ${packetId} v${version}`);
+    console.log(output.ackPath);
+    process.exit(0);
+  } catch (err) {
+    console.error(`Consume failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+if (subcommand === 'close') {
+  requireFlags(['--hub-root', '--project', '--agent-id', '--packet-id', '--reason']);
+  const hubRoot = getRequiredFlagValue('--hub-root');
+  const projectSlug = getRequiredFlagValue('--project');
+  const agentId = getRequiredFlagValue('--agent-id');
+  const packetId = getRequiredFlagValue('--packet-id');
+  const reason = getRequiredFlagValue('--reason');
+  const errors = [
+    validateSnakeCase('--project', projectSlug),
+    validateSnakeCase('--agent-id', agentId),
+    validatePacketId(packetId),
+  ].filter(Boolean);
+  if (errors.length > 0) {
+    for (const error of errors) console.error(error);
+    process.exit(1);
+  }
+  try {
+    const output = closePacket({ hubRoot, projectSlug, agentId, packetId, reason });
+    console.log(`Closed ${packetId} v${output.version}`);
+    console.log(output.outboxPath);
+    process.exit(0);
+  } catch (err) {
+    console.error(`Close failed: ${err.message}`);
     process.exit(1);
   }
 }

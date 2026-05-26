@@ -2,7 +2,7 @@
 
 > **⚠️ 前期測試階段(pre-release)**
 >
-> 本工具仍處於早期建構期。npm 套件 `@adamchanadam/aps` 的 0.1.1 初版提供 `bridge-pack` fixture 輸出;`init` 命令仍為佔位符,完整對話流程尚未落地;真實跨機往返尚未驗證。
+> 本工具仍處於早期建構期。0.2.0 pre-release 開始支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack 與 starter pack;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。自然語言日常操作與補救流程仍未完整產品化。
 >
 > **適合**:觀察、提出建議、留下回饋、追蹤建構進度。
 > **不適合**:正式生產用途,或依賴於不可中斷的重要流程。
@@ -23,7 +23,7 @@ npm install --save-dev @adamchanadam/aps
 npx aps init
 ```
 
-> **目前狀態**:這是目標入口命令;0.1.1 初版的 `init` 執行時只會顯示「尚未完成」訊息。完整可用之前,請把本頁視為產品方向與開發狀態說明,不要把此命令當作已可完成設置的安裝器。
+> **目前狀態**:0.2.0 pre-release 提供 `bridge-pack`、`init` 技能安裝器、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並通過本地一次性 Hub 往返測試與一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。但這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
 
 ---
 
@@ -37,7 +37,7 @@ npx aps init
 
 **未先安裝 Agent Handoff Kit,APS 的檔案結構將無法獨立運作。**
 
-前往 https://github.com/Adamchanadam/agent-handoff-kit,依其指引安裝。一條命令即可:
+前往 [Agent Handoff Kit GitHub 儲存庫](https://github.com/Adamchanadam/agent-handoff-kit),依其指引安裝。一條命令即可:
 
 ```
 npx @adamchanadam/agent-handoff-kit init
@@ -46,7 +46,7 @@ npx @adamchanadam/agent-handoff-kit init
 ### 第二項 — 基本前提
 
 - 電腦需安裝 Google Drive 桌面版(前往 https://www.google.com/drive/download/ 下載),登入之後將共享資料夾設為「離線存取」
-- 電腦需安裝 Claude Code(前往 https://claude.com/code 下載)
+- 電腦需安裝 Claude Code(前往 https://claude.com/code 下載)或 Codex
 - 與你的協作夥伴之間能透過 WhatsApp 通訊
 
 以上任何一項尚未完成?各個官方網頁均有逐步指引。先安裝完成,再回來執行下列命令。
@@ -59,14 +59,14 @@ npx @adamchanadam/agent-handoff-kit init
 
 1. 閱讀本 repo,理解 APS 想解決的跨機協作問題。
 2. 參考下方「想深入了解」中的設置教學,了解目前手動設置流程。
-3. 先執行 `npm install --save-dev @adamchanadam/aps`,再用 `npx aps bridge-pack` 取得 Bridge Pack fixture;若已 clone 本 repo,亦可用 `node bin/aps.js bridge-pack` 測試本地 CLI。
+3. 先執行 `npm install --save-dev @adamchanadam/aps`,再用 `npx aps bridge-pack` 取得 Bridge Pack fixture;若已 clone 本 repo,亦可用 `node bin/aps.js init --dry-run` 或 `node bin/aps.js bridge-pack` 測試本地 CLI。
 
-目標體驗完成之後,使用者會在自己的項目資料夾內執行 `npx aps init`,然後由工具詢問 Google Drive 資料夾、項目名稱、協作夥伴識別名等。設置完成後,使用者可在 Claude Code 對話中以自然語句與 AI 溝通:
+目標體驗完成之後,使用者會在自己的項目資料夾內執行 `npx aps init`,先把 APS 技能安裝到 Claude Code / Codex,再建立 Hub skeleton、Bridge Pack 與 starter pack。設置完成後,使用者可在 AI 對話中以自然語句與工具溝通:
    - 「我有嘢俾 Jay」 → 工具自動將內容打包,並生成一句 WhatsApp 通知句供你發送
    - 「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦
    - 「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法
 
-上述三個日常流程仍在建構中,目前不可視為已發佈功能。
+上述三個日常流程的底層 CLI 已有最小測試路徑,並已跑過一次真實跨機 Google Drive 往返驗證;但尚未完整包成技能內的自然語言日常操作,目前仍不可視為可生產使用功能。
 
 ---
 

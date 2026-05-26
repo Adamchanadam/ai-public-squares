@@ -8,7 +8,81 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-26 (S12, latest) — v0.1.1 release closeout + MCP setup + kit consistency check
+## 2026-05-26 (S17, latest) — full-check before 0.2.0 publish decision
+
+- **ID:** S17
+- **Summary:** Ran 🔴 全面檢 for the local `@adamchanadam/aps@0.2.0` candidate as the conservative gate before any publish decision. This included the nested quick-check and release-check surface, cross-workspace read-only checks, same-machine protocol regression, startup addendum behavior trace, and self-review.
+- **Changed:** This workspace only.
+  - New: `dev/qc/2026-05-26-aps-full-audit.md` — full audit report for the 0.2.0 release-prep decision.
+  - Modified: `dev/PROJECT_INDEX.md` — latest APS full audit now points to the 2026-05-26 report; historical 2026-05-25 report remains listed.
+  - New evidence folder: `dev/qc/evidence/2026-05-26-full-check-regression-2/` — independent disposable workspace, fake home, Hub skeleton, Bridge Pack, ack files, outbox logs, and final no-pending inbox evidence.
+- **QC:** Main workspace doctor passed 46 checks with only the existing SESSION_LOG N-rule warning. Demo Adam and demo Jay workspace doctors passed 46 checks each. `npm view` confirms published latest remains 0.1.1. GitHub Pages readback passed after approved network escalation: HTTP 200 and contained 0.1.1 plus the verified install wording. `node --check bin/aps.js`, `npm test`, `npm pack --dry-run --json`, `node bin/aps.js --help`, target-specific init dry-runs, and negative `bogus` path passed. Disposable same-machine regression completed publish → inbox → consume → reply → consume → close and ended with no pending items for Adam or Jay. Real Google Drive cross-machine verification also completed: Adam published `20260526T173931Z__drive_sync_check`;Jay replied from her own machine with `20260526T175057Z__drive_sync_reply`;Adam read Jay outbox / packet / ack back from the Drive Hub, consumed it, closed both packets, and final inbox checks returned no pending items for Adam or Jay.
+- **Important correction during QC:** The first regression attempt was run from the repo root and produced an unwanted untracked `dev/rules/aps-bridge.md`;that generated file was removed, and the regression was rerun from an isolated disposable workspace successfully.
+- **Result:** Evidence side is clear for 0.2.0 release-prep, including one real Adam ↔ Jay two-machine Google Drive round-trip. Full-check procedural gate is not complete until this report and the candidate changes are committed;commit / push / tag / release / npm publish all require Adam's explicit instruction.
+
+## 2026-05-26 (S16) — formal release-check and packaged-template cleanup
+
+- **ID:** S16
+- **Summary:** Ran the formal 🟡 外發前檢 (`release-check`) for the local `@adamchanadam/aps@0.2.0` candidate after the throw-away zero-knowledge flow. The check found real package-surface drift in shipped examples, fixed it, then reran the relevant audits.
+- **Changed:** This workspace only.
+  - Modified: `resources/protocol/templates/ack.json.example` — replaced the old `mpedu_plus_branding` example with generic `example_project` / `example_agent` values and neutral example packet wording.
+  - Modified: `examples/demo-agent-a/dev/rules/aps-bridge.md` and `examples/demo-agent-b/dev/rules/aps-bridge.md` — replaced the old MVP project slug example with `example_project` while keeping User A / User B role examples.
+  - Generated evidence: `dev/qc/evidence/2026-05-26-release-check-html/` holds DevTools screenshots for `docs/index.html`, `docs/guides/aps-onboarding-walkthrough.html`, and `docs/qc/governance-map.html`.
+- **QC:** Agent Handoff Kit doctor passed 46 checks with only the existing SESSION_LOG N-rule warning for next closeout. `node --check bin/aps.js`, `node bin/aps.js --help`, `node bin/aps.js init --dry-run --target both`, `npm test`, `npm pack --dry-run --json`, `git diff --check`, npm registry readback, packaged-surface placeholder scan, public-doc voice scan, and secrets sweep were run. DevTools rendered all three HTML pages and reported no console messages. `npm view @adamchanadam/aps ...` still confirms published latest is `0.1.1`;the local candidate remains unpublished.
+- **Result:** Formal 🟡 外發前檢 is clear for the local 0.2.0 candidate in this workspace. This is not 🔴 全面檢: real cross-machine Google Drive verification and committed full-audit report remain separate pending work.
+- **Sync:** Existing `dev/DOC_SYNC_REGISTRY.md` rows for npm package change, APS product consistency, public docs, and QC vocabulary cover this change type;no new registry row is needed.
+
+## 2026-05-26 (S15) — QC terminology consolidation root-fix
+
+- **ID:** S15
+- **Summary:** Investigated why the throw-away zero-knowledge flow was treated too strongly for release decisioning. Root cause was not a missing QC rule: `dev/qc/triggers.md` already defines 🟡 外發前檢 / `release-check` as the single source of truth. The drift came from handoff / prompt / index wording using `local release-check` for a local package smoke-check bundle, which collided with the formal QC alias.
+- **Changed:** This workspace only.
+  - Modified: `dev/SESSION_HANDOFF.md` — renamed the local check evidence to `local package smoke check`, stated it is not the formal 🟡 外發前檢 / `release-check`, and reset the active objective to run formal 外發前檢 before any commit / push / release / publish decision.
+  - Modified: `START_NEXT_SESSION_PROMPT.txt` — mirrored the same wording so next startup does not inherit the ambiguous `local release-check` phrase.
+  - Modified: `dev/PROJECT_INDEX.md` — clarified the npm CLI smoke-test row so local package smoke checks are not confused with formal release-check.
+- **QC:** No new QC rule was added. `dev/qc/triggers.md` remains the single source of truth for QC tiers; `docs/qc/governance-map.html` remains the public reference card. This is a consolidation / terminology fix, not rule expansion.
+- **Pending:** Run formal 🟡 外發前檢 (`release-check`) for the local 0.2.0 candidate before deciding commit / push / release / publish.
+- **Risks:** Formal 外發前檢 and 🔴 全面檢 still have not been run for 0.2.0; throw-away flow remains useful evidence but not a release gate.
+
+## 2026-05-26 (S14) — throw-away zero-knowledge flow for local 0.2.0 candidate
+
+- **ID:** S14
+- **Summary:** Ran the recommended throw-away-folder zero-knowledge flow against the local `@adamchanadam/aps@0.2.0` candidate tarball before any commit, push, release, or npm publish.
+- **Changed:** This workspace only.
+  - New evidence folder: `dev/qc/evidence/2026-05-26-zero-knowledge-flow/` with fresh workspace, fake home, project-local npm cache, and local Hub fixture.
+  - Modified continuity files: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/PROJECT_INDEX.md`, and `START_NEXT_SESSION_PROMPT.txt` are refreshed to record the new evidence.
+  - Generated artifact: `adamchanadam-aps-0.2.0.tgz` was created in the repo root by `npm pack`;it should not be committed.
+- **QC:** `npm pack --json` produced local `@adamchanadam/aps@0.2.0` with 14 package files. Fresh workspace `npm install` from the tarball passed after approved escalation;initial sandboxed install hit EPERM creating the project-local npm cache, and one rerun used an incorrect relative tarball path before being corrected to the absolute tarball path. With `USERPROFILE` / `HOME` redirected to the fake home, `aps init --dry-run` showed both Claude Code and Codex skill install paths;`aps init --hub-root ... --project launch_notes --agent-id adam --other-agent-id jay --role A` installed both skill folders, created Hub skeleton, Bridge Pack, ack files, and starter pack. The daily flow completed Adam publish → Jay inbox → Jay consume → Jay reply → Adam inbox → Adam consume → Adam close → Jay close;final inbox checks returned no pending items for Adam or Jay.
+- **Pending:** Adam release decision remains: commit / push / release / publish the 0.2.0 candidate, or hold for additional real cross-machine Drive evidence. Phase X-5 Layer D document repositioning remains pending.
+- **Risks:** Real cross-machine Google Drive evidence remains pending;this throw-away flow proves fresh local package setup and CLI use in a disposable workspace, not actual Drive propagation across two machines.
+- **Sync:** Evidence is reflected in `dev/SESSION_HANDOFF.md`, `dev/PROJECT_INDEX.md`, `START_NEXT_SESSION_PROMPT.txt`, and this log. Existing `dev/DOC_SYNC_REGISTRY.md` npm package and public promise rows cover this change type;no new registry row is needed.
+
+## 2026-05-26 (S13) — Phase X-3 local 0.2.0 candidate and skill rehearsal
+
+- **ID:** S13
+- **Summary:** Continued into Phase X-3 by turning `skills/aps/SKILL.md` from a broad target spec into setup-first and daily-use runtime drafts, adding the local 0.2.0 CLI / protocol package work, completing isolated skill rehearsal, and passing local package smoke checks without publishing.
+- **Changed:** This workspace only.
+  - Modified: `bin/aps.js` — `init` is now a local skill installer supporting `--target claude|codex|both` and `--dry-run`;it copies bundled `skills/aps/` into Claude Code / Codex personal skill directories, refuses to overwrite existing installs, and treats existing-file safe skips as exit 0 while preserving non-zero exits for true failures.
+  - Modified: `bin/aps.js` — added minimal `publish`, `inbox`, `consume`, and `close` commands on top of the generated Hub skeleton;publish now requires an existing outbox, packet scope escapes YAML quotes, outbox uses `items:none`, and close verifies the sender owns the packet and has not already closed it before appending a close event.
+  - New: `resources/protocol/PROTOCOL.md` and `resources/protocol/templates/*` — bundled runtime protocol source and templates used by `aps init` to create Hub skeletons.
+  - Modified: `package.json` — version bumped to `0.2.0` candidate;description and keywords now mention Claude Code + Codex support.
+  - Modified: `README.md` — fixed the npm README URL bug by changing the Agent Handoff Kit bare URL into a Markdown link;updated `init` status to skill-installer / Hub setup / minimal CLI round-trip boundary instead of full production setup.
+  - Modified: `docs/index.html` and `docs/guides/aps-onboarding-walkthrough.html` — public status now says local next-version `init` supports Claude Code / Codex skill installation plus initial Hub skeleton / Bridge Pack / starter pack generation;local CLI has a minimal round-trip, while natural-language daily use, recovery, and real cross-machine Google Drive verification remain unfinished.
+  - Modified: `dev/qc/evidence/.gitignore` — local disposable installer smoke-test folders are ignored so duplicated skill copies are not committed.
+  - Modified: `skills/aps/SKILL.md` — updated current boundary to v0.1.1, routed setup wording to bundled `references/setup-dialogue.md`, marks only the bottom-level CLI round-trip as verified, and now wires skill-level publish / inbox / consume / close first-pass instructions to the verified CLI while keeping real user-flow and cross-machine Drive evidence pending.
+  - New / modified: `skills/aps/references/setup-dialogue.md` — compact setup wording bank for npm-installed skill runtime;first setup dry-run now uses `npx aps publish` instead of old test-file wording.
+  - Modified: `docs/plans/2026-05-23-aps-skill-dialogue-script.md` — repositioned as repo long-form maintenance draft;the runtime-readable compact reference now lives under `skills/aps/references/`;publish / inbox / recovery examples now use packet folders, outbox, ack, and CLI commands instead of old single-file packet examples.
+  - Modified: `dev/DOC_SYNC_REGISTRY.md` — package-change checks now cover `init --dry-run`, target-specific dry runs, Hub setup, and disposable Hub `publish` → `inbox` → `consume` → reply → `close` checks.
+  - Modified: `dev/PROJECT_INDEX.md` — records the bundled setup wording bank, the local next-version `init` installer boundary, and the minimal CLI round-trip boundary.
+  - Modified: `.gitignore` — added `node_modules/` after a failed disposable npm install attempt briefly created local install artifacts in the repo root;the artifacts were removed.
+  - Modified: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `START_NEXT_SESSION_PROMPT.txt` — closeout continuity refreshed.
+- **QC:** `node --check bin/aps.js` passed;`node bin/aps.js --help` passed;`node bin/aps.js init --dry-run`, `node bin/aps.js init --target claude --dry-run`, `node bin/aps.js init --target codex --dry-run`, and setup dry-run with `--hub-root --project --agent-id --other-agent-id --role` passed;`node bin/aps.js bridge-pack --role B` passed;`node bin/aps.js bogus`, invalid `--target banana`, invalid `--role C`, invalid snake_case, incomplete setup flags, bad packet id, and missing outbox paths failed with exit 1 as expected;`npm pack --dry-run --json` passed for local `@adamchanadam/aps@0.2.0` candidate and includes 14 files including `skills/aps/references/setup-dialogue.md`, `resources/protocol/PROTOCOL.md`, and protocol templates;`git diff --check` has no whitespace errors beyond LF→CRLF warnings;precise HTML `.md` hyperlink grep returned 0 hits. Disposable install smoke test with HOME / USERPROFILE redirected to `dev/qc/evidence/2026-05-26-init-installer-smoke/home` installed both Claude Code and Codex skill folders;second run refused overwrite;installed `SKILL.md` hashes match source. Local tarball install test also passed: tarball installed into disposable workspace with project-local npm cache;workspace `npx aps init --dry-run`, `npx aps init`, and `npx aps bridge-pack --role B` work;second workspace `npx aps init` exits 1 and refuses overwrite;installed `SKILL.md` hashes match source. Source and tarball-installed Hub setup tests created expected Hub skeletons, ack files, Bridge Pack, and starter pack, and second runs refused overwrite. Source CLI round-trip under `dev/qc/evidence/2026-05-26-roundtrip-cli-20260526-155532/` and packed-tarball round-trip under `dev/qc/evidence/2026-05-26-roundtrip-cli-20260526-160305/` both completed Adam publish → Jay inbox → Jay consume → Jay reply → Adam inbox → Adam consume → Adam close;final inbox checks for both agents returned no pending items. Isolated skill-level rehearsal under `dev/qc/evidence/2026-05-26-skill-rehearsal-20260526-162256/` installed the local package, used a fake `USERPROFILE` for Claude Code / Codex skill dirs, completed setup → publish → inbox → consume → reply → inbox → consume → close for both sides, and ended with no pending inbox items. Source `init` safe-skip rerun now exits 0 after the CLI fix.
+- **Sync:** Skill source change, npm package file inclusion, isolated skill rehearsal, and local package smoke checks are reflected in `dev/PROJECT_INDEX.md`, `dev/SESSION_HANDOFF.md`, `START_NEXT_SESSION_PROMPT.txt`, and this log. Existing `dev/DOC_SYNC_REGISTRY.md` rows already cover this change type.
+- **Pending:** Adam decision remains pending: commit / push / release / publish the 0.2.0 candidate now, or run one more throw-away-folder user-flow first. Phase X-5 Layer D document repositioning remains pending. npm latest 0.1.1 does not contain this local `init` installer / Hub setup generator / minimal CLI round-trip / skill daily-use first pass.
+- **Risks:** Real cross-machine Drive evidence remains pending;the isolated skill rehearsal proves local package and skill-command flow, not actual Google Drive propagation between Adam and Jay machines.
+- **Log maintenance:** prepending this S13 entry makes the oldest hot-layer entry exceed the 10-entry target, so S2 is moved to `dev/SESSION_LOG_archive/archive_002_2026-05-21_to_2026-05-21.md` and indexed.
+
+## 2026-05-26 (S12) — v0.1.1 release closeout + MCP setup + kit consistency check
 
 - **ID:** S12
 - **Summary:** Completed the APS v0.1.1 release path and then performed a formal wrap-up because `START_NEXT_SESSION_PROMPT.txt` had drifted from `dev/SESSION_HANDOFF.md`. Also installed two Codex MCP servers and checked Agent Handoff Kit v0.3.11 consistency across the main APS root and both demo roots.
@@ -23,7 +97,7 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 - **Pending:** Phase X-3 skill setup subflow + dialogue script remains next substantive work;throw-away-folder user-flow test still pending;Phase X-5 Layer D document repositioning remains pending;real cross-machine Drive round-trip evidence remains pending.
 - **Sync:** Closeout/startup contract, workspace identity, release, npm package, and MCP setup are reflected in handoff / index / prompt copy. No product files changed in this wrap-up.
 
-## 2026-05-25 (S11, latest) — APS public promise consistency root-fix
+## 2026-05-25 (S11) — APS public promise consistency root-fix
 
 - **ID:** S11
 - **Summary:** 按 Adam 指示,本次 QC 聚焦 AI Public Squares 本身,不審 Agent Handoff Kit 治理層。先建立 `dev/qc/2026-05-25-aps-full-consistency-audit.md`,再逐項 root-fix 5 個 blocker:repo public 狀態漂移、npm 未 publish 與 walkthrough 命令衝突、`aps init` 目標體驗被寫似已可用、skill / dialogue script 含未實作承諾、walkthrough doctor `34 / 34` 過時數字。
@@ -266,6 +340,43 @@ S8 Stage 1 generic-template pivot landed: repo is now pure generic APS template;
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
 ```
+
+## Entry Template
+
+````markdown
+## <YYYY-MM-DD> — <short session title>
+
+- **ID:** <agent_or_session_id>
+- **Summary:** <one sentence>
+- **Changed:** <files changed, or none>
+- **Done:** <work completed this session>
+- **QC:** <checks run and results, or why not run>
+- **Sync:** <doc/external sync status>
+- **Pending:** <next work>
+- **Risks:** <known risks or none>
+- **Log maintenance:** <kept/summarized/archived/not_needed and why>
+
+### Next Session Opening Message
+
+📋 Next session: copy and paste the whole block below
+
+```text
+Work in <absolute project root>.
+
+Read in order:
+1. AGENTS.md
+2. dev/SESSION_HANDOFF.md
+3. dev/SESSION_LOG.md
+4. dev/PROJECT_INDEX.md
+5. dev/RULE_PACKS.md
+
+Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
+
+If this root does not match the expected project root, stop and ask for confirmation.
+
+After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
+```
+````
 
 ## 2026-05-21 (S6, latest, same day) — 分層 QC vocabulary (🟢快檢 / 🟡外發前檢 / 🔴全面檢)
 
@@ -567,129 +678,3 @@ User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
 ```
-
-## 2026-05-21 — Phase 4 plan + user-facing docs expansion
-
-- **ID:** S2
-- **Summary:** Authored Phase 4 implementation plan; expanded user-facing docs with a guides hub + complete onboarding walkthrough; added shared site navigation across the three HTML pages so future guide additions plug straight in.
-- **Changed:** This workspace only — no demo workspace edits, no Hub edits, no real-runtime edits.
-  - New: `docs/plans/2026-05-21-aps-phase4-plan.md` (Phase 4 implementation plan; T0 + Blocks 4A–4D + 10 tasks + acceptance criteria + risks + out-of-scope; ≈ 360 lines).
-  - New: `docs/guides/index.html` (教學中心 hub; nav menu; current-guide card + 7 planned-guide entries + "how to add a new guide" section).
-  - New: `docs/guides/aps-onboarding-walkthrough.html` (Adam + Jay dual-perspective step-by-step; 10 sections + TOC; role-chip pattern; real WhatsApp templates + file paths + accept boxes).
-  - Modified: `docs/index.html` — inserted shared `.site-nav` block; reflected demo workspaces aligned to kit v0.1.7; replaced Phase 4 placeholder bullets with Block 4A–D summary linked to plan; appended Phase 4 plan + guides hub rows to "項目入口" entry table; added callout linking to guides; refreshed cover meta + footer to 2026-05-21.
-  - Modified: `dev/SESSION_LOG.md` (this entry).
-  - Modified: `dev/PROJECT_INDEX.md` (`docs/guides/` directory row + 2 Fact Base rows + verified-date refresh on relevant rows).
-  - Modified: `dev/DOC_SYNC_REGISTRY.md` (new row for user-facing docs change type).
-  - Modified: `dev/SESSION_HANDOFF.md` (closeout reconciliation: Phase 4 plan moved from pending → done; Risk #3 closed because user reported demo workspaces are at v0.1.7; Active Objective updated to "execute Phase 4 in real runtimes").
-  - Regenerated: `START_NEXT_SESSION_PROMPT.txt` from the new fenced opening message in the handoff.
-- **Done:**
-  - Phase 4 plan: covers T0 lock-parameters block + Block 4A (Adam runtime, 6 tasks T1–T6) + Block 4B (Jay runtime, 2 tasks T7–T8) + Block 4C (live cross-machine round-trip, 3 sub-tasks T9a/b/c) + Block 4D (large-attachment dry-run, T10) + 10-point acceptance criteria for whole Phase 4 + Phase 5+ out-of-scope register + Phase-4-specific risk table + operational notes carry-over from MVP.
-  - Walkthrough HTML: 10 sections with TOC anchors; Adam / Jay / 雙方 chip pattern enforces clear role assignment per step; pre-flight checklist, T0 parameter table, full T9 round-trip narrative, daily-use 7-step pattern post-Phase 4, error recovery (5 failure modes), reference table at end.
-  - Three HTML pages share the same inline nav + design tokens; cross-page navigation tested by manual link audit.
-- **In-session iteration after user feedback (same day):**
-  - User flagged that `docs/guides/index.html` (and by extension the walkthrough) breached personal voice / terminology discipline — internal codes such as `Phase 4 Block 4D`, `Bridge Pack`, `PROTOCOL.md`, `round-trip` were sitting as sentence subjects in user-facing prose.
-  - Rewrote `docs/guides/index.html` first as a low-cost language sample: removed maintainer-only "how to add a new guide" section; rewrote planned-guides list with day-language descriptions; replaced "Walkthrough" English word with "教學".
-  - User confirmed voice OK and asked for SVG flow diagrams to replace dense step text in the walkthrough. Drew the overview SVG first as a visual sample; user confirmed visual style.
-  - Full rewrite of `docs/guides/aps-onboarding-walkthrough.html` (now 973 lines): four inline SVG flow diagrams (overview / cross-machine handover swimlane / daily 7-step / error-recovery decision tree); prose tightened end-to-end; 0 residual internal codes as sentence subjects (`Block 4*` / `Bridge Pack` / `round-trip` all eliminated; `PROTOCOL.md` and `Phase 4` only remain as path or link metadata, not as subjects).
-  - Renamed nav link text "Phase 4 計劃" → "跨機接駁計劃" across all three HTML pages for the same voice discipline.
-- **In-session iteration 3 — actor separation (same day):**
-  - User flagged conceptual ambiguity in the walkthrough: "Adam" / "Jay" were being used as single-actor labels, conflating the human user with the agent program running on each machine. The core design insight (Hub single-writer is the agent program, not the human; WhatsApp is human-to-human; two parallel channels) was getting buried.
-  - User also surfaced a related question (prior turn): does mid-session exchange require closing the conversation? Answer: no — packet immutability tracks the publish moment, not session lifecycle; sender can publish mid-conversation, and receiver can manually trigger an inbox check via fixed phrases (`check Hub` / `未消化` / `睇下 Hub 有冇新嘢`). Auto-push notification would require a local daemon and exits the pure-file-based design envelope.
-  - Full rewrite of `docs/guides/aps-onboarding-walkthrough.html` end-to-end with four explicit actors (Adam 用戶 / Agent Adam 程式 / Agent Jay 程式 / Jay 用戶): four chip variants in the legend; cross-machine handover SVG rebuilt as a 4-lane swimlane (solid border = human, dashed border = agent program); daily 7-step SVG restructured as 10 steps across the same 4 lanes; recovery decision tree gained "user decides + agent executes" annotations.
-  - Added new Section 9 "中間想交換,唔等對話收結" covering mid-session publish (sender side) and the three manual trigger phrases (receiver side), with caveat that this is user-triggered polling and not auto-push.
-  - Lightweight patches to design doc `docs/plans/2026-05-20-agent-public-square-design.md`: §11 gained an explicit Actor 區分 sub-section (4 actors + two parallel channels); §4 added cross-ref to §11; §7 added a mid-session manual-trigger caveat; file history entry appended. Protocol design itself unchanged.
-- **In-session iteration 4 — copy-to-clipboard ergonomic (same day):**
-  - User asked for code-fence style copy affordance on all prompts Adam / Jay actually paste into third-party tools (WhatsApp messages, agent chat).
-  - Added `.copy-block` CSS + an inline browser script in the walkthrough that wraps every `<pre>` block under `<main>` with a `.copy-block` container (label + 複製 button + monospace body). Click writes to `navigator.clipboard`; falls back to auto-selecting the pre contents for manual Ctrl+C on browsers / contexts that block the clipboard API. No external dependency, no library, runs on `file://`.
-  - Moved annotation spans (e.g. "← 用第 3 節拍板嗰個") out of the Identity YAML `<pre>` blocks into `.copy-block__note` paragraphs underneath, so the copied text is clean (paste-able straight into the small rule file without manually stripping annotation lines).
-- **In-session iteration 5 — placeholder discipline (same day):**
-  - User flagged a design-discipline concern: the demo slug `mpedu_plus_branding` is only an example, but the repo's user-facing teaching prose / templates must stay generic — no hardcode of the demo slug in places where the reader is meant to copy-paste into their own configuration.
-  - Audited the workspace: ≈ 50 hits across plan / design / governance docs. Triaged into three classes — A (example with explicit "demo / illustration" context — kept as-is), B (user-facing prompt / template that gets copied into third-party tools — must change), C (out-of-scope: Hub `_hub/PROTOCOL.md` on Drive + the two demo workspaces' Bridge Pack files — audit reported for follow-up sessions).
-  - Class-B fixes in `docs/guides/aps-onboarding-walkthrough.html`: 4 hardcoded `mpedu_plus_branding` occurrences swapped for the `[項目代號]` placeholder convention used elsewhere in the walkthrough (Adam Identity YAML, Jay Identity YAML, two WhatsApp templates). Each affected `.copy-block` now carries a paired `.copy-block__note` instructing the reader to substitute the placeholder before writing into a rule file or sending the message. Jay's Identity YAML also gained a second placeholder `[Jay 部機嘅共享資料夾絕對路徑]` (replacing the slightly hardcoded `H:\我的雲端硬碟\…\AI_Public_Squares` sample) for the same reason.
-  - **Case-variant audit follow-up (same iteration, after user catch)**: initial grep only matched lowercase `mpedu_plus_branding` and missed the camelcase folder-name variant `MPEdu_Plus_Branding` (Adam's real-runtime folder). Re-grep surfaced 3 additional hits in the walkthrough: Section 2 Adam prerequisite, Section 3 Jay workspace candidate (`D:\Work\MPEdu_Plus_Branding_Jay\` → `D:\Work\[項目代號]_Jay\`), and Section 5 Jay-to-Adam WhatsApp sample (same). Placeholder convention unified — `[項目工作目錄]` (briefly introduced) collapsed into the existing `[工作目錄]` placeholder used in the Section 1 convention callout.
-  - **Strict discipline pass (after second user catch)**: user pointed out that even the Section 1 convention callout's tail clause ("`mpedu_plus_branding` 只係之前 demo 嘅參考值, 教學入面出現嗰陣會明標係示例") was still leaking the demo slug. Re-grepped case-insensitively and found 6 occurrences across the walkthrough — including parenthesized "(沿用 demo 嘅 `mpedu_plus_branding` 或者改新)" in Identity YAML notes (Sections 4 & 5), the Section 3 parameter table's default candidate `mpedu_plus_branding` + alternative example `mpedu_branding_2026`, the Section 2 demo example reference, and the Section 1 callout meta-statement. Removed all six: Section 1 callout tail rewritten to generic "協定本身通用,教學文字唔列具體 value;具體 value 由你哋自己決定"; Section 2 prerequisite dropped the trailing demo-folder mention; Section 3 default cell became "沿用上次試演嘅項目代號" with the example slug removed; Identity YAML notes simplified to "換做第 3 節拍板嗰個值" without parenthesized demo references. After this pass, `grep -i "mpedu" docs/guides/aps-onboarding-walkthrough.html` returns zero hits — the walkthrough no longer mentions the demo slug at all. Demo-slug references remain only in instance-specific docs (plans, verification, governance, `docs/index.html` as the Adam-Jay instance dashboard), per the earlier A/B/C triage.
-  - **Extended placeholder audit + cross-doc consistency pass (third user catch)**: user asked for two parallel audits — (i) other instance-value leaks in walkthrough beyond the slug (hub_root paths, agent_id, demo workspace paths), and (ii) cross-check walkthrough's procedural steps against the actual protocol logic (PROTOCOL.md, design doc, Bridge Pack). Audit (i) flagged 3 hardcoded hub_root paths in copy-paste content: Adam Identity YAML's `hub_root: G:\我的雲端硬碟\…` (→ `[Adam 部機嘅共享資料夾絕對路徑]`); the >50 MB sample `ssot_refs` YAML's absolute path (→ `[Hub 絕對路徑]\\_external\\…`); the "Externalized: … at G:\…" sample report line (→ `at [Hub 絕對路徑]\…`). Other instance values (G:\/H:\ disk-letter contrasts, reference-lookup paths, demo workspace baselines, narrative protagonist names `Adam`/`Jay`, `from_adam`/`from_jay` lane names mandated by protocol) kept as A-class with context. Audit (ii) ran 13 cross-checks against PROTOCOL.md/design doc/Bridge Pack: 11 aligned (receiver pending computation, `(packet_id, version)` join key + 4 serializations, 4 outbox verbs, WhatsApp template wording, 50 MB attachment rule, `close`/`withdraw` semantics, three iron rules, Hub layout, Drive offline-available requirement, Bridge Pack lane boundaries, WhatsApp triggering); 2 gaps surfaced and fixed by adding two new Section-6 callouts ahead of the handover SVG: "敏感資料禁區" (packet must not carry credentials / API keys / unpublished financials / unauthorised personal data; route sensitive payloads through a secure out-of-band channel and reference abstractly) and "用戶決定,Agent 執行 — 之間有一格" (agent surfacing a packet is a proposal, not an auto-apply: the user decides whether/when/how much, then instructs the agent — the human-in-the-loop step is intentional). One acceptable abstraction left unchanged: walkthrough's "登記消化" wording does not explicitly state that consume requires a non-empty `result` string per design doc §6.3 — flagged for a future-iteration polish but kept out of scope this pass.
-  - **Placeholder example follow-up (fourth user catch)**: user noted that placeholders alone don't tell the reader what shape / convention a substitute value should take — `[項目代號]` could be anything to a first-time reader (case? length? Chinese? special chars?). Added a new "Placeholder 樣本 — 形狀同例" master callout in Section 1 immediately after the convention callout: enumerates each placeholder used in the walkthrough (`[項目代號]`, hub_root paths, `[工作目錄]`, `[題目]`, `[時間戳]`), gives shape rule (snake_case, length, character set), 2–4 hypothetical example values per placeholder (deliberately not the demo slug — `branding_2026`, `logo_refresh_q2`, `cobeing_website`, `G:\Cloud\AI_Public_Squares`, `D:\Work\AI_Public_Squares` etc.), and notes that NTFS case insensitivity is the reason slug stays lowercase. Section 3 parameter table's "項目代號" default cell additionally gained an inline example pair (`branding_2026` / `logo_refresh`) plus a pointer back to the Section 1 sample for full shape rules.
-  - **Per-block inline example follow-up (same iteration)**: user opted to add inline examples to every `.copy-block__note` so readers don't have to scroll back to the Section 1 master table at operating time. Added one example value per placeholder in all 5 `.copy-block__note` entries: Adam Identity YAML (`[項目代號]` → `branding_2026`; `[Adam 部機嘅共享資料夾絕對路徑]` → `G:\Cloud\AI_Public_Squares`), Jay Identity YAML (`branding_2026` / `D:\Work\AI_Public_Squares`), Adam→Jay WhatsApp template (`branding_2026`), Jay→Adam WhatsApp template (`branding_2026`), big-attachment `ssot_refs` YAML (`G:\Cloud\AI_Public_Squares` for `[Hub 絕對路徑]` + new inline example `logo_convergence` for `[題目]`). Each note also gained a back-pointer "完整形狀規則見第 1 節「Placeholder 樣本」" so readers know where to find the full shape spec without each note repeating it.
-  - Added a new warn-style callout in Section 1 documenting the global placeholder convention: all square-bracket short phrases (`[項目代號]`, `[題目]`, `[時間戳]`, `[工作目錄]`, `[Jay 部機嘅共享資料夾絕對路徑]`, etc.) are forcing-function placeholders; `mpedu_plus_branding` only ever appears as an explicitly-labelled demo reference. Single anchor point so subsequent placeholder additions don't need to re-explain.
-  - Class-C follow-up audit list captured in handoff Next Priorities: `_hub/PROTOCOL.md` review for any leaked demo slug in non-example sections; demo Adam / Jay Bridge Pack review that Identity section is by-design hardcode but procedural steps use placeholders.
-- **QC:**
-  - Cross-doc consistency: Phase 4 plan task numbering (T0, T1–T10) is mirrored in walkthrough section narrative (sections 3–7); design / MVP plan / MVP verification doc paths in walkthrough match actual filesystem.
-  - HTML link audit (manual): index.html ↔ guides/index.html ↔ aps-onboarding-walkthrough.html three-way nav round-trip resolves on local filesystem; markdown plan links open in any markdown-capable viewer.
-  - kit doctor: to be run as part of closeout. Expected: 34/34 still passes (no file removed; only governance files reconciled + 3 new docs files added).
-  - No file changes outside this workspace; AGENTS.md managed-core block untouched.
-- **Sync:**
-  - APS protocol / plan / verification change: confirmed — Phase 4 plan added to `docs/plans/`; cross-doc consistency verified.
-  - APS guides / user-facing docs change (new sync row): confirmed — `docs/guides/` created; `docs/index.html` updated.
-  - Demo workspaces at kit v0.1.7: confirmed by user, reflected in handoff (Risks #3 closed).
-- **Pending:**
-  - Phase 4 execution itself: Block 4A (Adam's real `MPEdu_Plus_Branding` workspace; can start any time on Adam's machine, no Jay dependency); Block 4B (Jay's machine, requires Jay's availability); Block 4C (depends on 4A + 4B); Block 4D (optional, before any real >50 MB asset).
-  - Phase 4 verification report (`docs/plans/2026-MM-DD-aps-phase4-verification.md`) — created after Phase 4 done, mirrors MVP verification report structure.
-  - 7 "之後會加" guides in `docs/guides/index.html` planned-list — each triggered by its corresponding Phase 5+ milestone.
-- **Risks:**
-  - Jay's machine setup still blocked on Jay's availability — unchanged.
-  - Cross-machine Drive sync latency still unproven — unchanged (Phase 4 Block 4C is where this gets measured).
-  - No remote git on any local workspace — unchanged.
-  - Demo workspaces lacking v0.1.7 governance: CLOSED — user confirmed both demos aligned to v0.1.7.
-- **Log maintenance:** kept; new entry added at top per file convention. Previous 2026-05-20 entry retained as-is — it carries MVP-build evidence still relevant to Phase 4 execution.
-
-### Next Session Opening Message
-
-📋 Next session: copy and paste the whole block below
-
-```text
-Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (Phase 4 plan SSOT). Most actual Phase 4 execution will happen elsewhere — in C:\Users\adam\_claude_desktop\Work_MP\明報教育Plus\MP - 明報教育服務\MPEdu_Plus_Branding\ (Adam real runtime) and on Jay's machine — once Phase 4 starts.
-
-Read in order:
-1. AGENTS.md
-2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md
-4. dev/PROJECT_INDEX.md
-5. dev/RULE_PACKS.md
-6. docs/plans/2026-05-21-aps-phase4-plan.md
-
-Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
-
-Current state (as of 2026-05-21): APS MVP verified on same-machine simulation; both demo workspaces aligned to Agent Handoff Kit v0.1.7; Phase 4 implementation plan complete; user-facing docs expanded with guides hub + onboarding walkthrough. Next task is Phase 4 execution itself — Block 4A (Adam real runtime) is independent and can start any time; Block 4B (Jay's machine) requires Jay's availability; Block 4C round-trip depends on both; Block 4D (large-attachment dry-run) optional.
-
-User-facing walkthrough at docs/guides/aps-onboarding-walkthrough.html. Phase 4 technical plan at docs/plans/2026-05-21-aps-phase4-plan.md.
-
-After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
-```
-
-## Entry Template
-
-````markdown
-## <YYYY-MM-DD> — <short session title>
-
-- **ID:** <agent_or_session_id>
-- **Summary:** <one sentence>
-- **Changed:** <files changed, or none>
-- **Done:** <work completed this session>
-- **QC:** <checks run and results, or why not run>
-- **Sync:** <doc/external sync status>
-- **Pending:** <next work>
-- **Risks:** <known risks or none>
-- **Log maintenance:** <kept/summarized/archived/not_needed and why>
-
-### Next Session Opening Message
-
-📋 Next session: copy and paste the whole block below
-
-```text
-Work in <absolute project root>.
-
-Read in order:
-1. AGENTS.md
-2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md
-4. dev/PROJECT_INDEX.md
-5. dev/RULE_PACKS.md
-
-Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
-
-If this root does not match the expected project root, stop and ask for confirmation.
-
-After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
-```
-````

@@ -13,7 +13,7 @@
 
 任務需求演進的長期 narrative。Newest first。AI 觀察到 substantive task evolution 時 append。
 
-(empty)
+- 2026-05-26 — APS 從只公開 `bridge-pack` 的 0.1.1 版本，推進到本地 0.2.0 候選：CLI 新增 Claude Code / Codex 技能安裝、Hub 骨架生成、最小 publish / inbox / consume / close 流程；技能文件完成 setup-first 與日常收發首稿；隔離技能演練與本地 release-check 通過。下一個決策點是先發布 0.2.0，或先加跑一次零認知 throw-away-folder 流程。
 
 ## Decisions Archive
 

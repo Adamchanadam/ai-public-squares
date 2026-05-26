@@ -2,13 +2,13 @@
 
 **日期:** 2026-05-23
 **作者:** Adam Chan(本項目維護者)+ Claude Code(協同作者)
-**狀態:** 第一版 ship — Section 1-6 中文版 first draft;Section 7 英文版待後續 expand。此文件是 wording bank 與目標體驗草稿,不是目前公開 npm CLI 已支援的 runtime 承諾。
+**狀態:** 長版維護稿 — Section 1-6 中文版 first draft;Section 7 英文版待後續 expand。此文件是 repo 內 dialogue companion 與目標體驗草稿,不是目前公開 npm CLI 已支援的 runtime 承諾。本地開發版 CLI 已通過最小 `publish` / `inbox` / `consume` / `close` 往返測試,但技能內自然語言操作與真實跨機 Google Drive 驗證仍未完成。npm package runtime 可讀之精簡 setup wording bank 已另放於 `skills/aps/references/setup-dialogue.md`。
 
 ---
 
 ## 用途
 
-此文件為 `skills/aps/SKILL.md` 的 dialogue companion。Claude 觸發 skill 時若不知具體 wording,即可翻查此處取 sample。SKILL.md body 屬 orchestration spec(對 Claude 的 instructions),此文件屬 wording bank(對 Claude 的 wording reference)。兩者分工:SKILL.md 講「做甚麼 + 順序」,本文件講「具體怎樣說」。
+此文件為 `skills/aps/SKILL.md` 的長版 dialogue companion。SKILL.md body 屬 orchestration spec(對 Claude 的 instructions),此文件屬 repo 內長版 wording bank(對 Claude 的 wording reference)。兩者分工:SKILL.md 講「做甚麼 + 順序」,本文件講「具體怎樣說」。因 npm package 不 ship `docs/plans/`,實際隨 package 可讀之 setup 精簡稿須放在 `skills/aps/references/setup-dialogue.md`。
 
 ---
 
@@ -121,9 +121,9 @@
 
 > 設置完成 ✓。Starter pack 已 ship 到雲端硬碟,WhatsApp 短訊已準備好。
 >
-> 我想用一個 dry-run 確認接駁無問題:我會生成一個 test packet(一個示範用的小檔案,內容:「APS 設置完成,這是第一個 test packet,正在等待對方收到並 ack(對方回的『收到』訊號)」),寫入 `from_adam` 資料夾。
+> 我想用一個 dry-run 確認接駁無問題:我會用 `npx aps publish` 生成一個 test packet(一個示範用的小交接包,內容:「APS 設置完成,這是第一個 test packet,正在等待對方收到並 ack(對方回的『收到』訊號)」),寫入 `from_adam/packets/` 並追加 `from_adam/outbox.log.md`。
 >
-> ⏳ 已寫入。包件 ID:`packet-test-001-2026-05-23`
+> ⏳ 已寫入。包件 ID:`20260526T150306Z__setup_test` v1
 >
 > 接下來等對方那邊裝完、收到後回一個 ack,你就知道整條鏈通了。
 >
@@ -133,25 +133,27 @@
 
 ## 2. 發佈子流程對話
 
-> 收到。你想交給 Jay 一份東西,我會包成一個 packet 寫入雲端硬碟的 `from_adam` 資料夾,Jay 那邊同步之後就會見到。
+> 收到。你想交給 Jay 一份東西,我會用 APS CLI 包成一個 packet folder,寫入雲端硬碟的 `from_adam/packets/`,並在 `from_adam/outbox.log.md` 追加發佈記錄。Jay 那邊同步之後就會見到。
 >
 > 你想交給 Jay 的內容是甚麼?可以是:
 > - 一份檔案 — 拖入此對話、或告訴我檔案路徑,我自動 copy
 > - 一段文字 — 直接 paste 在對話內,我寫入 packet body
 > - 兩者混合 — 告訴我,我打包
 >
-> 同時告訴我 packet 的 short title(例如「品牌指引 v2 draft」「Q1 文案修訂」),用作 packet header 的「subject」欄。
+> 同時告訴我一個短 topic(例如「品牌指引 v2 draft」「Q1 文案修訂」)。我會轉成 lower_snake_case,用作 packet ID 的題目部分。
 >
 > *[User: 「Q1 文案 draft 1 我做完了,subject 叫『Q1 文案 draft 1』。內容係下面這段:[paste]」]*
 >
 > 收到,打包開始:
 >
-> ⏳ 生成 packet ID:`packet-q1-copy-draft-1-001-2026-05-23T14:23:00Z`
-> ⏳ 寫入 packet header(from: adam / to: jay / subject: Q1 文案 draft 1 / version: 1)
-> ⏳ 寫入 packet body(你提供的內容)
-> ⏳ Copy 到 `_hub/brand-refresh/from_adam/packet-q1-copy-draft-1-001-2026-05-23T14:23:00Z.md`
+> ⏳ 將題目轉成 topic:`q1_copy_draft_1`
+> ⏳ 執行 CLI:`npx aps publish --hub-root "<hub_root>" --project brand_refresh --from adam --to jay --topic q1_copy_draft_1 --body "<你提供的內容>"`
+> ⏳ CLI 已建立 packet folder,並追加 `from_adam/outbox.log.md`
 >
 > 完成 ✓
+>
+> Packet ID:`20260526T150306Z__q1_copy_draft_1` v1
+> 位置:`<hub_root>/brand_refresh/from_adam/packets/20260526T150306Z__q1_copy_draft_1__v1/packet.md`
 >
 > WhatsApp 短訊:
 >
@@ -163,21 +165,20 @@
 
 ## 3. 收件子流程對話
 
-> 收到。我去你雲端硬碟的 `_hub/brand-refresh/from_jay/` 與 `_hub/brand-refresh/_ack/adam.ack.json` 看 Jay 有甚麼新東西。
+> 收到。我會用 CLI 檢查 Jay 的 outbox,並比對你自己的消化記錄。
 >
-> ⏳ 讀取 `from_jay/` 資料夾...
-> ⏳ 讀取 `_ack/adam.ack.json`...
+> ⏳ 執行 CLI:`npx aps inbox --hub-root "<hub_root>" --project brand_refresh --agent-id adam --other-agent-id jay`
 >
 > 結果:
 >
 > **新 packet:1 件**
-> - `packet-q1-copy-review-002-2026-05-23T16:45:00Z.md`
+> - `20260526T164500Z__q1_copy_review` v1
 >   - From: Jay → To: Adam
->   - Subject: Q1 文案 review feedback
+>   - Scope: Q1 文案 review feedback
 >   - Version: 1 / 寫於 2026-05-23 16:45(UTC)— 距今約 25 分鐘前
 >
 > **新 ack:1 件**
-> - Jay 確認收到你之前的 packet `packet-q1-copy-draft-1-001`(Q1 文案 draft 1)
+> - Jay 確認收到你之前的 packet `20260526T150306Z__q1_copy_draft_1`(Q1 文案 draft 1)
 > - Ack 時間 2026-05-23 16:40(UTC)
 >
 > Packet 內容預覽(頭 200 字):
@@ -193,7 +194,7 @@
 >
 > *[完整 packet body 顯示]*
 >
-> ✓ 已 ack:寫入 `_ack/adam.ack.json` 一行 — `consumed: packet-q1-copy-review-002-...`,timestamp 2026-05-23 17:10(UTC)
+> ✓ 已消化:執行 `npx aps consume --hub-root "<hub_root>" --project brand_refresh --agent-id adam --packet-id 20260526T164500Z__q1_copy_review --version 1 --result "Read Q1 copy review feedback"`;`_ack/adam.ack.json` 已加入一行 consumed 記錄
 > ⏳ Drive sync 中,Jay 那邊預計 1-3 分鐘後同步到此 ack
 >
 > 你接下來可能想:
@@ -222,9 +223,9 @@
 >
 > 收到。同步延遲超過 5 分鐘是不正常的,可能有三種原因。
 >
-> 第一種 — 你這邊 Drive 桌面版尚未真正上載完。讓我看一下你最新 packet 的 sync 狀態。
+> 第一種 — 你這邊 Drive 桌面版尚未真正上載完。讓我看一下你最新 packet folder 的同步狀態。
 >
-> ⏳ Read `_hub/brand-refresh/from_adam/packet-q1-copy-draft-1-001-...md` 並比對 mtime 與 Drive 之 sync flag...
+> ⏳ Read `<hub_root>/brand_refresh/from_adam/packets/20260526T150306Z__q1_copy_draft_1__v1/packet.md` 並比對 mtime 與 Drive 之 sync 狀態...
 >
 > 結果:packet mtime 2026-05-23 14:23,當前時間 2026-05-23 14:33。Drive icon 顯示「pending upload」 — 即你這邊的 upload 仍未完成。
 >
@@ -241,19 +242,19 @@
 > - 你或 Jay 在對方仍未完成寫入時打開了檔案 review
 > - 兩邊同時 publish 到同一 lane(極少數情況)
 >
-> 建議行動:關閉自己這邊所有打開了該檔案的 app(VS Code / Notepad 等);等 1-2 分鐘讓 Drive 自動 release lock;若仍在,告訴我,我嘗試手動 delete lock file(Drive 之安全 cleanup)。
+> 建議行動:關閉自己這邊所有打開了該檔案的 app(VS Code / Notepad 等);等 1-2 分鐘讓 Drive 自動 release lock。若仍在,我只會先列出 cleanup 計劃、目標路徑與影響範圍,取得你明確同意後才可處理。
 
 ### 4.4 Mode 3 — Wrong-lane
 
 > *[User: 「我見到 `from_jay/` 內有一個 packet,但 sender 係 adam,我估自己寫錯地方」]*
 >
-> 收到。Wrong-lane 寫入會令 routing 失效 — Jay 那邊的 check Hub 不會 surface 此 packet。修正方式:
+> 收到。Wrong-lane 寫入會令 routing 失效 — Jay 那邊的 check Hub 不會 surface 此 packet。修正前我會先列出計劃:
 >
 > 1. 我幫你 read 該 packet,確認 header 內 sender 確實是 adam
-> 2. 從 `from_jay/` move 到 `from_adam/`
+> 2. 列出來源路徑與目標路徑,說明移動後哪一邊會看見此 packet
 > 3. 通知 Jay 此 packet 原本應該在 `from_adam`,等 Drive sync
 >
-> 想我現在開始嗎?
+> 你確認之後,我才會做檔案移動;未確認前不改任何檔案。
 
 ### 4.5 Mode 4 — Packet 格式錯誤
 
@@ -263,9 +264,9 @@
 >
 > ⏳ *[skill 用 Read tool 檢視 packet]*
 >
-> 結果:packet header 缺 `version` 欄(本應為 `version: 1`)。可能你 publish 時 packet 生成中途被中斷。
+> 結果:packet header 缺 `version` 欄(本應為 `version: 1`)。可能 publish 時 packet 生成中途被中斷。
 >
-> **建議行動:** 我幫你重新生成此 packet(用相同 body content + 完整 header),寫入 `from_adam/`,同時將舊有損壞的 packet rename 為 `<packet-id>.invalid.md`(留 audit trail,不刪除)。同意嗎?
+> **建議行動:** 優先由原發包一方用 `npx aps publish` 重發一個新 packet,不要直接改已發佈 packet。若需要標記舊有損壞 packet,我會先列出路徑與改名方案,取得你明確同意後才處理。
 
 ### 4.6 Mode 5 — 版本不對齊
 

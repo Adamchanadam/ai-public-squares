@@ -1,6 +1,8 @@
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template;not bound to any specific project;published as `@adamchanadam/aps` npm package + GitHub repo Adamchanadam/ai-public-squares — **public since 2026-05-23**;GitHub Pages enabled at https://adamchanadam.github.io/ai-public-squares/).
 
-Current closeout (2026-05-26): `@adamchanadam/aps` v0.1.1 is published and verified as npm latest;commit `838d85a` is pushed to `origin/main`;tag `v0.1.1` is pushed;GitHub release is live at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.1.1;GitHub Pages `docs/index.html` returned HTTP 200 and contains the v0.1.1 install wording. Current verified package path is `npm install --save-dev @adamchanadam/aps` then `npx aps bridge-pack`;full `npx aps init` orchestration remains pending.
+Current closeout (2026-05-26): Phase X-3 setup-first pass, local `init` skill installer, initial Hub setup, minimal CLI round-trip, skill-level daily-use first pass, isolated skill-level rehearsal, local package smoke check, throw-away zero-knowledge flow, formal 🟡 外發前檢, 🔴 全面檢 evidence review, and real Adam ↔ Jay Google Drive round-trip are started and persisted. `package.json` is now `0.2.0` candidate while published npm latest remains `0.1.1`. `skills/aps/SKILL.md` reflects the current boundary;`skills/aps/references/setup-dialogue.md` is the bundled setup wording bank included in npm dry-run packaging and now uses CLI-based setup dry-run;the long-form dialogue script is aligned to packet folders, outbox, ack, and CLI commands. `bin/aps.js init` supports Claude Code / Codex skill installation via `--target claude|codex|both` and `--dry-run`, plus Hub skeleton / Bridge Pack / starter pack generation with `--hub-root --project --agent-id --other-agent-id --role`;`bin/aps.js` also exposes `publish`, `inbox`, `consume`, and `close`. Source CLI, packed-tarball CLI, isolated skill rehearsal, throw-away zero-knowledge flow, full-check same-machine regression, and real Drive test completed Adam publish → Jay inbox → Jay consume → Jay reply → Adam inbox → Adam consume → close flow with no pending items at the end. Real Drive evidence: Adam packet `20260526T173931Z__drive_sync_check`;Jay reply `20260526T175057Z__drive_sync_reply`;final inbox checks returned no pending items for Adam or Jay. Formal 🟡 外發前檢 found and fixed package-facing example drift in `resources/protocol/templates/ack.json.example` and `examples/demo-agent-{a,b}/dev/rules/aps-bridge.md`;DevTools HTML screenshots were captured under `dev/qc/evidence/2026-05-26-release-check-html/`;full-check report is `dev/qc/2026-05-26-aps-full-audit.md`. Published npm latest 0.1.1 still only guarantees `bridge-pack`;this local 0.2.0 candidate is not yet published.
+
+Prior release state: `@adamchanadam/aps` v0.1.1 is published and verified as npm latest;release commit `838d85a` and tag `v0.1.1` are pushed;latest local closeout commit is `5fe2b31`;GitHub release is live at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.1.1;GitHub Pages `docs/index.html` returned HTTP 200 and contains the v0.1.1 install wording.
 
 Codex global MCP config now includes `chrome-devtools` (`chrome-devtools-mcp@latest`, usage statistics disabled) and `context7` (`@upstash/context7-mcp`, no API key stored). They may require a new Codex session or Codex Desktop restart before appearing in the active tool list.
 
@@ -9,7 +11,7 @@ Agent Handoff Kit v0.3.11 status: main APS workspace doctor passes after this wr
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md(含 2026-05-26 wrap-up entry at top)
+3. dev/SESSION_LOG.md(含 2026-05-26 full-check entry at top)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/qc/2026-05-22-zero-knowledge-funnel-audit.md (Phase X-3 spec source)
@@ -26,7 +28,7 @@ Voice hard rule (per memory feedback-doc-voice + feedback-plain-language):所有
 
 Documentation governance hard rule (per S10 Adam principle):HTML 內(site-nav / body callout / body table)不 link 任何 .md 檔(瀏覽器顯示 plain text,broken UX);如要 reference .md 用 plain `<span class="path">` 顯示。.md 屬 AI / 維護者層 spec source。
 
-Next active objective: **Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow first draft + dialogue script first pass**。Other pending:real user-flow test in a throw-away folder using v0.1.1 install path;Phase X-5 Layer D document repositioning;real cross-machine Drive round-trip evidence.
+Next active objective: **commit the local 0.2.0 candidate and the 2026-05-26 full-check report with real Drive evidence if Adam authorizes;only after that decide push / release / npm publish**。Other pending:Phase X-5 Layer D document repositioning.
 
 User-facing entry: README.md + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。設置教學 walkthrough 已對齊 npm package 0.1.1 path;讀者先執行 `npm install --save-dev @adamchanadam/aps`,再執行 `npx aps bridge-pack > dev/rules/aps-bridge.md` 取得 fixture。Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
 

@@ -6,6 +6,7 @@ desktop.ini
 # Editors / IDE
 .vscode/
 .idea/
+node_modules/
 *.swp
 *~
 
@@ -20,3 +21,4 @@ desktop.ini
 
 # Temp output files (GENERIC_OPERATIONAL_RUNBOOK §5i convention)
 _*.txt
+*.tgz

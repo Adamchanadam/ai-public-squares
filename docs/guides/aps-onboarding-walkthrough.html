@@ -641,7 +641,7 @@
   </ul>
 
   <div class="callout warn">
-    <strong>Bridge Pack fixture 仍在前期測試階段</strong>。0.1.1 初版可先安裝 <code>@adamchanadam/aps</code>,再用 <code>npx aps bridge-pack &gt; dev/rules/aps-bridge.md</code> 取 fixture。此命令只提供橋接規則包範本;<code>init</code> 一鍵設置與日常對話流程仍在建構中。
+    <strong>前期測試邊界</strong>。0.2.0 pre-release 可先安裝 <code>@adamchanadam/aps</code>,再用 <code>npx aps bridge-pack &gt; dev/rules/aps-bridge.md</code> 取 fixture,亦可試用 <code>npx aps init</code> 技能安裝、初始 Hub skeleton、Bridge Pack 與 starter pack 生成。CLI 已有最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。自然語言日常操作與補救流程仍未完整產品化。
   </div>
 
   <div class="callout warn">
@@ -879,7 +879,7 @@ cd C:\Work\branding_2026</pre>
         <p>此步之目的:將 Bridge Pack fixture(MVP 驗證之 canonical 版本)寫入你工作目錄之 <code>dev/rules/aps-bridge.md</code>,並修改 Identity section 為你部機之實際值。Bridge Pack 為一份 markdown 規則檔,教 Agent Adam 如何讀寫 Hub。</p>
 
         <div class="callout warn">
-          <strong>前期測試邊界</strong>:0.1.1 初版可先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps bridge-pack</code> 取得 fixture。若你已 clone 本 repo,亦可用 <code>node bin/aps.js bridge-pack</code> 做同一件事。
+          <strong>前期測試邊界</strong>:0.2.0 pre-release 可先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps bridge-pack</code> 取得 fixture,或用 <code>npx aps init --dry-run</code> 檢查技能安裝與 Hub skeleton 生成計劃。若你已 clone 本 repo,亦可用 <code>node bin/aps.js publish</code> / <code>node bin/aps.js inbox</code> / <code>node bin/aps.js consume</code> / <code>node bin/aps.js close</code> 在一次性 Hub 測試最小往返。
         </div>
 
         <p><strong>2.1 將以下 prompt 貼予 Agent Adam</strong></p>

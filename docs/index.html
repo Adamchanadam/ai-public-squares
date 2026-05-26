@@ -330,15 +330,15 @@
   <h1>AI Public Squares</h1>
   <p class="subtitle">兩個人,各自在自己的電腦上,以 AI 共同製作一份品牌指引、撰寫一份報告、設計一個項目 — 但檔案來去往返、上下文重複交代?</p>
   <div class="meta">
-    <span class="badge ok">試行版 0.1.1</span>
-    <span class="badge pending">init 後台仍在建構</span>
+    <span class="badge ok">試行版 0.2.0</span>
+    <span class="badge pending">init 技能安裝器試行中</span>
     <span>建立 2026-05-20</span>
     <span>最新更新 2026-05-26</span>
   </div>
 </header>
 
 <div class="callout warn">
-  <strong>⚠️ 前期測試階段(pre-release)</strong> — 本工具仍處於早期建構期。npm 套件 <code>@adamchanadam/aps</code> 的 0.1.1 初版提供 <code>bridge-pack</code> fixture 輸出;<code>init</code> 命令仍為佔位符,完整對話流程尚未落地;真實跨機往返尚未驗證。適合觀察、提出建議、留下回饋;不建議用於正式生產或不可中斷的重要流程。
+  <strong>⚠️ 前期測試階段(pre-release)</strong> — 本工具仍處於早期建構期。0.2.0 pre-release 開始支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack 與 starter pack;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。自然語言日常操作與補救流程仍未完整產品化。適合觀察、提出建議、留下回饋;不建議用於正式生產或不可中斷的重要流程。
 </div>
 
 <section>
@@ -384,7 +384,7 @@
   <h3>第二項 — 基本前提</h3>
   <ul>
     <li>電腦需安裝 Google Drive 桌面版(前往 <a href="https://www.google.com/drive/download/" class="site-nav__link">https://www.google.com/drive/download/</a> 下載),登入之後將共享資料夾設為「離線存取」</li>
-    <li>電腦需安裝 Claude Code(前往 <a href="https://claude.com/code" class="site-nav__link">https://claude.com/code</a> 下載)</li>
+    <li>電腦需安裝 Claude Code(前往 <a href="https://claude.com/code" class="site-nav__link">https://claude.com/code</a> 下載)或 Codex</li>
     <li>與你的協作夥伴之間能透過 WhatsApp 通訊</li>
   </ul>
   <p>以上任何一項尚未完成?各個官方網頁均有逐步指引。先安裝完成,再回來執行下一步。</p>
@@ -392,14 +392,14 @@
 
 <section>
   <h2>目前可以怎樣試</h2>
-  <p class="lede">一鍵安裝仍未完成。下方命令是目標入口,不是目前可完成設置的安裝器。</p>
+  <p class="lede">完整一鍵跨機設置仍未完成。下方命令是目標入口,本地開發版已推進到技能安裝器與初始 Hub skeleton 生成器階段。</p>
   <div class="install-block"><span class="prompt">$</span>npm install --save-dev @adamchanadam/aps<br><span class="prompt">$</span>npx aps init</div>
   <ol class="step-list">
     <li>目前可先閱讀本頁,理解 APS 解決的跨機協作問題。</li>
     <li>如想看細節,可前往下方「完整設置教學」了解手動流程。</li>
-    <li>先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps bridge-pack</code> 取得 Bridge Pack fixture;若你是維護者,亦可 clone repo 後在本地執行 <code>node bin/aps.js init</code> 或 <code>node bin/aps.js bridge-pack</code> 測試 CLI 試行版。</li>
+    <li>先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps bridge-pack</code> 取得 Bridge Pack fixture;若你是維護者,亦可 clone repo 後在本地執行 <code>node bin/aps.js init --dry-run</code> 或 <code>node bin/aps.js bridge-pack</code> 測試 CLI 試行版。</li>
   </ol>
-  <p>目標體驗完成後,工具會詢問數個問題:使用哪個 Google Drive 資料夾作為共享、項目名稱、協作夥伴的識別名等。設置完成後,使用者可在 Claude Code 對話中以自然語句與 AI 溝通:</p>
+  <p>目標體驗完成後,工具會先把 APS 技能安裝到 Claude Code / Codex,再建立 Hub skeleton、Bridge Pack 與 starter pack。設置完成後,使用者可在 AI 對話中以自然語句與工具溝通:</p>
   <ul>
     <li>「我有嘢俾 Jay」 → 工具自動將內容打包,生成一句 WhatsApp 通知句供你發送</li>
     <li>「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦</li>
@@ -409,7 +409,7 @@
     <strong>最終目標是全程無需先閱讀任何技術文檔。</strong>目前仍處於前期測試階段,公開頁先呈現方向與手動參考。
   </div>
   <div class="callout warn">
-    <strong>目前狀態</strong>:<code>bridge-pack</code> fixture 可由 npm 取得;<code>aps init</code> 的後台仍在建構中。請勿把本頁當成已可生產使用的安裝說明。
+    <strong>目前狀態</strong>:0.2.0 pre-release 提供 <code>bridge-pack</code>、<code>aps init</code> 技能安裝、初始 Hub skeleton、Bridge Pack 與 starter pack 生成。CLI 已有最小 <code>publish</code> / <code>inbox</code> / <code>consume</code> / <code>close</code> 指令,並通過本地一次性 Hub 往返測試與一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。但仍未等同自然語言日常操作或補救流程已產品化。請勿把本頁當成已可生產使用的安裝說明。
   </div>
 </section>
 
@@ -463,10 +463,10 @@
   <ul class="status-list">
     <li><span class="mark done">✓</span><span>協定設計與 MVP 在同一部電腦上跑通(2026-05-20)</span></li>
     <li><span class="mark done">✓</span><span>完整的手動設置教學(技術參考,供深入了解使用)</span></li>
-    <li><span class="mark done">✓</span><span>npm package 初版 — <code>@adamchanadam/aps</code> 0.1.1 提供 <code>bridge-pack</code> fixture</span></li>
-    <li><span class="mark wait">⏳</span><span><code>npx aps init</code> 仍為佔位功能,尚未完成一鍵設置</span></li>
-    <li><span class="mark wait">⏳</span><span><code>aps init</code> 的對話流程後台仍在建構中</span></li>
-    <li><span class="mark wait">⏳</span><span>Claude 自動帶你完成的日常流程(出包 / 撿包 / 出錯處理)仍在建構中</span></li>
+    <li><span class="mark done">✓</span><span>npm package 0.2.0 pre-release — <code>@adamchanadam/aps</code> 提供 <code>bridge-pack</code>、<code>init</code>、Hub skeleton 與最小 CLI 往返</span></li>
+    <li><span class="mark wait">⏳</span><span><code>npx aps init</code> 正在建成 Claude Code / Codex 技能安裝器與初始 Hub skeleton 生成器,尚未完成一鍵跨機設置</span></li>
+    <li><span class="mark done">✓</span><span>本地 CLI 最小往返已跑通:<code>publish</code> → <code>inbox</code> → <code>consume</code> → reply → <code>close</code></span></li>
+    <li><span class="mark wait">⏳</span><span>AI 自動帶你完成的自然語言日常流程(出包 / 撿包 / 出錯處理)仍在建構中</span></li>
     <li><span class="mark wait">⏳</span><span>實際兩部電腦跨機運作(等對話流程完成之後試行)</span></li>
   </ul>
   <p style="margin-top:14px;">完整建構路線見 <span class="path">dev\qc\2026-05-22-zero-knowledge-funnel-audit.md</span>(AI / 維護者層 .md 檔;目前以技術術語為主,正在重寫對齊讀者)。</p>
@@ -526,7 +526,7 @@
 </section>
 
 <footer>
-  AI Public Squares · 試行版 0.1.1 · 最新更新 2026-05-26
+  AI Public Squares · 試行版 0.2.0 · 最新更新 2026-05-26
 </footer>
 
 </main>

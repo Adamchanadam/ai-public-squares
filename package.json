@@ -1,7 +1,7 @@
 {
   "name": "@adamchanadam/aps",
-  "version": "0.1.1",
-  "description": "Set up two AI agents on two machines to collaborate over a shared Google Drive folder. Cantonese / English aware.",
+  "version": "0.2.0",
+  "description": "Install APS skills for Claude Code and Codex, then set up two AI agents to collaborate over a shared Google Drive folder. Cantonese / English aware.",
   "bin": {
     "aps": "bin/aps.js"
   },
@@ -12,12 +12,14 @@
     "bin/",
     "skills/",
     "examples/",
+    "resources/",
     "README.md",
     "LICENSE"
   ],
   "keywords": [
     "ai-agent",
     "claude-code",
+    "codex",
     "cross-machine",
     "collaboration",
     "google-drive",
