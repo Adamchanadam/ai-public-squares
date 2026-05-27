@@ -70,7 +70,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 正在記錄本項目的 APS 接駁資料。
 ```
 
-0.2.3 pre-release 候選版會隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在完整設置時寫入 Hub skeleton、Bridge Pack、starter pack 與 `.aps/config.json`,令後續日常命令毋須重複輸入 Hub / project / agent 長參數。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
+0.2.3 pre-release 已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在完整設置時寫入 Hub skeleton、Bridge Pack、starter pack 與 `.aps/config.json`,令後續日常命令毋須重複輸入 Hub / project / agent 長參數。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
 
 > 目前執行環境找不到 PROTOCOL source 檔案。這一步不能假裝完成。需要先確認 package 是否完整安裝,或由已驗證的 Hub template source 讀取。
 
@@ -105,5 +105,5 @@ npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
 - 不承諾直接發 WhatsApp。
 - 不承諾更改雲端硬碟分享權限。
 - 不承諾對方電腦已完成設置。
-- 不承諾自然語言日常操作或補救流程已完成;只可說專案已完成一次 Adam ↔ Jay 真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。0.2.3 pre-release 候選版已提供互動式設置、`revise`、`withdraw`、`doctor` 與短命令日用流程;本機互動式設定回歸已通過,但仍需 Adam ↔ Jay 真機日常演練。
+- 不承諾自然語言日常操作或補救流程已完成;只可說專案已完成一次 Adam ↔ Jay 真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。0.2.3 pre-release 已提供互動式設置、`revise`、`withdraw`、`doctor` 與短命令日用流程;本機互動式設定回歸與全面檢已通過,但仍需 Adam ↔ Jay 真機日常演練。
 - 不承諾 PROTOCOL source 可用;實作時必須先驗證 package 內 `resources/protocol/` 存在。
