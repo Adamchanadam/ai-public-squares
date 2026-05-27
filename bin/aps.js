@@ -1092,9 +1092,10 @@ if (subcommand === 'inbox') {
       for (const item of pending) {
         console.log(`- ${item.packetId} v${item.version} | scope:${item.scope} | items:${item.items.join(',') || '(none)'}`);
         console.log(`  packet: ${item.packetPath}`);
+        console.log(`  accept command: npx aps consume --packet-id ${item.packetId} --version ${item.version} --result "<what you did>"`);
       }
       console.log('');
-      console.log('Next: read the packet, then run `npx aps consume ... --result "<what you did>"` only after you decide to accept it.');
+      console.log('Next: read the packet first. Run the accept command only after you decide to accept that exact version.');
     }
     process.exit(0);
   } catch (err) {
