@@ -178,6 +178,13 @@ function validateSnakeCase(label, value) {
   return null;
 }
 
+function validateNoPlaceholder(label, value) {
+  if (/[<>[\]]/.test(value) || value.includes('...')) {
+    return `${label} still looks like a placeholder: '${value}'. Replace it with your real value before running the command.`;
+  }
+  return null;
+}
+
 function packetTimestamp(date = new Date()) {
   return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
 }
@@ -665,6 +672,7 @@ if (subcommand === 'init') {
   }
   if (setupFlags.length === 5) {
     const errors = [
+      validateNoPlaceholder('--hub-root', setupValues.hubRoot),
       validateSnakeCase('--project', setupValues.projectSlug),
       validateSnakeCase('--agent-id', setupValues.agentId),
       validateSnakeCase('--other-agent-id', setupValues.otherAgentId),

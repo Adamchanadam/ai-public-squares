@@ -393,12 +393,40 @@
 <section>
   <h2>目前可以怎樣試</h2>
   <p class="lede">npm latest 0.2.2 pre-release 的主路徑是先安裝套件,再用 <code>aps init</code> 檢查與建立初始 Hub skeleton、本地設定與短命令日用流程。0.2.2 已提供 <code>revise</code>、<code>withdraw</code> 與 <code>doctor</code>。正式跨機使用前,每個真實項目仍要各自驗證 Google Drive 同步。</p>
-  <div class="install-block"><span class="prompt">$</span>npm install --save-dev @adamchanadam/aps<br><span class="prompt">$</span>npx aps init --dry-run<br><span class="prompt">$</span>npx aps init --hub-root "G:\...\AI_Public_Squares" --project branding_2026 --agent-id adam --other-agent-id jay --role A</div>
+  <div class="install-block"><span class="prompt">$</span>npm install --save-dev @adamchanadam/aps<br><span class="prompt">$</span>npx aps init --dry-run<br><span class="prompt">$</span>npx aps init --hub-root "[你的 AI_Public_Squares 共享資料夾實際路徑]" --project [項目代號] --agent-id [你的 agent id] --other-agent-id [對方 agent id] --role A</div>
   <ol class="step-list">
-    <li>先準備四個值:<code>hub-root</code>、<code>project</code>、<code>agent-id</code>、<code>other-agent-id</code>。若你是發起方,通常用 <code>--role A</code>;對方用 <code>--role B</code>。</li>
+    <li>先準備四個值。方括號只是 placeholder,不可照抄;必須換成你們自己的實際值。</li>
     <li>先執行 <code>npx aps init --dry-run</code>,確認技能安裝位置與 Hub 設置計劃,此步不寫檔。</li>
     <li>確認無誤後才執行完整 <code>npx aps init --hub-root ...</code> 命令。0.2.2 會同時保存 <code>.aps/config.json</code>;之後日常命令可以縮短為 <code>npx aps inbox</code>、<code>npx aps doctor</code>、<code>npx aps publish --topic ... --body ...</code>。</li>
   </ol>
+  <table class="params">
+    <thead>
+      <tr><th>值</th><th>你要填甚麼</th><th>例子</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>hub-root</code></td>
+        <td>Google Drive 桌面版同步到本機的共享資料夾實際路徑。請在檔案總管打開該資料夾,複製地址列路徑;不要輸入 <code>G:\...\AI_Public_Squares</code> 或任何含 <code>...</code> 的省略寫法。</td>
+        <td><code>G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares</code></td>
+      </tr>
+      <tr>
+        <td><code>project</code></td>
+        <td>這次協作項目的短代號。只用英文小寫、數字、底線;不要用中文或空格。第一次測試可用新的測試名。</td>
+        <td><code>aps_uat</code></td>
+      </tr>
+      <tr>
+        <td><code>agent-id</code></td>
+        <td>你這邊 AI 的名稱。發起方通常用自己的短名。</td>
+        <td><code>adam</code></td>
+      </tr>
+      <tr>
+        <td><code>other-agent-id</code></td>
+        <td>對方那邊 AI 的名稱。對方設置時會和你的 <code>agent-id</code> 對調。</td>
+        <td><code>jay</code></td>
+      </tr>
+    </tbody>
+  </table>
+  <p>若你只是單機試跑,可先用一個本機測試資料夾做 <code>hub-root</code>;若你要和 Jay 真正跨機試用,必須使用雙方都可同步到的 Google Drive 共享資料夾。</p>
   <p>設置完成後,工具會把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack 與 starter pack。自然語言日常操作仍在硬化中;底層 CLI 已可支援以下方向:</p>
   <ul>
     <li>「我有嘢俾 Jay」 → 工具自動將內容打包,生成一句 WhatsApp 通知句供你發送</li>

@@ -21,8 +21,19 @@
 ```
 npm install --save-dev @adamchanadam/aps
 npx aps init --dry-run
-npx aps init --hub-root "G:\...\AI_Public_Squares" --project branding_2026 --agent-id adam --other-agent-id jay --role A
+npx aps init --hub-root "[你的 AI_Public_Squares 共享資料夾實際路徑]" --project [項目代號] --agent-id [你的 agent id] --other-agent-id [對方 agent id] --role A
 ```
+
+上方方括號只是 placeholder,不可照抄。四個值的意思如下:
+
+| 值 | 你要填甚麼 | 例子 |
+|---|---|---|
+| `hub-root` | Google Drive 桌面版同步到本機的共享資料夾實際路徑。請在檔案總管打開該資料夾,複製地址列路徑;不要輸入 `G:\...\AI_Public_Squares` 或任何含 `...` 的省略寫法。 | `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares` |
+| `project` | 這次協作項目的短代號。只用英文小寫、數字、底線;不要用中文或空格。第一次測試可用新的測試名。 | `aps_uat` |
+| `agent-id` | 你這邊 AI 的名稱。發起方通常用自己的短名。 | `adam` |
+| `other-agent-id` | 對方那邊 AI 的名稱。對方設置時會和你的 `agent-id` 對調。 | `jay` |
+
+若只是單機試跑,可先用一個本機測試資料夾做 `hub-root`;若要和 Jay 真正跨機試用,必須使用雙方都可同步到的 Google Drive 共享資料夾。
 
 > **目前狀態**:npm latest 0.2.2 pre-release 提供 `bridge-pack`、`init` 技能安裝器、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並新增 `revise` / `withdraw` / `doctor`;本機全面檢已通過,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。0.2.2 會保存 `.aps/config.json` 專案設定,設置一次後可用 `npx aps inbox`、`npx aps doctor`、`npx aps publish --topic ... --body ...` 等短命令日用。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
 
