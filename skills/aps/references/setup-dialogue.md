@@ -70,7 +70,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 正在記錄本項目的 APS 接駁資料。
 ```
 
-0.2.0 pre-release package 會隨包提供 `resources/protocol/PROTOCOL.md` 與 `resources/protocol/templates/`。若執行環境缺少 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
+0.2.1 pre-release package 會隨包提供 `resources/protocol/PROTOCOL.md` 與 `resources/protocol/templates/`。若執行環境缺少 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
 
 > 目前執行環境找不到 PROTOCOL source 檔案。這一步不能假裝完成。需要先確認 package 是否完整安裝,或由已驗證的 Hub template source 讀取。
 
@@ -105,5 +105,5 @@ npx aps publish --hub-root "<hub_root>" --project <project_slug> --from <own_age
 - 不承諾直接發 WhatsApp。
 - 不承諾更改雲端硬碟分享權限。
 - 不承諾對方電腦已完成設置。
-- 不承諾自然語言日常操作或補救流程已完成;只可說 0.2.0 已完成一次 Adam ↔ Jay 真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。本地 v0.2.1 候選版可測 `revise`、`withdraw` 與 `doctor`;未發佈前不得對外聲稱 npm latest 已有。
+- 不承諾自然語言日常操作或補救流程已完成;只可說 0.2.0 已完成一次 Adam ↔ Jay 真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。0.2.1 pre-release 已提供 `revise`、`withdraw` 與 `doctor`,但新命令只完成本機全面檢,未完成 Jay 真機新命令演練。
 - 不承諾 PROTOCOL source 可用;實作時必須先驗證 package 內 `resources/protocol/` 存在。

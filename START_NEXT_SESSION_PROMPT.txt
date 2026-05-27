@@ -1,8 +1,8 @@
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template;not bound to any specific project;published as `@adamchanadam/aps` npm package + GitHub repo Adamchanadam/ai-public-squares — **public since 2026-05-23**;GitHub Pages enabled at https://adamchanadam.github.io/ai-public-squares/).
 
-Current closeout (2026-05-27): `@adamchanadam/aps` v0.2.0 is published to npm and verified as latest, while the project remains ⚠️ 前期測試階段(pre-release). Release commit `47bf2d29c8bae7339730d9b655dadbf0b8da64da` and tag `v0.2.0` are pushed;GitHub release is live as a pre-release at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.0;GitHub Pages returned HTTP 200 and contains `0.2.0` plus pre-release wording. Local workspace is now `package.json` v0.2.1 candidate committed at current `HEAD`, not pushed / released / published. Local 0.2.1 candidate keeps `init`, Hub skeleton / Bridge Pack / starter pack generation, and `publish` / `inbox` / `consume` / `close`, and adds `revise`, `withdraw`, and read-only `doctor`. Disposable local smoke test passed `publish → inbox → revise → inbox → withdraw → inbox → publish → consume → close → doctor`;`npm pack --dry-run --json` now reports `@adamchanadam/aps@0.2.1` with the expected 14 files. Published package install probe for 0.2.0 passed with `npm install --save-dev @adamchanadam/aps` then `npx aps`;one-off `npx @adamchanadam/aps@0.2.0 --help` remains unreliable and is not the documented path. Public new-user entry and walkthrough wording now points readers to the 0.2.0 CLI-first `init` setup path, labels 0.2.1 commands as unpublished candidate work, and keeps natural-language daily use / recovery as pre-release hardening.
+Current closeout (2026-05-27): `@adamchanadam/aps` v0.2.1 is published to npm and verified as latest, while the project remains ⚠️ 前期測試階段(pre-release). Release commit `d9dd1aa1acf2b2f5c863056382543922c5c0aeb4` and tag `v0.2.1` are pushed;GitHub release is live as a pre-release at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.1. Published 0.2.1 keeps `init`, Hub skeleton / Bridge Pack / starter pack generation, and `publish` / `inbox` / `consume` / `close`, and adds `revise`, `withdraw`, and read-only `doctor`. Disposable local smoke test passed `publish → inbox → revise → inbox → withdraw → inbox → publish → consume → close → doctor`;`npm pack --dry-run --json` reports `@adamchanadam/aps@0.2.1` with the expected 14 files. Published package path remains `npm install --save-dev @adamchanadam/aps` then `npx aps`;one-off version-qualified `npx @adamchanadam/aps@<version> --help` remains unreliable and is not the documented path. Public new-user entry and walkthrough wording points readers to the CLI-first `init` setup path, while natural-language daily use / recovery remains pre-release hardening.
 
-Prior release state: v0.1.1 remains the previous historical release;v0.2.0 is the current npm latest and current GitHub pre-release.
+Prior release state: v0.1.1 and v0.2.0 remain historical releases;v0.2.1 is the current npm latest and current GitHub pre-release.
 
 Codex global MCP config now includes `chrome-devtools` (`chrome-devtools-mcp@latest`, usage statistics disabled) and `context7` (`@upstash/context7-mcp`, no API key stored). They may require a new Codex session or Codex Desktop restart before appearing in the active tool list.
 
@@ -11,7 +11,7 @@ Agent Handoff Kit v0.3.11 status: main APS workspace doctor passes after this wr
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md(含 2026-05-26 local 0.2.1 candidate entry at top)
+3. dev/SESSION_LOG.md(含 2026-05-27 0.2.1 publish entry at top)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/qc/2026-05-22-zero-knowledge-funnel-audit.md (Phase X-3 spec source)
@@ -28,8 +28,8 @@ Voice hard rule (per memory feedback-doc-voice + feedback-plain-language):所有
 
 Documentation governance hard rule (per S10 Adam principle):HTML 內(site-nav / body callout / body table)不 link 任何 .md 檔(瀏覽器顯示 plain text,broken UX);如要 reference .md 用 plain `<span class="path">` 顯示。.md 屬 AI / 維護者層 spec source。
 
-Next active objective: **decide whether to push / create GitHub pre-release / npm publish the release-checked local 0.2.1 candidate**。Pending:natural-language daily operation and recovery hardening;auto-update mechanism;per-project Drive verification for any new real project.
+Next active objective: **verify post-push GitHub Pages 0.2.1 wording, then continue pre-release hardening**。Pending:natural-language daily operation and recovery hardening;auto-update mechanism;per-project Drive verification for any new real project.
 
-User-facing entry: README.md + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。Current public install path: first run `npm install --save-dev @adamchanadam/aps`, then run `npx aps ...`;npm latest 0.2.0 remains pre-release, while local 0.2.1 candidate is not published. Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
+User-facing entry: README.md + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。Current public install path: first run `npm install --save-dev @adamchanadam/aps`, then run `npx aps ...`;npm latest 0.2.1 remains pre-release. Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.

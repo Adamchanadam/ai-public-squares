@@ -21,7 +21,7 @@ This plan remains the maintainer-level protocol and onboarding specification. Fi
 
 The public walkthrough at `docs/guides/aps-onboarding-walkthrough.html` is the full human-readable deep reference. It is useful for auditing, teaching, and manual fallback, but it is not meant to be the only first-user path once the skill is installed.
 
-As of the local v0.2.1 candidate, the CLI surface covers setup plus `publish`, `revise`, `inbox`, `consume`, `withdraw`, `close`, and read-only `doctor`. The npm latest remains governed by the published release state until a later publish happens.
+As of v0.2.1 pre-release, the CLI surface covers setup plus `publish`, `revise`, `inbox`, `consume`, `withdraw`, `close`, and read-only `doctor`. Natural-language operation and recovery remain pre-release hardening work.
 
 ---
 

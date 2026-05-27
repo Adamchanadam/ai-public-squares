@@ -2,7 +2,7 @@
 
 > **⚠️ 前期測試階段(pre-release)**
 >
-> 本工具仍處於早期建構期。npm latest 0.2.0 pre-release 已支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack 與 starter pack;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。本工作樹正在準備 0.2.1 候選,新增修訂、撤回與只讀診斷命令;未發佈前 npm latest 未包含這三項。自然語言日常操作與補救流程仍未完整產品化。
+> 本工具仍處於早期建構期。npm latest 0.2.1 pre-release 已支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack 與 starter pack;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。0.2.1 新增修訂、撤回與只讀診斷命令。自然語言日常操作與補救流程仍未完整產品化。
 >
 > **適合**:觀察、提出建議、留下回饋、追蹤建構進度。
 > **不適合**:正式生產用途,或依賴於不可中斷的重要流程。
@@ -23,7 +23,7 @@ npm install --save-dev @adamchanadam/aps
 npx aps init
 ```
 
-> **目前狀態**:npm latest 0.2.0 pre-release 提供 `bridge-pack`、`init` 技能安裝器、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並通過本地一次性 Hub 往返測試與一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。本工作樹 0.2.1 候選已新增 `revise` / `withdraw` / `doctor`,但尚未 npm publish。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
+> **目前狀態**:npm latest 0.2.1 pre-release 提供 `bridge-pack`、`init` 技能安裝器、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並新增 `revise` / `withdraw` / `doctor`;本機全面檢已通過,0.2.0 release scope 亦完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
 
 ---
 
@@ -55,10 +55,10 @@ npx @adamchanadam/agent-handoff-kit init
 
 ## 目前可以怎樣試
 
-npm latest 0.2.0 仍屬前期測試版本,但已可用 CLI 跑完整設置與最小往返。本工作樹另有 0.2.1 候選新增修訂、撤回與只讀診斷命令。你可以做三件事:
+npm latest 0.2.1 仍屬前期測試版本,但已可用 CLI 跑完整設置、最小往返、修訂、撤回與只讀診斷。你可以做三件事:
 
 1. 閱讀本 repo,理解 APS 想解決的跨機協作問題。
-2. 參考下方「想深入了解」中的設置教學,照 0.2.0 CLI 主路徑完成首次設置。
+2. 參考下方「想深入了解」中的設置教學,照 0.2.1 CLI 主路徑完成首次設置。
 3. 先執行 `npm install --save-dev @adamchanadam/aps`,再用 `npx aps init --dry-run` 預覽會寫入哪些位置;確認後用 `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B` 建立 skill、Hub skeleton、Bridge Pack 與 starter pack。
 
 目前可用路徑是:使用者在自己的項目資料夾內執行 `npx aps init`,先把 APS 技能安裝到 Claude Code / Codex,再建立 Hub skeleton、Bridge Pack 與 starter pack。設置完成後,底層 CLI 已支援發佈、收件、消化、回覆與收結;自然語言日常體驗仍在打磨中:

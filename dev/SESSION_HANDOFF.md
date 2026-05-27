@@ -1,6 +1,6 @@
 # Session Handoff
 
-Last Updated: 2026-05-27 (local 0.2.1 candidate committed and formal 外發前檢 passed; project remains ⚠️ pre-release)
+Last Updated: 2026-05-27 (`@adamchanadam/aps` 0.2.1 pre-release published and read back; project remains ⚠️ pre-release)
 
 <!-- ack:section:durable-anchors -->
 ## Durable Anchors
@@ -11,7 +11,7 @@ Stable facts that should survive across sessions. Update only when they change, 
 2. Product / system identity: AI Public Squares (formerly "Agent Public Square") — a cross-machine collaboration protocol for two AI agents working on the same project, distributed as an npm package (`@adamchanadam/aps`, Apache-2.0)。Uses a Google-Drive-synced Hub Root with single-writer lanes, immutable versioned packets, an append-only ledger, and a thin Bridge Pack that wires inbox detection into each agent's agent-handoff-kit startup。Current verified package path: `npm install --save-dev @adamchanadam/aps`, then `npx aps init --dry-run`, then `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B` for pre-release setup。
 3. Governance model: Agent Handoff Kit v0.3.11 managed-core block at `AGENTS.md`。External skill flows, subagent plans, and demo-workspace closeouts are subordinate evidence per AGENTS.md §2 and §5;only the active project root's kit persistence completes a task。
 4. Source-of-truth ownership: this workspace owns the APS design + implementation plan + verification report + project entry HTML + README + npm package source (`bin/aps.js`) + zero-knowledge funnel audit roadmap;the Drive Hub at `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\` owns runtime `PROTOCOL.md` + templates + lane data + CHANGELOG;the two Demo Agent workspaces (`C:\Users\adam\_claude_desktop\Demo_Agent_{Adam,Jay}_Public_Squares\`) own their per-agent Bridge Pack and round-trip session evidence。GitHub remote `origin` at `https://github.com/Adamchanadam/ai-public-squares.git` (public,Apache-2.0)。
-5. Release / publish boundary: GitHub repo public since 2026-05-23;GitHub Pages enabled (`Settings → Pages → Source: Deploy from a branch, Branch: main, Folder: / (root)`)。npm `@adamchanadam/aps` 0.2.0 已 publish 並驗證 latest = 0.2.0;GitHub release `v0.2.0` 已建立為 pre-release。Published 0.2.0 includes `bridge-pack`, `init` skill installer for Claude Code / Codex, initial Hub skeleton / Bridge Pack / starter pack generation, and minimal CLI `publish` / `inbox` / `consume` / `close` round-trip。Local package.json is now 0.2.1 candidate with `revise`, `withdraw`, and read-only `doctor`;the current local HEAD records the candidate, but it is not pushed, tagged, released, or published yet。Project remains ⚠️ pre-release: natural-language daily use and recovery orchestration are not production-complete;each real project still needs its own Drive verification。
+5. Release / publish boundary: GitHub repo public since 2026-05-23;GitHub Pages enabled (`Settings → Pages → Source: Deploy from a branch, Branch: main, Folder: / (root)`)。npm `@adamchanadam/aps` 0.2.1 已 publish 並驗證 latest = 0.2.1;tag `v0.2.1` 已推送並指向 `d9dd1aa1acf2b2f5c863056382543922c5c0aeb4`;GitHub release `v0.2.1` 已建立為 pre-release。Published 0.2.1 includes `bridge-pack`, `init` skill installer for Claude Code / Codex, initial Hub skeleton / Bridge Pack / starter pack generation, minimal CLI `publish` / `inbox` / `consume` / `close` round-trip, plus `revise`, `withdraw`, and read-only `doctor`。Project remains ⚠️ pre-release: natural-language daily use and recovery orchestration are not production-complete;each real project still needs its own Drive verification。
 
 <!-- ack:section:closeout-reconciled-state -->
 ## Closeout-Reconciled State
@@ -23,10 +23,10 @@ This is the current-state area. At every full closeout, rewrite or explicitly co
 <!-- ack:section:current-baseline -->
 ## Current Baseline
 
-1. Project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares` (Windows;git branch `main`;repo public since 2026-05-23;release commit `47bf2d29c8bae7339730d9b655dadbf0b8da64da` pushed;tag `v0.2.0` and GitHub pre-release complete)。
-2. Product / system state: APS MVP complete + zero-knowledge entry work continuing。npm package `@adamchanadam/aps` 0.2.0 is published and verified as latest;published CLI supports `bridge-pack`, `init`, Hub skeleton setup, and minimal `publish` / `inbox` / `consume` / `close` commands。Local 0.2.1 candidate now adds immutable packet `revise`, unconsumed `withdraw`, and read-only Hub `doctor`;local disposable Hub smoke test passed publish → inbox → revise → inbox → withdraw → inbox → publish → consume → close → doctor。`README.md`, `docs/index.html`, `docs/guides/index.html`, and `docs/guides/aps-onboarding-walkthrough.html` now point first-time users to the 0.2.0 CLI-first setup path and mark 0.2.1 as an unpublished candidate。`skills/aps/SKILL.md` has setup, daily publish / inbox / consume / close, and recovery guidance aligned to the current local CLI surface;bundled `skills/aps/references/setup-dialogue.md` states that 0.2.1 candidate commands are not npm latest until publish。S10 documentation governance remains in force:HTML public pages do not link `.md`;`.md` remains AI / maintainer spec substrate。
+1. Project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares` (Windows;git branch `main`;repo public since 2026-05-23;0.2.1 release commit `d9dd1aa1acf2b2f5c863056382543922c5c0aeb4` pushed;tag `v0.2.1` and GitHub pre-release complete)。
+2. Product / system state: APS MVP complete + zero-knowledge entry work continuing。npm package `@adamchanadam/aps` 0.2.1 is published and verified as latest;published CLI supports `bridge-pack`, `init`, Hub skeleton setup, minimal `publish` / `inbox` / `consume` / `close` commands, immutable packet `revise`, unconsumed `withdraw`, and read-only Hub `doctor`。Local disposable Hub smoke test passed publish → inbox → revise → inbox → withdraw → inbox → publish → consume → close → doctor。`README.md`, `docs/index.html`, `docs/guides/index.html`, and `docs/guides/aps-onboarding-walkthrough.html` point first-time users to the CLI-first setup path and keep the project marked as pre-release。`skills/aps/SKILL.md` has setup, daily publish / inbox / consume / close, and recovery guidance aligned to the 0.2.1 CLI surface。S10 documentation governance remains in force:HTML public pages do not link `.md`;`.md` remains AI / maintainer spec substrate。
 3. Governance state: Agent Handoff Kit v0.3.11 managed-core in place。`Demo_Agent_Adam_Public_Squares` and `Demo_Agent_Jay_Public_Squares` both pass v0.3.11 doctor(46 checks)。This main workspace had one prompt-mirror drift before wrap-up;this closeout regenerates `START_NEXT_SESSION_PROMPT.txt` from this handoff and re-runs doctor。
-4. Source-of-truth notes: `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` remains funnel-first build roadmap;`README.md` + `docs/index.html` describe the published 0.2.0 boundary plus local 0.2.1 candidate boundary;`package.json` + `bin/aps.js` are npm CLI source;`examples/demo-agent-{a,b}/dev/rules/aps-bridge.md` are Bridge Pack fixture canonical source shipped in npm tarball;`skills/aps/references/setup-dialogue.md` is the bundled setup wording bank for npm-installed skill runtime;`docs/plans/2026-05-23-aps-skill-dialogue-script.md` remains the repo long-form maintenance draft;`LICENSE` is Apache-2.0。
+4. Source-of-truth notes: `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` remains funnel-first build roadmap;`README.md` + `docs/index.html` describe the published 0.2.1 pre-release boundary;`package.json` + `bin/aps.js` are npm CLI source;`examples/demo-agent-{a,b}/dev/rules/aps-bridge.md` are Bridge Pack fixture canonical source shipped in npm tarball;`skills/aps/references/setup-dialogue.md` is the bundled setup wording bank for npm-installed skill runtime;`docs/plans/2026-05-23-aps-skill-dialogue-script.md` remains the repo long-form maintenance draft;`LICENSE` is Apache-2.0。
 
 <!-- ack:section:task-understanding-summary -->
 ## Task Understanding Summary
@@ -45,13 +45,13 @@ This is the current-state area. At every full closeout, rewrite or explicitly co
 <!-- ack:section:active-objective -->
 ## Active Objective
 
-Current active objective after this pass:**decide whether to push / create GitHub pre-release / npm publish the release-checked local 0.2.1 candidate.** There is no pending 0.2.0 publish decision;0.2.0 is already published as ⚠️ pre-release.
+Current active objective after this pass:**post-publish state synchronization and public readback for 0.2.1, then continue pre-release hardening.** There is no pending 0.2.1 publish decision;0.2.1 is already published as ⚠️ pre-release.
 
 Funnel audit doc (`dev/qc/2026-05-22-zero-knowledge-funnel-audit.md`) 嘅 6 phase build order:
 - ✅ Phase X-1 Layer A entry (README rewrite + docs/index.html rewrite + cross-doc site-nav brand sync) — **done**
-- ✅ Phase X-2 npm package + install path — **0.2.0 pre-release published** with `bridge-pack`, `init`, Hub skeleton, skill installer, and minimal packet CLI
+- ✅ Phase X-2 npm package + install path — **0.2.1 pre-release published** with `bridge-pack`, `init`, Hub skeleton, skill installer, minimal packet CLI, `revise`, `withdraw`, and read-only `doctor`
 - 🔄 Phase X-3 skill setup subflow + dialogue script — **setup + daily-use first pass drafted and published as pre-release** (`skills/aps/SKILL.md` + bundled `skills/aps/references/setup-dialogue.md`;dialogue script aligned to CLI packet folder / outbox / ack model)
-- 🔄 Phase X-4 skill daily-use + recovery subflow — **local 0.2.1 candidate adds CLI `revise`, `withdraw`, and `doctor`;natural-language operation and recovery remain pre-release**
+- 🔄 Phase X-4 skill daily-use + recovery subflow — **0.2.1 npm latest includes CLI `revise`, `withdraw`, and `doctor`;natural-language operation and recovery remain pre-release**
 - ✅ Phase X-5 Layer D doc re-position — walkthrough §1 now tells users they can say `set up APS` / 「教我用 APS」;Phase 4 plan now contains the skill-driven UX cross-reference
 - ⏳ Phase X-6 auto-update mechanism
 
@@ -90,17 +90,18 @@ Record only work actually completed in the current session.
 26. **Post-publish readback completed** — GitHub release readback confirms `isPrerelease=true`;GitHub Pages returned HTTP 200 and contains `0.2.0` plus pre-release wording;published package install probe passed with the documented install path. One-off `npx @adamchanadam/aps@0.2.0 --help` remains unreliable and is not the documented user path。
 27. **Internal document alignment check completed** — post-publish drift scan classified history logs, old audit reports, release notes, governance migration backups, and security-rule phrases as historical / false-positive;current-state fixes were applied to `dev/PROJECT_DECISIONS.md`, `dev/PROJECT_INDEX.md`, `skills/aps/SKILL.md`, `skills/aps/references/setup-dialogue.md`, and `docs/index.html` so they no longer imply that 0.2.0 is unpublished or that no real Drive verification exists。
 28. **Public new-user walkthrough / UX wording corrected** — README, `docs/index.html`, `docs/guides/index.html`, and `docs/guides/aps-onboarding-walkthrough.html` now use the 0.2.0 CLI-first setup path, remove stale manual-first / not-yet-available framing, mark day-to-day use as pre-release trial use, and route correction requests through maintainer / issue flow。
-29. **Local 0.2.1 CLI hardening implemented** — `package.json` is now 0.2.1 candidate;`bin/aps.js` adds `revise`, `withdraw`, and read-only `doctor`;CLI success messages now surface next-step guidance;`.gitignore` ignores `dev/qc/evidence/`;`dev/DOC_SYNC_REGISTRY.md` and `dev/PROJECT_INDEX.md` now include the expanded smoke path。
+29. **0.2.1 CLI hardening implemented and published** — `package.json` is now 0.2.1;`bin/aps.js` adds `revise`, `withdraw`, and read-only `doctor`;CLI success messages now surface next-step guidance;`.gitignore` ignores `dev/qc/evidence/`;`dev/DOC_SYNC_REGISTRY.md` and `dev/PROJECT_INDEX.md` now include the expanded smoke path;npm readback confirms `@adamchanadam/aps` latest = `0.2.1`。
 30. **Layer D repositioning completed locally** — walkthrough §1 now points skill users to `set up APS` / 「教我用 APS」;Phase 4 plan now has a “Skill-driven UX layer” section explaining that the long-form plan is maintainer substrate, not the only first-user path。
+31. **0.2.1 pre-release published** — Adam authorized push / tag / GitHub release / npm publish;`main` was pushed, tag `v0.2.1` was pushed, GitHub release `v0.2.1` was created as a pre-release, and npm `@adamchanadam/aps@0.2.1` was published. Registry readback confirms latest = `0.2.1` with bin `aps` and 14 files。
 
 <!-- ack:section:next-priorities -->
 ## Next Priorities
 
 Per funnel audit roadmap 順序,update for post-S9 mid-session reconcile:
 
-1. **Push / release / npm publish decision for 0.2.1**:formal 🟡 外發前檢 has passed;push / tag / GitHub release / npm publish still require explicit Adam instruction。
-2. **Keep pre-release boundary**:if 0.2.1 is published, mark it as pre-release and keep natural-language daily operation / recovery as hardening work, not production-ready。
-3. **Natural-language daily-use and recovery hardening**:local 0.2.1 adds bottom-level recovery CLI, but skill-mediated natural-language operation still needs more real-use rehearsal before any production claim。
+1. **Post-publish public readback for 0.2.1**:after the state-sync commit is pushed, verify GitHub Pages contains `0.2.1` plus pre-release wording。
+2. **Keep pre-release boundary**:0.2.1 is published, but natural-language daily operation / recovery remains hardening work, not production-ready。
+3. **Natural-language daily-use and recovery hardening**:0.2.1 adds bottom-level recovery CLI, but skill-mediated natural-language operation still needs more real-use rehearsal before any production claim。
 4. **Auto-update mechanism**:`npx aps update` + skill startup auto-check Bridge Pack version can be deferred。
 5. **Per-project Drive verification**:the Adam ↔ Jay true Drive test passed for the maintained test project;new real projects still need their own path / sync / offline-available checks。
 
@@ -125,24 +126,24 @@ Before acting on the next task (Phase X-3 — SKILL.md + setup subflow), read or
 <!-- ack:section:risks-blockers -->
 ## Risks / Blockers
 
-Updated after local 0.2.1 candidate implementation:
+Updated after 0.2.1 pre-release publish:
 
-1. **Project remains ⚠️ pre-release** — 0.2.0 is published, local 0.2.1 is only a candidate, and natural-language daily operation / recovery orchestration are not production-complete。
+1. **Project remains ⚠️ pre-release** — 0.2.1 is published, but natural-language daily operation / recovery orchestration are not production-complete。
 2. **Per-project Drive checks remain required** — Adam ↔ Jay true Drive verification passed for `aps_real_drive_check`;other real projects must still verify their own Hub path, offline availability, and packet propagation。
-3. **0.2.1 commands are not npm latest yet** — `revise`, `withdraw`, and `doctor` are verified locally but not published;public wording must preserve this boundary until npm publish is approved and completed。
+3. **0.2.1 new commands need wider real-use rehearsal** — `revise`, `withdraw`, and `doctor` are npm latest and locally verified, but Jay real-machine 0.2.1 new-command rehearsal was not repeated in this release pass。
 4. **Public history exposure accepted with caveat** — the GitHub repo is public since 2026-05-23. Historical references such as `MPEdu_Plus_Branding`, Adam-specific paths, and scan records are already exposed and treated as accepted historical evidence; a full history rewrite would be destructive and requires Adam's explicit approval。
-5. **Published package install path boundary** — documented path is `npm install --save-dev @adamchanadam/aps` then `npx aps ...`;one-off `npx @adamchanadam/aps@0.2.0 --help` remains unreliable in this Windows/npm environment。
+5. **Published package install path boundary** — documented path is `npm install --save-dev @adamchanadam/aps` then `npx aps ...`;one-off version-qualified `npx @adamchanadam/aps@<version> --help` remains unreliable in this Windows/npm environment。
 6. **Real-runtime kit version remains per-project** — each user's project must be checked by its own `agent-handoff-kit doctor` or skill startup check。
 7. **New MCP availability is next-session dependent** — `chrome-devtools` and `context7` are registered in Codex global MCP config, but the current thread's active tool list may not hot-load them。
 
-Closed or reclassified risks: GitHub repo private state is closed; no remote git is closed; S9 npm-channel decision is implemented via `@adamchanadam/aps`;npm publish timing is closed for 0.2.0 pre-release;GitHub release, Pages verification, npm registry readback, and real Adam ↔ Jay Drive verification are closed for this release scope.
+Closed or reclassified risks: GitHub repo private state is closed; no remote git is closed; S9 npm-channel decision is implemented via `@adamchanadam/aps`;npm publish timing is closed for 0.2.1 pre-release;GitHub release, npm registry readback, and real Adam ↔ Jay Drive verification are closed for this release scope. GitHub Pages readback must be repeated after the final state-sync push.
 
 <!-- ack:section:validation-qc -->
 ## Validation / QC
 
 Current wrap-up QC summary:
 
-- **Package inclusion**: `npm pack --dry-run --json` and registry readback confirm package `@adamchanadam/aps@0.2.0` with 14 package files, including `skills/aps/SKILL.md`, `skills/aps/references/setup-dialogue.md`, `resources/protocol/PROTOCOL.md`, and all protocol templates。
+- **Package inclusion**: `npm pack --dry-run --json` and registry readback confirm package `@adamchanadam/aps@0.2.1` with 14 package files, including `skills/aps/SKILL.md`, `skills/aps/references/setup-dialogue.md`, `resources/protocol/PROTOCOL.md`, and all protocol templates。
 - **CLI smoke test**: `node --check bin/aps.js` passes;`node bin/aps.js --help`, `node bin/aps.js init --dry-run`, `node bin/aps.js init --target claude --dry-run`, `node bin/aps.js init --target codex --dry-run`, and `node bin/aps.js bridge-pack --role B` pass;invalid `--target`, bad packet id, missing outbox paths, and `bogus` fail with exit 1 as expected。
 - **Disposable install smoke test**: `node bin/aps.js init` with HOME / USERPROFILE redirected to `dev/qc/evidence/2026-05-26-init-installer-smoke/home` installs both Claude Code and Codex skill folders;second run exits 1 and refuses overwrite;SHA256 hash for installed `SKILL.md` matches source for both targets。
 - **Local tarball install test**: `npm pack` output installed into disposable workspace with project-local npm cache;workspace `npx aps init --dry-run` and `npx aps init` pass with HOME / USERPROFILE redirected to `package-home`;workspace `npx aps bridge-pack --role B` passes;second `npx aps init` exits 1 and refuses overwrite;installed `SKILL.md` hashes match source。
@@ -161,13 +162,14 @@ Current wrap-up QC summary:
 - **Whitespace check**: `git diff --check` reports no whitespace errors;only existing LF→CRLF warnings for touched markdown files。
 - **Local 0.2.1 CLI hardening smoke test**: disposable Hub under `dev/qc/evidence/2026-05-26-devtasks-*` completed `init` with fake HOME / USERPROFILE, `publish`, `inbox`, `revise`, second `inbox`, `withdraw`, third `inbox` returning no pending items, second `publish`, `consume`, `close`, and read-only `doctor` with `status: passed`。A focused rerun under `dev/qc/evidence/2026-05-26-devtasks-rerun2-*` confirmed that `withdraw --version 1` fails once latest is v2, latest withdraw succeeds, duplicate withdraw fails, and `doctor` still passes。
 - **Local 0.2.1 package preview**: `npm pack --dry-run --json` confirms package id `@adamchanadam/aps@0.2.1`, 14 files, and inclusion of `bin/aps.js`, `skills/aps/SKILL.md`, `skills/aps/references/setup-dialogue.md`, `resources/protocol/PROTOCOL.md`, protocol templates, examples, README, and LICENSE。
-- **Formal 🟡 外發前檢 for 0.2.1**: passed on 2026-05-27 after correcting stale `待提交` / `34/34` wording. Inner quick-check passed;package / CLI checks passed;placeholder audit left only A-class historical / explicit example hits;HTML `.md` hyperlink audit returned 0 hits;secrets sweep hits are policy text only;DevTools rendered `docs/index.html`, walkthrough, and governance-map with no console messages and screenshots under `dev/qc/evidence/2026-05-27-release-check-html/`;npm registry readback confirms latest remains 0.2.0;GitHub Pages readback returned HTTP 200 and contains 0.2.0 plus pre-release wording;remote `main` still points to the prior pushed commit, so 0.2.1 remains local-only。
+- **Formal 🟡 外發前檢 for 0.2.1**: passed on 2026-05-27 after correcting stale `待提交` / `34/34` wording. Inner quick-check passed;package / CLI checks passed;placeholder audit left only A-class historical / explicit example hits;HTML `.md` hyperlink audit returned 0 hits;secrets sweep hits are policy text only;DevTools rendered `docs/index.html`, walkthrough, and governance-map with no console messages and screenshots under `dev/qc/evidence/2026-05-27-release-check-html/`。
+- **0.2.1 publish verification**: release commit `d9dd1aa1acf2b2f5c863056382543922c5c0aeb4` was pushed;tag `v0.2.1` was pushed and points to the release commit;GitHub release `v0.2.1` readback confirms `isPrerelease=true` and `isDraft=false`;`npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json` confirms version `0.2.1`, latest `0.2.1`, bin `aps`, fileCount 14。
 
 - **Prior release verification**: commit `838d85a`, tag `v0.1.1`, and GitHub release `AI Public Squares v0.1.1` remain historical release records。
-- **Current npm verification**: `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json` confirms version `0.2.0`, `latest = 0.2.0`, bin `aps`, fileCount 14。
+- **Current npm verification**: `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json` confirms version `0.2.1`, `latest = 0.2.1`, bin `aps`, fileCount 14。
 - **Package verification**: `npm pack --dry-run --json` confirms the tarball contains only the expected 8 package files。
 - **Prior release CLI smoke test**: `node bin/aps.js --help`, `node bin/aps.js init`, and `node bin/aps.js bridge-pack --role B` passed before release commit。
-- **GitHub Pages verification**: `https://adamchanadam.github.io/ai-public-squares/docs/index.html` returned HTTP 200 and contained `0.2.0` plus the pre-release boundary wording。
+- **GitHub Pages verification**: before the post-publish state-sync push, Pages returned HTTP 200 and contained `0.2.0` plus the pre-release boundary wording;repeat after the state-sync push to confirm `0.2.1` is live。
 - **Agent Handoff Kit v0.3.11 doctor**: demo Adam and demo Jay workspaces passed 46 checks;main workspace prompt mirror is repaired in this closeout and rechecked after `START_NEXT_SESSION_PROMPT.txt` regeneration。
 - **MCP setup verification**: `codex mcp list` shows `chrome-devtools` and `context7` enabled;`npx chrome-devtools-mcp@latest --help` and `npx -y @upstash/context7-mcp --help` both launched successfully after forcing npm out of offline mode。
 
@@ -175,7 +177,7 @@ Checks deferred to next substantive session:
 - Skill conversational quality review and recovery rehearsal。
 - Per-project Drive checks for any new real project。
 
-Handoff evidence location: this file (durable continuity);`dev/SESSION_LOG.md` latest entry (session evidence);`dev/qc/2026-05-26-aps-full-audit.md` (full audit and post-publish evidence);GitHub release `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.0`。
+Handoff evidence location: this file (durable continuity);`dev/SESSION_LOG.md` latest entry (session evidence);`dev/qc/2026-05-27-aps-full-audit.md` (0.2.1 full audit and post-publish evidence);GitHub release `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.1`。
 
 <!-- ack:section:workspace-identity -->
 ## Workspace Identity
@@ -183,27 +185,27 @@ Handoff evidence location: this file (durable continuity);`dev/SESSION_LOG.md` l
 Expected project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares`
 Git root: same
 Branch: `main`
-Latest local commit: current `HEAD` (`Prepare APS 0.2.1 local candidate`;check exact hash with `git log -1 --oneline`)。
-Latest release commit: `47bf2d29c8bae7339730d9b655dadbf0b8da64da` (`release: prepare APS 0.2.0 pre-release`;tag `v0.2.0`)。
+Latest local commit: current `HEAD` after post-publish state sync;check exact hash with `git log -1 --oneline`。
+Latest release commit: `d9dd1aa1acf2b2f5c863056382543922c5c0aeb4` (`Record APS 0.2.1 full audit`;tag `v0.2.1`)。
 Remote: `origin` = `https://github.com/Adamchanadam/ai-public-squares.git` (**public repo since 2026-05-23**, Apache-2.0, HTTPS via Windows Credential Manager;GitHub Pages enabled serving `/ (root)` 之 `main` branch)。
 Worktree / parallel workspace status: none (no `git worktree add`);siblings (`Demo_Agent_{Adam,Jay}_Public_Squares` MVP fixtures + Drive Hub) 仍 independent stores;real runtime workspaces 仲喺 each user's own machine (out of repo)。
-Uncommitted changes summary: none at the commit point;public new-user walkthrough correction and local 0.2.1 CLI hardening are committed locally at current `HEAD` but not pushed。Disposable install / round-trip / skill rehearsal / throw-away flow evidence under `dev/qc/evidence/2026-05-26-*` is ignored and kept local。`adamchanadam-aps-*.tgz` generated by `npm pack` should not be committed unless Adam explicitly wants a tarball artifact.
+Uncommitted changes summary: post-publish state-sync files are part of the current closeout commit;after push, `git status --short` should be clean。Disposable install / round-trip / skill rehearsal / throw-away flow evidence under `dev/qc/evidence/2026-05-26-*` and `dev/qc/evidence/2026-05-27-*` is ignored and kept local。`adamchanadam-aps-*.tgz` generated by `npm pack` should not be committed unless Adam explicitly wants a tarball artifact.
 
 <!-- ack:section:sync-status -->
 ## Sync Status
 
 Use statuses from `dev/DOC_SYNC_REGISTRY.md`: `confirmed`, `unverified`, `pending`, `blocked`, `not_applicable`.
 
-- Project index: `confirmed` (this pass — 0.2.0 pre-release publish state, public walkthrough correction, local 0.2.1 candidate, and 0.2.1 外發前檢 result reflected)。
+- Project index: `confirmed` (this pass — 0.2.1 pre-release publish state, public walkthrough correction, and 0.2.1 外發前檢 / 全面檢 / publish readback reflected)。
 - Doc sync registry: `confirmed` (existing rows cover skill source change, npm package change, closeout/startup contract, and APS public promise consistency;no new row needed)。
-- Public docs / README: `confirmed` (local docs now show published 0.2.0 boundary plus unpublished 0.2.1 candidate boundary;GitHub Pages still reflects the last pushed 0.2.0 pre-release state until a future push)。
+- Public docs / README: `confirmed` (local docs now show published 0.2.1 pre-release boundary;GitHub Pages must be rechecked after the final push)。
 - External knowledge tools: `confirmed` — Drive Hub true Adam ↔ Jay check passed for `aps_real_drive_check`;per-project Drive checks remain required for new real projects。
-- APS plan / verification docs: `confirmed` (Phase 4 plan now records the skill-driven user experience layer and the local 0.2.1 candidate boundary)。
-- APS user-facing docs (`docs/index.html` + `docs/guides/` + README): `confirmed` (this pass — CLI-first setup, skill-led setup entry, pre-release trial-use boundary, and unpublished 0.2.1 recovery-command boundary are aligned)。
-- Tooling: `confirmed` — published `bin/aps.js` 0.2.0 exposes verified `init --dry-run` skill installer paths, Hub setup, `bridge-pack`, and minimal `publish` / `inbox` / `consume` / `close` round-trip commands;local 0.2.1 candidate adds verified `revise`, `withdraw`, and read-only `doctor`;throw-away zero-knowledge flow, formal 🟡 外發前檢, 🔴 全面檢, real Drive verification, published install probe, local 0.2.1 disposable smoke test, and 2026-05-27 formal 0.2.1 外發前檢 have passed。
+- APS plan / verification docs: `confirmed` (Phase 4 plan now records the skill-driven user experience layer and the 0.2.1 pre-release boundary)。
+- APS user-facing docs (`docs/index.html` + `docs/guides/` + README): `confirmed` (this pass — CLI-first setup, skill-led setup entry, pre-release trial-use boundary, and 0.2.1 recovery-command boundary are aligned)。
+- Tooling: `confirmed` — published `bin/aps.js` 0.2.1 exposes verified `init --dry-run` skill installer paths, Hub setup, `bridge-pack`, minimal `publish` / `inbox` / `consume` / `close` round-trip commands, plus verified `revise`, `withdraw`, and read-only `doctor`;throw-away zero-knowledge flow, formal 🟡 外發前檢, 🔴 全面檢, real Drive verification, published install probe, local 0.2.1 disposable smoke test, and 2026-05-27 formal 0.2.1 外發前檢 have passed。
 - QC vocabulary: `confirmed` (no change this turn)。
-- npm package: `confirmed` (`@adamchanadam/aps` 0.2.0 published and verified as latest;local `package.json` is 0.2.1 candidate and not published)。
-- GitHub remote: `confirmed` (`v0.2.0` tag points to `47bf2d29c8bae7339730d9b655dadbf0b8da64da`;GitHub release published as pre-release)。
+- npm package: `confirmed` (`@adamchanadam/aps` 0.2.1 published and verified as latest)。
+- GitHub remote: `confirmed` (`v0.2.1` tag points to `d9dd1aa1acf2b2f5c863056382543922c5c0aeb4`;GitHub release published as pre-release)。
 - Codex MCP config: `confirmed` (`chrome-devtools` and `context7` registered globally;tool availability requires new Codex session / restart if not hot-loaded)。
 
 <!-- ack:section:state-reconciliation-check -->
@@ -211,13 +213,13 @@ Use statuses from `dev/DOC_SYNC_REGISTRY.md`: `confirmed`, `unverified`, `pendin
 
 At full closeout, complete this check after updating the state sections above.
 
-- Reconciled at: 2026-05-26 local 0.2.1 candidate persistence — release commit, tag, GitHub pre-release, npm publish, registry readback, GitHub Pages readback, published install probe, pre-release boundary, public walkthrough correction, local 0.2.1 CLI hardening, and current-state document fixes recorded;prompt mirror regenerated.
+- Reconciled at: 2026-05-27 0.2.1 pre-release publish persistence — release commit, tag, GitHub pre-release, npm publish, registry readback, pre-release boundary, public walkthrough correction, 0.2.1 CLI hardening, and current-state document fixes recorded;prompt mirror regenerated.
 <!-- ack:field:state-sections-rewritten-or-confirmed -->
 - State sections rewritten or confirmed current: Last Updated;Current Baseline;Active Objective;Completed This Session;Next Priorities;Next Task Required Reading;Risks / Blockers;Validation / QC;Workspace Identity;Sync Status;State Reconciliation Check;Handoff Sufficiency Check;Next Session Opening Message;SESSION_LOG N-rule archive advanced.
 <!-- ack:field:stale-snapshots-left -->
 - Stale snapshots left in this handoff: historical S10 and S11 narratives remain in archived logs and selected background lines;current-state sections above supersede them. Older raw 2026-05-20 / 2026-05-21 / 2026-05-22 / 2026-05-23 / 2026-05-25 log entries have been moved to `dev/SESSION_LOG_archive/archive_001_2026-05-20_to_2026-05-20.md`, `archive_002_2026-05-21_to_2026-05-21.md`, `archive_003_2026-05-21_to_2026-05-21.md`, `archive_004_2026-05-22_to_2026-05-22.md`, `archive_005_2026-05-23_to_2026-05-23.md`, and `archive_006_2026-05-25_to_2026-05-25.md`.
 <!-- ack:field:lifecycle-conflicts-resolved -->
-- Completed / pending / risk / opening-message lifecycle conflicts resolved or explicitly reclassified: yes — setup-first draft, skill installer, Hub setup generator, minimal CLI round-trip, skill-level daily-use first pass, isolated rehearsal, throw-away flow, formal 🟡 外發前檢, 🔴 全面檢, real Adam ↔ Jay Drive check, GitHub pre-release, npm publish, public walkthrough correction, local 0.2.1 CLI hardening, local document repositioning, local 0.2.1 commit, and formal 0.2.1 外發前檢 are completed;push / release / npm publish decision, natural-language recovery hardening, auto-update mechanism, and per-project Drive checks remain explicitly listed as next work.
+- Completed / pending / risk / opening-message lifecycle conflicts resolved or explicitly reclassified: yes — setup-first draft, skill installer, Hub setup generator, minimal CLI round-trip, skill-level daily-use first pass, isolated rehearsal, throw-away flow, formal 🟡 外發前檢, 🔴 全面檢, real Adam ↔ Jay Drive check, GitHub pre-release, npm publish, public walkthrough correction, 0.2.1 CLI hardening, document repositioning, 0.2.1 commit, formal 0.2.1 外發前檢, and 0.2.1 publish are completed;post-publish Pages readback, natural-language recovery hardening, auto-update mechanism, and per-project Drive checks remain explicitly listed as next work.
 <!-- ack:field:opening-message-matches-current-state -->
 - Opening message matches current state: yes — `START_NEXT_SESSION_PROMPT.txt` regenerated from this handoff at wrap-up and verified by doctor.
 <!-- ack:field:next-ai-can-continue -->
@@ -246,9 +248,9 @@ Continuity rule: this file carries current state and next action。`dev/SESSION_
 ```text
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template;not bound to any specific project;published as `@adamchanadam/aps` npm package + GitHub repo Adamchanadam/ai-public-squares — **public since 2026-05-23**;GitHub Pages enabled at https://adamchanadam.github.io/ai-public-squares/).
 
-Current closeout (2026-05-27): `@adamchanadam/aps` v0.2.0 is published to npm and verified as latest, while the project remains ⚠️ 前期測試階段(pre-release). Release commit `47bf2d29c8bae7339730d9b655dadbf0b8da64da` and tag `v0.2.0` are pushed;GitHub release is live as a pre-release at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.0;GitHub Pages returned HTTP 200 and contains `0.2.0` plus pre-release wording. Local workspace is now `package.json` v0.2.1 candidate committed at current `HEAD`, not pushed / released / published. Local 0.2.1 candidate keeps `init`, Hub skeleton / Bridge Pack / starter pack generation, and `publish` / `inbox` / `consume` / `close`, and adds `revise`, `withdraw`, and read-only `doctor`. Disposable local smoke test passed `publish → inbox → revise → inbox → withdraw → inbox → publish → consume → close → doctor`;`npm pack --dry-run --json` now reports `@adamchanadam/aps@0.2.1` with the expected 14 files. Published package install probe for 0.2.0 passed with `npm install --save-dev @adamchanadam/aps` then `npx aps`;one-off `npx @adamchanadam/aps@0.2.0 --help` remains unreliable and is not the documented path. Public new-user entry and walkthrough wording now points readers to the 0.2.0 CLI-first `init` setup path, labels 0.2.1 commands as unpublished candidate work, and keeps natural-language daily use / recovery as pre-release hardening.
+Current closeout (2026-05-27): `@adamchanadam/aps` v0.2.1 is published to npm and verified as latest, while the project remains ⚠️ 前期測試階段(pre-release). Release commit `d9dd1aa1acf2b2f5c863056382543922c5c0aeb4` and tag `v0.2.1` are pushed;GitHub release is live as a pre-release at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.1. Published 0.2.1 keeps `init`, Hub skeleton / Bridge Pack / starter pack generation, and `publish` / `inbox` / `consume` / `close`, and adds `revise`, `withdraw`, and read-only `doctor`. Disposable local smoke test passed `publish → inbox → revise → inbox → withdraw → inbox → publish → consume → close → doctor`;`npm pack --dry-run --json` reports `@adamchanadam/aps@0.2.1` with the expected 14 files. Published package path remains `npm install --save-dev @adamchanadam/aps` then `npx aps`;one-off version-qualified `npx @adamchanadam/aps@<version> --help` remains unreliable and is not the documented path. Public new-user entry and walkthrough wording points readers to the CLI-first `init` setup path, while natural-language daily use / recovery remains pre-release hardening.
 
-Prior release state: v0.1.1 remains the previous historical release;v0.2.0 is the current npm latest and current GitHub pre-release.
+Prior release state: v0.1.1 and v0.2.0 remain historical releases;v0.2.1 is the current npm latest and current GitHub pre-release.
 
 Codex global MCP config now includes `chrome-devtools` (`chrome-devtools-mcp@latest`, usage statistics disabled) and `context7` (`@upstash/context7-mcp`, no API key stored). They may require a new Codex session or Codex Desktop restart before appearing in the active tool list.
 
@@ -257,7 +259,7 @@ Agent Handoff Kit v0.3.11 status: main APS workspace doctor passes after this wr
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md(含 2026-05-26 local 0.2.1 candidate entry at top)
+3. dev/SESSION_LOG.md(含 2026-05-27 0.2.1 publish entry at top)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/qc/2026-05-22-zero-knowledge-funnel-audit.md (Phase X-3 spec source)
@@ -274,9 +276,9 @@ Voice hard rule (per memory feedback-doc-voice + feedback-plain-language):所有
 
 Documentation governance hard rule (per S10 Adam principle):HTML 內(site-nav / body callout / body table)不 link 任何 .md 檔(瀏覽器顯示 plain text,broken UX);如要 reference .md 用 plain `<span class="path">` 顯示。.md 屬 AI / 維護者層 spec source。
 
-Next active objective: **decide whether to push / create GitHub pre-release / npm publish the release-checked local 0.2.1 candidate**。Pending:natural-language daily operation and recovery hardening;auto-update mechanism;per-project Drive verification for any new real project.
+Next active objective: **verify post-push GitHub Pages 0.2.1 wording, then continue pre-release hardening**。Pending:natural-language daily operation and recovery hardening;auto-update mechanism;per-project Drive verification for any new real project.
 
-User-facing entry: README.md + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。Current public install path: first run `npm install --save-dev @adamchanadam/aps`, then run `npx aps ...`;npm latest 0.2.0 remains pre-release, while local 0.2.1 candidate is not published. Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
+User-facing entry: README.md + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。Current public install path: first run `npm install --save-dev @adamchanadam/aps`, then run `npx aps ...`;npm latest 0.2.1 remains pre-release. Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
 ```
