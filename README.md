@@ -20,7 +20,8 @@
 
 ```
 npm install --save-dev @adamchanadam/aps
-npx aps init
+npx aps init --dry-run
+npx aps init --hub-root "G:\...\AI_Public_Squares" --project branding_2026 --agent-id adam --other-agent-id jay --role A
 ```
 
 > **目前狀態**:npm latest 0.2.2 pre-release 提供 `bridge-pack`、`init` 技能安裝器、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並新增 `revise` / `withdraw` / `doctor`;本機全面檢已通過,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。0.2.2 會保存 `.aps/config.json` 專案設定,設置一次後可用 `npx aps inbox`、`npx aps doctor`、`npx aps publish --topic ... --body ...` 等短命令日用。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
@@ -37,7 +38,7 @@ npx aps init
 
 **未先安裝 Agent Handoff Kit,APS 的檔案結構將無法獨立運作。**
 
-前往 [Agent Handoff Kit GitHub 儲存庫](https://github.com/Adamchanadam/agent-handoff-kit),依其指引安裝。一條命令即可:
+前往 [Agent Handoff Kit GitHub 儲存庫](https://github.com/Adamchanadam/agent-handoff-kit),依其指引安裝。一條命令即可;命令列印寫入計劃後,檢查路徑無誤,再輸入 `yes` 確認寫入:
 
 ```
 npx @adamchanadam/agent-handoff-kit init
@@ -61,7 +62,7 @@ npm latest 0.2.2 仍屬前期測試版本,但已可用 CLI 跑完整設置、最
 2. 參考下方「想深入了解」中的設置教學,照 0.2.2 CLI 主路徑完成首次設置。
 3. 先執行 `npm install --save-dev @adamchanadam/aps`,再用 `npx aps init --dry-run` 預覽會寫入哪些位置;確認後用 `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B` 建立 skill、Hub skeleton、Bridge Pack 與 starter pack。
 
-目前可用路徑是:使用者在自己的項目資料夾內執行 `npx aps init`,先把 APS 技能安裝到 Claude Code / Codex,再建立 Hub skeleton、Bridge Pack、starter pack 與本地 `.aps/config.json` 設定。設置完成後可用短命令發佈、收件、消化、回覆與收結;自然語言日常體驗仍在打磨中:
+目前可用路徑是:使用者在自己的項目資料夾內先執行 `npx aps init --dry-run`,確認寫入位置後,再執行完整 `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B` 命令。這會把 APS 技能安裝到 Claude Code / Codex,並建立 Hub skeleton、Bridge Pack、starter pack 與本地 `.aps/config.json` 設定。設置完成後可用短命令發佈、收件、消化、回覆與收結;自然語言日常體驗仍在打磨中:
    - 「我有嘢俾 Jay」 → 工具自動將內容打包,並生成一句 WhatsApp 通知句供你發送
    - 「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦
    - 「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法

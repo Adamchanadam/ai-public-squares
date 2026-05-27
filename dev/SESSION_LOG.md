@@ -8,7 +8,19 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-27 (S21, latest) — 0.2.1 pre-release checked, published, and read back
+## 2026-05-27 (S22, latest) — local HTML onboarding flow verified and corrected
+
+- **ID:** S22
+- **Summary:** Thoroughly checked whether the local README and HTML entry pages can still be followed for installation and testing. The APS 0.2.2 package state remains correct, but the walkthrough and README omitted the Agent Handoff Kit interactive confirmation step;local public docs now tell users to review the write plan and type `yes` before running `doctor`.
+- **Changed:** This workspace only.
+  - Modified: `README.md` and `docs/index.html` — Agent Handoff Kit prerequisite step now says `init` prints a write plan and requires `yes` confirmation;README quick-start now uses `aps init --dry-run` followed by the full `aps init --hub-root ...` command instead of the ambiguous bare `aps init`.
+  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — Adam and Jay setup sections now include the same `yes` confirmation;acceptance wording now relies on key entry files plus `doctor status passed` instead of fixed “5 / 6 governance files” claims.
+  - Modified: `dev/SESSION_HANDOFF.md`, `START_NEXT_SESSION_PROMPT.txt`, `dev/PROJECT_INDEX.md`, and this log — recorded the local doc-flow correction and remaining push boundary.
+- **QC:** `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json` reconfirmed `0.2.2`, latest `0.2.2`, bin `aps`, fileCount 14. Isolated Agent Handoff Kit run with `yes` passed: init created 20 required files and doctor passed 46 checks. HTML drift scans returned 0 hits for `.md` links, stale unpublished 0.2.2 wording, stale 0.2.1 wording, and old “5 / 6 governance” wording. Chrome DevTools opened the three local file URLs;the corrected `yes` wording appeared on `docs/index.html` and the walkthrough, and the walkthrough had no console messages. `git diff --check` passed with LF→CRLF warnings only.
+- **Result:** The local README plus `file:///.../docs/index.html`, `file:///.../docs/guides/index.html`, and `file:///.../docs/guides/aps-onboarding-walkthrough.html` path is usable for installation and testing. GitHub / GitHub Pages still need commit / push before the same wording is public online.
+- **Sync:** Existing registry rows for APS user-facing docs change, public behavior change, closeout/startup contract, workspace identity, and APS product consistency cover this update;no new registry row is needed.
+
+## 2026-05-27 (S21) — 0.2.1 pre-release checked, published, and read back
 
 - **ID:** S21
 - **Summary:** Implemented the remaining local, reversible development tasks, committed `@adamchanadam/aps@0.2.1`, ran formal 🟡 外發前檢 and 🔴 全面檢, then published 0.2.1 as a GitHub pre-release and npm pre-release package. After publication, local 0.2.2 candidate work started and added saved APS config plus short daily commands. npm latest is still `0.2.1`;the project remains ⚠️ pre-release.
