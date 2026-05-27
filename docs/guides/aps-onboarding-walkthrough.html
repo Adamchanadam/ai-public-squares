@@ -645,7 +645,7 @@
   </ul>
 
   <div class="callout warn">
-    <strong>前期測試邊界</strong>。npm latest 0.2.1 pre-release 之主路徑是先於項目工作目錄執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps init --dry-run</code> 預覽設置,確認後以 <code>npx aps init --hub-root ...</code> 建立技能、初始 Hub skeleton、Bridge Pack 與 starter pack。本工作樹 0.2.2 候選再加入 <code>.aps/config.json</code> 本地設定,設置後日常命令可省略 Hub / project / agent 長參數。CLI 已有最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。自然語言日常操作與補救流程仍未完整產品化。
+    <strong>前期測試邊界</strong>。npm latest 0.2.2 pre-release 之主路徑是先於項目工作目錄執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps init --dry-run</code> 預覽設置,確認後以 <code>npx aps init --hub-root ...</code> 建立技能、初始 Hub skeleton、Bridge Pack、starter pack 與 <code>.aps/config.json</code> 本地設定。設置後日常命令可省略 Hub / project / agent 長參數。CLI 已有最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。自然語言日常操作與補救流程仍未完整產品化。
   </div>
 
   <div class="callout warn">
@@ -803,10 +803,10 @@ cd C:\Work\branding_2026</pre>
 
 <section id="s6">
   <h2><span class="sec-num">6.</span>Adam 接駁自己部機</h2>
-  <p class="lede">此節 Adam 於自己部機,要求 Agent Adam 協助執行;Jay 無需在場。npm latest 0.2.1 pre-release 主路徑先用 <code>npx aps init --hub-root ...</code> 建立技能、Hub skeleton 與 Bridge Pack;本工作樹 0.2.2 候選會同時保存 <code>.aps/config.json</code>,再補登記治理檔。完成後 Adam 之工作目錄已接好橋接小規則,但尚未交收任何 packet。</p>
+  <p class="lede">此節 Adam 於自己部機,要求 Agent Adam 協助執行;Jay 無需在場。npm latest 0.2.2 pre-release 主路徑先用 <code>npx aps init --hub-root ...</code> 建立技能、Hub skeleton、Bridge Pack 與 <code>.aps/config.json</code>,再補登記治理檔。完成後 Adam 之工作目錄已接好橋接小規則,但尚未交收任何 packet。</p>
 
   <div class="callout">
-    <strong>主路徑:CLI 先行,手動備用。</strong>npm latest 0.2.1 pre-release 已提供 <code>aps init</code> 建立技能、Hub skeleton、Bridge Pack 與 starter pack。本工作樹 0.2.2 候選再加入本地設定與短命令日用流程。下面第 2 步以 CLI 為主;第 3 至第 6 步仍用 Agent Adam 補登記治理檔,因為目前 CLI 尚未自動改寫你的 project governance。舊 <code>tools/aps-onboard.ps1</code> 只作維護者備用路徑,新用戶毋須先學。
+    <strong>主路徑:CLI 先行,手動備用。</strong>npm latest 0.2.2 pre-release 已提供 <code>aps init</code> 建立技能、Hub skeleton、Bridge Pack、starter pack、本地設定與短命令日用流程。下面第 2 步以 CLI 為主;第 3 至第 6 步仍用 Agent Adam 補登記治理檔,因為目前 CLI 尚未自動改寫你的 project governance。舊 <code>tools/aps-onboard.ps1</code> 只作維護者備用路徑,新用戶毋須先學。
   </div>
 
   <div class="role-block role-block--adam">
@@ -880,10 +880,10 @@ cd C:\Work\branding_2026</pre>
 
       <li>
         <p><strong>用 CLI 建立 APS skill、Hub skeleton 與 Bridge Pack</strong></p>
-        <p>此步之目的:用 npm latest 0.2.1 pre-release CLI 一次建立你部機需要的 APS skill、共享 Hub skeleton、本地 <code>dev/rules/aps-bridge.md</code>,以及給 Jay 的 starter pack。本工作樹 0.2.2 候選會額外保存 <code>.aps/config.json</code>,方便之後使用短命令。Bridge Pack 為一份 markdown 規則檔,教 Agent Adam 如何讀寫 Hub。</p>
+        <p>此步之目的:用 npm latest 0.2.2 pre-release CLI 一次建立你部機需要的 APS skill、共享 Hub skeleton、本地 <code>dev/rules/aps-bridge.md</code>、<code>.aps/config.json</code>,以及給 Jay 的 starter pack。設置後可使用短命令。Bridge Pack 為一份 markdown 規則檔,教 Agent Adam 如何讀寫 Hub。</p>
 
         <div class="callout warn">
-    <strong>前期測試邊界</strong>:npm latest 0.2.1 pre-release 主路徑為先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps init --dry-run</code> 預覽寫入位置,確認後才移除 <code>--dry-run</code> 真正設置。<code>npx aps bridge-pack</code> 仍可作維護者取得 fixture 之備用命令,但新用戶應優先跟隨本節之 <code>init</code> 流程。本工作樹 0.2.2 候選會在此步額外保存本地設定,方便後續短命令日用。
+    <strong>前期測試邊界</strong>:npm latest 0.2.2 pre-release 主路徑為先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps init --dry-run</code> 預覽寫入位置,確認後才移除 <code>--dry-run</code> 真正設置。<code>npx aps bridge-pack</code> 仍可作維護者取得 fixture 之備用命令,但新用戶應優先跟隨本節之 <code>init</code> 流程。此步會額外保存本地設定,方便後續短命令日用。
         </div>
 
         <p><strong>2.1 將以下 prompt 貼予 Agent Adam</strong></p>

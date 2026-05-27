@@ -5,7 +5,7 @@ description: Sets up and runs cross-machine collaboration between two AI agents 
 
 # AI Public Squares — 跨機合作 skill
 
-> **狀態(2026-05-27):** npm package `@adamchanadam/aps` v0.2.1 pre-release 提供 `bridge-pack`、`init` 技能安裝、初始 Hub skeleton、Bridge Pack、starter pack、最小 `publish` / `inbox` / `consume` / `close` 指令,以及 `revise`、`withdraw` 與只讀 `doctor`。本工作樹 0.2.2 候選新增 `.aps/config.json` 專案本地設定,設置完成後日常命令可省略 Hub / project / agent 長參數。專案已通過一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證;0.2.1 新命令已通過本機全面檢;0.2.2 短命令已通過本機 throw-away workspace 回歸。技能內自然語言日常操作與補救流程仍為前期測試。此檔是可隨 npm package 發出的 skill runtime 規格草稿。設置對話 wording 的精簡隨包版本見 `references/setup-dialogue.md`;repo 內長版維護稿見 `docs/plans/2026-05-23-aps-skill-dialogue-script.md`。
+> **狀態(2026-05-27):** npm package `@adamchanadam/aps` v0.2.2 pre-release 提供 `bridge-pack`、`init` 技能安裝、初始 Hub skeleton、Bridge Pack、starter pack、最小 `publish` / `inbox` / `consume` / `close` 指令,以及 `revise`、`withdraw`、只讀 `doctor`、`.aps/config.json` 專案本地設定與短命令日用流程。設置完成後日常命令可省略 Hub / project / agent 長參數。專案已通過一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證;0.2.2 短命令已通過本機 throw-away workspace 回歸與外發前檢。技能內自然語言日常操作與補救流程仍為前期測試。此檔是可隨 npm package 發出的 skill runtime 規格草稿。設置對話 wording 的精簡隨包版本見 `references/setup-dialogue.md`;repo 內長版維護稿見 `docs/plans/2026-05-23-aps-skill-dialogue-script.md`。
 
 ## 1. 此 skill 的職責
 
