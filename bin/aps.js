@@ -211,6 +211,38 @@ function readPacketSummary(hubRoot, projectSlug, senderId, packetId, version) {
   };
 }
 
+function parsePacketHeader(packetPath) {
+  const text = fs.readFileSync(packetPath, 'utf8');
+  const headerMatch = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!headerMatch) {
+    throw new Error(`packet header not found: ${packetPath}`);
+  }
+  const header = {};
+  for (const line of headerMatch[1].split(/\r?\n/)) {
+    const match = line.match(/^([A-Za-z_]+):\s*(.*)$/);
+    if (match) header[match[1]] = match[2].replace(/^"|"$/g, '').trim();
+  }
+  return header;
+}
+
+function latestOwnPacketVersion({ hubRoot, projectSlug, agentId, packetId }) {
+  const outboxPath = path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'outbox.log.md');
+  ensureExistingFile(outboxPath, `from_${agentId} outbox`);
+  const events = readOutboxEvents(outboxPath).filter((event) => event.packetId === packetId);
+  if (events.length === 0) {
+    throw new Error(`packet ${packetId} was not found in from_${agentId}/outbox.log.md`);
+  }
+  if (events.some((event) => event.verb === 'close')) {
+    throw new Error(`packet ${packetId} is already closed in from_${agentId}/outbox.log.md`);
+  }
+  const candidates = events.filter((event) => event.verb === 'publish' || event.verb === 'revise');
+  if (candidates.length === 0) {
+    throw new Error(`packet ${packetId} has no publish or revise event in from_${agentId}/outbox.log.md`);
+  }
+  candidates.sort((a, b) => b.version - a.version);
+  return { outboxPath, events, latest: candidates[0] };
+}
+
 function pendingPackets({ hubRoot, projectSlug, agentId, otherAgentId }) {
   const outboxPath = path.join(projectDir(hubRoot, projectSlug), `from_${otherAgentId}`, 'outbox.log.md');
   const ackPath = path.join(projectDir(hubRoot, projectSlug), '_ack', `${agentId}.ack.json`);
@@ -258,6 +290,31 @@ function writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level })
   return { packetId, version: 1, packetDir };
 }
 
+function revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason }) {
+  const { outboxPath, latest } = latestOwnPacketVersion({ hubRoot, projectSlug, agentId, packetId });
+  const previousVersion = latest.version;
+  const nextVersion = previousVersion + 1;
+  const previousPath = path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'packets', `${packetId}__v${previousVersion}`, 'packet.md');
+  ensureExistingFile(previousPath, `previous packet v${previousVersion}`);
+  const previousHeader = parsePacketHeader(previousPath);
+  const toId = previousHeader.to || latest.kv.to;
+  if (!toId) {
+    throw new Error(`could not infer receiver for ${packetId}; previous packet header is missing 'to'.`);
+  }
+  const now = isoNow();
+  const packetDir = path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'packets', `${packetId}__v${nextVersion}`);
+  if (fs.existsSync(packetDir)) {
+    throw new Error(`packet folder already exists: ${packetDir}`);
+  }
+  fs.mkdirSync(packetDir, { recursive: true });
+  const scope = yamlDoubleQuote(body.split(/\r?\n/)[0].slice(0, 120) || previousHeader.scope || packetId);
+  const level = previousHeader.level || 'L2-handoff';
+  const packetMd = `---\npacket_id: ${packetId}\nversion: ${nextVersion}\nfrom: ${agentId}\nto: ${toId}\nproject: ${projectSlug}\nlevel: ${level}\nsupersedes: ${packetId}__v${previousVersion}\ncreated_at: ${now}\nssot_refs: []\nscope: \"${scope}\"\nitems: []\n---\n\n# Revision ${nextVersion} for ${packetId}\n\n${body}\n`;
+  fs.writeFileSync(path.join(packetDir, 'packet.md'), packetMd, 'utf8');
+  appendLine(outboxPath, `${now} | revise | ${packetId} v${nextVersion} | to:${toId} | reason:${reason}`);
+  return { packetId, version: nextVersion, previousVersion, packetDir, outboxPath };
+}
+
 function consumePacket({ hubRoot, projectSlug, agentId, packetId, version, result }) {
   const ackPath = path.join(projectDir(hubRoot, projectSlug), '_ack', `${agentId}.ack.json`);
   if (!fs.existsSync(ackPath)) {
@@ -278,24 +335,73 @@ function consumePacket({ hubRoot, projectSlug, agentId, packetId, version, resul
   return { ackPath, already };
 }
 
+function withdrawPacket({ hubRoot, projectSlug, agentId, packetId, version, reason }) {
+  const { outboxPath, events, latest } = latestOwnPacketVersion({ hubRoot, projectSlug, agentId, packetId });
+  const targetVersion = version || latest.version;
+  if (Number(targetVersion) !== Number(latest.version)) {
+    throw new Error(`withdraw only supports the latest version (${latest.version}); publish a new revision if an older version needs correction.`);
+  }
+  if (events.some((event) => event.verb === 'withdraw' && Number(event.version) === Number(targetVersion))) {
+    throw new Error(`${packetId} v${targetVersion} is already withdrawn.`);
+  }
+  const packetPath = path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'packets', `${packetId}__v${targetVersion}`, 'packet.md');
+  ensureExistingFile(packetPath, `packet v${targetVersion}`);
+  const header = parsePacketHeader(packetPath);
+  const receiverId = header.to || latest.kv.to;
+  if (!receiverId) {
+    throw new Error(`could not infer receiver for ${packetId}; packet header is missing 'to'.`);
+  }
+  const ackPath = path.join(projectDir(hubRoot, projectSlug), '_ack', `${receiverId}.ack.json`);
+  if (fs.existsSync(ackPath)) {
+    const ack = readJson(ackPath);
+    const consumed = (ack.consumed || []).some((entry) => entry.packet_id === packetId && Number(entry.version) === Number(targetVersion));
+    if (consumed) {
+      throw new Error(`${receiverId} has already consumed ${packetId} v${targetVersion}; publish a revision or close with a corrective reason instead.`);
+    }
+  }
+  appendLine(outboxPath, `${isoNow()} | withdraw | ${packetId} v${targetVersion} | reason:${reason}`);
+  return { outboxPath, version: targetVersion, receiverId, ackPath };
+}
+
 function closePacket({ hubRoot, projectSlug, agentId, packetId, reason }) {
-  const outboxPath = path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'outbox.log.md');
-  ensureExistingFile(outboxPath, `from_${agentId} outbox`);
-  const events = readOutboxEvents(outboxPath).filter((event) => event.packetId === packetId);
-  if (events.length === 0) {
-    throw new Error(`packet ${packetId} was not found in from_${agentId}/outbox.log.md`);
-  }
-  if (events.some((event) => event.verb === 'close')) {
-    throw new Error(`packet ${packetId} is already closed in from_${agentId}/outbox.log.md`);
-  }
-  const candidates = events.filter((event) => event.verb === 'publish' || event.verb === 'revise');
-  if (candidates.length === 0) {
-    throw new Error(`packet ${packetId} has no publish or revise event in from_${agentId}/outbox.log.md`);
-  }
-  candidates.sort((a, b) => b.version - a.version);
-  const version = candidates[0].version;
+  const { outboxPath, latest } = latestOwnPacketVersion({ hubRoot, projectSlug, agentId, packetId });
+  const version = latest.version;
   appendLine(outboxPath, `${isoNow()} | close | ${packetId} v${version} | reason:${reason}`);
   return { outboxPath, version };
+}
+
+function scanConflictFiles(rootDir) {
+  const found = [];
+  if (!fs.existsSync(rootDir)) return found;
+  for (const entry of fs.readdirSync(rootDir, { withFileTypes: true })) {
+    const entryPath = path.join(rootDir, entry.name);
+    if (/conflict|conflicted/i.test(entry.name)) found.push(entryPath);
+    if (entry.isDirectory()) found.push(...scanConflictFiles(entryPath));
+  }
+  return found;
+}
+
+function doctorHub({ hubRoot, projectSlug, agentId, otherAgentId }) {
+  const checks = [];
+  function checkFile(filePath, label) {
+    const ok = fs.existsSync(filePath) && fs.statSync(filePath).isFile();
+    checks.push({ ok, label, path: filePath });
+  }
+  function checkDir(dirPath, label) {
+    const ok = fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory();
+    checks.push({ ok, label, path: dirPath });
+  }
+  checkDir(hubRoot, 'Hub root');
+  checkFile(path.join(hubRoot, '_hub', 'PROTOCOL.md'), 'protocol');
+  checkFile(path.join(hubRoot, '_hub', 'CHANGELOG.md'), 'changelog');
+  checkFile(path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'outbox.log.md'), `${agentId} outbox`);
+  checkFile(path.join(projectDir(hubRoot, projectSlug), `from_${otherAgentId}`, 'outbox.log.md'), `${otherAgentId} outbox`);
+  checkDir(path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'packets'), `${agentId} packets`);
+  checkDir(path.join(projectDir(hubRoot, projectSlug), `from_${otherAgentId}`, 'packets'), `${otherAgentId} packets`);
+  checkFile(path.join(projectDir(hubRoot, projectSlug), '_ack', `${agentId}.ack.json`), `${agentId} ack`);
+  checkFile(path.join(projectDir(hubRoot, projectSlug), '_ack', `${otherAgentId}.ack.json`), `${otherAgentId} ack`);
+  const conflicts = scanConflictFiles(projectDir(hubRoot, projectSlug));
+  return { checks, conflicts };
 }
 
 function bridgePackContent(role, values) {
@@ -428,12 +534,18 @@ Usage:
   npx aps init --dry-run          Show planned install paths without writing
   npx aps publish --hub-root <path> --project <slug> --from <id> --to <id> --topic <snake> --body <text>
                                   Publish a v1 packet and append outbox
+  npx aps revise --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --body <text> --reason <text>
+                                  Publish the next immutable version of my packet
   npx aps inbox --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id>
                                   List pending packets from the other agent
   npx aps consume --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --version <n> --result <text>
                                   Mark a packet consumed in my ack file
+  npx aps withdraw --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --reason <text>
+                                  Withdraw my unconsumed latest packet version
   npx aps close --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --reason <text>
                                   Append a close event to my outbox
+  npx aps doctor --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id>
+                                  Check Hub skeleton, ack files, outboxes, and conflict filenames
   npx aps bridge-pack             Print Bridge Pack fixture (User A default)
   npx aps bridge-pack --role B    Print Bridge Pack fixture for User B role
   npx aps --help                  Show this help
@@ -445,10 +557,10 @@ Bridge Pack location, e.g.:
 Local source test:
   node bin/aps.js bridge-pack > dev/rules/aps-bridge.md
 
-Status: bridge-pack, skill install, initial Hub setup, and a minimal
-publish / inbox / consume / close flow are available. This pre-release has one
-Adam/Jay Google Drive round-trip verification, but each real project still
-needs its own project-specific verification.
+Status: bridge-pack, skill install, initial Hub setup, publish / revise /
+inbox / consume / withdraw / close, and read-only doctor are available.
+This pre-release has one Adam/Jay Google Drive round-trip verification, but
+each real project still needs its own project-specific verification.
 Repo: https://github.com/Adamchanadam/ai-public-squares
 `);
   process.exit(0);
@@ -606,9 +718,41 @@ if (subcommand === 'publish') {
     const result = writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level });
     console.log(`Published ${result.packetId} v${result.version}`);
     console.log(result.packetDir);
+    console.log('');
+    console.log('Next: tell the other side there is new Hub traffic, then ask them to run `npx aps inbox ...` or say "check Hub" in their AI tool.');
     process.exit(0);
   } catch (err) {
     console.error(`Publish failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+if (subcommand === 'revise') {
+  requireFlags(['--hub-root', '--project', '--agent-id', '--packet-id', '--body', '--reason']);
+  const hubRoot = getRequiredFlagValue('--hub-root');
+  const projectSlug = getRequiredFlagValue('--project');
+  const agentId = getRequiredFlagValue('--agent-id');
+  const packetId = getRequiredFlagValue('--packet-id');
+  const body = getRequiredFlagValue('--body');
+  const reason = getRequiredFlagValue('--reason');
+  const errors = [
+    validateSnakeCase('--project', projectSlug),
+    validateSnakeCase('--agent-id', agentId),
+    validatePacketId(packetId),
+  ].filter(Boolean);
+  if (errors.length > 0) {
+    for (const error of errors) console.error(error);
+    process.exit(1);
+  }
+  try {
+    const output = revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason });
+    console.log(`Revised ${packetId}: v${output.previousVersion} -> v${output.version}`);
+    console.log(output.packetDir);
+    console.log('');
+    console.log('Next: tell the receiver to run inbox again; the latest unconsumed version is now the pending item.');
+    process.exit(0);
+  } catch (err) {
+    console.error(`Revise failed: ${err.message}`);
     process.exit(1);
   }
 }
@@ -636,7 +780,10 @@ if (subcommand === 'inbox') {
       console.log(`APS Hub: ${pending.length} pending item(s) for ${agentId}`);
       for (const item of pending) {
         console.log(`- ${item.packetId} v${item.version} | scope:${item.scope} | items:${item.items.join(',') || '(none)'}`);
+        console.log(`  packet: ${item.packetPath}`);
       }
+      console.log('');
+      console.log('Next: read the packet, then run `npx aps consume ... --result "<what you did>"` only after you decide to accept it.');
     }
     process.exit(0);
   } catch (err) {
@@ -667,9 +814,44 @@ if (subcommand === 'consume') {
     const output = consumePacket({ hubRoot, projectSlug, agentId, packetId, version, result });
     console.log(output.already ? `Already consumed ${packetId} v${version}` : `Consumed ${packetId} v${version}`);
     console.log(output.ackPath);
+    console.log('');
+    console.log('Next: reply with `npx aps publish ...` if work is due back to the sender, or ask the sender to close their original packet when the thread is settled.');
     process.exit(0);
   } catch (err) {
     console.error(`Consume failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+if (subcommand === 'withdraw') {
+  requireFlags(['--hub-root', '--project', '--agent-id', '--packet-id', '--reason']);
+  const hubRoot = getRequiredFlagValue('--hub-root');
+  const projectSlug = getRequiredFlagValue('--project');
+  const agentId = getRequiredFlagValue('--agent-id');
+  const packetId = getRequiredFlagValue('--packet-id');
+  const versionArg = getRequiredFlagValue('--version');
+  const version = versionArg ? Number(versionArg) : null;
+  const reason = getRequiredFlagValue('--reason');
+  const errors = [
+    validateSnakeCase('--project', projectSlug),
+    validateSnakeCase('--agent-id', agentId),
+    validatePacketId(packetId),
+    version === null || (Number.isInteger(version) && version >= 1) ? null : '--version must be an integer >= 1 when provided.',
+  ].filter(Boolean);
+  if (errors.length > 0) {
+    for (const error of errors) console.error(error);
+    process.exit(1);
+  }
+  try {
+    const output = withdrawPacket({ hubRoot, projectSlug, agentId, packetId, version, reason });
+    console.log(`Withdrew ${packetId} v${output.version}`);
+    console.log(output.outboxPath);
+    console.log('');
+    console.log(`Checked receiver ack when available: ${output.ackPath}`);
+    console.log('Next: tell the receiver to run inbox again; this version should no longer appear as pending.');
+    process.exit(0);
+  } catch (err) {
+    console.error(`Withdraw failed: ${err.message}`);
     process.exit(1);
   }
 }
@@ -694,9 +876,58 @@ if (subcommand === 'close') {
     const output = closePacket({ hubRoot, projectSlug, agentId, packetId, reason });
     console.log(`Closed ${packetId} v${output.version}`);
     console.log(output.outboxPath);
+    console.log('');
+    console.log('Next: both sides can run inbox once more; the settled thread should no longer appear as pending.');
     process.exit(0);
   } catch (err) {
     console.error(`Close failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+if (subcommand === 'doctor') {
+  requireFlags(['--hub-root', '--project', '--agent-id', '--other-agent-id']);
+  const hubRoot = getRequiredFlagValue('--hub-root');
+  const projectSlug = getRequiredFlagValue('--project');
+  const agentId = getRequiredFlagValue('--agent-id');
+  const otherAgentId = getRequiredFlagValue('--other-agent-id');
+  const errors = [
+    validateSnakeCase('--project', projectSlug),
+    validateSnakeCase('--agent-id', agentId),
+    validateSnakeCase('--other-agent-id', otherAgentId),
+  ].filter(Boolean);
+  if (errors.length > 0) {
+    for (const error of errors) console.error(error);
+    process.exit(1);
+  }
+  try {
+    const output = doctorHub({ hubRoot, projectSlug, agentId, otherAgentId });
+    let failed = 0;
+    console.log('APS Hub doctor');
+    for (const check of output.checks) {
+      console.log(`${check.ok ? 'ok' : 'missing'}  ${check.label}: ${check.path}`);
+      if (!check.ok) failed += 1;
+    }
+    if (output.conflicts.length > 0) {
+      console.log('');
+      console.log('Conflict-like filenames found:');
+      for (const filePath of output.conflicts) console.log(`- ${filePath}`);
+      failed += 1;
+    } else {
+      console.log('');
+      console.log('No conflict-like filenames found.');
+    }
+    console.log('');
+    if (failed === 0) {
+      console.log('status: passed');
+      console.log('Next: run inbox, publish, consume, revise, withdraw, or close as needed.');
+    } else {
+      console.log('status: failed');
+      console.log('Next: fix the missing paths or conflict-like files before continuing. Do not delete conflict files without reviewing them.');
+    }
+    process.exit(failed === 0 ? 0 : 1);
+  } catch (err) {
+    console.error(`Doctor failed: ${err.message}`);
     process.exit(1);
   }
 }

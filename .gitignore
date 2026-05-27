@@ -22,3 +22,4 @@ node_modules/
 # Temp output files (GENERIC_OPERATIONAL_RUNBOOK §5i convention)
 _*.txt
 *.tgz
+dev/qc/evidence/

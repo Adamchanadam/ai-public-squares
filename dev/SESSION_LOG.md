@@ -8,7 +8,49 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-26 (S18, latest) — 0.2.0 pre-release published
+## 2026-05-26 (S21, latest) — local 0.2.1 candidate committed and release-checked
+
+- **ID:** S21
+- **Summary:** Implemented the remaining local, reversible development tasks, committed the local `@adamchanadam/aps@0.2.1` candidate, and ran formal 🟡 外發前檢. npm latest remains `0.2.0`;the 0.2.1 candidate is not pushed, released, or published.
+- **Changed:** This workspace only.
+  - Modified: `bin/aps.js` — added immutable packet `revise`, unconsumed packet `withdraw`, and read-only Hub `doctor`;refactored latest-version lookup;added conflict-like filename scan;expanded CLI success messages with next-step guidance.
+  - Modified: `package.json` — bumped local candidate version to `0.2.1`;this has not been committed, tagged, released, or published.
+  - Modified: `skills/aps/SKILL.md` and `skills/aps/references/setup-dialogue.md` — aligned the skill boundary with published 0.2.0 versus local 0.2.1 candidate commands, and routed correction / recovery wording through CLI `revise`, `withdraw`, and `doctor` where available.
+  - Modified: `README.md`, `docs/index.html`, `docs/guides/aps-onboarding-walkthrough.html`, and `docs/plans/2026-05-21-aps-phase4-plan.md` — public and maintainer-facing wording now marks 0.2.1 recovery commands as unpublished candidate work and points first-time users to the skill-led setup path.
+  - Modified: `.gitignore`, `dev/DOC_SYNC_REGISTRY.md`, `dev/PROJECT_INDEX.md`, `dev/PROJECT_DECISIONS.md`, `dev/SESSION_HANDOFF.md`, `START_NEXT_SESSION_PROMPT.txt`, and this log — local evidence folders are ignored and continuity now records the 0.2.1 candidate state plus release-check result.
+- **Commit:** Local commit `Prepare APS 0.2.1 local candidate` records the candidate;it is not pushed.
+- **QC:** Formal 🟡 外發前檢 passed after one correction. Inner quick-check passed: Agent Handoff Kit doctor passed 46 checks, prompt mirror matched, and `git status --short` was clean. Package / CLI checks passed: `node --check bin/aps.js`, `node bin/aps.js --help`, `npm test`, `npm pack --dry-run --json`, `git diff --check`, and disposable Hub flow. The disposable flow covered `init --dry-run`, `init`, `publish`, `inbox`, `revise`, blocked old-version `withdraw`, latest `withdraw`, post-withdraw `inbox`, second `publish`, `consume`, `close`, `doctor`, and negative `bogus`. Cross-read / drift scans passed: HTML `.md` hyperlink audit had 0 hits; stale `待提交` / `34/34` wording had 0 hits after correction; placeholder hits are confined to A-class historical / explicit example docs; secrets sweep hits are safety-policy text, not credential values. DevTools rendered `docs/index.html`, walkthrough, and governance-map with no console messages; screenshots saved under `dev/qc/evidence/2026-05-27-release-check-html/`. npm registry readback confirms latest remains 0.2.0;GitHub Pages readback returned HTTP 200 and still contains 0.2.0 plus pre-release wording;remote `main` remains at the prior pushed commit, so 0.2.1 is not pushed.
+- **Result:** Local 0.2.1 candidate has passed formal 🟡 外發前檢. Next decision is whether Adam wants push / GitHub pre-release / npm publish;project remains ⚠️ pre-release either way.
+- **Sync:** Existing registry rows for npm package change, skill source change, public behavior change, APS user-facing docs, closeout/startup contract, workspace identity, and APS product consistency cover this update;no new registry row is needed.
+
+## 2026-05-26 (S20) — public new-user walkthrough CLI-first correction
+
+- **ID:** S20
+- **Summary:** Corrected the public first-time-user journey after the user asked whether the walkthrough and UX guidance were deep enough. The fix removes stale manual-first / not-yet-available framing and aligns the public entry path with the published 0.2.0 pre-release CLI.
+- **Changed:** This workspace only.
+  - Modified: `README.md` — "目前可以怎樣試" now points to `npm install --save-dev @adamchanadam/aps`, `npx aps init --dry-run`, and `npx aps init --hub-root ...`;natural-language daily use remains explicitly pre-release hardening work.
+  - Modified: `docs/index.html` and `docs/guides/index.html` — public guide entry now presents the 0.2.0 CLI-first setup path and one completed maintainer-run Drive verification.
+  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — setup steps now use `aps init` for skill install, Hub skeleton, Bridge Pack, starter pack, and packet round-trip commands;day-to-day use is labelled as pre-release trial use;the correction path no longer tells general users to directly edit HTML.
+  - Modified: `dev/SESSION_HANDOFF.md`, `START_NEXT_SESSION_PROMPT.txt`, `dev/PROJECT_INDEX.md`, and this log — recorded the public UX correction and regenerated the opening prompt mirror.
+- **QC:** HTML `.md` hyperlink audit returned 0 hits. Stale public wording grep returned 0 hits for `已上線`, direct-HTML-edit instruction, old one-click-not-available framing, and local `node bin/aps.js` public-doc paths. `git diff --check` passed with only existing LF→CRLF warnings. `node bin/aps.js --help` passed. Agent Handoff Kit doctor v0.3.11 passed 46 checks after prompt mirror regeneration.
+- **Result:** Public entry docs now match the actual 0.2.0 pre-release capability boundary: CLI-first setup is available, natural-language daily use / recovery is still hardening, and project-specific Drive verification remains required for each new real project.
+- **Sync:** Existing registry rows for public behavior change, APS user-facing docs change, repo entry layer change, closeout/startup contract change, and APS product consistency audit cover this update;no new registry row is needed.
+
+## 2026-05-26 (S19) — internal document alignment after 0.2.0 publish
+
+- **ID:** S19
+- **Summary:** Ran a post-publish internal document consistency scan and corrected current-state drift without rewriting historical audit records.
+- **Changed:** This workspace only.
+  - Modified: `dev/PROJECT_DECISIONS.md` — long-term evolution entry now says 0.2.0 is published as pre-release and the next decision is hardening, not publish timing.
+  - Modified: `dev/PROJECT_INDEX.md` — `bin/` entry and workspace identity now reflect published 0.2.0 and pushed post-publish state-sync commit.
+  - Modified: `skills/aps/SKILL.md` and `skills/aps/references/setup-dialogue.md` — boundary language now distinguishes one completed Adam ↔ Jay Drive verification from per-project verification still required.
+  - Modified: `docs/index.html` — status list now says `npx aps init` is available as a pre-release installer / Hub skeleton generator, and real Drive verification has one maintainer-run pass while new projects still need verification.
+  - Modified: `dev/SESSION_HANDOFF.md`, `START_NEXT_SESSION_PROMPT.txt`, and this log — recorded the alignment pass.
+- **QC:** Drift grep was run across current docs and package surfaces with historical logs, migration backups, release notes, and evidence folders excluded. Remaining hits are classified as code variable names, security phrases such as `unpublished financials`, historical release reports, or current correct 0.2.0 pre-release statements. Full verification also includes `git diff --check`, HTML `.md` hyperlink audit, package-surface drift grep, and Agent Handoff Kit doctor after prompt regeneration.
+- **Result:** Current-state internal docs no longer imply that 0.2.0 is unpublished or that no real Adam ↔ Jay Drive verification exists. Historical docs remain unchanged as audit history.
+- **Sync:** Existing `dev/DOC_SYNC_REGISTRY.md` rows for public behavior, closeout/startup contract, workspace identity, skill source change, APS product consistency, and npm package change cover this update;no new registry row is needed.
+
+## 2026-05-26 (S18) — 0.2.0 pre-release published
 
 - **ID:** S18
 - **Summary:** Adam authorized commit and continuation through npm publish. The 0.2.0 pre-release candidate was committed, pushed, tagged, released on GitHub as a pre-release, published to npm, and then read back from the registry, GitHub release, GitHub Pages, and a fresh install probe.
@@ -110,192 +152,6 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 - **QC:** `npm view @adamchanadam/aps ...` confirms `latest = 0.1.1`;`npm pack --dry-run --json` confirms 8 expected package files;remote `main` and `v0.1.1` both point to `838d85a`;GitHub release verified non-draft and non-prerelease;GitHub Pages returned HTTP 200 and contained `0.1.1` plus the verified install command. Agent Handoff Kit v0.3.11 doctor passed for both demo workspaces;main workspace doctor is re-run after prompt regeneration in this wrap-up.
 - **Pending:** Phase X-3 skill setup subflow + dialogue script remains next substantive work;throw-away-folder user-flow test still pending;Phase X-5 Layer D document repositioning remains pending;real cross-machine Drive round-trip evidence remains pending.
 - **Sync:** Closeout/startup contract, workspace identity, release, npm package, and MCP setup are reflected in handoff / index / prompt copy. No product files changed in this wrap-up.
-
-## 2026-05-25 (S11) — APS public promise consistency root-fix
-
-- **ID:** S11
-- **Summary:** 按 Adam 指示,本次 QC 聚焦 AI Public Squares 本身,不審 Agent Handoff Kit 治理層。先建立 `dev/qc/2026-05-25-aps-full-consistency-audit.md`,再逐項 root-fix 5 個 blocker:repo public 狀態漂移、npm 未 publish 與 walkthrough 命令衝突、`aps init` 目標體驗被寫似已可用、skill / dialogue script 含未實作承諾、walkthrough doctor `34 / 34` 過時數字。
-- **Changed:** This workspace only.
-  - Modified: `README.md` — 改為 repo 已公開;明確 npm package 尚未 publish;「開始使用」改為「目前可以怎樣試」+「目標體驗」分離。
-  - Modified: `docs/index.html` — 同步 public repo / npm 未 publish / `init` coming-soon 邊界;狀態表新增 registry 未發佈邊界。
-  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — `bridge-pack` 改為正式 publish 後使用 npm;前期測試只供維護者以 clone 後本地 `node bin/aps.js bridge-pack` 測試;doctor 驗收改用 `Status: passed`。
-  - Modified: `skills/aps/SKILL.md` — 標為 target orchestration spec,不是 current runtime guarantee;未實作 update / bundled PROTOCOL source / zip 承諾全部改成邊界語句。
-  - Modified: `docs/plans/2026-05-23-aps-skill-dialogue-script.md` — 標為 wording bank + 目標體驗草稿;移除 clipboard / zip / update 作為已可執行承諾。
-  - Modified: `dev/DOC_SYNC_REGISTRY.md` — 新增 APS product consistency audit / public promise drift row。
-  - Modified: `dev/PROJECT_INDEX.md` — 新增 APS consistency audit entry;README / skill rows 改成 current-vs-target boundary。
-  - Modified: `dev/qc/2026-05-25-aps-full-consistency-audit.md` — 追加 root-fix pass 與重跑驗收結果。
-  - Modified: `dev/qc/triggers.md` — 將 APS 全面檢深化為三條主線:公開承諾一致性、發佈前可信度、協定 runtime 正確性;新增四條主 user journey 走通要求。
-  - Modified: `docs/qc/governance-map.html` — 同步三條主線與四條 journey,將公開 reference card 對齊 SSOT。
-  - Modified: `docs/index.html` + `docs/guides/index.html` + `docs/guides/aps-onboarding-walkthrough.html` — 公開入口、教學中心、完整落地教學加入 APS 驗收機制與 journey 定位;日期同步至 2026-05-25。
-  - Modified: `dev/DOC_SYNC_REGISTRY.md` — APS product consistency audit row 擴充為三條主線 + 四條 journey 之同步規則。
-  - Modified: `docs/index.html` + `docs/guides/index.html` + `docs/guides/aps-onboarding-walkthrough.html` + `docs/qc/governance-map.html` + `dev/qc/triggers.md` + `dev/DOC_SYNC_REGISTRY.md` — 按 Adam 要求將剛加入的快速溝通語與英文工作語改為公開文檔可用的當代繁體書面語:「journey」→「流程」,「runtime」→「實際運行」,「SSOT」→「單一真源」,「actor」→「參與者」,「trace / evidence」→「操作記錄 / 證據」。
-- **QC:** `node bin/aps.js --help` pass;`node bin/aps.js init` pass and still coming soon;`node bin/aps.js bridge-pack --role B` pass;`node bin/aps.js bogus` negative path pass(exit 1);`npm pack --dry-run --json` pass;`npm view @adamchanadam/aps ...` still E404 and now documented as publish timing boundary;grep `private repo|私人 repo|34 / 34|34/34|C:\Users\adam|href=.*\.md` on README + public docs = 0 hit;grep `npx @adamchanadam/aps update|copy 到 clipboard|protocol-v1.0.md` = 0 hit;secret sweep found only safety-rule mentions, no actual credential;`npx @adamchanadam/agent-handoff-kit doctor` pass(46 checks),with non-blocking note that tool / npm latest v0.3.11 differs from project record v0.3.10. Later same session:APS 全面檢 governance deepening added and re-verified by grep across `dev/qc/triggers.md`,4 個入口 HTML,plus `.md` hyperlink audit.
-- **Sync:** DOC_SYNC_REGISTRY updated with durable rule for future APS public promise drift checks. No GitHub push, npm publish, Pages deployment, or external write performed.
-- **Pending:** npm publish remains Adam-controlled; until publish, public docs must keep the registry-not-published boundary. Next substantive work may proceed to skill / setup / dialogue design, using the corrected boundary.
-- **Continuation — full audit requested by Adam:** Created `dev/qc/2026-05-25-aps-full-audit.md` and indexed it in `dev/PROJECT_INDEX.md`. This stricter full audit separates public/document consistency from actual cross-workspace proof. Result: local public surface + CLI checks pass, but the full audit is not a complete pass because doctor, browser render, Class-C cross-workspace audit, round-trip regression, Bridge Pack startup behavior trace, and report commit remain unverified or explicitly not performed in this workspace session. Browser render was attempted through the local JavaScript environment, but `playwright` is unavailable.
-- **Environment note added:** `C:\tmp` is not writable in the current Codex desktop execution environment. Recorded in `dev/PROJECT_INDEX.md` Workspace Identity and this audit report; subsequent QC evidence for this session uses project-local `dev/qc/evidence/2026-05-25-full-audit/`.
-- **Root-fix continuation:** Public wording cleanup removed mixed-language phrases from README + HTML entry surfaces. HTML preview evidence was generated with Microsoft Edge headless and saved under `dev/qc/evidence/2026-05-25-full-audit/`. A project-local temporary Hub regression completed Adam publish → Jay ack → Jay reply → Adam ack → Adam close, and `startup-trace-check.cjs` confirmed both Adam and Jay have no pending items after close. Doctor remains blocked because sandbox execution lacks npm cache and sandbox-out execution of npm code was rejected by safety review.
-- **Release continuation (2026-05-26):** Published `@adamchanadam/aps@0.1.0`, then immediately found that one-off `npx @adamchanadam/aps@0.1.0 ...` was not a reliable verified path in this Windows/npm environment. Root-fix landed as `0.1.1`: public docs + CLI help now use the verified flow `npm install --save-dev @adamchanadam/aps` then `npx aps ...`. Published `@adamchanadam/aps@0.1.1`; `npm view` confirms `latest` = 0.1.1, bin = `aps`, fileCount = 8; a temporary install probe confirms `aps.cmd --help` and `aps.cmd bridge-pack --role B` work.
-
-## 2026-05-23 (S10) — Repo public + GitHub Pages + npm bridge-pack + Layer D HTML strip + audit cascade
-
-- **ID:** S10
-- **Summary:** 跨多輪 audit + scope expansion 嘅累積 batch。核心拍板:Adam 提出 「HTML 入面 .md hyperlink 屬 broken UX(瀏覽器顯示 plain text);若內容係新手必讀就放 HTML 頁,放 HTML 範圍嘅必須係 HTML,非 .md」 之 design principle。Strip 全部公開面 .md hyperlink 並重新定位 「設計理據 + 跨機接駁計劃」 為 「AI / 維護者層 spec source」(Layer D)。順手做 audit cascade — 日期 / brand sync / Agent Handoff Kit 網址 fix / 設計理據 §13 階段 1-3 reframe / npm package 加 `bridge-pack` sub-command 取代 clone repo prereq / 設置教學 §2 由 4 件先決事改 3 件(取消 clone)/ pre-release banner / repo 轉 public / GitHub Pages enable / README 嘅 HTML link 改 absolute GitHub Pages URL。Voice rewrite scope 擴至包含 `docs/guides/index.html` + `docs/qc/governance-map.html`(原 Tier 3 deferred items)。
-- **Adam principle 確立(documentation governance):** HTML = 公開人類面 polished surface;Notion = Adam 個人 R&D 知識庫;.md(`docs/plans/`、`dev/`)= AI / 維護者 spec substrate。HTML site-nav 不 link 任何 .md;HTML body 如要 reference .md,strip hyperlink 留 plain `<span class="path">` 顯示。
-- **Changed:** This workspace + 2 memory files.
-  - Modified: `bin/aps.js` — 加 `bridge-pack` sub-command(支援 `--role A/B`);help text + init text 對齊新 capability。
-  - Modified: `package.json` — files 加 `"examples/"`(npm tarball ship Bridge Pack fixture)。
-  - Modified: `README.md` — pre-release banner(「⚠️ 前期測試階段」)+ 「想深入了解」 list 分兩層 + 3 個 HTML link 改 absolute GitHub Pages URL + Agent Handoff Kit 網址 fix。
-  - Modified: `docs/index.html` — site-nav strip 2 .md;body table 3 row + 正文 funnel audit hyperlink strip 改 plain path + (AI / 維護者層 .md) 標記;site-nav hint + hero meta + footer 日期 → 2026-05-23;Agent Handoff Kit 網址 fix;加 pre-release banner;voice 已 align。
-  - Modified: `docs/guides/index.html` — site-nav strip 2 .md;site-nav hint + footer 日期 → 2026-05-23;footer brand 「AI Public Squares」 sync;3 sections / 12 處粵語 colloquial reword(原 voice scope 漏網)。
-  - Modified: `docs/guides/aps-onboarding-walkthrough.html` — site-nav strip 2 .md;body callout × 2 + table × 1 hyperlink strip + 加 (AI / 維護者層 .md) 標記;site-nav hint + footer 日期 → 2026-05-23;Agent Handoff Kit 網址 fix;§2 4 件 → 3 件先決事(取消 clone repo prereq + 加 npm bridge-pack callout);§6 step 2 全 rewrite(由 clone path → `npx @adamchanadam/aps bridge-pack` command);§7 Adam 預先準備 + 1.1 / 2.3 / 5-bullet reframe + cascade 「4 件」 → 「3 件」 across TOC / §3 lede / §6 step 1 head / §7 step 1 / 1.1 head / accept 句;§5 / §3 callout 之 「你哋」 → 「你們」 voice fix(原 voice scope 漏網)。
-  - Modified: `docs/qc/governance-map.html` — site-nav strip 2 .md;site-nav hint → 2026-05-23;footer brand + `<title>` brand 「AI Public Squares」 sync;13 處粵語 colloquial reword(原 voice scope 漏網 Tier 3 F6)。
-  - Modified: `docs/plans/2026-05-20-agent-public-square-design.md` — §13 階段 1 + 3 + 4 全 reframe(`Adam` / `Jay` → User A / B + `mpedu_plus_branding` → `<project_slug>` placeholder)。
-  - Modified: `dev/DOC_SYNC_REGISTRY.md` — 新 row 「HTML 公開面 .md hyperlink strip」;npm package change row smoke test 涵蓋 `bridge-pack` 加 files `examples/`。
-  - Modified (memory): `MEMORY.md` + `reference-agent-handoff-kit-prerequisite.md` — Agent Handoff Kit 網址 由 `adamchanadam.github.io/agent-handoff-kit`(錯誤,不存在)改 `https://github.com/Adamchanadam/agent-handoff-kit`(repo URL,正確)。
-- **External actions by Adam (out of session):**
-  - GitHub repo `Adamchanadam/ai-public-squares` 由 private 轉 public(2026-05-23)。
-  - GitHub Pages enable(`Settings → Pages → Source: Deploy from a branch, Branch: main, Folder: / (root)`)。
-  - Pages URL `https://adamchanadam.github.io/ai-public-squares/` 可達(Adam confirmed with screenshot)。
-- **QC: 🟡 外發前檢 + inner 🟢 — 5/5 items 全綠:**
-  - 🟢 quick-check: kit doctor baseline maintained;grep acceptance 全綠(`.md` hyperlink × 0 hit on `docs/**/*.html` / `Agent Public Square` × 0 hit on `docs/**/*.html` / `2026-05-2[12]` 剩餘 hits 為 filename date 或 「建立日期」 intentional history)。
-  - 🟡 release-check 5 items:
-    - **Placeholder audit ✅** active 公開面 0 hit `MPEdu_Plus_Branding`;historical files(MVP plan / verification / S8 audit report)hits 屬 S8 governance-clean labelled,acceptable expose since repo public。
-    - **Cross-read ✅** 跨 7 個 user-facing 檔 narrative consistency 一致:site-nav brand / 日期 / 「3 件先決事」 cascade / npm bridge-pack command 路徑 / README ↔ docs/index.html ↔ walkthrough 對齊。
-    - **HTML preview render ✅** 各 HTML 經 Launch preview visible;banner + nav + table 結構 visual confirmed;無 broken markup。
-    - **PII / secrets sweep ✅** 0 actual leak(`i.adamchan.uk` / `password=` / `secret=` / `api_key` / `client_secret` 0 hit,剩 2 hits 屬 historical scan record meta-mention)。
-    - **Voice discipline scan ✅** 7 個讀者面 HTML / MD 全 align(verbatim user trigger phrase quote 內保留 per voice rule)。
-  - 🔴 全面檢 NOT triggered(此 batch 無 protocol 改動,無 cross-workspace 範圍變更)。
-- **npm smoke test ✅:** `node bin/aps.js [--help|init|bridge-pack|bridge-pack --role B|bogus]` 5 paths exit code 對應預期(前 4 exit 0,bogus exit 1);`bridge-pack` output 開首 `# APS Bridge Pack`;`npm pack --dry-run` ship `examples/demo-agent-{a,b}/dev/rules/aps-bridge.md` 雙 fixture(各 6.6 KB)。
-- **Sync:**
-  - HTML 公開面 .md hyperlink strip change: confirmed(4 個 HTML site-nav + body link 全 strip;新 DOC_SYNC_REGISTRY row)。
-  - npm package change: confirmed(`bridge-pack` sub-command + files 含 `examples/`;Adam 將自跑 `npm publish` 出 0.2.0)。
-  - Repo entry layer change(Layer A): confirmed(README + docs/index.html 加 pre-release banner;README HTML link 改 absolute GitHub Pages URL)。
-  - APS user-facing docs change: confirmed(跨 4 HTML site-nav 對齊 + voice 對齊 + 日期 sync)。
-- **Pending:**
-  - npm publish 0.2.0(Adam 自跑 `npm login + npm publish`)— publish 後 `npx @adamchanadam/aps bridge-pack` 命令真實 work。
-  - Phase X-3 起手 — `skills/aps/SKILL.md` + setup subflow + dialogue script。
-  - 真實 user-flow test:Adam 可於 throw-away folder 跟 walkthrough §2 → §3 → §6 真做一次(npm bridge-pack 路徑下測試)。
-  - Phase X-5 Layer D 文檔重新定位(設置教學 §1 disclaimer 加「想 AI 帶你做就講 set up APS」 + Phase 4 plan 加 「Skill-driven UX layer」 cross-reference 一節)。
-  - Phase X-4 Layer C 日常使用 + recovery subflow。
-  - Phase X-6 自動升級機制。
-- **Risks (updated):**
-  - npm 0.2.0 未 publish — `npx @adamchanadam/aps bridge-pack` 即時試會 404 until publish。Mitigation:README + docs/index.html banner 已標 pre-release。
-  - 設置教學 npm bridge-pack 路徑未經真實使用者跑一次驗證(無 user-flow test acceptance)。
-  - 設計理據 §12.3 + §9 仍保留 Adam-Jay specific path 加 `G:\…\Adam 工作目錄` 個人 Drive path(有 header disclaimer 標明 example narrative);repo 已 public,呢個 path 已 expose(屬 acceptable expose since header disclaimer cover example narrative scope)。
-  - Historical SESSION_LOG / HANDOFF entries 含 `MPEdu_Plus_Branding` / Adam-specific path / `i.adamchan.uk` historical scan reference / `Adam Chan` 等 — repo 已 public,呢類 historical content 已 expose;將來如想徹底 cleanup 須 `git filter-repo` rewrite history(destructive,需 Adam 明示批准)。
-  - Previously closed risks unchanged。
-- **Log maintenance:** kept;new entry at top;S9 demoted from `latest` tag。
-
-### Next Session Opening Message
-
-(regenerated in `dev/SESSION_HANDOFF.md` — see there. Convenience copy at `START_NEXT_SESSION_PROMPT.txt`.)
-
-## 2026-05-22 (S9) — Funnel-first vision shift + Layer A entry + npm bootstrap + GitHub remote
-
-- **ID:** S9
-- **Summary:** Major vision shift triggered by Adam: 「對 APS 零認知背景嘅用戶都用得到,本 repo 才算成功」. Repo 嘅 success criterion reframed 由「technical correctness」 → 「zero-knowledge user 5-minute outcome」. Three substantial deliverables landed:
-  1. Funnel-first audit doc + 6-phase build roadmap
-  2. GitHub remote + private repo bootstrap (Apache-2.0 license)
-  3. Layer A entry rewrite (README + docs/index.html 全 reframed) + npm package skeleton (`@adamchanadam/aps` v0.1.0 placeholder)
-- **Changed:** This workspace only.
-  - New: `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` (436 lines, Stage 0-7 funnel + Layer A/B/C/D map + 6-phase roadmap + 5 open question + 3 risk)
-  - New: `package.json` (npm scope @adamchanadam, bin entry `aps`, Apache-2.0, engines node ≥18)
-  - New: `bin/aps.js` (placeholder CLI: init / --help / unknown handlers, all functional)
-  - New: `.gitignore` (OS / editor / `.env` + `_*.txt` per GENERIC_OPERATIONAL_RUNBOOK §5i)
-  - New: `README.md` (placeholder → zero-knowledge entry: 痛點 hook + `npx @adamchanadam/aps init` + 3 步點用 + deep-dive references + Build status table)
-  - New: `LICENSE` (Apache-2.0 via GitHub UI initial commit merge)
-  - Rewritten: `docs/index.html` (maintainer dashboard → zero-knowledge entry; +95 / −182 lines; cover h1 + footer 「Agent Public Square」 → 「AI Public Squares」)
-  - Modified: 3 docs HTML (guides/index, walkthrough, governance-map) — site-nav brand text sync 「Agent Public Square」 → 「AI Public Squares」 (align README + repo name + npm scope)
-- **Distribution channel decision:** npm package (Adam confirmed). `@adamchanadam/aps` scope reserved; npm publish 留到真 `init` 邏輯落地一齊 publish 0.2.0
-- **Git history this session(10 commits, all pushed to origin/main):**
-  - `65456c0` — S8 stage 1 generic-template pivot + audit report
-  - `3cc0b13` — walkthrough audit 9 fixes (Adam/Jay agent_id defaults / asterisk render / step count / 試演 assumption cleanup)
-  - `5f8d46e` — GitHub bootstrap (.gitignore + README placeholder)
-  - `3d1f716` — Merge GitHub Initial commit (Apache-2.0 LICENSE)
-  - `5b0b94f` — README License section align Apache 2.0
-  - `8a86dcb` — .gitignore add `_*.txt` per runbook convention
-  - `62878d5` — zero-knowledge funnel audit (Stage 0-7 + Layer A/B/C/D + roadmap)
-  - `e6e38fd` — npm package bootstrap (@adamchanadam/aps v0.1.0 placeholder)
-  - `b0255c1` — docs/index.html rewrite as zero-knowledge entry
-  - `89b3012` — cross-doc site-nav brand sync (4 files)
-- **Sensitive content scan(pre-first-push):** clean — `i.adamchan.uk` 0 hit;`password|secret|api_key|.env` 全部 meta-reference (0 actual leak);`MPEdu`/`明報` hits 屬 labelled historical reference (S8 governance-clean) + historical SESSION_LOG audit trail (留底). Push-ready 無 mandatory scrub.
-- **QC:**
-  - Push verification: every push confirmed via remote ref update (10/10 success)
-  - GitHub credential auto-passed (Windows Credential Manager, no token prompt)
-  - npm CLI smoke test: `node bin/aps.js` with `--help` / `init` / unknown 3 path 全 work
-  - Cross-doc brand sync: 0 stale, 4 new across 4 docs HTML files
-  - Stale terminology purge in docs/index.html rewrite: 0 hit for Phase 4 / Block 4 / T0b / mpedu / 焙入啟動 / 不可變交接包 / from_adam / from_jay
-  - New install command (1 hit) + funnel audit reference (2 hits) present in docs/index.html
-  - PII / secrets scan: 0 introduced
-- **Sync:**
-  - APS user-facing docs change: confirmed (README + docs/index.html 全 rewrite + site-nav sync 4 file)
-  - New file or directory: confirmed (`bin/`, `package.json`, `LICENSE`, funnel audit doc — covered by existing registry rows + new entry layer row)
-  - Distribution channel: confirmed (npm @adamchanadam/aps;reserve; publish deferred)
-- **Pending(per funnel audit roadmap):**
-  - Phase X-2 真 `init` orchestration: detect Claude Code → install skill → greet (placeholder release 仲喺度;真實邏輯未做)
-  - Phase X-3 `skills/aps/SKILL.md` + setup subflow + dialogue script (conversational craft sub-deliverable)
-  - Phase X-4 daily-use subflow (publish / inbox-check / troubleshoot)
-  - Phase X-5 Layer D doc re-position (walkthrough §1 disclaimer + Phase 4 plan cross-reference)
-  - Phase X-6 auto-update mechanism
-- **Risks(updated):**
-  - npm publish 仲未做 — `npx @adamchanadam/aps init` 即時試會 404 until publish;acceptable trade-off (等真 `init` 邏輯齊一齊 publish 0.2.0,避免出 deceptive placeholder release)
-  - Distribution channel 拍板 done (npm); Phase X-2 unblocked
-  - Walkthrough Layer D re-position 仲未落 — 用戶可能仲會 stumble 入去當必讀(目前緊靠 README + docs/index.html 嘅 「deeper-dive reference」 framing 引導)
-  - Previously closed risks unchanged: demo workspaces kit alignment, generic-template pivot, no remote git
-- **Log maintenance:** kept;new entry at top;S8-S1 retained as-is.
-
-### S9 Continuation (2026-05-22 later, same session) — Voice rewrite × 5 + walkthrough concrete + demo fixtures + design doc reframe
-
-User Adam 於 S9 reconcile #1(`230503d`)之後 持續推進。下 8 個 commits 之 work:
-
-| 範圍 | Commit | 主要內容 |
-|---|---|---|
-| 主頁 README v1 | `166e1b3` | 站讀者立場 + 前置 Agent Handoff Kit(初版仍粵語) |
-| 主頁 README v2 | `d1013bc` | 全當代繁體書面語(Adam 三度 escalate「不得硬砌中文詞語,全面用當代繁體書面語」之後) |
-| 入口頁 docs/index.html | `fcc61ed` | 全 voice + 5 個核心設計 plain reframe + 加 Agent Handoff Kit prereq section |
-| 內部檢討 funnel audit | `cc8790a` | 全 voice;框架代號(Stage / Layer / Phase)留內部 SSOT;Phase X-1 標記已完成、Q1 npm distribution 拍板 |
-| 設置教學 walkthrough 第一輪 | `3636f7b` | 第一次 voice rewrite + ship `examples/demo-agent-{a,b}/dev/rules/aps-bridge.md` + `examples/README.md` |
-| §5 step 1 sample | `e92962d` | Concrete rewrite sample(Adam pattern preview) |
-| Walkthrough batch concrete | `2d9d40f` | Adam confirm sample pattern 之後:加 §3 工作目錄 + cascade renumber(11→13 sections)+ §6 全 6 step + §7 全 step concrete rewrite(子步驟 + prompt + expected output 表 + 失敗處理 callout + acceptance) |
-| 設計理據 design doc | `78b52eb` | 全 voice;header「第一個落地實例」→「example narrative」;§12.3 加「2026-05-20 歷史快照」 disclaimer;Bridge Pack reference 路徑保留不變 |
-
-**累積成果:**
-
-- 5 份人讀文檔(主頁、入口頁、設置教學、內部檢討、設計理據)全部當代繁體書面語化
-- Walkthrough wall 修補:新 §3「準備你嘅項目工作目錄」 + 修 §5 step 1 wrong instruction(「睇 AGENTS.md 頭幾行記低版本」 → 「執行 doctor 自動報版本」)+ ship demo fixtures(讀者 clone repo 即可揾到,不再依賴 maintainer 機嘅 sibling path)+ 每 step concrete actionable form
-- 新 memory file:`feedback-doc-voice.md`(三度 escalate 後 strict 「全用當代繁體書面語」 rule);`reference-agent-handoff-kit-prerequisite.md`(所有入門文件明寫 Agent Handoff Kit 前置)
-- Verbatim 用戶觸發句保留於 `<code>` blocks 內(「Hub 有新嘢」 / 「check Hub」 / 「未消化」 / 「睇下 Hub 有冇新嘢」)
-- 跨文檔 narrative consistency:Adam / Jay disclaimer / 痛點 → 安裝 → 使用 → 深入 之 pattern 一致
-
-**Git history this session 累積(19 commits, all pushed to origin/main):**
-
-- S8 + walkthrough audit + GitHub bootstrap(10 commits):`65456c0` / `3cc0b13` / `5f8d46e` / `3d1f716` / `5b0b94f` / `8a86dcb` / `62878d5` / `e6e38fd` / `b0255c1` / `89b3012`
-- S9 reconcile #1:`230503d`
-- S9 continuation(8 commits):`166e1b3` / `d1013bc` / `fcc61ed` / `cc8790a` / `3636f7b` / `e92962d` / `2d9d40f` / `78b52eb`
-
-**QC:**
-
-- 每 voice rewrite 後 grep 確認粵語 colloquial marker 0 hit(除 verbatim user trigger phrase 於 code blocks)
-- 跨文檔 narrative consistency 驗證:README + docs/index.html + walkthrough §1 disclaimer 之 「Adam / Jay = User A / User B」 framing 一致;§2 安裝先決事項 對齊;Agent Handoff Kit prereq wording 對齊
-- 8 個 push 全部 verify by remote ref update
-- Walkthrough §6 step 1 sample(`e92962d`)Adam confirmed pattern OK,後續 batch concrete rewrite 之 §6 / §7 跟同樣 pattern
-
-**Pending:**
-
-- Phase X-2 真 `init` orchestration 仍待建構
-- Phase X-3 skill setup subflow 仍未起手
-- 真實 user-flow test:Adam 可於 throw-away folder 嘗試跟 walkthrough §2 → §3 → §6 真做一次,撞 wall surface
-- Phase X-5 walkthrough §1 disclaimer 待 skill 落地後加「想 AI 帶你做就講 set up APS」 reframe
-
-**Risks(updated):**
-
-- Walkthrough §6 step 2-6 + §7 雖 concrete rewrite,但仍待真實 user 跑一次驗證 wording / pattern 是否真係跟得到 — 即係 sample pattern Adam confirmed OK,但全 batch 仲待 acceptance test
-- 設計理據 §12.3 仍保留 Adam-Jay specific path(有 disclaimer 標明 historical),將來如轉 public 應 sanitize
-
-### Next Session Opening Message
-
-(regenerated in `dev/SESSION_HANDOFF.md` — see there. Convenience copy at `START_NEXT_SESSION_PROMPT.txt`.)
 
 ## Entry Template
 

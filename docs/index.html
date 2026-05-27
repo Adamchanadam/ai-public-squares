@@ -330,7 +330,7 @@
   <h1>AI Public Squares</h1>
   <p class="subtitle">兩個人,各自在自己的電腦上,以 AI 共同製作一份品牌指引、撰寫一份報告、設計一個項目 — 但檔案來去往返、上下文重複交代?</p>
   <div class="meta">
-    <span class="badge ok">試行版 0.2.0</span>
+    <span class="badge ok">試行版 0.2.1 候選</span>
     <span class="badge pending">init 技能安裝器試行中</span>
     <span>建立 2026-05-20</span>
     <span>最新更新 2026-05-26</span>
@@ -338,7 +338,7 @@
 </header>
 
 <div class="callout warn">
-  <strong>⚠️ 前期測試階段(pre-release)</strong> — 本工具仍處於早期建構期。0.2.0 pre-release 開始支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack 與 starter pack;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。自然語言日常操作與補救流程仍未完整產品化。適合觀察、提出建議、留下回饋;不建議用於正式生產或不可中斷的重要流程。
+  <strong>⚠️ 前期測試階段(pre-release)</strong> — 本工具仍處於早期建構期。npm latest 0.2.0 pre-release 已支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack 與 starter pack;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。本工作樹正在準備 0.2.1 候選,新增修訂、撤回與只讀診斷命令;未發佈前 npm latest 未包含這三項。自然語言日常操作與補救流程仍未完整產品化。適合觀察、提出建議、留下回饋;不建議用於正式生產或不可中斷的重要流程。
 </div>
 
 <section>
@@ -392,24 +392,24 @@
 
 <section>
   <h2>目前可以怎樣試</h2>
-  <p class="lede">完整一鍵跨機設置仍未完成。下方命令是目標入口,本地開發版已推進到技能安裝器與初始 Hub skeleton 生成器階段。</p>
-  <div class="install-block"><span class="prompt">$</span>npm install --save-dev @adamchanadam/aps<br><span class="prompt">$</span>npx aps init</div>
+  <p class="lede">npm latest 0.2.0 pre-release 的主路徑是先安裝套件,再用 <code>aps init</code> 檢查與建立初始 Hub skeleton。本工作樹 0.2.1 候選已新增 <code>revise</code>、<code>withdraw</code> 與 <code>doctor</code>;正式跨機使用前,每個真實項目仍要各自驗證 Google Drive 同步。</p>
+  <div class="install-block"><span class="prompt">$</span>npm install --save-dev @adamchanadam/aps<br><span class="prompt">$</span>npx aps init --dry-run<br><span class="prompt">$</span>npx aps init --hub-root "G:\...\AI_Public_Squares" --project branding_2026 --agent-id adam --other-agent-id jay --role A</div>
   <ol class="step-list">
-    <li>目前可先閱讀本頁,理解 APS 解決的跨機協作問題。</li>
-    <li>如想看細節,可前往下方「完整設置教學」了解手動流程。</li>
-    <li>先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps bridge-pack</code> 取得 Bridge Pack fixture;若你是維護者,亦可 clone repo 後在本地執行 <code>node bin/aps.js init --dry-run</code> 或 <code>node bin/aps.js bridge-pack</code> 測試 CLI 試行版。</li>
+    <li>先準備四個值:<code>hub-root</code>、<code>project</code>、<code>agent-id</code>、<code>other-agent-id</code>。若你是發起方,通常用 <code>--role A</code>;對方用 <code>--role B</code>。</li>
+    <li>先執行 <code>npx aps init --dry-run</code>,確認技能安裝位置與 Hub 設置計劃,此步不寫檔。</li>
+    <li>確認無誤後才執行完整 <code>npx aps init --hub-root ...</code> 命令。完成後再前往「完整設置教學」跑第一次出包、收包與收結。</li>
   </ol>
-  <p>目標體驗完成後,工具會先把 APS 技能安裝到 Claude Code / Codex,再建立 Hub skeleton、Bridge Pack 與 starter pack。設置完成後,使用者可在 AI 對話中以自然語句與工具溝通:</p>
+  <p>設置完成後,工具會把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack 與 starter pack。自然語言日常操作仍在硬化中;底層 CLI 已可支援以下方向:</p>
   <ul>
     <li>「我有嘢俾 Jay」 → 工具自動將內容打包,生成一句 WhatsApp 通知句供你發送</li>
     <li>「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦</li>
     <li>「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法</li>
   </ul>
   <div class="callout">
-    <strong>最終目標是全程無需先閱讀任何技術文檔。</strong>目前仍處於前期測試階段,公開頁先呈現方向與手動參考。
+    <strong>最終目標是全程無需先閱讀任何技術文檔。</strong>目前仍處於前期測試階段,公開頁先呈現 CLI 優先試行路徑與手動備用參考。
   </div>
   <div class="callout warn">
-    <strong>目前狀態</strong>:0.2.0 pre-release 提供 <code>bridge-pack</code>、<code>aps init</code> 技能安裝、初始 Hub skeleton、Bridge Pack 與 starter pack 生成。CLI 已有最小 <code>publish</code> / <code>inbox</code> / <code>consume</code> / <code>close</code> 指令,並通過本地一次性 Hub 往返測試與一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。但仍未等同自然語言日常操作或補救流程已產品化。請勿把本頁當成已可生產使用的安裝說明。
+    <strong>目前狀態</strong>:npm latest 0.2.0 pre-release 提供 <code>bridge-pack</code>、<code>aps init</code> 技能安裝、初始 Hub skeleton、Bridge Pack 與 starter pack 生成。CLI 已有最小 <code>publish</code> / <code>inbox</code> / <code>consume</code> / <code>close</code> 指令,並通過本地一次性 Hub 往返測試與一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。本工作樹 0.2.1 候選新增 <code>revise</code> / <code>withdraw</code> / <code>doctor</code>,尚未 npm publish。但仍未等同自然語言日常操作或補救流程已產品化。請勿把本頁當成已可生產使用的安裝說明。
   </div>
 </section>
 
@@ -464,10 +464,11 @@
     <li><span class="mark done">✓</span><span>協定設計與 MVP 在同一部電腦上跑通(2026-05-20)</span></li>
     <li><span class="mark done">✓</span><span>完整的手動設置教學(技術參考,供深入了解使用)</span></li>
     <li><span class="mark done">✓</span><span>npm package 0.2.0 pre-release — <code>@adamchanadam/aps</code> 提供 <code>bridge-pack</code>、<code>init</code>、Hub skeleton 與最小 CLI 往返</span></li>
-    <li><span class="mark wait">⏳</span><span><code>npx aps init</code> 正在建成 Claude Code / Codex 技能安裝器與初始 Hub skeleton 生成器,尚未完成一鍵跨機設置</span></li>
+    <li><span class="mark wait">⏳</span><span>本工作樹 0.2.1 候選 — 新增 <code>revise</code>、<code>withdraw</code>、<code>doctor</code>,已本地提交並通過外發前檢,待發佈決定</span></li>
+    <li><span class="mark done">✓</span><span><code>npx aps init</code> 已可試行 Claude Code / Codex 技能安裝器與初始 Hub skeleton 生成器;尚未等同一鍵完成所有跨機設置</span></li>
     <li><span class="mark done">✓</span><span>本地 CLI 最小往返已跑通:<code>publish</code> → <code>inbox</code> → <code>consume</code> → reply → <code>close</code></span></li>
     <li><span class="mark wait">⏳</span><span>AI 自動帶你完成的自然語言日常流程(出包 / 撿包 / 出錯處理)仍在建構中</span></li>
-    <li><span class="mark wait">⏳</span><span>實際兩部電腦跨機運作(等對話流程完成之後試行)</span></li>
+    <li><span class="mark done">✓</span><span>已完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返;新項目仍需各自驗證 Hub 路徑與同步狀態</span></li>
   </ul>
   <p style="margin-top:14px;">完整建構路線見 <span class="path">dev\qc\2026-05-22-zero-knowledge-funnel-audit.md</span>(AI / 維護者層 .md 檔;目前以技術術語為主,正在重寫對齊讀者)。</p>
 </section>
@@ -526,7 +527,7 @@
 </section>
 
 <footer>
-  AI Public Squares · 試行版 0.2.0 · 最新更新 2026-05-26
+  AI Public Squares · 試行版 0.2.1 候選 · 最新更新 2026-05-27
 </footer>
 
 </main>

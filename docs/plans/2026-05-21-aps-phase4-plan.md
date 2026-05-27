@@ -15,6 +15,14 @@
 - `docs/plans/2026-05-20-aps-mvp-verification.md` — MVP acceptance + the four Phase 4 items the gate review deferred.
 - `<HUB>/_hub/PROTOCOL.md` v1.0 — runtime contract; the authoritative tie-breaker if any Bridge Pack wording diverges. `<HUB>` is each user's own absolute path to the Drive-synced `AI_Public_Squares` folder.
 
+## Skill-driven UX layer
+
+This plan remains the maintainer-level protocol and onboarding specification. First-time users should normally start from the APS skill by saying `set up APS` or 「教我用 APS」 in their AI tool. The skill reads the bundled runtime reference under `skills/aps/references/`, asks only the minimum setup questions, then calls the published CLI instead of asking the user to hand-edit protocol files.
+
+The public walkthrough at `docs/guides/aps-onboarding-walkthrough.html` is the full human-readable deep reference. It is useful for auditing, teaching, and manual fallback, but it is not meant to be the only first-user path once the skill is installed.
+
+As of the local v0.2.1 candidate, the CLI surface covers setup plus `publish`, `revise`, `inbox`, `consume`, `withdraw`, `close`, and read-only `doctor`. The npm latest remains governed by the published release state until a later publish happens.
+
 ---
 
 ## Workspaces touched
@@ -155,7 +163,7 @@ Mirrors MVP T4–T9 but runs against `<RUNTIME_A>` instead of a demo workspace. 
 
 **Acceptance:** a short note in User A's current session log: kit version, doctor result, git state. **NO file changes in T1.**
 
-**T1b (only if kit < 0.1.7):** run `npx @adamchanadam/agent-handoff-kit@latest upgrade` in `<RUNTIME_A>`. Follow AGENTS.md §2.1 Upgrade Done Contract: AGENTS.md must reach clean state, doctor must pass 34/34. If upgrade fails, stop and route back here before T2.
+**T1b (only if kit < 0.1.7):** run `npx @adamchanadam/agent-handoff-kit@latest upgrade` in `<RUNTIME_A>`. Follow AGENTS.md §2.1 Upgrade Done Contract: AGENTS.md must reach clean state, and doctor must report `status: passed`. If upgrade fails, stop and route back here before T2.
 
 ---
 

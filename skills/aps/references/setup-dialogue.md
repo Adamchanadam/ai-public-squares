@@ -105,5 +105,5 @@ npx aps publish --hub-root "<hub_root>" --project <project_slug> --from <own_age
 - 不承諾直接發 WhatsApp。
 - 不承諾更改雲端硬碟分享權限。
 - 不承諾對方電腦已完成設置。
-- 不承諾自然語言日常操作、補救流程或真實跨機 Google Drive 驗證已完成;目前只可說本地 CLI 最小往返已驗證。
+- 不承諾自然語言日常操作或補救流程已完成;只可說 0.2.0 已完成一次 Adam ↔ Jay 真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。本地 v0.2.1 候選版可測 `revise`、`withdraw` 與 `doctor`;未發佈前不得對外聲稱 npm latest 已有。
 - 不承諾 PROTOCOL source 可用;實作時必須先驗證 package 內 `resources/protocol/` 存在。

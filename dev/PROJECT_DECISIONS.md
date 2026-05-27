@@ -13,7 +13,9 @@
 
 任務需求演進的長期 narrative。Newest first。AI 觀察到 substantive task evolution 時 append。
 
-- 2026-05-26 — APS 從只公開 `bridge-pack` 的 0.1.1 版本，推進到本地 0.2.0 候選：CLI 新增 Claude Code / Codex 技能安裝、Hub 骨架生成、最小 publish / inbox / consume / close 流程；技能文件完成 setup-first 與日常收發首稿；隔離技能演練與本地 release-check 通過。下一個決策點是先發布 0.2.0，或先加跑一次零認知 throw-away-folder 流程。
+- 2026-05-26 — APS 在 0.2.0 pre-release 發布後，立即進入本地 0.2.1 候選硬化：CLI 從最小收發閉環擴展到可修訂、可撤回未讀封包、可只讀診斷 Hub；技能與公開文件同步標明「0.2.0 已發布、0.2.1 仍未發布」的邊界。這次演進把「出錯補救」從人工文件指引推進到可驗證命令，但仍需正式外發前檢、提交決策及後續自然語言操作演練，才可考慮發布。
+
+- 2026-05-26 — APS 從只公開 `bridge-pack` 的 0.1.1 版本，推進到已發布的 0.2.0 pre-release：CLI 新增 Claude Code / Codex 技能安裝、Hub 骨架生成、最小 publish / inbox / consume / close 流程；技能文件完成 setup-first 與日常收發首稿；隔離技能演練、零認知 throw-away-folder 流程、正式外發前檢、全面檢、一次 Adam ↔ Jay 真實 Google Drive 跨機往返、GitHub pre-release、npm publish 與發布後讀回均已完成。下一個決策點不是發布，而是 pre-release 硬化：自然語言日常操作、補救流程、Layer D 文檔重定位，以及新真實項目的逐項 Drive 驗證。
 
 ## Decisions Archive
 
