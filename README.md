@@ -41,7 +41,7 @@ npx aps init --hub-root "G:\...\AI_Public_Squares" --project branding_2026 --age
 前往 [Agent Handoff Kit GitHub 儲存庫](https://github.com/Adamchanadam/agent-handoff-kit),依其指引安裝。一條命令即可;命令列印寫入計劃後,檢查路徑無誤,再輸入 `yes` 確認寫入:
 
 ```
-npx @adamchanadam/agent-handoff-kit init
+npx --yes @adamchanadam/agent-handoff-kit@latest init
 ```
 
 ### 第二項 — 基本前提
