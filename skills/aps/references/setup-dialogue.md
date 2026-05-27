@@ -70,7 +70,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 正在記錄本項目的 APS 接駁資料。
 ```
 
-0.2.1 pre-release package 會隨包提供 `resources/protocol/PROTOCOL.md` 與 `resources/protocol/templates/`。若執行環境缺少 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
+0.2.1 pre-release package 會隨包提供 `resources/protocol/PROTOCOL.md` 與 `resources/protocol/templates/`。本工作樹 0.2.2 候選會在完整設置時額外寫入 `.aps/config.json`,令後續日常命令毋須重複輸入 Hub / project / agent 長參數。若執行環境缺少 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
 
 > 目前執行環境找不到 PROTOCOL source 檔案。這一步不能假裝完成。需要先確認 package 是否完整安裝,或由已驗證的 Hub template source 讀取。
 
@@ -93,12 +93,12 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 指令形態:
 
 ```text
-npx aps publish --hub-root "<hub_root>" --project <project_slug> --from <own_agent_id> --to <other_agent_id> --topic setup_test --body "APS setup test from <own_agent_id>."
+npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
 ```
 
 完成後:
 
-> 設置完成。測試交接包已建立。接下來等對方設置完成並回覆。之後你可以說「check Hub」或「Hub 有新嘢」,我會檢查對方是否有新交接包或確認訊號。
+> 設置完成。測試交接包已建立。此工作目錄已有 APS 本地設定,之後可直接使用 `npx aps inbox`、`npx aps doctor` 或 `npx aps publish --topic ... --body ...`。接下來等對方設置完成並回覆。之後你可以說「check Hub」或「Hub 有新嘢」,我會檢查對方是否有新交接包或確認訊號。
 
 ## 8. 不可承諾
 

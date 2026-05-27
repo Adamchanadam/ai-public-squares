@@ -147,7 +147,7 @@
 > 收到,打包開始:
 >
 > ⏳ 將題目轉成 topic:`q1_copy_draft_1`
-> ⏳ 執行 CLI:`npx aps publish --hub-root "<hub_root>" --project brand_refresh --from adam --to jay --topic q1_copy_draft_1 --body "<你提供的內容>"`
+> ⏳ 執行 CLI:`npx aps publish --topic q1_copy_draft_1 --body "<你提供的內容>"`
 > ⏳ CLI 已建立 packet folder,並追加 `from_adam/outbox.log.md`
 >
 > 完成 ✓
@@ -167,7 +167,7 @@
 
 > 收到。我會用 CLI 檢查 Jay 的 outbox,並比對你自己的消化記錄。
 >
-> ⏳ 執行 CLI:`npx aps inbox --hub-root "<hub_root>" --project brand_refresh --agent-id adam --other-agent-id jay`
+> ⏳ 執行 CLI:`npx aps inbox`
 >
 > 結果:
 >
@@ -194,7 +194,7 @@
 >
 > *[完整 packet body 顯示]*
 >
-> ✓ 已消化:執行 `npx aps consume --hub-root "<hub_root>" --project brand_refresh --agent-id adam --packet-id 20260526T164500Z__q1_copy_review --version 1 --result "Read Q1 copy review feedback"`;`_ack/adam.ack.json` 已加入一行 consumed 記錄
+> ✓ 已消化:執行 `npx aps consume --packet-id 20260526T164500Z__q1_copy_review --version 1 --result "Read Q1 copy review feedback"`;`_ack/adam.ack.json` 已加入一行 consumed 記錄
 > ⏳ Drive sync 中,Jay 那邊預計 1-3 分鐘後同步到此 ack
 >
 > 你接下來可能想:

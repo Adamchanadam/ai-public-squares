@@ -392,12 +392,12 @@
 
 <section>
   <h2>目前可以怎樣試</h2>
-  <p class="lede">npm latest 0.2.1 pre-release 的主路徑是先安裝套件,再用 <code>aps init</code> 檢查與建立初始 Hub skeleton。0.2.1 已新增 <code>revise</code>、<code>withdraw</code> 與 <code>doctor</code>;正式跨機使用前,每個真實項目仍要各自驗證 Google Drive 同步。</p>
+  <p class="lede">npm latest 0.2.1 pre-release 的主路徑是先安裝套件,再用 <code>aps init</code> 檢查與建立初始 Hub skeleton。0.2.1 已新增 <code>revise</code>、<code>withdraw</code> 與 <code>doctor</code>;本工作樹 0.2.2 候選再新增本地設定與短命令日用流程,尚未發布到 npm。正式跨機使用前,每個真實項目仍要各自驗證 Google Drive 同步。</p>
   <div class="install-block"><span class="prompt">$</span>npm install --save-dev @adamchanadam/aps<br><span class="prompt">$</span>npx aps init --dry-run<br><span class="prompt">$</span>npx aps init --hub-root "G:\...\AI_Public_Squares" --project branding_2026 --agent-id adam --other-agent-id jay --role A</div>
   <ol class="step-list">
     <li>先準備四個值:<code>hub-root</code>、<code>project</code>、<code>agent-id</code>、<code>other-agent-id</code>。若你是發起方,通常用 <code>--role A</code>;對方用 <code>--role B</code>。</li>
     <li>先執行 <code>npx aps init --dry-run</code>,確認技能安裝位置與 Hub 設置計劃,此步不寫檔。</li>
-    <li>確認無誤後才執行完整 <code>npx aps init --hub-root ...</code> 命令。完成後再前往「完整設置教學」跑第一次出包、收包與收結。</li>
+    <li>確認無誤後才執行完整 <code>npx aps init --hub-root ...</code> 命令。0.2.2 候選會同時保存 <code>.aps/config.json</code>;之後日常命令可以縮短為 <code>npx aps inbox</code>、<code>npx aps doctor</code>、<code>npx aps publish --topic ... --body ...</code>。</li>
   </ol>
   <p>設置完成後,工具會把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack 與 starter pack。自然語言日常操作仍在硬化中;底層 CLI 已可支援以下方向:</p>
   <ul>
@@ -409,7 +409,7 @@
     <strong>最終目標是全程無需先閱讀任何技術文檔。</strong>目前仍處於前期測試階段,公開頁先呈現 CLI 優先試行路徑與手動備用參考。
   </div>
   <div class="callout warn">
-    <strong>目前狀態</strong>:npm latest 0.2.1 pre-release 提供 <code>bridge-pack</code>、<code>aps init</code> 技能安裝、初始 Hub skeleton、Bridge Pack 與 starter pack 生成。CLI 已有最小 <code>publish</code> / <code>inbox</code> / <code>consume</code> / <code>close</code> 指令,並新增 <code>revise</code> / <code>withdraw</code> / <code>doctor</code>。0.2.0 release scope 已通過一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證;0.2.1 新命令已通過本機全面檢。但仍未等同自然語言日常操作或補救流程已產品化。請勿把本頁當成已可生產使用的安裝說明。
+    <strong>目前狀態</strong>:npm latest 0.2.1 pre-release 提供 <code>bridge-pack</code>、<code>aps init</code> 技能安裝、初始 Hub skeleton、Bridge Pack 與 starter pack 生成。CLI 已有最小 <code>publish</code> / <code>inbox</code> / <code>consume</code> / <code>close</code> 指令,並新增 <code>revise</code> / <code>withdraw</code> / <code>doctor</code>。本工作樹 0.2.2 候選新增 <code>.aps/config.json</code> 與短命令日用流程,尚未發布到 npm。專案已通過一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證;0.2.1 新命令已通過本機全面檢。但仍未等同自然語言日常操作或補救流程已產品化。請勿把本頁當成已可生產使用的安裝說明。
   </div>
 </section>
 
@@ -466,7 +466,7 @@
     <li><span class="mark done">✓</span><span>npm package 0.2.1 pre-release — <code>@adamchanadam/aps</code> 提供 <code>bridge-pack</code>、<code>init</code>、Hub skeleton、最小 CLI 往返、<code>revise</code>、<code>withdraw</code> 與 <code>doctor</code></span></li>
     <li><span class="mark done">✓</span><span><code>npx aps init</code> 已可試行 Claude Code / Codex 技能安裝器與初始 Hub skeleton 生成器;尚未等同一鍵完成所有跨機設置</span></li>
     <li><span class="mark done">✓</span><span>本地 CLI 最小往返已跑通:<code>publish</code> → <code>inbox</code> → <code>consume</code> → reply → <code>close</code></span></li>
-    <li><span class="mark wait">⏳</span><span>AI 自動帶你完成的自然語言日常流程(出包 / 撿包 / 出錯處理)仍在建構中</span></li>
+    <li><span class="mark wait">⏳</span><span>0.2.2 候選已在本地跑通短命令日用流程;AI 自動帶你完成的自然語言日常流程(出包 / 撿包 / 出錯處理)仍在建構中</span></li>
     <li><span class="mark done">✓</span><span>已完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返;新項目仍需各自驗證 Hub 路徑與同步狀態</span></li>
   </ul>
   <p style="margin-top:14px;">完整建構路線見 <span class="path">dev\qc\2026-05-22-zero-knowledge-funnel-audit.md</span>(AI / 維護者層 .md 檔;目前以技術術語為主,正在重寫對齊讀者)。</p>

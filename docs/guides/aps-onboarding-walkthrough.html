@@ -492,7 +492,7 @@
 <header class="cover">
   <div class="eyebrow">教學 · 推薦先閱讀</div>
   <h1>APS 完整落地教學</h1>
-  <p class="subtitle">由零開始,雙方各自跟讀一次,完成 0.2.0 pre-release 的第一次跨機試行接駁與驗證。</p>
+  <p class="subtitle">由零開始,雙方各自跟讀一次,按目前 pre-release 路徑完成第一次跨機試行接駁與驗證。</p>
   <div class="meta">
     <span><span class="chip chip--adam">Adam</span>用戶本人之動作</span>
   <span><span class="chip chip--agent-adam">Agent Adam</span>Adam 部電腦上之 AI 程式之動作</span>
@@ -645,7 +645,7 @@
   </ul>
 
   <div class="callout warn">
-    <strong>前期測試邊界</strong>。0.2.0 pre-release 之主路徑是先於項目工作目錄執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps init --dry-run</code> 預覽設置,確認後以 <code>npx aps init --hub-root ...</code> 建立技能、初始 Hub skeleton、Bridge Pack 與 starter pack。CLI 已有最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。自然語言日常操作與補救流程仍未完整產品化。
+    <strong>前期測試邊界</strong>。npm latest 0.2.1 pre-release 之主路徑是先於項目工作目錄執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps init --dry-run</code> 預覽設置,確認後以 <code>npx aps init --hub-root ...</code> 建立技能、初始 Hub skeleton、Bridge Pack 與 starter pack。本工作樹 0.2.2 候選再加入 <code>.aps/config.json</code> 本地設定,設置後日常命令可省略 Hub / project / agent 長參數。CLI 已有最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。自然語言日常操作與補救流程仍未完整產品化。
   </div>
 
   <div class="callout warn">
@@ -803,10 +803,10 @@ cd C:\Work\branding_2026</pre>
 
 <section id="s6">
   <h2><span class="sec-num">6.</span>Adam 接駁自己部機</h2>
-  <p class="lede">此節 Adam 於自己部機,要求 Agent Adam 協助執行;Jay 無需在場。0.2.0 pre-release 主路徑先用 <code>npx aps init --hub-root ...</code> 建立技能、Hub skeleton 與 Bridge Pack,再補登記治理檔。完成後 Adam 之工作目錄已接好橋接小規則,但尚未交收任何 packet。</p>
+  <p class="lede">此節 Adam 於自己部機,要求 Agent Adam 協助執行;Jay 無需在場。npm latest 0.2.1 pre-release 主路徑先用 <code>npx aps init --hub-root ...</code> 建立技能、Hub skeleton 與 Bridge Pack;本工作樹 0.2.2 候選會同時保存 <code>.aps/config.json</code>,再補登記治理檔。完成後 Adam 之工作目錄已接好橋接小規則,但尚未交收任何 packet。</p>
 
   <div class="callout">
-    <strong>主路徑:CLI 先行,手動備用。</strong>0.2.0 pre-release 已提供 <code>aps init</code> 建立技能、Hub skeleton、Bridge Pack 與 starter pack。下面第 2 步以 CLI 為主;第 3 至第 6 步仍用 Agent Adam 補登記治理檔,因為目前 CLI 尚未自動改寫你的 project governance。舊 <code>tools/aps-onboard.ps1</code> 只作維護者備用路徑,新用戶毋須先學。
+    <strong>主路徑:CLI 先行,手動備用。</strong>npm latest 0.2.1 pre-release 已提供 <code>aps init</code> 建立技能、Hub skeleton、Bridge Pack 與 starter pack。本工作樹 0.2.2 候選再加入本地設定與短命令日用流程。下面第 2 步以 CLI 為主;第 3 至第 6 步仍用 Agent Adam 補登記治理檔,因為目前 CLI 尚未自動改寫你的 project governance。舊 <code>tools/aps-onboard.ps1</code> 只作維護者備用路徑,新用戶毋須先學。
   </div>
 
   <div class="role-block role-block--adam">
@@ -880,10 +880,10 @@ cd C:\Work\branding_2026</pre>
 
       <li>
         <p><strong>用 CLI 建立 APS skill、Hub skeleton 與 Bridge Pack</strong></p>
-        <p>此步之目的:用 0.2.0 pre-release CLI 一次建立你部機需要的 APS skill、共享 Hub skeleton、本地 <code>dev/rules/aps-bridge.md</code>,以及給 Jay 的 starter pack。Bridge Pack 為一份 markdown 規則檔,教 Agent Adam 如何讀寫 Hub。</p>
+        <p>此步之目的:用 npm latest 0.2.1 pre-release CLI 一次建立你部機需要的 APS skill、共享 Hub skeleton、本地 <code>dev/rules/aps-bridge.md</code>,以及給 Jay 的 starter pack。本工作樹 0.2.2 候選會額外保存 <code>.aps/config.json</code>,方便之後使用短命令。Bridge Pack 為一份 markdown 規則檔,教 Agent Adam 如何讀寫 Hub。</p>
 
         <div class="callout warn">
-          <strong>前期測試邊界</strong>:0.2.0 pre-release 主路徑為先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps init --dry-run</code> 預覽寫入位置,確認後才移除 <code>--dry-run</code> 真正設置。<code>npx aps bridge-pack</code> 仍可作維護者取得 fixture 之備用命令,但新用戶應優先跟隨本節之 <code>init</code> 流程。
+    <strong>前期測試邊界</strong>:npm latest 0.2.1 pre-release 主路徑為先執行 <code>npm install --save-dev @adamchanadam/aps</code>,再用 <code>npx aps init --dry-run</code> 預覽寫入位置,確認後才移除 <code>--dry-run</code> 真正設置。<code>npx aps bridge-pack</code> 仍可作維護者取得 fixture 之備用命令,但新用戶應優先跟隨本節之 <code>init</code> 流程。本工作樹 0.2.2 候選會在此步額外保存本地設定,方便後續短命令日用。
         </div>
 
         <p><strong>2.1 將以下 prompt 貼予 Agent Adam</strong></p>
@@ -906,6 +906,7 @@ cd C:\Work\branding_2026</pre>
     - Hub 內有 `[項目代號]/from_[Jay agent id]/outbox.log.md`
     - Hub 內有 `_ack/[Adam agent id].ack.json` 與 `_ack/[Jay agent id].ack.json`
     - Hub 內有 `_hub/starter-pack-[Jay agent id].md`
+    - 本工作目錄有 `.aps/config.json`,且內容指向本次拍板之 Hub / project / agent
     - `dev/rules/aps-bridge.md` 內 Identity section 已是實際值,無剩 `<your_...>` 佔位符
 
 完成後報告 (b)(c)(d) 之結果,然後停手等我指示。</pre>
@@ -1290,7 +1291,7 @@ lane `[項目代號]/from_jay/`; 對方 agent_id=adam。」</pre>
       <li>Adam 於工作目錄開啟新對話,寫好想交予 Jay 之內容。</li>
       <li>Adam 要求 Agent Adam 用 CLI 出包。範例命令如下,將 <code>[Hub 絕對路徑]</code>、<code>[項目代號]</code>、<code>[題目]</code>、<code>[內容]</code> 換為實際值:</li>
     </ol>
-    <pre>npx aps publish --hub-root "[Hub 絕對路徑]" --project [項目代號] --from adam --to jay --topic [題目] --body "[內容]"</pre>
+    <pre>npx aps publish --topic [題目] --body "[內容]"</pre>
     <ol class="step-list" start="3">
       <li>Agent Adam 回報 packet id、版本與寫入位置。Adam 保留 packet id,稍後收結會用到。</li>
       <li><strong>(首跑驗收一次性)</strong> Adam 自行記下出包之時刻之 UTC 時間,稍後計算 Drive 同步延遲作為接駁計劃之驗收。日常往返無需做此。</li>
@@ -1308,17 +1309,17 @@ lane `[項目代號]/from_jay/`; 對方 agent_id=adam。」</pre>
       <li>Jay 於工作目錄開啟新對話,將 Adam 之短訊模板貼予 Agent Jay。</li>
       <li>Agent Jay 用 CLI 列出待辦:</li>
     </ol>
-    <pre>npx aps inbox --hub-root "[Jay 部機之 Hub 絕對路徑]" --project [項目代號] --agent-id jay --other-agent-id adam</pre>
+    <pre>npx aps inbox</pre>
     <ol class="step-list" start="4">
       <li>預期 output 列出一個待辦項:Adam 之 packet id、版本、題目與路徑。Jay 不需解釋任何上下文,Agent Jay 自行讀取。</li>
       <li><strong>留意</strong>:Jay 於此新對話中並未解釋任何上下文,Agent Jay 自行讀畢。</li>
       <li>Jay 決定已讀取並接受此待辦後,要求 Agent Jay 消化 Adam packet:</li>
     </ol>
-    <pre>npx aps consume --hub-root "[Jay 部機之 Hub 絕對路徑]" --project [項目代號] --agent-id jay --packet-id [Adam packet id] --version 1 --result "read and accepted"</pre>
+    <pre>npx aps consume --packet-id [Adam packet id] --version 1 --result "read and accepted"</pre>
     <ol class="step-list" start="7">
       <li>Jay 執行工作。完成後要求 Agent Jay 用 CLI 出回包:</li>
     </ol>
-    <pre>npx aps publish --hub-root "[Jay 部機之 Hub 絕對路徑]" --project [項目代號] --from jay --to adam --topic [題目]_reply --body "[Jay 回覆內容]"</pre>
+    <pre>npx aps publish --topic [題目]_reply --body "[Jay 回覆內容]"</pre>
     <ol class="step-list" start="8">
       <li><strong>(首跑驗收一次性)</strong> Jay 記下 Agent Jay 偵測時刻與出回包時刻之 UTC 時間,稍後計算 Drive 同步延遲。日常往返無需做此。</li>
       <li>Agent Jay 於啟動與 mid-session <code>check Hub</code> 時皆已自動掃描共享資料夾;若無衝突檔報告即可繼續。若有報告,停手依 §12.1 處理(用戶無需自行跑 <code>find</code>)。</li>
@@ -1336,15 +1337,15 @@ lane `[項目代號]/from_jay/`; 對方 agent_id=adam。」</pre>
       <li>Adam 等 Drive 同步,於工作目錄開啟新對話,將 Jay 之短訊模板貼予 Agent Adam。</li>
       <li>Agent Adam 用 CLI 列出 Jay 回包:</li>
     </ol>
-    <pre>npx aps inbox --hub-root "[Adam 部機之 Hub 絕對路徑]" --project [項目代號] --agent-id adam --other-agent-id jay</pre>
+    <pre>npx aps inbox</pre>
     <ol class="step-list" start="3">
       <li>Adam 讀畢 Jay 回包後,要求 Agent Adam 消化 Jay packet:</li>
     </ol>
-    <pre>npx aps consume --hub-root "[Adam 部機之 Hub 絕對路徑]" --project [項目代號] --agent-id adam --packet-id [Jay packet id] --version 1 --result "read and accepted"</pre>
+    <pre>npx aps consume --packet-id [Jay packet id] --version 1 --result "read and accepted"</pre>
     <ol class="step-list" start="4">
       <li>Adam 要求 Agent Adam 收結 Adam 當初發出的 packet:</li>
     </ol>
-    <pre>npx aps close --hub-root "[Adam 部機之 Hub 絕對路徑]" --project [項目代號] --agent-id adam --packet-id [Adam packet id] --reason "jay acked and replied"</pre>
+    <pre>npx aps close --packet-id [Adam packet id] --reason "jay acked and replied"</pre>
     <ol class="step-list" start="5">
       <li>Adam 再執行一次 inbox 試。Agent Adam 應報「無待辦」。Jay 那邊亦可執行 inbox 確認無待辦。</li>
     </ol>

@@ -30,6 +30,73 @@ function getRequiredFlagValue(name) {
   return value && !value.startsWith('--') ? value : null;
 }
 
+function configPath() {
+  return path.join(process.cwd(), '.aps', 'config.json');
+}
+
+function loadConfig() {
+  const filePath = configPath();
+  if (!fs.existsSync(filePath)) return {};
+  try {
+    return readJson(filePath);
+  } catch (err) {
+    throw new Error(`APS config is not valid JSON: ${filePath}. ${err.message}`);
+  }
+}
+
+function loadConfigOrExit() {
+  try {
+    return loadConfig();
+  } catch (err) {
+    console.error(`Config failed: ${err.message}`);
+    console.error('Fix `.aps/config.json`, or rerun `npx aps config --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B`.');
+    process.exit(1);
+  }
+}
+
+function saveConfig(values, dryRun) {
+  const filePath = configPath();
+  const content = {
+    hubRoot: values.hubRoot,
+    projectSlug: values.projectSlug,
+    agentId: values.agentId,
+    otherAgentId: values.otherAgentId,
+    role: values.role,
+  };
+  return writeFileIfMissing(filePath, `${JSON.stringify(content, null, 2)}\n`, dryRun);
+}
+
+function writeConfig(values, dryRun) {
+  const filePath = configPath();
+  const content = {
+    hubRoot: values.hubRoot,
+    projectSlug: values.projectSlug,
+    agentId: values.agentId,
+    otherAgentId: values.otherAgentId,
+    role: values.role,
+  };
+  if (!dryRun) {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
+  }
+  return { ok: true, path: filePath, message: dryRun ? `would write ${filePath}` : `wrote ${filePath}` };
+}
+
+function flagOrConfig(flagName, configKey, config) {
+  return getRequiredFlagValue(flagName) || config[configKey] || null;
+}
+
+function requireValues(values) {
+  const missing = Object.entries(values)
+    .filter(([, value]) => value === null || value === undefined || value === '')
+    .map(([name]) => name);
+  if (missing.length > 0) {
+    console.error(`Missing required values: ${missing.join(', ')}`);
+    console.error('Run `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B` first, or pass the missing flags.');
+    process.exit(1);
+  }
+}
+
 function homeDir() {
   return process.env.HOME || process.env.USERPROFILE || null;
 }
@@ -513,6 +580,8 @@ function setupHub(values, dryRun) {
   const bridgeTarget = path.join(process.cwd(), 'dev', 'rules', 'aps-bridge.md');
   steps.push(writeFileIfMissing(bridgeTarget, bridgePackContent(values.role, values), dryRun));
 
+  steps.push(saveConfig(values, dryRun));
+
   const counterpartRole = values.role === 'A' ? 'B' : 'A';
   const starterTarget = path.join(values.hubRoot, '_hub', `starter-pack-${values.otherAgentId}.md`);
   steps.push(writeFileIfMissing(starterTarget, starterPackContent(values, counterpartRole), dryRun));
@@ -530,21 +599,24 @@ Usage:
   npx aps init --target claude    Install APS skill for Claude Code only
   npx aps init --target codex     Install APS skill for Codex only
   npx aps init --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
-                                  Install skill and create APS Hub skeleton
+                                  Install skill, create APS Hub skeleton, and save local APS config
   npx aps init --dry-run          Show planned install paths without writing
-  npx aps publish --hub-root <path> --project <slug> --from <id> --to <id> --topic <snake> --body <text>
+  npx aps config                  Show saved local APS config
+  npx aps config --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
+                                  Save or update local APS config only
+  npx aps publish --topic <snake> --body <text>
                                   Publish a v1 packet and append outbox
-  npx aps revise --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --body <text> --reason <text>
+  npx aps revise --packet-id <id> --body <text> --reason <text>
                                   Publish the next immutable version of my packet
-  npx aps inbox --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id>
+  npx aps inbox
                                   List pending packets from the other agent
-  npx aps consume --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --version <n> --result <text>
+  npx aps consume --packet-id <id> --version <n> --result <text>
                                   Mark a packet consumed in my ack file
-  npx aps withdraw --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --reason <text>
+  npx aps withdraw --packet-id <id> --reason <text>
                                   Withdraw my unconsumed latest packet version
-  npx aps close --hub-root <path> --project <slug> --agent-id <id> --packet-id <id> --reason <text>
+  npx aps close --packet-id <id> --reason <text>
                                   Append a close event to my outbox
-  npx aps doctor --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id>
+  npx aps doctor
                                   Check Hub skeleton, ack files, outboxes, and conflict filenames
   npx aps bridge-pack             Print Bridge Pack fixture (User A default)
   npx aps bridge-pack --role B    Print Bridge Pack fixture for User B role
@@ -557,8 +629,13 @@ Bridge Pack location, e.g.:
 Local source test:
   node bin/aps.js bridge-pack > dev/rules/aps-bridge.md
 
-Status: bridge-pack, skill install, initial Hub setup, publish / revise /
-inbox / consume / withdraw / close, and read-only doctor are available.
+After init saves .aps/config.json, daily commands can omit --hub-root,
+--project, --agent-id, and --other-agent-id. You may still pass those flags
+to override the saved config.
+
+Status: bridge-pack, skill install, initial Hub setup, saved local config,
+publish / revise / inbox / consume / withdraw / close, and read-only doctor
+are available.
 This pre-release has one Adam/Jay Google Drive round-trip verification, but
 each real project still needs its own project-specific verification.
 Repo: https://github.com/Adamchanadam/ai-public-squares
@@ -624,6 +701,7 @@ if (subcommand === 'init') {
   console.log('This command installs the APS skill files for AI tools.');
   if (setupFlags.length === 5) {
     console.log('It also creates the initial APS Hub skeleton and local Bridge Pack.');
+    console.log('It saves .aps/config.json so daily commands can omit long setup flags.');
     console.log('Minimal CLI publish / inbox / consume / close commands are available for local smoke tests.');
     console.log('Natural-language daily use remains pending; each real project still needs its own Google Drive verification.');
   } else {
@@ -695,15 +773,72 @@ if (subcommand === 'bridge-pack') {
   }
 }
 
+if (subcommand === 'config') {
+  try {
+    const dryRun = hasFlag('--dry-run');
+    const values = {
+      hubRoot: getRequiredFlagValue('--hub-root'),
+      projectSlug: getRequiredFlagValue('--project'),
+      agentId: getRequiredFlagValue('--agent-id'),
+      otherAgentId: getRequiredFlagValue('--other-agent-id'),
+      role: (getFlagValue('--role', '') || '').toUpperCase(),
+    };
+    const writeFlags = [values.hubRoot, values.projectSlug, values.agentId, values.otherAgentId, values.role].filter(Boolean);
+    if (writeFlags.length > 0) {
+      if (writeFlags.length < 5) {
+        console.error('Config write requires all flags: --hub-root, --project, --agent-id, --other-agent-id, and --role A|B.');
+        process.exit(1);
+      }
+      const errors = [
+        validateSnakeCase('--project', values.projectSlug),
+        validateSnakeCase('--agent-id', values.agentId),
+        validateSnakeCase('--other-agent-id', values.otherAgentId),
+        values.role === 'A' || values.role === 'B' ? null : `--role must be A or B (got '${values.role}').`,
+      ].filter(Boolean);
+      if (errors.length > 0) {
+        for (const error of errors) console.error(error);
+        process.exit(1);
+      }
+      const result = writeConfig(values, dryRun);
+      console.log(`APS config ${dryRun ? 'dry run' : 'saved'}`);
+      console.log(result.message);
+      process.exit(0);
+    }
+
+    const filePath = configPath();
+    const config = loadConfig();
+    if (!fs.existsSync(filePath)) {
+      console.log('APS config: not found');
+      console.log(filePath);
+      console.log('');
+      console.log('Next: run `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B`.');
+      process.exit(1);
+    }
+    console.log('APS config');
+    console.log(`path: ${filePath}`);
+    console.log(`hubRoot: ${config.hubRoot || '(missing)'}`);
+    console.log(`projectSlug: ${config.projectSlug || '(missing)'}`);
+    console.log(`agentId: ${config.agentId || '(missing)'}`);
+    console.log(`otherAgentId: ${config.otherAgentId || '(missing)'}`);
+    console.log(`role: ${config.role || '(missing)'}`);
+    process.exit(0);
+  } catch (err) {
+    console.error(`Config failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
 if (subcommand === 'publish') {
-  requireFlags(['--hub-root', '--project', '--from', '--to', '--topic', '--body']);
-  const hubRoot = getRequiredFlagValue('--hub-root');
-  const projectSlug = getRequiredFlagValue('--project');
-  const fromId = getRequiredFlagValue('--from');
-  const toId = getRequiredFlagValue('--to');
+  requireFlags(['--topic', '--body']);
+  const config = loadConfigOrExit();
+  const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
+  const projectSlug = flagOrConfig('--project', 'projectSlug', config);
+  const fromId = getRequiredFlagValue('--from') || config.agentId || null;
+  const toId = getRequiredFlagValue('--to') || config.otherAgentId || null;
   const topic = getRequiredFlagValue('--topic');
   const body = getRequiredFlagValue('--body');
   const level = getFlagValue('--level', 'L2-handoff');
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--from': fromId, '--to': toId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--from', fromId),
@@ -719,7 +854,10 @@ if (subcommand === 'publish') {
     console.log(`Published ${result.packetId} v${result.version}`);
     console.log(result.packetDir);
     console.log('');
-    console.log('Next: tell the other side there is new Hub traffic, then ask them to run `npx aps inbox ...` or say "check Hub" in their AI tool.');
+    console.log('Copy-ready message for the other side:');
+    console.log(`APS has new Hub traffic for you: ${topic} (${result.packetId} v${result.version}). Please open your AI tool in the project workspace and say "check Hub".`);
+    console.log('');
+    console.log('Next: tell the other side there is new Hub traffic, then ask them to run `npx aps inbox` or say "check Hub" in their AI tool.');
     process.exit(0);
   } catch (err) {
     console.error(`Publish failed: ${err.message}`);
@@ -728,13 +866,15 @@ if (subcommand === 'publish') {
 }
 
 if (subcommand === 'revise') {
-  requireFlags(['--hub-root', '--project', '--agent-id', '--packet-id', '--body', '--reason']);
-  const hubRoot = getRequiredFlagValue('--hub-root');
-  const projectSlug = getRequiredFlagValue('--project');
-  const agentId = getRequiredFlagValue('--agent-id');
+  requireFlags(['--packet-id', '--body', '--reason']);
+  const config = loadConfigOrExit();
+  const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
+  const projectSlug = flagOrConfig('--project', 'projectSlug', config);
+  const agentId = flagOrConfig('--agent-id', 'agentId', config);
   const packetId = getRequiredFlagValue('--packet-id');
   const body = getRequiredFlagValue('--body');
   const reason = getRequiredFlagValue('--reason');
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--agent-id', agentId),
@@ -758,11 +898,12 @@ if (subcommand === 'revise') {
 }
 
 if (subcommand === 'inbox') {
-  requireFlags(['--hub-root', '--project', '--agent-id', '--other-agent-id']);
-  const hubRoot = getRequiredFlagValue('--hub-root');
-  const projectSlug = getRequiredFlagValue('--project');
-  const agentId = getRequiredFlagValue('--agent-id');
-  const otherAgentId = getRequiredFlagValue('--other-agent-id');
+  const config = loadConfigOrExit();
+  const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
+  const projectSlug = flagOrConfig('--project', 'projectSlug', config);
+  const agentId = flagOrConfig('--agent-id', 'agentId', config);
+  const otherAgentId = flagOrConfig('--other-agent-id', 'otherAgentId', config);
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId, '--other-agent-id': otherAgentId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--agent-id', agentId),
@@ -793,13 +934,15 @@ if (subcommand === 'inbox') {
 }
 
 if (subcommand === 'consume') {
-  requireFlags(['--hub-root', '--project', '--agent-id', '--packet-id', '--version', '--result']);
-  const hubRoot = getRequiredFlagValue('--hub-root');
-  const projectSlug = getRequiredFlagValue('--project');
-  const agentId = getRequiredFlagValue('--agent-id');
+  requireFlags(['--packet-id', '--version', '--result']);
+  const config = loadConfigOrExit();
+  const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
+  const projectSlug = flagOrConfig('--project', 'projectSlug', config);
+  const agentId = flagOrConfig('--agent-id', 'agentId', config);
   const packetId = getRequiredFlagValue('--packet-id');
   const version = Number(getRequiredFlagValue('--version'));
   const result = getRequiredFlagValue('--result');
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--agent-id', agentId),
@@ -824,14 +967,16 @@ if (subcommand === 'consume') {
 }
 
 if (subcommand === 'withdraw') {
-  requireFlags(['--hub-root', '--project', '--agent-id', '--packet-id', '--reason']);
-  const hubRoot = getRequiredFlagValue('--hub-root');
-  const projectSlug = getRequiredFlagValue('--project');
-  const agentId = getRequiredFlagValue('--agent-id');
+  requireFlags(['--packet-id', '--reason']);
+  const config = loadConfigOrExit();
+  const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
+  const projectSlug = flagOrConfig('--project', 'projectSlug', config);
+  const agentId = flagOrConfig('--agent-id', 'agentId', config);
   const packetId = getRequiredFlagValue('--packet-id');
   const versionArg = getRequiredFlagValue('--version');
   const version = versionArg ? Number(versionArg) : null;
   const reason = getRequiredFlagValue('--reason');
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--agent-id', agentId),
@@ -857,12 +1002,14 @@ if (subcommand === 'withdraw') {
 }
 
 if (subcommand === 'close') {
-  requireFlags(['--hub-root', '--project', '--agent-id', '--packet-id', '--reason']);
-  const hubRoot = getRequiredFlagValue('--hub-root');
-  const projectSlug = getRequiredFlagValue('--project');
-  const agentId = getRequiredFlagValue('--agent-id');
+  requireFlags(['--packet-id', '--reason']);
+  const config = loadConfigOrExit();
+  const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
+  const projectSlug = flagOrConfig('--project', 'projectSlug', config);
+  const agentId = flagOrConfig('--agent-id', 'agentId', config);
   const packetId = getRequiredFlagValue('--packet-id');
   const reason = getRequiredFlagValue('--reason');
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--agent-id', agentId),
@@ -886,11 +1033,12 @@ if (subcommand === 'close') {
 }
 
 if (subcommand === 'doctor') {
-  requireFlags(['--hub-root', '--project', '--agent-id', '--other-agent-id']);
-  const hubRoot = getRequiredFlagValue('--hub-root');
-  const projectSlug = getRequiredFlagValue('--project');
-  const agentId = getRequiredFlagValue('--agent-id');
-  const otherAgentId = getRequiredFlagValue('--other-agent-id');
+  const config = loadConfigOrExit();
+  const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
+  const projectSlug = flagOrConfig('--project', 'projectSlug', config);
+  const agentId = flagOrConfig('--agent-id', 'agentId', config);
+  const otherAgentId = flagOrConfig('--other-agent-id', 'otherAgentId', config);
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId, '--other-agent-id': otherAgentId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--agent-id', agentId),
