@@ -1,23 +1,23 @@
 # APS 全面檢報告 — 0.2.3 guided setup pre-release
 
 日期: 2026-05-27
-範圍: `@adamchanadam/aps` 0.2.3 pre-release,發布前本機全面檢與發布後 npm / git 讀回
+範圍: `@adamchanadam/aps` 0.2.3 pre-release,發布前本機全面檢與發布後 npm / git / GitHub / Pages 讀回
 單一真源: `dev/qc/triggers.md`
 
 ## 健康結論
 
-**結論: 本機全面檢通過,但 GitHub Pages 線上讀回受阻;不得宣稱線上 Pages 已反映 0.2.3。**
+**結論: 全面檢通過;0.2.3 已完成 push / tag / GitHub pre-release / npm publish,並完成 npm、遠端 git、GitHub release 與 GitHub Pages 讀回。**
 
 0.2.3 pre-release 已把新用戶主路徑改為互動式 `npx aps init`:工具逐步詢問角色、項目代號、雙方 agent id 與真實 Hub 路徑,列出寫入計劃,只在使用者輸入 `yes` 後寫入。全面檢期間發現一個日常協作 UX 缺口: `inbox` 原本沒有列出可直接複製的 `consume` 命令。已即時修正為每個 pending packet 顯示完整 `npx aps consume --packet-id ... --version ... --result ...` 命令,並以同機回歸重新驗證。
 
-發布後讀回確認 `npm latest` 已為 0.2.3,遠端 `main` 與 tag `v0.2.3` 均指向 `6e8fb30`。GitHub release 建立時回傳 URL,但後續 `gh release view` 因本機代理連線拒絕而未能讀回;GitHub Pages live readback 亦受阻,需稍後重試。
+發布後讀回確認 `npm latest` 已為 0.2.3,tag `v0.2.3` 指向 release commit `6e8fb30`,post-publish state-sync 後遠端 `main` 指向 `11e675e`。GitHub release 讀回確認 `isPrerelease=true`、`isDraft=false`;GitHub Pages 返回 HTTP 200,並包含 `npm latest 0.2.3 pre-release` 且不含「候選」字眼。
 
 ## 三條主線
 
 | 主線 | 狀態 | 證據 |
 |---|---|---|
 | 公開承諾一致性 | 通過 | README、本機 `docs/index.html`、教學中心、完整落地教學、QC 卡片、CLI help、skill spec 均指向 npm latest 0.2.3 pre-release 互動式設置,並保留自然語言日常操作與補救流程仍屬前期測試的邊界。 |
-| 發佈前可信度 | 通過,附線上讀回受阻 | `npm pack --dry-run --json` 顯示 0.2.3 包含 14 個預期檔案;`npm view` 確認 registry latest 仍為 0.2.2。本機 HTML 已用 Chrome DevTools 渲染。GitHub Pages 讀回在本環境連線被拒,故不得宣稱線上頁已更新。 |
+| 發佈前可信度 | 通過 | `npm pack --dry-run --json` 顯示 0.2.3 包含 14 個預期檔案;發布後 `npm view` 確認 registry latest 為 0.2.3。本機 HTML 已用 Chrome DevTools 渲染;post-publish state-sync 後 GitHub Pages 讀回亦確認線上頁已更新。 |
 | 協定實際運行正確性 | 通過 | 全新 disposable Hub 完成 `init`、`publish`、`inbox`、`consume`、`revise`、再次 `inbox`、`consume` v2、`close`、另一 packet `withdraw`、雙方 `inbox` 無待處理、`doctor status: passed`。 |
 
 ## 主要使用流程
@@ -57,9 +57,9 @@
 - `npm pack --dry-run --json`:`@adamchanadam/aps@0.2.3`,14 files。
 - `git diff --check`:通過;只有 LF→CRLF warnings。
 - `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json`:latest 為 0.2.3,bin `aps`,fileCount 14。
-- `git ls-remote --heads origin main`:遠端 `main` 指向 `6e8fb30a4d4d349e20c0832b09d68da1a147b6eb`。
+- `git ls-remote --heads origin main`:post-publish state-sync 後遠端 `main` 指向 `11e675e2774a29c16eb82ea8466a018f8c300162`。
 - `git ls-remote --tags origin v0.2.3`:tag `v0.2.3` 指向 `6e8fb30a4d4d349e20c0832b09d68da1a147b6eb`。
-- GitHub release create:成功建立 `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.3`;後續 `gh release view` 受本機代理連線拒絕,需稍後重試。
+- GitHub release readback:`gh release view v0.2.3 --json tagName,name,url,publishedAt,isDraft,isPrerelease,targetCommitish` 確認 `isPrerelease=true`,`isDraft=false`,URL 為 `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.3`。
 - HTML `.md` hyperlink audit:`rg -n "href=[^ >]+\.md" docs` 無命中。
 - placeholder scan:`mpedu_plus_branding` 命中只在歷史 docs 或明示示例;package-facing active surfaces 無 B-class default。
 - governance vocabulary scan:三條主線與四條流程同時出現在 `dev/qc/triggers.md` 與公開 HTML。
@@ -68,7 +68,7 @@
 - Demo workspace doctor:
   - `C:\Users\adam\_claude_desktop\Demo_Agent_Adam_Public_Squares`:46 項通過。
   - `C:\Users\adam\_claude_desktop\Demo_Agent_Jay_Public_Squares`:46 項通過。
-- GitHub Pages live readback:受阻。本環境 `Invoke-WebRequest` 回報「目標電腦拒絕連線」;web fetch 亦未能取得頁面。發布後需重試。
+- GitHub Pages live readback:HTTP 200;內容包含 `npm latest 0.2.3 pre-release`,且不含「候選」字眼。
 
 ## 自審紀律回顧
 
@@ -82,9 +82,4 @@
 
 ## 發布判斷
 
-本機全面檢已通過,且 0.2.3 已 push / tag / GitHub pre-release / npm publish。發布後仍有兩個邊界:
-
-1. GitHub release URL 建立成功,但 `gh release view` 讀回受本機代理拒絕;需稍後重試確認 `isPrerelease=true`。
-2. GitHub Pages live readback 本輪受阻;不可預先宣稱線上頁已更新。
-
-建議下一步:提交並推送 post-publish state-sync;稍後重試 GitHub release / Pages 讀回。Adam 與 Jay 可使用 npm latest 0.2.3 pre-release 進行 guided setup 試用,但仍不可用於不可中斷的重要流程。
+本機全面檢已通過,且 0.2.3 已 push / tag / GitHub pre-release / npm publish。發布後 npm、遠端 git、GitHub release 與 GitHub Pages 均已讀回。Adam 與 Jay 可使用 npm latest 0.2.3 pre-release 進行 guided setup 試用,但仍不可用於不可中斷的重要流程。
