@@ -11,6 +11,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const readline = require('readline');
 
 const subcommand = process.argv[2];
 const args = process.argv.slice(3);
@@ -92,7 +93,7 @@ function requireValues(values) {
     .map(([name]) => name);
   if (missing.length > 0) {
     console.error(`Missing required values: ${missing.join(', ')}`);
-    console.error('Run `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B` first, or pass the missing flags.');
+    console.error('Run `npx aps init` for guided setup first, or pass all required flags.');
     process.exit(1);
   }
 }
@@ -183,6 +184,148 @@ function validateNoPlaceholder(label, value) {
     return `${label} still looks like a placeholder: '${value}'. Replace it with your real value before running the command.`;
   }
   return null;
+}
+
+function toSnakeCase(value, fallback) {
+  const normalized = String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 30);
+  if (/^[a-z]/.test(normalized)) return normalized;
+  return fallback;
+}
+
+const promptStates = new WeakMap();
+
+function promptState(rl) {
+  if (promptStates.has(rl)) return promptStates.get(rl);
+  const state = { queue: [], resolver: null, closed: false };
+  rl.on('line', (line) => {
+    const answer = line.trim();
+    if (state.resolver) {
+      const resolve = state.resolver;
+      state.resolver = null;
+      resolve(answer);
+    } else {
+      state.queue.push(answer);
+    }
+  });
+  rl.on('close', () => {
+    state.closed = true;
+    if (state.resolver) {
+      const resolve = state.resolver;
+      state.resolver = null;
+      resolve(null);
+    }
+  });
+  promptStates.set(rl, state);
+  return state;
+}
+
+function askLine(rl, question) {
+  const state = promptState(rl);
+  if (rl.output) rl.output.write(question);
+  if (state.queue.length > 0) return Promise.resolve(state.queue.shift());
+  if (state.closed) return Promise.resolve(null);
+  return new Promise((resolve) => {
+    state.resolver = resolve;
+  });
+}
+
+async function askWithDefault(rl, question, defaultValue, validate) {
+  while (true) {
+    const suffix = defaultValue ? ` [${defaultValue}]` : '';
+    const answer = await askLine(rl, `${question}${suffix}: `);
+    if (answer === null) throw new Error('Input ended before guided setup was complete. Rerun `npx aps init` and answer each question.');
+    const value = answer || defaultValue;
+    const error = validate ? validate(value) : null;
+    if (!error) return value;
+    console.log(`  ${error}`);
+  }
+}
+
+async function runInteractiveInit() {
+  const root = homeDir();
+  if (!root) {
+    console.error('Could not detect your home directory. Set HOME or USERPROFILE, then rerun `npx aps init`.');
+    return 1;
+  }
+
+  console.log('APS init — guided setup');
+  console.log('');
+  console.log('This guided setup asks only for the values APS needs, then shows the write plan before changing files.');
+  console.log('You can press Enter to accept a suggested value.');
+  console.log('');
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  try {
+    const role = await askWithDefault(rl, 'Are you the starter side? Type A for starter, B for partner', 'A', (value) => {
+      const upper = String(value).toUpperCase();
+      return upper === 'A' || upper === 'B' ? null : 'Use A or B.';
+    });
+    const roleValue = role.toUpperCase();
+    const defaultProject = toSnakeCase(path.basename(process.cwd()), 'aps_uat');
+    const projectSlug = await askWithDefault(rl, 'Project code (lowercase letters, numbers, underscores)', defaultProject, (value) => (
+      validateNoPlaceholder('--project', value) || validateSnakeCase('--project', value)
+    ));
+    const defaultAgent = toSnakeCase(process.env.USERNAME || process.env.USER || 'adam', 'adam');
+    const agentId = await askWithDefault(rl, 'Your agent id', defaultAgent, (value) => (
+      validateNoPlaceholder('--agent-id', value) || validateSnakeCase('--agent-id', value)
+    ));
+    const defaultOther = agentId === 'jay' ? 'adam' : 'jay';
+    const otherAgentId = await askWithDefault(rl, 'Partner agent id', defaultOther, (value) => (
+      validateNoPlaceholder('--other-agent-id', value) || validateSnakeCase('--other-agent-id', value)
+    ));
+    const hubRoot = await askWithDefault(
+      rl,
+      'Hub root path (paste the real AI_Public_Squares folder path from File Explorer)',
+      '',
+      (value) => validateNoPlaceholder('--hub-root', value) || (path.isAbsolute(value) ? null : '--hub-root must be an absolute path.')
+    );
+
+    const values = { hubRoot, projectSlug, agentId, otherAgentId, role: roleValue };
+    const projectPath = projectDir(values.hubRoot, values.projectSlug);
+    console.log('');
+    console.log('Plan:');
+    console.log(`  hub-root: ${values.hubRoot}`);
+    console.log(`  project: ${values.projectSlug}`);
+    console.log(`  this side: ${values.agentId} (role ${values.role})`);
+    console.log(`  partner: ${values.otherAgentId}`);
+    console.log(`  project folder to create/use: ${projectPath}`);
+    console.log(`  local config: ${configPath()}`);
+    console.log('');
+    const confirm = await askLine(rl, 'Type yes to install the skill, create the Hub skeleton, and save local config: ');
+    if (confirm.toLowerCase() !== 'yes') {
+      console.log('Cancelled. No APS Hub files were written.');
+      return 1;
+    }
+
+    const installTargets = [
+      { label: 'Claude Code', targetDir: path.join(root, '.claude', 'skills', 'aps') },
+      { label: 'Codex', targetDir: path.join(root, '.codex', 'skills', 'aps') },
+    ];
+    console.log('');
+    for (const result of installTargets.map((item) => installSkill({ ...item, dryRun: false }))) {
+      const prefix = result.ok ? 'ok' : result.skipped ? 'skip' : 'fail';
+      console.log(`${prefix}  ${result.label}: ${result.message}`);
+      if (!result.ok && !result.skipped) return 1;
+    }
+    console.log('');
+    console.log('Hub setup:');
+    for (const result of setupHub(values, false)) {
+      const prefix = result.skipped ? 'skip' : 'ok';
+      console.log(`${prefix}  ${result.message}`);
+    }
+    console.log('');
+    console.log('Setup complete.');
+    console.log('Next: open your AI tool in this project folder and say "set up APS" or "教我用 APS".');
+    console.log('Daily commands can now use the saved config, for example: npx aps doctor');
+    return 0;
+  } finally {
+    rl.close();
+  }
 }
 
 function packetTimestamp(date = new Date()) {
@@ -526,8 +669,18 @@ This starter pack was generated by \`aps init\`.
 
 \`\`\`powershell
 npm install --save-dev @adamchanadam/aps
-npx aps init --target both --hub-root "<your Drive AI_Public_Squares path>" --project ${values.projectSlug} --agent-id ${values.otherAgentId} --other-agent-id ${values.agentId} --role ${counterpartRole}
+npx aps init
 \`\`\`
+
+When the guided setup asks questions, use these values:
+
+- role: \`${counterpartRole}\`
+- project: \`${values.projectSlug}\`
+- your agent id: \`${values.otherAgentId}\`
+- partner agent id: \`${values.agentId}\`
+- Hub root path: paste the real AI_Public_Squares folder path from File Explorer on your own machine
+
+Do not copy placeholder paths such as \`G:\\...\\AI_Public_Squares\`. The path must be the real folder path on your machine.
 
 After install, restart Claude Code or Codex if the APS skill does not appear immediately.
 
@@ -602,11 +755,11 @@ APS — AI Public Squares
 Two-machine AI agent collaboration via a shared Google Drive folder.
 
 Usage:
-  npx aps init                    Install APS skill for Claude Code and Codex
+  npx aps init                    Guided setup: ask questions, create Hub, and save config
   npx aps init --target claude    Install APS skill for Claude Code only
   npx aps init --target codex     Install APS skill for Codex only
   npx aps init --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
-                                  Install skill, create APS Hub skeleton, and save local APS config
+                                  Advanced non-interactive setup
   npx aps init --dry-run          Show planned install paths without writing
   npx aps config                  Show saved local APS config
   npx aps config --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
@@ -650,7 +803,15 @@ Repo: https://github.com/Adamchanadam/ai-public-squares
   process.exit(0);
 }
 
-if (subcommand === 'init') {
+if (subcommand === 'init' && args.length === 0) {
+  runInteractiveInit()
+    .then((code) => process.exit(code))
+    .catch((err) => {
+      console.error(`Guided setup failed: ${err.message}`);
+      process.exit(1);
+    });
+  return;
+} else if (subcommand === 'init') {
   const validTargets = ['claude', 'codex', 'both'];
   const target = getFlagValue('--target', 'both').toLowerCase();
   const dryRun = hasFlag('--dry-run');
@@ -752,7 +913,7 @@ if (subcommand === 'init') {
   } else if (dryRun) {
     console.log('Dry run complete. Rerun without `--dry-run` to install.');
   } else {
-    console.log('Install complete. Restart Claude Code or Codex if the skill does not appear immediately.');
+    console.log('Setup complete. Restart Claude Code or Codex if the skill does not appear immediately.');
     console.log('Next: open your AI tool and say "set up APS" or "教我用 APS".');
   }
   console.log('');
@@ -798,6 +959,7 @@ if (subcommand === 'config') {
         process.exit(1);
       }
       const errors = [
+        validateNoPlaceholder('--hub-root', values.hubRoot),
         validateSnakeCase('--project', values.projectSlug),
         validateSnakeCase('--agent-id', values.agentId),
         validateSnakeCase('--other-agent-id', values.otherAgentId),
@@ -819,7 +981,7 @@ if (subcommand === 'config') {
       console.log('APS config: not found');
       console.log(filePath);
       console.log('');
-      console.log('Next: run `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B`.');
+      console.log('Next: run `npx aps init` for guided setup.');
       process.exit(1);
     }
     console.log('APS config');

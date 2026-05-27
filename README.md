@@ -2,7 +2,7 @@
 
 > **⚠️ 前期測試階段(pre-release)**
 >
-> 本工具仍處於早期建構期。npm latest 0.2.2 pre-release 已支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack、starter pack 與專案本地設定;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。0.2.2 提供修訂、撤回、只讀診斷與短命令日用流程。自然語言日常操作與補救流程仍未完整產品化。
+> 本工具仍處於早期建構期。0.2.3 pre-release 候選版將主安裝路徑改為互動式 `npx aps init`,已支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack、starter pack 與專案本地設定;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。0.2.3 保留修訂、撤回、只讀診斷與短命令日用流程。自然語言日常操作與補救流程仍未完整產品化。
 >
 > **適合**:觀察、提出建議、留下回饋、追蹤建構進度。
 > **不適合**:正式生產用途,或依賴於不可中斷的重要流程。
@@ -20,11 +20,10 @@
 
 ```
 npm install --save-dev @adamchanadam/aps
-npx aps init --dry-run
-npx aps init --hub-root "[你的 AI_Public_Squares 共享資料夾實際路徑]" --project [項目代號] --agent-id [你的 agent id] --other-agent-id [對方 agent id] --role A
+npx aps init
 ```
 
-上方方括號只是 placeholder,不可照抄。四個值的意思如下:
+`npx aps init` 會逐步問你幾個問題,列出寫入計劃,最後要求你輸入 `yes` 才真正寫入。你不用先把四個參數砌成一條長命令。工具會問到的資料如下:
 
 | 值 | 你要填甚麼 | 例子 |
 |---|---|---|
@@ -35,7 +34,15 @@ npx aps init --hub-root "[你的 AI_Public_Squares 共享資料夾實際路徑]"
 
 若只是單機試跑,可先用一個本機測試資料夾做 `hub-root`;若要和 Jay 真正跨機試用,必須使用雙方都可同步到的 Google Drive 共享資料夾。
 
-> **目前狀態**:npm latest 0.2.2 pre-release 提供 `bridge-pack`、`init` 技能安裝器、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並新增 `revise` / `withdraw` / `doctor`;本機全面檢已通過,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。0.2.2 會保存 `.aps/config.json` 專案設定,設置一次後可用 `npx aps inbox`、`npx aps doctor`、`npx aps publish --topic ... --body ...` 等短命令日用。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
+進階用法:若由 AI 或腳本代為執行,仍可使用非互動命令:
+
+```
+npx aps init --hub-root "[你的 AI_Public_Squares 共享資料夾實際路徑]" --project [項目代號] --agent-id [你的 agent id] --other-agent-id [對方 agent id] --role A
+```
+
+方括號與 `...` 只是 placeholder,不可照抄。CLI 會在執行前攔截這類假路徑,避免出現低層 Windows `EINVAL` 錯誤。
+
+> **目前狀態**:0.2.3 pre-release 候選版提供 `bridge-pack`、互動式 `init` 技能安裝器、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並新增 `revise` / `withdraw` / `doctor`;本機互動式設定回歸已通過,並沿用一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證作為協定證據。0.2.3 會保存 `.aps/config.json` 專案設定,設置一次後可用 `npx aps inbox`、`npx aps doctor`、`npx aps publish --topic ... --body ...` 等短命令日用。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
 
 ---
 
@@ -67,13 +74,13 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 ## 目前可以怎樣試
 
-npm latest 0.2.2 仍屬前期測試版本,但已可用 CLI 跑完整設置、最小往返、修訂、撤回、只讀診斷與短命令日用流程。你可以做三件事:
+0.2.3 pre-release 候選版仍屬前期測試版本,但已可用 CLI 跑完整互動式設置、最小往返、修訂、撤回、只讀診斷與短命令日用流程。你可以做三件事:
 
 1. 閱讀本 repo,理解 APS 想解決的跨機協作問題。
-2. 參考下方「想深入了解」中的設置教學,照 0.2.2 CLI 主路徑完成首次設置。
-3. 先執行 `npm install --save-dev @adamchanadam/aps`,再用 `npx aps init --dry-run` 預覽會寫入哪些位置;確認後用 `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B` 建立 skill、Hub skeleton、Bridge Pack 與 starter pack。
+2. 參考下方「想深入了解」中的設置教學,照 0.2.3 CLI 主路徑完成首次設置。
+3. 先執行 `npm install --save-dev @adamchanadam/aps`,再用 `npx aps init` 由工具逐步問你 Hub 路徑、項目代號、雙方 agent id 與角色;工具列出寫入計劃後,你輸入 `yes` 才建立 skill、Hub skeleton、Bridge Pack、starter pack 與本地設定。
 
-目前可用路徑是:使用者在自己的項目資料夾內先執行 `npx aps init --dry-run`,確認寫入位置後,再執行完整 `npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B` 命令。這會把 APS 技能安裝到 Claude Code / Codex,並建立 Hub skeleton、Bridge Pack、starter pack 與本地 `.aps/config.json` 設定。設置完成後可用短命令發佈、收件、消化、回覆與收結;自然語言日常體驗仍在打磨中:
+目前可用路徑是:使用者在自己的項目資料夾內先安裝 npm 套件,再執行 `npx aps init`。工具會用問答方式收集必要資料、拒絕明顯 placeholder、列出計劃,並在你輸入 `yes` 後把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack、starter pack 與本地 `.aps/config.json` 設定。設置完成後可用短命令發佈、收件、消化、回覆與收結;自然語言日常體驗仍在打磨中:
    - 「我有嘢俾 Jay」 → 工具自動將內容打包,並生成一句 WhatsApp 通知句供你發送
    - 「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦
    - 「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法
