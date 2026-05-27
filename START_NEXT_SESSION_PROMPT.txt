@@ -28,7 +28,7 @@ Voice hard rule (per memory feedback-doc-voice + feedback-plain-language):所有
 
 Documentation governance hard rule (per S10 Adam principle):HTML 內(site-nav / body callout / body table)不 link 任何 .md 檔(瀏覽器顯示 plain text,broken UX);如要 reference .md 用 plain `<span class="path">` 顯示。.md 屬 AI / 維護者層 spec source。
 
-Next active objective: **verify post-push GitHub Pages 0.2.1 wording, then continue pre-release hardening**。Pending:natural-language daily operation and recovery hardening;auto-update mechanism;per-project Drive verification for any new real project.
+Next active objective: **continue pre-release hardening after verified 0.2.1 publish**。Pending:natural-language daily operation and recovery hardening;auto-update mechanism;per-project Drive verification for any new real project.
 
 User-facing entry: README.md + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。Current public install path: first run `npm install --save-dev @adamchanadam/aps`, then run `npx aps ...`;npm latest 0.2.1 remains pre-release. Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
 

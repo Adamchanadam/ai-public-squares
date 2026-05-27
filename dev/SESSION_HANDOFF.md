@@ -45,7 +45,7 @@ This is the current-state area. At every full closeout, rewrite or explicitly co
 <!-- ack:section:active-objective -->
 ## Active Objective
 
-Current active objective after this pass:**post-publish state synchronization and public readback for 0.2.1, then continue pre-release hardening.** There is no pending 0.2.1 publish decision;0.2.1 is already published as ⚠️ pre-release.
+Current active objective after this pass:**continue pre-release hardening after verified 0.2.1 publish.** There is no pending 0.2.1 publish decision;0.2.1 is already published as ⚠️ pre-release and GitHub Pages readback contains 0.2.1 wording。
 
 Funnel audit doc (`dev/qc/2026-05-22-zero-knowledge-funnel-audit.md`) 嘅 6 phase build order:
 - ✅ Phase X-1 Layer A entry (README rewrite + docs/index.html rewrite + cross-doc site-nav brand sync) — **done**
@@ -99,11 +99,10 @@ Record only work actually completed in the current session.
 
 Per funnel audit roadmap 順序,update for post-S9 mid-session reconcile:
 
-1. **Post-publish public readback for 0.2.1**:after the state-sync commit is pushed, verify GitHub Pages contains `0.2.1` plus pre-release wording。
-2. **Keep pre-release boundary**:0.2.1 is published, but natural-language daily operation / recovery remains hardening work, not production-ready。
-3. **Natural-language daily-use and recovery hardening**:0.2.1 adds bottom-level recovery CLI, but skill-mediated natural-language operation still needs more real-use rehearsal before any production claim。
-4. **Auto-update mechanism**:`npx aps update` + skill startup auto-check Bridge Pack version can be deferred。
-5. **Per-project Drive verification**:the Adam ↔ Jay true Drive test passed for the maintained test project;new real projects still need their own path / sync / offline-available checks。
+1. **Natural-language daily-use and recovery hardening**:0.2.1 adds bottom-level recovery CLI, but skill-mediated natural-language operation still needs more real-use rehearsal before any production claim。
+2. **Auto-update mechanism**:`npx aps update` + skill startup auto-check Bridge Pack version can be deferred。
+3. **Per-project Drive verification**:the Adam ↔ Jay true Drive test passed for the maintained test project;new real projects still need their own path / sync / offline-available checks。
+4. **Keep pre-release boundary**:0.2.1 is published, but natural-language daily operation / recovery remains hardening work, not production-ready。
 
 <!-- ack:section:next-task-required-reading -->
 ## Next Task Required Reading
@@ -136,7 +135,7 @@ Updated after 0.2.1 pre-release publish:
 6. **Real-runtime kit version remains per-project** — each user's project must be checked by its own `agent-handoff-kit doctor` or skill startup check。
 7. **New MCP availability is next-session dependent** — `chrome-devtools` and `context7` are registered in Codex global MCP config, but the current thread's active tool list may not hot-load them。
 
-Closed or reclassified risks: GitHub repo private state is closed; no remote git is closed; S9 npm-channel decision is implemented via `@adamchanadam/aps`;npm publish timing is closed for 0.2.1 pre-release;GitHub release, npm registry readback, and real Adam ↔ Jay Drive verification are closed for this release scope. GitHub Pages readback must be repeated after the final state-sync push.
+Closed or reclassified risks: GitHub repo private state is closed; no remote git is closed; S9 npm-channel decision is implemented via `@adamchanadam/aps`;npm publish timing is closed for 0.2.1 pre-release;GitHub release, npm registry readback, GitHub Pages readback, and real Adam ↔ Jay Drive verification are closed for this release scope。
 
 <!-- ack:section:validation-qc -->
 ## Validation / QC
@@ -169,7 +168,7 @@ Current wrap-up QC summary:
 - **Current npm verification**: `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json` confirms version `0.2.1`, `latest = 0.2.1`, bin `aps`, fileCount 14。
 - **Package verification**: `npm pack --dry-run --json` confirms the tarball contains only the expected 8 package files。
 - **Prior release CLI smoke test**: `node bin/aps.js --help`, `node bin/aps.js init`, and `node bin/aps.js bridge-pack --role B` passed before release commit。
-- **GitHub Pages verification**: before the post-publish state-sync push, Pages returned HTTP 200 and contained `0.2.0` plus the pre-release boundary wording;repeat after the state-sync push to confirm `0.2.1` is live。
+- **GitHub Pages verification**: after the post-publish state-sync push, Pages returned HTTP 200 and contained `0.2.1` plus pre-release / 前期測試 wording。
 - **Agent Handoff Kit v0.3.11 doctor**: demo Adam and demo Jay workspaces passed 46 checks;main workspace prompt mirror is repaired in this closeout and rechecked after `START_NEXT_SESSION_PROMPT.txt` regeneration。
 - **MCP setup verification**: `codex mcp list` shows `chrome-devtools` and `context7` enabled;`npx chrome-devtools-mcp@latest --help` and `npx -y @upstash/context7-mcp --help` both launched successfully after forcing npm out of offline mode。
 
@@ -219,7 +218,7 @@ At full closeout, complete this check after updating the state sections above.
 <!-- ack:field:stale-snapshots-left -->
 - Stale snapshots left in this handoff: historical S10 and S11 narratives remain in archived logs and selected background lines;current-state sections above supersede them. Older raw 2026-05-20 / 2026-05-21 / 2026-05-22 / 2026-05-23 / 2026-05-25 log entries have been moved to `dev/SESSION_LOG_archive/archive_001_2026-05-20_to_2026-05-20.md`, `archive_002_2026-05-21_to_2026-05-21.md`, `archive_003_2026-05-21_to_2026-05-21.md`, `archive_004_2026-05-22_to_2026-05-22.md`, `archive_005_2026-05-23_to_2026-05-23.md`, and `archive_006_2026-05-25_to_2026-05-25.md`.
 <!-- ack:field:lifecycle-conflicts-resolved -->
-- Completed / pending / risk / opening-message lifecycle conflicts resolved or explicitly reclassified: yes — setup-first draft, skill installer, Hub setup generator, minimal CLI round-trip, skill-level daily-use first pass, isolated rehearsal, throw-away flow, formal 🟡 外發前檢, 🔴 全面檢, real Adam ↔ Jay Drive check, GitHub pre-release, npm publish, public walkthrough correction, 0.2.1 CLI hardening, document repositioning, 0.2.1 commit, formal 0.2.1 外發前檢, and 0.2.1 publish are completed;post-publish Pages readback, natural-language recovery hardening, auto-update mechanism, and per-project Drive checks remain explicitly listed as next work.
+- Completed / pending / risk / opening-message lifecycle conflicts resolved or explicitly reclassified: yes — setup-first draft, skill installer, Hub setup generator, minimal CLI round-trip, skill-level daily-use first pass, isolated rehearsal, throw-away flow, formal 🟡 外發前檢, 🔴 全面檢, real Adam ↔ Jay Drive check, GitHub pre-release, npm publish, public walkthrough correction, 0.2.1 CLI hardening, document repositioning, 0.2.1 commit, formal 0.2.1 外發前檢, 0.2.1 publish, and post-publish Pages readback are completed;natural-language recovery hardening, auto-update mechanism, and per-project Drive checks remain explicitly listed as next work.
 <!-- ack:field:opening-message-matches-current-state -->
 - Opening message matches current state: yes — `START_NEXT_SESSION_PROMPT.txt` regenerated from this handoff at wrap-up and verified by doctor.
 <!-- ack:field:next-ai-can-continue -->
@@ -276,7 +275,7 @@ Voice hard rule (per memory feedback-doc-voice + feedback-plain-language):所有
 
 Documentation governance hard rule (per S10 Adam principle):HTML 內(site-nav / body callout / body table)不 link 任何 .md 檔(瀏覽器顯示 plain text,broken UX);如要 reference .md 用 plain `<span class="path">` 顯示。.md 屬 AI / 維護者層 spec source。
 
-Next active objective: **verify post-push GitHub Pages 0.2.1 wording, then continue pre-release hardening**。Pending:natural-language daily operation and recovery hardening;auto-update mechanism;per-project Drive verification for any new real project.
+Next active objective: **continue pre-release hardening after verified 0.2.1 publish**。Pending:natural-language daily operation and recovery hardening;auto-update mechanism;per-project Drive verification for any new real project.
 
 User-facing entry: README.md + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。Current public install path: first run `npm install --save-dev @adamchanadam/aps`, then run `npx aps ...`;npm latest 0.2.1 remains pre-release. Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
 
