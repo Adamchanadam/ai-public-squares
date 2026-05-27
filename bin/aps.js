@@ -238,7 +238,7 @@ async function askWithDefault(rl, question, defaultValue, validate) {
   while (true) {
     const suffix = defaultValue ? ` [${defaultValue}]` : '';
     const answer = await askLine(rl, `${question}${suffix}: `);
-    if (answer === null) throw new Error('Input ended before guided setup was complete. Rerun `npx aps init` and answer each question.');
+    if (answer === null) throw new Error('輸入在設定完成前中止。請重新執行 `npx aps init`,並回答每一條問題。');
     const value = answer || defaultValue;
     const error = validate ? validate(value) : null;
     if (!error) return value;
@@ -253,52 +253,69 @@ async function runInteractiveInit() {
     return 1;
   }
 
-  console.log('APS init — guided setup');
+  console.log('┌────────────────────────────────────────────┐');
+  console.log('│  AI Public Squares                         │');
+  console.log('│  APS 初次設定                              │');
+  console.log('└────────────────────────────────────────────┘');
   console.log('');
-  console.log('This guided setup asks only for the values APS needs, then shows the write plan before changing files.');
-  console.log('You can press Enter to accept a suggested value.');
+  console.log('👋 這一步會把本項目接到你與對方共用的 Google Drive Hub。');
+  console.log('🧭 工具只會問必要資料,先列出寫入計劃,你輸入 yes 之後才會寫入檔案。');
+  console.log('↩️  方括號內是建議值;合適時可直接按 Enter。');
   console.log('');
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   try {
-    const role = await askWithDefault(rl, 'Are you the starter side? Type A for starter, B for partner', 'A', (value) => {
+    const role = await askWithDefault(rl, '1/5 你的角色。A = 你先建立 Hub 給對方加入;B = 你收到對方 starter pack 後加入', 'A', (value) => {
       const upper = String(value).toUpperCase();
-      return upper === 'A' || upper === 'B' ? null : 'Use A or B.';
+      return upper === 'A' || upper === 'B' ? null : '請輸入 A 或 B。';
     });
     const roleValue = role.toUpperCase();
     const defaultProject = toSnakeCase(path.basename(process.cwd()), 'aps_uat');
-    const projectSlug = await askWithDefault(rl, 'Project code (lowercase letters, numbers, underscores)', defaultProject, (value) => (
-      validateNoPlaceholder('--project', value) || validateSnakeCase('--project', value)
+    console.log('');
+    console.log('📌 項目代號用來在 Hub 內分開不同合作項目,例如 branding_2026 或 aps_uat。');
+    console.log('   它會成為 Google Drive 內的資料夾名稱,請用小寫英文字母、數字或底線。');
+    const projectSlug = await askWithDefault(rl, '2/5 項目代號', defaultProject, (value) => (
+      localizeValidation(validateNoPlaceholder('--project', value) || validateSnakeCase('--project', value))
     ));
-    const defaultAgent = toSnakeCase(process.env.USERNAME || process.env.USER || 'adam', 'adam');
-    const agentId = await askWithDefault(rl, 'Your agent id', defaultAgent, (value) => (
-      validateNoPlaceholder('--agent-id', value) || validateSnakeCase('--agent-id', value)
+    const defaultAgent = toSnakeCase(process.env.USERNAME || process.env.USER || 'agent_a', 'agent_a');
+    console.log('');
+    console.log('👤 你的 agent id 是你這一邊在 Hub 內的名字,例如 adam。');
+    console.log('   APS 會用它建立 from_<你的 id> 通道及你的收件確認檔。');
+    const agentId = await askWithDefault(rl, '3/5 你的 agent id', defaultAgent, (value) => (
+      localizeValidation(validateNoPlaceholder('--agent-id', value) || validateSnakeCase('--agent-id', value))
     ));
-    const defaultOther = agentId === 'jay' ? 'adam' : 'jay';
-    const otherAgentId = await askWithDefault(rl, 'Partner agent id', defaultOther, (value) => (
-      validateNoPlaceholder('--other-agent-id', value) || validateSnakeCase('--other-agent-id', value)
+    const defaultOther = agentId === 'agent_b' ? 'agent_a' : 'agent_b';
+    console.log('');
+    console.log('🤝 對方 agent id 是合作夥伴在 Hub 內的名字,例如 jay。');
+    console.log('   APS 會用它建立 from_<對方 id> 通道,讓你之後可以收對方交來的內容。');
+    const otherAgentId = await askWithDefault(rl, '4/5 對方 agent id', defaultOther, (value) => (
+      localizeValidation(validateNoPlaceholder('--other-agent-id', value) || validateSnakeCase('--other-agent-id', value))
     ));
+    console.log('');
+    console.log('☁️  Hub root path 是你電腦上 Google Drive 同步資料夾的完整路徑。');
+    console.log('   請在檔案總管打開雙方共用的 AI_Public_Squares 資料夾,複製地址列完整路徑。');
+    console.log('   例: G:\\我的雲端硬碟\\AI_Public_Squares');
     const hubRoot = await askWithDefault(
       rl,
-      'Hub root path (paste the real AI_Public_Squares folder path from File Explorer)',
+      '5/5 Google Drive 本機 AI_Public_Squares 完整路徑',
       '',
-      (value) => validateNoPlaceholder('--hub-root', value) || (path.isAbsolute(value) ? null : '--hub-root must be an absolute path.')
+      (value) => localizeValidation(validateNoPlaceholder('--hub-root', value)) || (path.isAbsolute(value) ? null : '請貼上完整路徑,例如 G:\\我的雲端硬碟\\AI_Public_Squares 或 C:\\Users\\你\\Google Drive\\AI_Public_Squares。')
     );
 
     const values = { hubRoot, projectSlug, agentId, otherAgentId, role: roleValue };
     const projectPath = projectDir(values.hubRoot, values.projectSlug);
     console.log('');
-    console.log('Plan:');
-    console.log(`  hub-root: ${values.hubRoot}`);
-    console.log(`  project: ${values.projectSlug}`);
-    console.log(`  this side: ${values.agentId} (role ${values.role})`);
-    console.log(`  partner: ${values.otherAgentId}`);
-    console.log(`  project folder to create/use: ${projectPath}`);
-    console.log(`  local config: ${configPath()}`);
+    console.log('📝 寫入前計劃');
+    console.log(`  ☁️  Hub root: ${values.hubRoot}`);
+    console.log(`  📁 項目代號: ${values.projectSlug}`);
+    console.log(`  👤 本機 agent: ${values.agentId} (角色 ${values.role})`);
+    console.log(`  🤝 對方 agent: ${values.otherAgentId}`);
+    console.log(`  📂 會建立或使用的 Hub 項目資料夾: ${projectPath}`);
+    console.log(`  ⚙️  本機設定檔: ${configPath()}`);
     console.log('');
-    const confirm = await askLine(rl, 'Type yes to install the skill, create the Hub skeleton, and save local config: ');
+    const confirm = await askLine(rl, '確認無誤請輸入 yes,工具才會安裝 skill、建立 Hub skeleton 並保存本機設定: ');
     if (confirm.toLowerCase() !== 'yes') {
-      console.log('Cancelled. No APS Hub files were written.');
+      console.log('已取消。沒有寫入 APS Hub 檔案。');
       return 1;
     }
 
@@ -308,24 +325,53 @@ async function runInteractiveInit() {
     ];
     console.log('');
     for (const result of installTargets.map((item) => installSkill({ ...item, dryRun: false }))) {
-      const prefix = result.ok ? 'ok' : result.skipped ? 'skip' : 'fail';
-      console.log(`${prefix}  ${result.label}: ${result.message}`);
+      console.log(formatSetupResult(result, `${result.label}: `));
       if (!result.ok && !result.skipped) return 1;
     }
     console.log('');
-    console.log('Hub setup:');
+    console.log('☁️ 建立 Hub:');
     for (const result of setupHub(values, false)) {
-      const prefix = result.skipped ? 'skip' : 'ok';
-      console.log(`${prefix}  ${result.message}`);
+      console.log(formatSetupResult(result));
     }
     console.log('');
-    console.log('Setup complete.');
-    console.log('Next: open your AI tool in this project folder and say "set up APS" or "教我用 APS".');
-    console.log('Daily commands can now use the saved config, for example: npx aps doctor');
+    console.log('✅ APS 設定完成。');
+    console.log('🚀 下一步:在這個項目資料夾打開 AI 工具,輸入「教我用 APS」或 "set up APS"。');
+    console.log('🩺 你也可以先在終端機執行 `npx aps doctor`,檢查 Hub 與本機設定是否正常。');
     return 0;
   } finally {
     rl.close();
   }
+}
+
+function localizeValidation(message) {
+  if (!message) return null;
+  return String(message)
+    .replace(/--project/g, '項目代號')
+    .replace(/--agent-id/g, '你的 agent id')
+    .replace(/--other-agent-id/g, '對方 agent id')
+    .replace(/--hub-root/g, 'Hub root path')
+    .replace(/must be lowercase snake_case, start with a letter, and be 1-30 characters\. Got/g, '必須以小寫英文字母開頭,只可使用小寫英文字母、數字與底線,長度為 1 至 30 字元。目前收到')
+    .replace(/still looks like a placeholder:/g, '仍像示例或佔位值:')
+    .replace(/Replace it with your real value before running the command\./g, '請改用真實值後再繼續。');
+}
+
+function formatSetupResult(result, labelPrefix = '') {
+  const icon = result.ok ? '✅' : result.skipped ? '⏭️' : '❌';
+  return `${icon} ${labelPrefix}${localizeSetupMessage(result.message)}`;
+}
+
+function localizeSetupMessage(message) {
+  return String(message)
+    .replace(/^would install to /, '將會安裝到 ')
+    .replace(/^installed to /, '已安裝到 ')
+    .replace(/^target already exists; not overwriting \((.*)\)$/, '目標已存在,不覆寫 ($1)')
+    .replace(/^failed to install to (.*): (.*)$/, '安裝失敗: $1 ($2)')
+    .replace(/^source skill not found at /, '找不到 skill 來源: ')
+    .replace(/^would create /, '將會建立 ')
+    .replace(/^created /, '已建立 ')
+    .replace(/^would write /, '將會寫入 ')
+    .replace(/^wrote /, '已寫入 ')
+    .replace(/^exists; not overwriting \((.*)\)$/, '已存在,不覆寫 ($1)');
 }
 
 function packetTimestamp(date = new Date()) {
@@ -655,46 +701,46 @@ See \`<hub_root>/_hub/PROTOCOL.md\`.
 function starterPackContent(values, counterpartRole) {
   return `# APS Starter Pack for ${values.otherAgentId}
 
-This starter pack was generated by \`aps init\`.
+這份 starter pack 由 \`aps init\` 產生,用來讓對方在自己的電腦完成同一個 Hub 設定。
 
-## Shared Decisions
+## 已決定的設定
 
 - project_slug: \`${values.projectSlug}\`
 - your agent_id: \`${values.otherAgentId}\`
 - counterpart agent_id: \`${values.agentId}\`
 - your role: \`${counterpartRole}\`
-- Hub root on your machine: replace this with your own Google Drive path
+- Hub root on your machine:請改成你自己電腦上 Google Drive 同步資料夾的完整路徑
 
-## Install
+## 安裝
 
 \`\`\`powershell
 npm install --save-dev @adamchanadam/aps
 npx aps init
 \`\`\`
 
-When the guided setup asks questions, use these values:
+互動式設定會逐步問用途。請使用以下值:
 
-- role: \`${counterpartRole}\`
-- project: \`${values.projectSlug}\`
-- your agent id: \`${values.otherAgentId}\`
-- partner agent id: \`${values.agentId}\`
-- Hub root path: paste the real AI_Public_Squares folder path from File Explorer on your own machine
+- 角色: \`${counterpartRole}\`
+- 項目代號: \`${values.projectSlug}\`
+- 你的 agent id: \`${values.otherAgentId}\`
+- 對方 agent id: \`${values.agentId}\`
+- Google Drive 本機 AI_Public_Squares 完整路徑:在檔案總管打開你自己電腦上的共用 AI_Public_Squares 資料夾,複製地址列完整路徑
 
-Do not copy placeholder paths such as \`G:\\...\\AI_Public_Squares\`. The path must be the real folder path on your machine.
+不要複製 \`G:\\...\\AI_Public_Squares\` 這類示例路徑。這必須是你自己電腦上的真實 Google Drive 本機路徑。
 
-After install, restart Claude Code or Codex if the APS skill does not appear immediately.
+完成後,如果 Claude Code 或 Codex 未即時看到 APS skill,請重新啟動該 AI 工具。
 
-## Manual Bridge Pack Fallback
+## 手動 Bridge Pack 備用
 
-If you only need the Bridge Pack:
+如果只需要 Bridge Pack:
 
 \`\`\`powershell
 npx aps bridge-pack --role ${counterpartRole} > dev/rules/aps-bridge.md
 \`\`\`
 
-## Daily Trigger
+## 日常觸發句
 
-When the other side tells you there is new traffic, open your AI tool and say:
+當對方通知你有新交接包,打開 AI 工具並輸入:
 
 > check Hub
 `;
@@ -796,7 +842,7 @@ to override the saved config.
 Status: bridge-pack, skill install, initial Hub setup, saved local config,
 publish / revise / inbox / consume / withdraw / close, and read-only doctor
 are available.
-This pre-release has one Adam/Jay Google Drive round-trip verification, but
+This pre-release has one maintainer-run Google Drive round-trip verification, but
 each real project still needs its own project-specific verification.
 Repo: https://github.com/Adamchanadam/ai-public-squares
 `);
@@ -807,7 +853,7 @@ if (subcommand === 'init' && args.length === 0) {
   runInteractiveInit()
     .then((code) => process.exit(code))
     .catch((err) => {
-      console.error(`Guided setup failed: ${err.message}`);
+      console.error(`互動式設定失敗:${err.message}`);
       process.exit(1);
     });
   return;
@@ -867,36 +913,33 @@ if (subcommand === 'init' && args.length === 0) {
 
   console.log(`APS init — skill installer${setupFlags.length === 5 ? ' + Hub setup' : ''}${dryRun ? ' (dry run)' : ''}`);
   console.log('');
-  console.log('This command installs the APS skill files for AI tools.');
+  console.log('這個命令會安裝 APS skill 檔案,讓 AI 工具懂得使用 APS。');
   if (setupFlags.length === 5) {
-    console.log('It also creates the initial APS Hub skeleton and local Bridge Pack.');
-    console.log('It saves .aps/config.json so daily commands can omit long setup flags.');
-    console.log('Minimal CLI publish / inbox / consume / close commands are available for local smoke tests.');
-    console.log('Natural-language daily use remains pending; each real project still needs its own Google Drive verification.');
+    console.log('它也會建立初始 APS Hub skeleton、本地 Bridge Pack 與 `.aps/config.json`。');
+    console.log('完成後,日常命令可以使用已保存設定,毋須重複輸入長參數。');
+    console.log('目前仍屬前期測試;每個真實項目仍要驗證自己的 Google Drive 同步狀態。');
   } else {
-    console.log('Provide --hub-root, --project, --agent-id, --other-agent-id, and --role to create the Hub skeleton.');
+    console.log('如要同時建立 Hub skeleton,請提供 --hub-root、--project、--agent-id、--other-agent-id 與 --role。');
   }
   console.log('');
 
   const results = installTargets.map((item) => installSkill({ ...item, dryRun }));
   for (const result of results) {
-    const prefix = result.ok ? 'ok' : result.skipped ? 'skip' : 'fail';
-    console.log(`${prefix}  ${result.label}: ${result.message}`);
+    console.log(formatSetupResult(result, `${result.label}: `));
   }
 
   const failed = results.filter((result) => !result.ok && !result.skipped);
   const setupResults = [];
   if (setupFlags.length === 5) {
     console.log('');
-    console.log('Hub setup:');
+    console.log('☁️ 建立 Hub:');
     try {
       setupResults.push(...setupHub(setupValues, dryRun));
       for (const result of setupResults) {
-        const prefix = result.skipped ? 'skip' : 'ok';
-        console.log(`${prefix}  ${result.message}`);
+        console.log(formatSetupResult(result));
       }
     } catch (err) {
-      console.error(`Hub setup failed: ${err.message}`);
+      console.error(`Hub 設定失敗:${err.message}`);
       process.exit(1);
     }
   }
@@ -906,18 +949,18 @@ if (subcommand === 'init' && args.length === 0) {
     ...setupResults.filter((result) => result.skipped),
   ];
   if (failed.length > 0) {
-    console.log('Install failed for one or more required targets. Existing files were left untouched where possible.');
+    console.log('有一個或多個目標安裝失敗。已盡量保留既有檔案不變。');
   } else if (skipped.length > 0) {
-    console.log('Install complete with safe skips. Existing files were left untouched.');
-    console.log('To refresh an existing install, remove or rename the existing target first, then rerun this command.');
+    console.log('安裝完成,並安全略過既有檔案。既有檔案沒有被覆寫。');
+    console.log('如要刷新既有安裝,請先手動移走或改名既有目標,再重新執行此命令。');
   } else if (dryRun) {
-    console.log('Dry run complete. Rerun without `--dry-run` to install.');
+    console.log('Dry run 完成。移除 `--dry-run` 後重新執行,才會真正寫入。');
   } else {
-    console.log('Setup complete. Restart Claude Code or Codex if the skill does not appear immediately.');
-    console.log('Next: open your AI tool and say "set up APS" or "教我用 APS".');
+    console.log('✅ 設定完成。如果 Claude Code 或 Codex 未即時看到 APS skill,請重新啟動該 AI 工具。');
+    console.log('🚀 下一步:打開 AI 工具並輸入「教我用 APS」或 "set up APS"。');
   }
   console.log('');
-  console.log('Manual Bridge Pack fallback remains available:');
+  console.log('手動 Bridge Pack 備用命令仍可使用:');
   console.log('  npx aps bridge-pack > dev/rules/aps-bridge.md');
   process.exit(failed.length > 0 ? 1 : 0);
 }

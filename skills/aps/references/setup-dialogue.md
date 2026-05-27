@@ -20,6 +20,8 @@
 
 > 我先檢查這個項目是否已有 Agent Handoff Kit。APS 需要它保存跨 session 的工作狀態與接駁規則。
 
+若用戶不懂如何安裝、登入、同步或分享 Google Drive / 其他雲端硬碟,不要只叫用戶自行處理。AI 要先查官方文件或官方產品說明,再用繁體中文整理成可照做的步驟。若用戶問 Google Drive Connector、MCP、Claude Code、Codex、npm 或 GitHub 等外部工具設定,同樣必須先查官方來源;未查到官方來源時,明確標示未核實,不得憑記憶回答。
+
 檢查方式:
 
 - 讀取目前工作目錄的 `AGENTS.md`。
@@ -70,7 +72,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 正在記錄本項目的 APS 接駁資料。
 ```
 
-0.2.3 pre-release 已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在完整設置時寫入 Hub skeleton、Bridge Pack、starter pack 與 `.aps/config.json`,令後續日常命令毋須重複輸入 Hub / project / agent 長參數。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
+0.2.4 pre-release 已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在完整設置時寫入 Hub skeleton、Bridge Pack、starter pack 與 `.aps/config.json`,令後續日常命令毋須重複輸入 Hub / project / agent 長參數。互動式 CLI 應以繁體中文解釋每個設定值用途,尤其要說明 Hub root path 是使用者電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
 
 > 目前執行環境找不到 PROTOCOL source 檔案。這一步不能假裝完成。需要先確認 package 是否完整安裝,或由已驗證的 Hub template source 讀取。
 
@@ -79,7 +81,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 完成本機設置後,生成一份 markdown starter pack,位置建議:
 
 ```text
-<hub_root>/<project_slug>/_hub/starter-pack-<other_agent_id>.md
+<hub_root>/_hub/starter-pack-<other_agent_id>.md
 ```
 
 聊天中輸出短訊:
@@ -98,12 +100,12 @@ npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
 
 完成後:
 
-> 設置完成。測試交接包已建立。此工作目錄已有 APS 本地設定,之後可直接使用 `npx aps inbox`、`npx aps doctor` 或 `npx aps publish --topic ... --body ...`。接下來等對方設置完成並回覆。之後你可以說「check Hub」或「Hub 有新嘢」,我會檢查對方是否有新交接包或確認訊號。
+> 設置完成。這個工作目錄已有 APS 本地設定。我會先替你做兩件事:一,執行 `npx aps doctor` 檢查 Hub 與本機設定是否完整;二,執行 `npx aps inbox` 看看對方是否已有新內容。若兩項都正常,我可以立即替你建立一個 `setup_test` 測試交接包,或生成一段給對方的 WhatsApp 短訊。你不需要記住命令;之後只要直接說「有東西給對方」「看看對方有沒有回覆」或「Drive 同步不到」即可。
 
 ## 8. 不可承諾
 
 - 不承諾直接發 WhatsApp。
 - 不承諾更改雲端硬碟分享權限。
 - 不承諾對方電腦已完成設置。
-- 不承諾自然語言日常操作或補救流程已完成;只可說專案已完成一次 Adam ↔ Jay 真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。0.2.3 pre-release 已提供互動式設置、`revise`、`withdraw`、`doctor` 與短命令日用流程;本機互動式設定回歸與全面檢已通過,但仍需 Adam ↔ Jay 真機日常演練。
+- 不承諾自然語言日常操作或補救流程已完成;只可說專案已完成一次維護者真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。0.2.4 pre-release 已提供互動式設置、`revise`、`withdraw`、`doctor` 與短命令日用流程;本機互動式設定回歸與全面檢已通過,但仍需實際協作雙方做真機日常演練。
 - 不承諾 PROTOCOL source 可用;實作時必須先驗證 package 內 `resources/protocol/` 存在。

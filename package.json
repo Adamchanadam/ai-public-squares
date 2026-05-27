@@ -1,6 +1,6 @@
 {
   "name": "@adamchanadam/aps",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Install APS skills for Claude Code and Codex, then set up two AI agents to collaborate over a shared Google Drive folder. Cantonese / English aware.",
   "bin": {
     "aps": "bin/aps.js"

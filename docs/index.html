@@ -330,7 +330,7 @@
   <h1>AI Public Squares</h1>
   <p class="subtitle">兩個人,各自在自己的電腦上,以 AI 共同製作一份品牌指引、撰寫一份報告、設計一個項目 — 但檔案來去往返、上下文重複交代?</p>
   <div class="meta">
-    <span class="badge ok">試行版 0.2.3</span>
+    <span class="badge ok">試行版 0.2.4</span>
     <span class="badge pending">init 技能安裝器試行中</span>
     <span>建立 2026-05-20</span>
     <span>最新更新 2026-05-27</span>
@@ -338,7 +338,7 @@
 </header>
 
 <div class="callout warn">
-  <strong>⚠️ 前期測試階段(pre-release)</strong> — 本工具仍處於早期建構期。npm latest 0.2.3 pre-release 將主安裝路徑改為互動式 <code>npx aps init</code>,已支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack、starter pack 與本地設定;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證。0.2.3 保留修訂、撤回、只讀診斷與短命令日用流程。自然語言日常操作與補救流程仍未完整產品化。適合觀察、提出建議、留下回饋;不建議用於正式生產或不可中斷的重要流程。
+  <strong>⚠️ 前期測試階段(pre-release)</strong> — 本工具仍處於早期建構期。npm latest 0.2.4 pre-release 將主安裝路徑改為互動式 <code>npx aps init</code>,已支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack、starter pack 與本地設定;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次維護者真實 Google Drive 跨機往返驗證。0.2.4 保留修訂、撤回、只讀診斷與短命令日用流程。自然語言日常操作與補救流程仍未完整產品化。適合觀察、提出建議、留下回饋;不建議用於正式生產或不可中斷的重要流程。
 </div>
 
 <section>
@@ -392,10 +392,10 @@
 
 <section>
   <h2>目前可以怎樣試</h2>
-  <p class="lede">npm latest 0.2.3 pre-release 的主路徑是先安裝套件,再用互動式 <code>aps init</code> 檢查與建立初始 Hub skeleton、本地設定與短命令日用流程。0.2.3 保留 <code>revise</code>、<code>withdraw</code> 與 <code>doctor</code>。正式跨機使用前,每個真實項目仍要各自驗證 Google Drive 同步。</p>
+  <p class="lede">npm latest 0.2.4 pre-release 的主路徑是先安裝套件,再用互動式 <code>aps init</code> 檢查與建立初始 Hub skeleton、本地設定與短命令日用流程。0.2.4 保留 <code>revise</code>、<code>withdraw</code> 與 <code>doctor</code>。正式跨機使用前,每個真實項目仍要各自驗證 Google Drive 同步。</p>
   <div class="install-block"><span class="prompt">$</span>npm install --save-dev @adamchanadam/aps<br><span class="prompt">$</span>npx aps init</div>
   <ol class="step-list">
-    <li><code>npx aps init</code> 會逐步問你 Hub 路徑、項目代號、雙方 agent id 與角色;你可按 Enter 接受建議值。</li>
+    <li><code>npx aps init</code> 會逐步問你 Hub 路徑、項目代號、雙方 agent id 與角色,並解釋每個值的用途;Hub 路徑指你電腦上 Google Drive 同步出來的 <code>AI_Public_Squares</code> 資料夾完整路徑。你可按 Enter 接受建議值。</li>
     <li>工具會列出寫入計劃,包括技能安裝位置、Hub 項目資料夾與本地 <code>.aps/config.json</code> 路徑。</li>
     <li>確認無誤後輸入 <code>yes</code> 才真正寫入。之後日常命令可以縮短為 <code>npx aps inbox</code>、<code>npx aps doctor</code>、<code>npx aps publish --topic ... --body ...</code>。</li>
   </ol>
@@ -407,7 +407,7 @@
       <tr>
         <td><code>hub-root</code></td>
         <td>Google Drive 桌面版同步到本機的共享資料夾實際路徑。請在檔案總管打開該資料夾,複製地址列路徑;不要輸入 <code>G:\...\AI_Public_Squares</code> 或任何含 <code>...</code> 的省略寫法。</td>
-        <td><code>G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares</code></td>
+        <td><code>G:\我的雲端硬碟\AI_Public_Squares</code></td>
       </tr>
       <tr>
         <td><code>project</code></td>
@@ -426,19 +426,19 @@
       </tr>
     </tbody>
   </table>
-  <p>若你只是單機試跑,可先用一個本機測試資料夾做 <code>hub-root</code>;若你要和 Jay 真正跨機試用,必須使用雙方都可同步到的 Google Drive 共享資料夾。</p>
+  <p>若你只是單機試跑,可先用一個本機測試資料夾做 <code>hub-root</code>;若你要和協作夥伴真正跨機試用,必須使用雙方都可同步到的 Google Drive 共享資料夾。</p>
   <p>進階用法:若由 AI 或腳本代為執行,可使用非互動命令 <code>npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B</code>。方括號與 <code>...</code> 不可照抄;CLI 會在執行前攔截這類假路徑。</p>
   <p>設置完成後,工具會把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack 與 starter pack。自然語言日常操作仍在硬化中;底層 CLI 已可支援以下方向:</p>
   <ul>
-    <li>「我有嘢俾 Jay」 → 工具自動將內容打包,生成一句 WhatsApp 通知句供你發送</li>
-    <li>「Jay 嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦</li>
+    <li>「我有嘢俾對方」 → 工具自動將內容打包,生成一句 WhatsApp 通知句供你發送</li>
+    <li>「對方嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦</li>
     <li>「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法</li>
   </ul>
   <div class="callout">
     <strong>最終目標是全程無需先閱讀任何技術文檔。</strong>目前仍處於前期測試階段,公開頁先呈現 CLI 優先試行路徑與手動備用參考。
   </div>
   <div class="callout warn">
-    <strong>目前狀態</strong>:npm latest 0.2.3 pre-release 提供 <code>bridge-pack</code>、互動式 <code>aps init</code> 技能安裝、初始 Hub skeleton、Bridge Pack、starter pack、本地設定與短命令日用流程。CLI 已有最小 <code>publish</code> / <code>inbox</code> / <code>consume</code> / <code>close</code> 指令,並新增 <code>revise</code> / <code>withdraw</code> / <code>doctor</code>。本機互動式設定回歸已通過,並沿用一次 Adam ↔ Jay 真實 Google Drive 跨機往返驗證作為協定證據。但仍未等同自然語言日常操作或補救流程已產品化。請勿把本頁當成已可生產使用的安裝說明。
+    <strong>目前狀態</strong>:npm latest 0.2.4 pre-release 提供 <code>bridge-pack</code>、互動式 <code>aps init</code> 技能安裝、初始 Hub skeleton、Bridge Pack、starter pack、本地設定與短命令日用流程。CLI 已有最小 <code>publish</code> / <code>inbox</code> / <code>consume</code> / <code>close</code> 指令,並新增 <code>revise</code> / <code>withdraw</code> / <code>doctor</code>。本機互動式設定回歸已通過,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。但仍未等同自然語言日常操作或補救流程已產品化。請勿把本頁當成已可生產使用的安裝說明。
   </div>
 </section>
 
@@ -492,11 +492,11 @@
   <ul class="status-list">
     <li><span class="mark done">✓</span><span>協定設計與 MVP 在同一部電腦上跑通(2026-05-20)</span></li>
     <li><span class="mark done">✓</span><span>完整的手動設置教學(技術參考,供深入了解使用)</span></li>
-    <li><span class="mark done">✓</span><span>npm latest 0.2.3 pre-release — <code>@adamchanadam/aps</code> 提供 <code>bridge-pack</code>、互動式 <code>init</code>、Hub skeleton、最小 CLI 往返、<code>revise</code>、<code>withdraw</code>、<code>doctor</code>、本地設定與短命令日用流程</span></li>
-    <li><span class="mark done">✓</span><span><code>npx aps init</code> 已可用問答方式試行 Claude Code / Codex 技能安裝器與初始 Hub skeleton 生成器;尚未等同一鍵完成所有跨機設置</span></li>
+    <li><span class="mark done">✓</span><span>npm latest 0.2.4 pre-release — <code>@adamchanadam/aps</code> 提供 <code>bridge-pack</code>、互動式 <code>init</code>、Hub skeleton、最小 CLI 往返、<code>revise</code>、<code>withdraw</code>、<code>doctor</code>、本地設定與短命令日用流程</span></li>
+    <li><span class="mark done">✓</span><span><code>npx aps init</code> 已可用問答方式試行 Claude Code / Codex 技能安裝器與初始 Hub skeleton 生成器;安裝後 AI 對話應先替用戶跑 <code>doctor</code> 與 <code>inbox</code>,再引導測試交接、傳 starter pack 或開始日常收發;尚未等同一鍵完成所有跨機設置</span></li>
     <li><span class="mark done">✓</span><span>本地 CLI 最小往返已跑通:<code>publish</code> → <code>inbox</code> → <code>consume</code> → reply → <code>close</code></span></li>
     <li><span class="mark wait">⏳</span><span>AI 自動帶你完成的自然語言日常流程(出包 / 撿包 / 出錯處理)仍在建構中</span></li>
-    <li><span class="mark done">✓</span><span>已完成一次 Adam ↔ Jay 真實 Google Drive 跨機往返;新項目仍需各自驗證 Hub 路徑與同步狀態</span></li>
+    <li><span class="mark done">✓</span><span>已完成一次維護者真實 Google Drive 跨機往返;新項目仍需各自驗證 Hub 路徑與同步狀態</span></li>
   </ul>
   <p style="margin-top:14px;">完整建構路線見 <span class="path">dev\qc\2026-05-22-zero-knowledge-funnel-audit.md</span>(AI / 維護者層 .md 檔;目前以技術術語為主,正在重寫對齊讀者)。</p>
 </section>
@@ -555,7 +555,7 @@
 </section>
 
 <footer>
-  AI Public Squares · 試行版 0.2.3 · 最新更新 2026-05-27
+  AI Public Squares · 試行版 0.2.4 · 最新更新 2026-05-27
 </footer>
 
 </main>
