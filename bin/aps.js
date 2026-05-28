@@ -303,11 +303,23 @@ async function runInteractiveInit() {
     return 1;
   }
 
-  console.log('┌────────────────────────────────────────────┐');
-  console.log('│  /\\_/\\        AI Public Squares           │');
-  console.log('│ ( o.o )───( o.o )  APS 初次設定           │');
-  console.log(`│  > ^ <        v${packageVersion.padEnd(28, ' ')}│`);
-  console.log('└────────────────────────────────────────────┘');
+  const bannerWidth = 37;
+  const useAnsi = Boolean(process.stdout.isTTY && !process.env.NO_COLOR);
+  const color = (code, text) => (useAnsi ? `\x1b[${code}m${text}\x1b[0m` : text);
+  const centerLine = (text = '', ansiCode = null) => {
+    const safeText = String(text).slice(0, bannerWidth);
+    const left = Math.floor((bannerWidth - safeText.length) / 2);
+    const padded = `${' '.repeat(left)}${safeText}`.padEnd(bannerWidth, ' ');
+    return ansiCode ? color(ansiCode, padded) : padded;
+  };
+  console.log('-'.repeat(bannerWidth));
+  console.log(centerLine('✦ AI Public Squares ✦', '36;1'));
+  console.log(centerLine('=^._.^=  <-- APS Hub -->  =^._.^=', '36'));
+  console.log(centerLine('packets  |  versions  |  ack'));
+  console.log(centerLine(`v${packageVersion} pre-release`, '33'));
+  console.log('-'.repeat(bannerWidth));
+  console.log('');
+  console.log('APS 初次設定');
   console.log('');
   console.log('👋 這一步會把本項目接到你與對方共用的 Google Drive Hub。');
   console.log('🧭 工具只會問必要資料,先列出寫入計劃,你輸入 yes 之後才會寫入檔案。');
@@ -788,7 +800,7 @@ function starterPackContent(values, counterpartRole) {
 ## 安裝
 
 \`\`\`powershell
-npm install --save-dev @adamchanadam/aps
+npm install --save-dev @adamchanadam/aps@latest
 npx aps init
 \`\`\`
 
@@ -1147,7 +1159,7 @@ if (subcommand === 'config') {
       console.log('APS config: not found');
       console.log(filePath);
       console.log('');
-      console.log('Next: run `npx aps init` for guided setup.');
+      console.log('下一步:執行 `npx aps init` 進入互動式設定。');
       process.exit(1);
     }
     console.log('APS config');
@@ -1225,10 +1237,10 @@ if (subcommand === 'revise') {
   }
   try {
     const output = revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason });
-    console.log(`Revised ${packetId}: v${output.previousVersion} -> v${output.version}`);
+    console.log(`已修訂 ${packetId}: v${output.previousVersion} -> v${output.version}`);
     console.log(output.packetDir);
     console.log('');
-    console.log('Next: tell the receiver to run inbox again; the latest unconsumed version is now the pending item.');
+    console.log('下一步:請通知對方在 AI 工具中說「check Hub」。命令列備用做法是請對方執行 `npx aps inbox`;最新未讀版本會重新顯示為待處理項目。');
     process.exit(0);
   } catch (err) {
     console.error(`Revise failed: ${err.message}`);
@@ -1255,16 +1267,16 @@ if (subcommand === 'inbox') {
   try {
     const pending = pendingPackets({ hubRoot, projectSlug, agentId, otherAgentId });
     if (pending.length === 0) {
-      console.log(`APS Hub: no pending items for ${agentId}`);
+      console.log(`APS Hub: ${agentId} 沒有待處理項目`);
     } else {
-      console.log(`APS Hub: ${pending.length} pending item(s) for ${agentId}`);
+      console.log(`APS Hub: ${agentId} 有 ${pending.length} 個待處理項目`);
       for (const item of pending) {
         console.log(`- ${item.packetId} v${item.version} | scope:${item.scope} | items:${item.items.join(',') || '(none)'}`);
         console.log(`  packet: ${item.packetPath}`);
-        console.log(`  accept command: npx aps consume --packet-id ${item.packetId} --version ${item.version} --result "<what you did>"`);
+        console.log(`  標記已處理命令: npx aps consume --packet-id ${item.packetId} --version ${item.version} --result "<你做了甚麼>"`);
       }
       console.log('');
-      console.log('Next: read the packet first. Run the accept command only after you decide to accept that exact version.');
+      console.log('下一步:請先閱讀交接包內容。只有在確認要接受這個版本後,才標記已處理;若資料不足,應先請對方補交。');
     }
     process.exit(0);
   } catch (err) {
@@ -1295,10 +1307,10 @@ if (subcommand === 'consume') {
   }
   try {
     const output = consumePacket({ hubRoot, projectSlug, agentId, packetId, version, result });
-    console.log(output.already ? `Already consumed ${packetId} v${version}` : `Consumed ${packetId} v${version}`);
+    console.log(output.already ? `已標記過 ${packetId} v${version}` : `已標記處理 ${packetId} v${version}`);
     console.log(output.ackPath);
     console.log('');
-    console.log('Next: reply with `npx aps publish ...` if work is due back to the sender, or ask the sender to close their original packet when the thread is settled.');
+    console.log('下一步:如需要回覆對方,請優先在 AI 工具中說「幫我回覆這個 APS 交接」。命令列備用做法是 `npx aps publish ...`;如事情已完成,請原發包方收結原交接。');
     process.exit(0);
   } catch (err) {
     console.error(`Consume failed: ${err.message}`);
@@ -1329,11 +1341,11 @@ if (subcommand === 'withdraw') {
   }
   try {
     const output = withdrawPacket({ hubRoot, projectSlug, agentId, packetId, version, reason });
-    console.log(`Withdrew ${packetId} v${output.version}`);
+    console.log(`已撤回 ${packetId} v${output.version}`);
     console.log(output.outboxPath);
     console.log('');
-    console.log(`Checked receiver ack when available: ${output.ackPath}`);
-    console.log('Next: tell the receiver to run inbox again; this version should no longer appear as pending.');
+    console.log(`已在可用時檢查接收方 ack: ${output.ackPath}`);
+    console.log('下一步:請通知對方在 AI 工具中說「check Hub」。這個版本不應再顯示為待處理項目。');
     process.exit(0);
   } catch (err) {
     console.error(`Withdraw failed: ${err.message}`);
@@ -1361,10 +1373,10 @@ if (subcommand === 'close') {
   }
   try {
     const output = closePacket({ hubRoot, projectSlug, agentId, packetId, reason });
-    console.log(`Closed ${packetId} v${output.version}`);
+    console.log(`已收結 ${packetId} v${output.version}`);
     console.log(output.outboxPath);
     console.log('');
-    console.log('Next: both sides can run inbox once more; the settled thread should no longer appear as pending.');
+    console.log('下一步:雙方可再說「check Hub」或執行 `npx aps inbox`;已收結的交接不應再顯示為待處理項目。');
     process.exit(0);
   } catch (err) {
     console.error(`Close failed: ${err.message}`);
@@ -1414,7 +1426,7 @@ if (subcommand === 'doctor') {
     console.log('');
     if (failed === 0) {
       console.log('狀態: 通過');
-      console.log('下一步:可以按需要執行 `npx aps inbox`、`npx aps publish --topic ... --body ...` 或在 AI 工具中輸入「教我用 APS」。');
+      console.log('下一步:請優先在 AI 工具中輸入「教我用 APS」或「check Hub」。命令列備用指令包括 `npx aps inbox`、`npx aps publish --topic ... --body ...`、`npx aps consume ...`、`npx aps revise ...`、`npx aps withdraw ...`、`npx aps close ...`、`npx aps config`。');
     } else {
       console.log('狀態: 未通過');
       console.log('下一步:先修正缺少的路徑或疑似衝突檔,再繼續使用 APS。不要在未檢查內容前刪除衝突檔。');

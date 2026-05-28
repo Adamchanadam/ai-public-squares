@@ -8,7 +8,30 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-28 (S24, latest) — formal full-check for local 0.2.5
+## 2026-05-28 (S26, latest) — 0.2.6 release-check and release prep
+
+- **ID:** S26
+- **Summary:** Adam approved formal 🟡 外發前檢 followed by commit / push / tag / GitHub pre-release / npm publish if the gate passes. The check used `dev/qc/triggers.md` as the single source of truth. During the gate, public release wording was advanced from npm latest 0.2.5 / local 0.2.6 candidate to 0.2.6 pre-release release-prep wording, because publishing 0.2.6 with 0.2.5 public docs would immediately drift.
+- **Changed:** This workspace only.
+  - Modified: `README.md`, `docs/index.html`, `docs/guides/aps-onboarding-walkthrough.html`, `skills/aps/SKILL.md`, and `dev/release-notes/v0.2.6.md` — public / runtime wording now describes 0.2.6 pre-release and keeps the project marked as pre-release.
+  - Modified: `bin/aps.js` — `npx aps init` banner now uses a side-border-free ASCII / ANSI-friendly layout with connected cat icons, APS Hub, packets / versions / ack, and version number.
+- **QC:** Inner quick-check passed: Agent Handoff Kit doctor passed 46 checks with only the existing SESSION_LOG N-rule warning; `node --check bin\aps.js`, `npm test`, `npm pack --dry-run --json` (`@adamchanadam/aps@0.2.6`, 14 files), `node bin\aps.js --help`, `node bin\aps.js init --dry-run`, target-specific init dry-runs, `node bin\aps.js bridge-pack --role B`, expected-failure `bogus` and invalid target checks, `git diff --check` with LF→CRLF warnings only, `.md` HTML hyperlink audit, placeholder / PII / secrets scans, and npm registry readback passed. Registry readback correctly still showed npm latest 0.2.5 before publish. Chrome DevTools rendered `docs/index.html`, `docs/guides/index.html`, `docs/guides/aps-onboarding-walkthrough.html`, `docs/maintainers/index.html`, and `docs/qc/governance-map.html` with no console messages; walkthrough SVG and capability list were visible in the accessibility snapshot.
+- **Result:** Formal 🟡 外發前檢 is clear for 0.2.6 release prep, with the explicit boundary that npm registry latest remains 0.2.5 until `npm publish` completes.
+- **Sync:** Existing registry rows for npm package change, repo entry layer, APS user-facing docs, skill source change, APS product consistency, release, and closeout/startup contract cover this update.
+
+## 2026-05-28 (S25) — 0.2.6 follow-up UAT fixes
+
+- **ID:** S25
+- **Summary:** After Adam tested npm latest 0.2.5 in the existing `AI_Public_Squares_UAT` folder, the install / init / doctor path passed, but `doctor` still framed the next step too narrowly as `inbox` / `publish`. Local package version is now 0.2.6 candidate because 0.2.5 is already published and cannot be overwritten.
+- **Changed:** This workspace only.
+  - Modified: `bin/aps.js` — `doctor` now points users first to the AI natural-language route and lists the full CLI fallback set;remaining success messages for `inbox`, `consume`, `revise`, `withdraw`, and `close` are now Traditional Chinese;starter pack install wording uses `@latest`.
+  - Modified: `README.md`, `docs/index.html`, `docs/guides/aps-onboarding-walkthrough.html`, and `skills/aps/SKILL.md` — install command now uses `@latest`;public wording now reflects npm latest 0.2.5 rather than old 0.2.4 / local-candidate wording.
+  - Modified: `package.json`, `dev/DOC_SYNC_REGISTRY.md`, and `dev/PROJECT_INDEX.md`;new `dev/release-notes/v0.2.6.md` records the follow-up candidate.
+- **QC:** `node --check bin\aps.js`, `npm test`, `npm pack --dry-run --json` (`@adamchanadam/aps@0.2.6`, 14 files), `git diff --check` with LF→CRLF warnings only, npm registry readback confirming latest `0.2.5`, and Agent Handoff Kit doctor 46 checks passed. Focused stale scan over README / public docs / skill / CLI / project index found no active 0.2.4 public surface;remaining 0.2.4 hits are historical release references.
+- **Result:** Existing-folder UAT install / init / doctor is valid for npm latest 0.2.5. The next publishable local candidate is 0.2.6, focused on post-doctor UX wording, fuller command fallback listing, and remaining Chinese CLI success messages.
+- **Sync:** Existing registry rows for npm package change, repo entry layer, APS user-facing docs, skill source change, and APS product consistency cover this update.
+
+## 2026-05-28 (S24) — formal full-check for local 0.2.5
 
 - **ID:** S24
 - **Summary:** Ran formal 🔴 全面檢 for the local `@adamchanadam/aps` 0.2.5 candidate using `dev/qc/triggers.md` as the single source of truth. The check found one real CLI consistency gap in `publish` override handling, fixed it, and reran the same-machine protocol regression to completion. No commit, push, tag, GitHub release, or npm publish was performed in this step.

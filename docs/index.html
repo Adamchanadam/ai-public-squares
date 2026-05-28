@@ -230,9 +230,9 @@
   <h1>讓兩部電腦上的 AI 有一個共同交接處。</h1>
   <p class="subtitle">AI Public Squares 用 Google Drive 上的一個共享資料夾，替兩邊的 AI 留下交接包、上下文、版本記錄與收件狀態。它不是伺服器，也不會自動傳訊息；它的價值是讓對方 AI 在檢查 Hub 時讀到完整交接，而不是靠人類重複搬運背景。</p>
   <div class="meta">
-    <span class="badge ok">npm latest 0.2.4</span>
+    <span class="badge ok">npm latest 0.2.6</span>
     <span class="badge warn">前期測試階段</span>
-    <span class="badge">本地 0.2.5 候選改良中</span>
+    <span class="badge">既有資料夾升級已開始實測</span>
   </div>
 </header>
 
@@ -288,7 +288,7 @@
     <li>在 AI 工具打開同一個項目資料夾，輸入「教我用 APS」。</li>
   </ol>
   <pre>npx --yes @adamchanadam/agent-handoff-kit@latest init
-npm install --save-dev @adamchanadam/aps
+npm install --save-dev @adamchanadam/aps@latest
 npx aps init
 npx aps doctor</pre>
   <p><a href="guides/aps-onboarding-walkthrough.html">前往完整新手教學</a>，按畫面逐步做。</p>
@@ -349,7 +349,7 @@ npx aps doctor</pre>
     </div>
   </div>
   <div class="callout warn">
-    <strong>目前限制：</strong>APS 不會自動提醒對方電腦有新內容。AI 應替你生成可直接複製貼上的 WhatsApp / Email 通知，你只需貼到平常渠道請對方「check Hub」。自然語言日常流程仍在硬化中；若 AI 未能順利完成，才回到命令列備用路徑：<code>npx aps inbox</code>、<code>npx aps publish</code>、<code>npx aps consume</code>、<code>npx aps close</code>。
+    <strong>目前限制：</strong>APS 不會自動提醒對方電腦有新內容。AI 應替你生成可直接複製貼上的 WhatsApp / Email 通知，你只需貼到平常渠道請對方「check Hub」。自然語言日常流程仍在硬化中；若 AI 未能順利完成，才回到命令列備用路徑：<code>npx aps doctor</code>、<code>npx aps inbox</code>、<code>npx aps publish</code>、<code>npx aps consume</code>、<code>npx aps revise</code>、<code>npx aps withdraw</code>、<code>npx aps close</code>、<code>npx aps config</code>。
   </div>
 </section>
 
@@ -400,7 +400,7 @@ npx aps doctor</pre>
 </section>
 
 <footer>
-  AI Public Squares · 前期測試階段 · 最新更新 2026-05-27
+  AI Public Squares · 前期測試階段 · 最新更新 2026-05-28
 </footer>
 
 </main>
