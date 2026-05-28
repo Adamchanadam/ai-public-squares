@@ -9,7 +9,7 @@ Do not commit, push, tag, create a GitHub release, publish npm, or change GitHub
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md (latest S31 entry)
+3. dev/SESSION_LOG.md (latest S34 entry)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/DOC_SYNC_REGISTRY.md

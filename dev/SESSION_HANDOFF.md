@@ -1,6 +1,6 @@
 # Session Handoff
 
-Last Updated: 2026-05-28 (`@adamchanadam/aps` v0.2.8 npm publish verified)
+Last Updated: 2026-05-28 (post-publish governance lessons converted)
 
 <!-- ack:section:durable-anchors -->
 ## Durable Anchors
@@ -80,6 +80,7 @@ Record only work actually completed in the current session.
 13. Published `@adamchanadam/aps@0.2.8` to npm and verified npm registry readback: version/latest `0.2.8`, bin `aps`, fileCount 14.
 14. Verified published install probe: `npx --yes @adamchanadam/aps@latest --help` displays v0.2.8 Traditional Chinese help.
 15. Verified GitHub Pages readback after the npm wording push: live page contains `npm latest 0.2.8`, `摘要式通知`, and `不會自動觸發對方 AI`.
+16. Converted v0.2.8 release / publish lessons into narrow governance mechanisms: release pack now requires post-publish public-surface readback; doc sync registry now records npm publish state-sync duties; QC triggers now treat post-publish readback as required before completion claims when full-check proceeds through external release.
 
 <!-- ack:section:next-priorities -->
 ## Next Priorities
@@ -129,6 +130,7 @@ Current closeout QC summary:
 - `cmd /c claude -p "<bounded read-only review prompt>"` succeeded from this repo root after a too-long first prompt timed out. Use it for read-only external Claude review when Adam asks; keep prompt scope bounded and say `只讀，不改檔`. If a future technical blocker remains after shortening the prompt, verify current Claude Code official docs or web guidance before changing the command pattern.
 - S32 release checks passed: release commit and tag read back at `136042c`; GitHub release readback confirms `v0.2.8` pre-release.
 - S33 npm publish checks passed: `npm publish --access public` succeeded; npm readback confirms version/latest `0.2.8`, bin `aps`, fileCount 14; published install probe `npx --yes @adamchanadam/aps@latest --help` displays v0.2.8 Traditional Chinese help; GitHub Pages readback contains `npm latest 0.2.8`, `摘要式通知`, and `不會自動觸發對方 AI`.
+- S34 governance conversion checks: release / sync / QC wording patched locally; final doctor / diff checks should be run before any commit.
 
 <!-- ack:section:workspace-identity -->
 ## Workspace Identity
@@ -200,7 +202,7 @@ Do not commit, push, tag, create a GitHub release, publish npm, or change GitHub
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md (latest S31 entry)
+3. dev/SESSION_LOG.md (latest S34 entry)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/DOC_SYNC_REGISTRY.md

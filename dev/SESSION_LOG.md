@@ -8,7 +8,15 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-28 (S33, latest) — v0.2.8 npm publish
+## 2026-05-28 (S34, latest) — post-publish governance lessons converted
+
+- **ID:** S34
+- **Summary:** Adam asked whether the v0.2.8 release / npm publish experience should be converted into governance, development, or product mechanisms. The conclusion was yes, but only as narrow rules: post-publish readback across public surfaces, natural-language APS discovery as product validation, and summary-first human notification as Reliable Pair UX.
+- **Changed:** `dev/rules/release.md`, `dev/DOC_SYNC_REGISTRY.md`, `dev/qc/triggers.md`, and this log.
+- **QC:** `git diff --check` passed with LF→CRLF warnings only. Handoff Kit doctor passed 46 checks with the existing SESSION_LOG N-rule archive warning. Stale publish-state scan found only historical session-log entries, not current handoff / prompt / rule truth.
+- **Pending:** Commit only if Adam asks.
+
+## 2026-05-28 (S33) — v0.2.8 npm publish
 
 - **ID:** S33
 - **Summary:** Adam explicitly requested npm publish after the v0.2.8 GitHub pre-release. Public and package-shipped wording was updated from "GitHub candidate / npm latest 0.2.7" to "npm latest 0.2.8 pre-release" before publishing, so the npm README will not carry stale boundary text.

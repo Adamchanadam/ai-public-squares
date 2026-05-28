@@ -100,7 +100,7 @@
 對 AI Public Squares 而言,🔴 全面檢不可只理解為「跑更多命令」。每次全面檢必須把上面 18 項歸入三條主線,並在審核報告逐項標示為「通過」「失敗」「受阻」或「接受風險」。橫切保障不是第四條主線,而是三條主線都必須覆蓋的防漏線：
 
 1. **公開承諾一致性** — README / `docs/index.html` / `docs/guides/index.html` / walkthrough / maintainer page / `docs/qc/governance-map.html` / CLI help / skill spec 對「目前可用」「正在硬化」「目標體驗」「手動替代路徑」「npm publish 狀態」之描述一致。不得把未發佈或未實作能力寫成已可用。
-2. **發佈前可信度** — 任何會離開本工作目錄的內容(README、GitHub Pages、npm package、Bridge Pack、starter pack、walkthrough、QC 卡片、維護者頁)須可被外部讀者理解並按當前狀態操作。若 npm registry、Pages live、GitHub repo 狀態未能核實,必須標為「受阻」或「未核實」,不可憑記憶通過。
+2. **發佈前可信度** — 任何會離開本工作目錄的內容(README、GitHub Pages、npm package、Bridge Pack、starter pack、walkthrough、QC 卡片、維護者頁)須可被外部讀者理解並按當前狀態操作。若 npm registry、Pages live、GitHub repo 狀態未能核實,必須標為「受阻」或「未核實」,不可憑記憶通過。若本次全面檢一路做到外部 publish / release / push,完成聲明還必須讀回 npm latest、已發布 `npx ...@latest` 行為、GitHub release body、GitHub Pages、remote branch / tag,並確認本地治理狀態已完成 post-publish sync。
 3. **協定實際運行正確性** — Hub `_hub/PROTOCOL.md`、Bridge Pack fixture、runtime workspace、outbox、ack、single-writer lane、packet version、startup pending 計算、revise / withdraw / close 行為、Handoff Kit APS route registration、project-index registration 須以實際操作記錄或對應工作目錄證據驗證。
 橫切保障:
 
