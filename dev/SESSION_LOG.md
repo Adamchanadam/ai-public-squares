@@ -14,8 +14,8 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 - **Summary:** Adam explicitly requested npm publish after the v0.2.8 GitHub pre-release. Public and package-shipped wording was updated from "GitHub candidate / npm latest 0.2.7" to "npm latest 0.2.8 pre-release" before publishing, so the npm README will not carry stale boundary text.
 - **Changed:** This workspace and npm registry.
   - Modified: `README.md`, `docs/index.html`, `skills/aps/SKILL.md`, `dev/release-notes/v0.2.8.md`, `dev/PROJECT_INDEX.md`, `dev/SESSION_HANDOFF.md`, `START_NEXT_SESSION_PROMPT.txt`, and this log.
-- **QC:** Release checks are rerun before publish. npm publish and readbacks are recorded below once complete.
-- **Pending:** Publish `@adamchanadam/aps@0.2.8`, update GitHub release notes if needed, push state-sync, and verify npm / GitHub Pages readback.
+- **QC:** `npm publish --access public` succeeded for `@adamchanadam/aps@0.2.8`. npm readback confirms version/latest `0.2.8`, bin `aps`, fileCount 14. Published install probe `npx --yes @adamchanadam/aps@latest --help` passed and displays v0.2.8 Traditional Chinese help. GitHub Pages readback returned HTTP 200 and contains `npm latest 0.2.8`, `摘要式通知`, and `不會自動觸發對方 AI`.
+- **Pending:** GitHub release body has been updated from `dev/release-notes/v0.2.8.md`; push this state-sync commit.
 
 ## 2026-05-28 (S32) — v0.2.8 GitHub pre-release
 
