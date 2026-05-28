@@ -55,7 +55,7 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 | Public docs | `README.md` (GitHub first-impression) + `docs/index.html` (zero-knowledge entry page) | when introducing APS to a non-developer; first stop is README for repo visitors, then docs/index.html for hosted entry |
 | Build roadmap | `dev/qc/2026-05-22-zero-knowledge-funnel-audit.md` (Stage 0-7 funnel + Layer A/B/C/D + 6-phase phase order) | when planning next build phase or auditing repo progress against zero-knowledge user vision |
 | APS consistency audit | `dev/qc/2026-05-25-aps-full-consistency-audit.md` | when checking public promise drift across README / docs HTML / CLI / skill / Bridge Pack fixtures before continuing APS feature work |
-| APS full audit | `dev/qc/2026-05-28-aps-full-audit-0.2.5.md` (latest 0.2.5 full audit, including nested release-check, `publish` override alias root-fix, same-machine two-workspace regression, and commit gate); `dev/qc/2026-05-27-aps-full-audit-0.2.4.md` remains the historical published 0.2.4 full audit; `dev/qc/2026-05-27-aps-full-audit-0.2.3.md` remains the historical 0.2.3 full audit; `dev/qc/2026-05-27-aps-full-audit.md` remains the 0.2.1 full audit plus publish readback; `dev/qc/2026-05-26-aps-full-audit.md` remains the 0.2.0 pre-release full audit, real Drive verification, and post-publish readback | when checking whether APS can be treated as fully verified before cross-workspace work, protocol promotion, public release, or new-agent introduction |
+| APS full audit | `dev/qc/2026-05-28-aps-full-audit-0.2.7.md` (latest local 0.2.7 candidate full audit, including nested release-check, skill refresh, handoff naming split, cloud boundary, same-machine two-workspace regression, and commit gate); `dev/qc/2026-05-28-aps-full-audit-0.2.5.md` remains the latest pre-0.2.6 full audit; `dev/qc/2026-05-27-aps-full-audit-0.2.4.md` and `dev/qc/2026-05-27-aps-full-audit-0.2.3.md` remain historical published-release audits; `dev/qc/2026-05-27-aps-full-audit.md` remains the 0.2.1 full audit plus publish readback; `dev/qc/2026-05-26-aps-full-audit.md` remains the 0.2.0 pre-release full audit, real Drive verification, and post-publish readback | when checking whether APS can be treated as fully verified before cross-workspace work, protocol promotion, public release, or new-agent introduction |
 
 ## Fact Base
 
@@ -80,6 +80,7 @@ Reachable means the source can be found. It does not mean the source has been re
 | `dev/qc/2026-05-27-aps-full-audit-0.2.3.md` | Historical APS full audit report for 0.2.3 guided setup pre-release — records nested quick / release checks, cross-workspace read-only audit, same-machine no-pending regression, CLI `inbox` accept-command UX correction, and npm / git / GitHub release / Pages readback | historical release health reference | local path | 2026-05-27 |
 | `dev/qc/2026-05-27-aps-full-audit-0.2.4.md` | Latest APS full audit report for published 0.2.4 guided setup UX pre-release — records nested quick / release checks, corrected public path examples, corrected bundled starter-pack path, same-machine no-pending regression, GitHub / npm / Pages readbacks, and fresh install probe | before asking Adam / Jay to test npm latest | local path | 2026-05-27 |
 | `dev/qc/2026-05-28-aps-full-audit-0.2.5.md` | APS full audit report for 0.2.5 pre-release — records nested quick / release checks, Class-C read-only audit, `publish --agent-id` / `--other-agent-id` alias root-fix, same-machine two-workspace no-pending regression, and the commit-before-formal-release gate | before changing 0.2.5 release state or publishing the next candidate | local path | 2026-05-28 |
+| `dev/qc/2026-05-28-aps-full-audit-0.2.7.md` | APS full audit report for the local 0.2.7 candidate — records nested quick / release / full checks, skill refresh, APS packet vs session handoff split, Google Drive boundary, same-machine no-pending regression, HTML preview, external 0.2.6 readbacks, and the commit-before-formal-clearance gate | before publishing or externally sharing the 0.2.7 candidate | local path | 2026-05-28 |
 | `dev/qc/2026-05-27-aps-full-audit.md` | APS full audit report for 0.2.1 pre-release — records nested release-check, cross-workspace read-only audit, local revise / withdraw / doctor regression, HTML preview, push / tag / GitHub pre-release / npm publish readback, and remaining pre-release boundaries | historical release health reference | local path | 2026-05-27 |
 | `dev/qc/2026-05-25-aps-full-audit.md` | Historical APS full audit report — records which full-check items passed, which remained unverified at that time, and why the result was not yet a complete pass | historical reference | local path | 2026-05-25 |
 | `README.md` | GitHub repo first-impression entry — zero-knowledge friendly 痛點 hook + pre-release boundary + npm latest 0.2.6 guided CLI path (`npm install --save-dev @adamchanadam/aps@latest`, then `npx aps init`) + upstream-aligned Agent Handoff Kit command (`npx --yes @adamchanadam/agent-handoff-kit@latest init`) + `yes` confirmation + setup values explained so readers do not copy placeholder paths | first stop for any visitor to the GitHub repo; Layer A primary deliverable | local path + https://github.com/Adamchanadam/ai-public-squares#readme | 2026-05-28 |
@@ -133,6 +134,22 @@ Reachable means the source can be found. It does not mean the source has been re
 |------|--------|----------------|---------------|
 | TBD | TBD（譬如 plugin bundle / user-level install） | TBD | TBD |
 
+
+<!-- BEGIN APS managed project-index-skill -->
+### APS Installed Skill
+
+| Field | Value |
+|---|---|
+| Installed by | `@adamchanadam/aps init` |
+| Local bridge | `dev/rules/aps-bridge.md` |
+| Local config | `.aps/config.json` |
+| Hub project | `aps_full_check` |
+| Local agent | `agent_b` |
+| Partner agent | `agent_a` |
+| Trigger route | Registered in `dev/RULE_PACKS.md`; when the user mentions APS / AI Public Squares / 教我用 APS / check Hub / Hub 有新嘢 / Drive sync / conflict, read `dev/rules/aps-bridge.md` and `.aps/config.json` before answering. |
+| Last verified | 2026-05-28 |
+<!-- END APS managed project-index-skill -->
+
 ### Source-of-truth Architecture（多層持久化組合）
 
 > 當項目用多個整合構成 source-of-truth 架構（譬如 Notion DB Index + 本機真源 + Drive 參考檔），本表描述每層分工，避免 AI 跨層越界。
@@ -160,10 +177,10 @@ Record this at closeout so the next AI can detect wrong-root or workspace drift.
 |---|---|---|
 | Expected project root | `C:\Users\adam\_claude_desktop\AI_Public_Squares` | 2026-05-26 |
 | Git root | same as above | 2026-05-26 |
-| Branch / commit | `main` / latest release commit `e723dfc`;release tag `v0.2.6` points to `e723dfc`;post-publish state-sync commit follows this release record | 2026-05-28 |
+| Branch / commit | `main` / latest pushed commit `d347490`;release commit `e723dfc`;release tag `v0.2.6` points to `e723dfc` | 2026-05-28 |
 | Worktree or parallel workspace | none from this workspace; siblings `Demo_Agent_{Adam,Jay}_Public_Squares` are independent stores and both pass v0.3.11 doctor, but each has its own uncommitted governance upgrade files; GitHub Pages enabled at `https://adamchanadam.github.io/ai-public-squares/` | 2026-05-26 |
 | Execution environment note | `C:\tmp` is not writable in the current Codex desktop execution environment. For temporary evidence or QC artifacts, use a project-local path such as `dev/qc/evidence/<date>-<scope>/` unless the user explicitly authorizes another writable location. | 2026-05-25 |
-| Uncommitted change summary | After the 0.2.6 release action, only post-publish governance state-sync files should be uncommitted until the follow-up commit is made. `dev/qc/evidence/` is ignored local evidence;`adamchanadam-aps-*.tgz` generated by `npm pack` should not be committed unless Adam explicitly wants to keep a tarball artifact | 2026-05-28 |
+| Uncommitted change summary | Closeout-only governance edits are local after user said `收工`: handoff / log / index / prompt plus SESSION_LOG archive batch 007. Commit / push these only if Adam explicitly asks. `dev/qc/evidence/` is ignored local evidence;`adamchanadam-aps-*.tgz` generated by `npm pack` should not be committed unless Adam explicitly wants to keep a tarball artifact | 2026-05-28 |
 
 ## Change Hotspots
 

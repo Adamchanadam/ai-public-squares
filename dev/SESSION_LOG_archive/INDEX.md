@@ -8,3 +8,4 @@
 | 004 | 2026-05-22 to 2026-05-22 | `archive_004_2026-05-22_to_2026-05-22.md` | S9 funnel-first vision shift, Layer A entry, npm bootstrap, and GitHub remote setup |
 | 005 | 2026-05-23 to 2026-05-23 | `archive_005_2026-05-23_to_2026-05-23.md` | S10 repo public, GitHub Pages, npm bridge-pack, HTML .md link strip, and audit cascade |
 | 006 | 2026-05-25 to 2026-05-25 | `archive_006_2026-05-25_to_2026-05-25.md` | S11 public promise consistency root-fix, QC governance map alignment, and 0.1.x release continuation |
+| 007 | 2026-05-26 to 2026-05-26 | `archive_007_2026-05-26_to_2026-05-26.md` | S17-S12 full-check, release-check, QC terminology consolidation, throw-away zero-knowledge flow, 0.2.0 candidate skill rehearsal, and v0.1.1 release closeout |

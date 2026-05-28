@@ -183,7 +183,11 @@ function ensureHandoffKitReady() {
   }
 }
 
-function installSkill({ label, targetDir, dryRun }) {
+function timestampForPath() {
+  return new Date().toISOString().replace(/[-:]/g, '').replace(/\..*$/, 'Z');
+}
+
+function installSkill({ label, targetDir, dryRun, refresh }) {
   const sourceDir = path.join(__dirname, '..', 'skills', 'aps');
   if (!fs.existsSync(path.join(sourceDir, 'SKILL.md'))) {
     return {
@@ -194,6 +198,30 @@ function installSkill({ label, targetDir, dryRun }) {
     };
   }
   if (fs.existsSync(targetDir)) {
+    if (refresh) {
+      const backupDir = `${targetDir}.backup-${timestampForPath()}`;
+      if (!dryRun) {
+        try {
+          fs.renameSync(targetDir, backupDir);
+          copyDirectory(sourceDir, targetDir);
+        } catch (err) {
+          return {
+            ok: false,
+            label,
+            targetDir,
+            message: `failed to refresh ${targetDir}: ${err.message}`,
+          };
+        }
+      }
+      return {
+        ok: true,
+        refreshed: true,
+        label,
+        targetDir,
+        backupDir,
+        message: dryRun ? `would backup ${targetDir} to ${backupDir} and refresh skill` : `backed up ${targetDir} to ${backupDir} and refreshed skill`,
+      };
+    }
     return {
       ok: false,
       skipped: true,
@@ -388,7 +416,7 @@ async function runInteractiveInit() {
       { label: 'Codex', targetDir: path.join(root, '.codex', 'skills', 'aps') },
     ];
     console.log('');
-    for (const result of installTargets.map((item) => installSkill({ ...item, dryRun: false }))) {
+    for (const result of installTargets.map((item) => installSkill({ ...item, dryRun: false, refresh: false }))) {
       console.log(formatSetupResult(result, `${result.label}: `));
       if (!result.ok && !result.skipped) return 1;
     }
@@ -399,8 +427,8 @@ async function runInteractiveInit() {
     }
     console.log('');
     console.log('✅ APS 設定完成。');
-    console.log('🚀 下一步:在這個項目資料夾打開 AI 工具,輸入「教我用 APS」或 "set up APS"。');
-    console.log('🩺 你也可以先在終端機執行 `npx aps doctor`,檢查 Hub 與本機設定是否正常。');
+    console.log('🚀 下一步:在這個項目資料夾打開 AI 工具,輸入「教我用 APS」。AI 應讀取現有設定、檢查 Hub、查看 inbox,再主動建議測試交接或正式交接。');
+    console.log('🩺 備用檢查:終端機指令是 `npx aps doctor`。請留意指令名稱是 `aps`,不是 `asp`。');
     return 0;
   } finally {
     rl.close();
@@ -428,6 +456,9 @@ function localizeSetupMessage(message) {
   return String(message)
     .replace(/^would install to /, '將會安裝到 ')
     .replace(/^installed to /, '已安裝到 ')
+    .replace(/^would backup (.*) to (.*) and refresh skill$/, '將會備份 $1 到 $2,並刷新 skill')
+    .replace(/^backed up (.*) to (.*) and refreshed skill$/, '已備份 $1 到 $2,並刷新 skill')
+    .replace(/^failed to refresh (.*): (.*)$/, '刷新失敗: $1 ($2)')
     .replace(/^target already exists; not overwriting \((.*)\)$/, '目標已存在,不覆寫 ($1)')
     .replace(/^failed to install to (.*): (.*)$/, '安裝失敗: $1 ($2)')
     .replace(/^source skill not found at /, '找不到 skill 來源: ')
@@ -647,7 +678,7 @@ function revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason })
   }
   fs.mkdirSync(packetDir, { recursive: true });
   const scope = yamlDoubleQuote(body.split(/\r?\n/)[0].slice(0, 120) || previousHeader.scope || packetId);
-  const level = previousHeader.level || 'L2-handoff';
+  const level = previousHeader.level || 'L2-aps-packet';
   const packetMd = `---\npacket_id: ${packetId}\nversion: ${nextVersion}\nfrom: ${agentId}\nto: ${toId}\nproject: ${projectSlug}\nlevel: ${level}\nsupersedes: ${packetId}__v${previousVersion}\ncreated_at: ${now}\nssot_refs: []\nscope: \"${scope}\"\nitems: []\n---\n\n# Revision ${nextVersion} for ${packetId}\n\n${body}\n`;
   fs.writeFileSync(path.join(packetDir, 'packet.md'), packetMd, 'utf8');
   appendLine(outboxPath, `${now} | revise | ${packetId} v${nextVersion} | to:${toId} | reason:${reason}`);
@@ -931,6 +962,7 @@ Usage:
   npx aps init                    Guided setup: ask questions, create Hub, and save config
   npx aps init --target claude    Install APS skill for Claude Code only
   npx aps init --target codex     Install APS skill for Codex only
+  npx aps init --refresh-skill    Backup and refresh existing installed APS skill
   npx aps init --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
                                   Advanced non-interactive setup
   npx aps init --dry-run          Show planned install paths without writing
@@ -988,6 +1020,7 @@ if (subcommand === 'init' && args.length === 0) {
   const validTargets = ['claude', 'codex', 'both'];
   const target = getFlagValue('--target', 'both').toLowerCase();
   const dryRun = hasFlag('--dry-run');
+  const refreshSkill = hasFlag('--refresh-skill');
   const setupValues = {
     hubRoot: getRequiredFlagValue('--hub-root'),
     projectSlug: getRequiredFlagValue('--project'),
@@ -1058,7 +1091,7 @@ if (subcommand === 'init' && args.length === 0) {
   }
   console.log('');
 
-  const results = installTargets.map((item) => installSkill({ ...item, dryRun }));
+  const results = installTargets.map((item) => installSkill({ ...item, dryRun, refresh: refreshSkill }));
   for (const result of results) {
     console.log(formatSetupResult(result, `${result.label}: `));
   }
@@ -1085,14 +1118,19 @@ if (subcommand === 'init' && args.length === 0) {
   ];
   if (failed.length > 0) {
     console.log('有一個或多個目標安裝失敗。已盡量保留既有檔案不變。');
+  } else if (dryRun && results.some((result) => result.refreshed)) {
+    console.log('Dry run 完成。上方只列出將會備份與刷新哪些 skill;目前未改動任何檔案。');
+  } else if (results.some((result) => result.refreshed)) {
+    console.log('✅ APS skill 已刷新。原有 skill 已改名備份,新版本已安裝。');
+    console.log('🚀 下一步:請重新啟動 Claude Code 或 Codex,再在項目資料夾輸入「教我用 APS」。');
   } else if (skipped.length > 0) {
     console.log('安裝完成,並安全略過既有檔案。既有檔案沒有被覆寫。');
-    console.log('如要刷新既有安裝,請先手動移走或改名既有目標,再重新執行此命令。');
+    console.log('如要刷新既有安裝,請執行 `npx aps init --refresh-skill`;工具會先備份舊 skill,再安裝新版本。');
   } else if (dryRun) {
     console.log('Dry run 完成。移除 `--dry-run` 後重新執行,才會真正寫入。');
   } else {
     console.log('✅ 設定完成。如果 Claude Code 或 Codex 未即時看到 APS skill,請重新啟動該 AI 工具。');
-    console.log('🚀 下一步:打開 AI 工具並輸入「教我用 APS」或 "set up APS"。');
+    console.log('🚀 下一步:打開 AI 工具並輸入「教我用 APS」。AI 應讀取 `.aps/config.json`,檢查 Hub,查看 inbox,再主動建議測試交接或正式交接。');
   }
   console.log('');
   console.log('手動 Bridge Pack 備用命令仍可使用:');
@@ -1185,7 +1223,7 @@ if (subcommand === 'publish') {
   const toId = getRequiredFlagValue('--to') || getRequiredFlagValue('--other-agent-id') || config.otherAgentId || null;
   const topic = getRequiredFlagValue('--topic');
   const body = getRequiredFlagValue('--body');
-  const level = getFlagValue('--level', 'L2-handoff');
+  const level = getFlagValue('--level', 'L2-aps-packet');
   requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--from': fromId, '--to': toId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
@@ -1426,7 +1464,7 @@ if (subcommand === 'doctor') {
     console.log('');
     if (failed === 0) {
       console.log('狀態: 通過');
-      console.log('下一步:請優先在 AI 工具中輸入「教我用 APS」或「check Hub」。命令列備用指令包括 `npx aps inbox`、`npx aps publish --topic ... --body ...`、`npx aps consume ...`、`npx aps revise ...`、`npx aps withdraw ...`、`npx aps close ...`、`npx aps config`。');
+      console.log('下一步:請優先在 AI 工具中輸入「教我用 APS」。AI 應先讀現有設定,再檢查收件箱,用總覽、摘要、預檢、細節與下一步整理結果。命令列備用指令包括 `npx aps inbox`、`npx aps publish --topic ... --body ...`、`npx aps consume ...`、`npx aps revise ...`、`npx aps withdraw ...`、`npx aps close ...`、`npx aps config`。');
     } else {
       console.log('狀態: 未通過');
       console.log('下一步:先修正缺少的路徑或疑似衝突檔,再繼續使用 APS。不要在未檢查內容前刪除衝突檔。');

@@ -56,14 +56,17 @@
 - 將 Bridge Pack、starter pack、或任何 APS 設置 / 交接指引經 WhatsApp / Drive / Email 傳予協作夥伴之前
 - 任何「物件離開本工作目錄」之前
 
-**覆蓋**：快檢 4 項全部 + 5 項：
+**覆蓋**：快檢 4 項全部 + 8 項：
 1. **跨工作目錄佔位符審核** — 確認任何示例值（demo workspace 的 slug、舊 project 名、specific 路徑、specific person name）不出現在通用 user-facing prompt / template 的 default 位置。Grep 找出命中後逐項判斷為 A-class（明確標示為示例 / 歷史 / fixture,可保留）或 B-class（滑入 default position,須改為 placeholder）。例：本 repo 的 MVP 試演曾使用 demo slug `mpedu_plus_branding`,跑 `grep -i mpedu` 應全部命中於 A-class 歷史 doc（MVP plan / verification / SESSION_LOG）或 example-labeled 段落,並在 README、public HTML、CLI prompt、starter pack、skill runtime、protocol templates 等 active template surface 零 B-class 命中。
 2. **跨面交叉閱讀** — README ↔ `docs/index.html` ↔ `docs/guides/index.html` ↔ walkthrough ↔ maintainer HTML ↔ skill spec ↔ CLI output 對同一 procedure 的敘述一致；單一規則只留在 SSOT,其他位置只作引用或鏡像。
 3. **HTML preview 視覺確認** — 入口頁 / 教學中心 / walkthrough / maintainer page / governance-map 經瀏覽器 render clean；若 walkthrough 含 SVG 流程圖或能力清單,須確認可見、可讀、無遮擋、無 console error。
 4. **PII / secrets sweep** — `grep -iE "api[_-]?key|password|token|secret|credential"` 各 user-facing doc + tool，預期 0 命中
 5. **語氣與用語紀律** — 內部 codes（`Block 4*` / `Bridge Pack` / `round-trip` / `PROTOCOL.md`）不可作為句子主體；中英並用的 user-facing string 須一致；公開通用面不得把 specific person name 當成 hardcoded default,只可作明確示例、fixture 名或歷史證據。
+6. **Skill 安裝刷新檢查** — 若 npm package 內 `skills/aps/**` 有變,外發前檢必須驗證已存在的 user-level skill 不會永遠停留舊版。CLI 必須提供安全刷新路徑(例如備份後 refresh),並在 help / init output / skill spec 中說明重啟 AI 工具後才會讀新 skill。只「skip existing skill」不可通過。
+7. **交接命名分流檢查** — 掃描 `bin/aps.js`、`skills/aps/**`、README / public docs 是否把 APS packet 與 Agent Handoff Kit session handoff 混稱。用戶只說「交接包」時必須有澄清路由;APS 新 packet 預設 level / topic 不得使用會誤導為 session handoff 的名稱。舊資料相容可保留,但新預設不可繼續漂移。
+8. **雲端支援邊界檢查** — 公開文檔、CLI prompt、skill wording 必須一致:已驗證主路徑是 Google Drive,但不固定磁碟機代號;Dropbox / OneDrive / 其他同步資料夾只可列為未正式驗證的實驗路徑,不得由 AI 主動推薦為正式支援。
 
-**驗收**：快檢 + 上 5 項全部通過。任何一項失敗,handover 不可進行。
+**驗收**：快檢 + 上 8 項全部通過。任何一項失敗,handover 不可進行。
 
 **時間**：5-10 分鐘
 
@@ -83,17 +86,18 @@
 - 連續多輪 session 後想 reset audit baseline
 - 用戶明示「跑全面檢」
 
-**覆蓋**：外發前檢 9 項全部 + 5 項人工 / 跨工作目錄項：
+**覆蓋**：外發前檢 12 項全部 + 6 項人工 / 跨工作目錄項：
 
 1. **Class-C 跨工作目錄審核** — Hub `_hub/PROTOCOL.md` + 兩個 demo packs（`Demo_Agent_{Adam,Jay}_Public_Squares/dev/rules/aps-bridge.md`）的 procedural sections placeholder check。每個 audit 在 owning workspace 的 own session 跑（per AGENTS.md §2 active-project-root rule）；本 session 只收集結果。
 2. **協定往返流程回歸測試** — 跑一次同機或隔離 workspace 模擬 setup → doctor → publish → inbox → consume → reply / revise → close / withdraw,確認協定行為無 regression。
 3. **啟動可發現性與橋接行為 trace** — 驗證 `aps init` 寫入 Handoff Kit APS route、project-index registration、Bridge Pack、本地 config 後,新 session 可按 `AGENTS.md` 啟動讀序發現 APS；協定或 setup 改版尤其要做。
 4. **五區段 + 自審紀律回顧** — 回看 last N 個 session 的自審紀錄；統計「caught vs missed」gap 比例；檢查是否存在系統性盲點。
 5. **審核報告輸出** — 寫一份 markdown 於 `dev/qc/<YYYY-MM-DD>-full-audit.md`,含：健康結論 / 阻擋項 / cross-workspace 註記 / 重跑計劃。
+6. **Spec-to-runtime 執行落差審核** — 對照 UAT / 實際 AI 行為、`skills/aps/SKILL.md`、bundled reference、CLI help / output。凡規格說「AI 應先讀設定 / 不應重做設置 / 不應 consume / 應先總覽」,必須有實際入口或測試證據可觸發;若只停留在文案而已安裝 runtime 仍可能讀舊 skill,列為失敗。
 
 ### APS 全面檢三條主線與橫切保障
 
-對 AI Public Squares 而言,🔴 全面檢不可只理解為「跑更多命令」。每次全面檢必須把上面 14 項歸入三條主線,並在審核報告逐項標示為「通過」「失敗」「受阻」或「接受風險」。橫切保障不是第四條主線,而是三條主線都必須覆蓋的防漏線：
+對 AI Public Squares 而言,🔴 全面檢不可只理解為「跑更多命令」。每次全面檢必須把上面 18 項歸入三條主線,並在審核報告逐項標示為「通過」「失敗」「受阻」或「接受風險」。橫切保障不是第四條主線,而是三條主線都必須覆蓋的防漏線：
 
 1. **公開承諾一致性** — README / `docs/index.html` / `docs/guides/index.html` / walkthrough / maintainer page / `docs/qc/governance-map.html` / CLI help / skill spec 對「目前可用」「正在硬化」「目標體驗」「手動替代路徑」「npm publish 狀態」之描述一致。不得把未發佈或未實作能力寫成已可用。
 2. **發佈前可信度** — 任何會離開本工作目錄的內容(README、GitHub Pages、npm package、Bridge Pack、starter pack、walkthrough、QC 卡片、維護者頁)須可被外部讀者理解並按當前狀態操作。若 npm registry、Pages live、GitHub repo 狀態未能核實,必須標為「受阻」或「未核實」,不可憑記憶通過。
@@ -110,6 +114,8 @@
 - **Drive 同步邊界** — 發包成功只代表本機 Hub 已寫入,不可暗示對方電腦已即時同步完成。通知與補救流程必須提示:若對方未見,先等待 / 檢查 Google Drive 同步並重試 `check Hub`,不要立即重複發包。
 - **共同目標與任務邊界** — 公眾教學與 skill spec 不可假設兩邊 agent 正在做同一任務。交接包必須能表達共同目標、本方任務、對方任務或「未確認」、交叉協作點、請對方做的事、不應誤解的事、證據位置。若兩邊 brief 可能矛盾,AI 應標示為需要確認,不可強行合併成一致目標。
 - **共識確認回路** — 若收件時發現任務要求、共同目標、檔案版本或本方理解不一致,AI 不可單向吸收 prompt 後直接開工。必須先停工,整理差異,發出共識確認包,生成可複製貼上的通知,等待對方回覆或修訂後才繼續;原交接不得在共識未成立前 close。
+- **Skill 刷新與版本落地** — 外發版本若改動 `skills/aps/**`,全面檢須驗證新安裝與既有安裝兩條路徑:新裝可取得新 skill;既有安裝可透過明確刷新命令備份舊 skill 並安裝新 skill。若 AI 工具需重啟才讀新 skill,輸出必須明確提示。
+- **交接語義防混淆** — 全面檢須用至少三條 prompt 驗證路由:「收工」走 Agent Handoff Kit 會話交接;「幫我做 APS 交接包給 Jay」走 APS packet;只說「幫我做交接包」必須先澄清,不得直接寫任何檔案或 Hub packet。
 
 ### 主要使用流程走通
 
