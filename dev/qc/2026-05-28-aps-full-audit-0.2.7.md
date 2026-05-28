@@ -1,90 +1,84 @@
-# APS 全面檢報告 — 0.2.7 本地候選版
+# APS 全面檢報告 — 0.2.7 release-prep
 
 日期：2026-05-28
 
-範圍：`@adamchanadam/aps` 0.2.7 本地候選版，涵蓋技能首次使用、收件摘要、交接語義分流、技能刷新與 QC 機制補強。
+範圍：`@adamchanadam/aps` 0.2.7 pre-release，涵蓋 Reliable Pair 主線、CLI / skill / public docs / HTML / UAT evidence、Handoff Kit route、body-file 發包 / 修訂、公開承諾邊界與 Google Drive 本機路徑誤導風險。
 
-結論：技術檢查通過；正式外發清關仍受阻，原因是本報告與候選版改動尚未提交。公開 npm latest 仍是 0.2.6 pre-release。
+結論：機器檢查與本地協定回歸通過；公開 HTML 已完成「不預告未交付功能」收口；Adam 已授權在 release-prep 對齊後 commit release notes 並執行 npm publish。`AI_Public_Squares_UAT` 最終刷新、GitHub Pages 巢狀頁面讀回與 Jay 真實雙機驗證列為發布後驗收，不阻擋 npm pre-release。
 
-## 健康結論
+## 本輪新增修正
 
-0.2.7 本地候選版通過巢狀快檢、外發前檢，以及隔離同機 Hub 的主要全面檢回歸。這次確認以下修正方向已落地：
-
-- 既有已安裝技能可透過 `npx aps init --refresh-skill` 安全刷新，工具會先備份舊技能；
-- 用戶只說「交接包」時，技能會先澄清，不會預設寫入 APS packet；
-- 新 APS packet 預設使用 `L2-aps-packet`，舊 `L2-handoff` 僅保留於歷史文件或舊 packet 相容；
-- Google Drive 是已驗證主路徑，但不假設固定磁碟機代號；
-- 收件顯示已要求先列總覽、摘要與預檢，再列細節；
-- 日常 APS 交接包仍須經完整性預檢與用戶確認後才可寫入 Hub。
-
-這不是正式可生產使用聲明。自然語言日常操作與補救流程仍屬前期測試；每個真實項目仍須各自驗證 Google Drive 同步。
+- `bin/aps.js`：`--help` 改為繁體中文並加入統一 APS 品牌畫面；命令輸出加入功能性 emoji；`publish` / `revise` 通知改為要求對方使用自己電腦上的 APS 項目，不再暗示可使用發送方本機 Google Drive 路徑。
+- `skills/aps/SKILL.md`、`skills/aps/references/setup-dialogue.md`：加入「教我用 APS」品牌畫面、發送前確認、收件總覽、`hubRoot` 本機限定與安全通知文字規則。
+- `README.md`、`dev/qc/triggers.md`、產品計劃：收斂為 Reliable Pair first；選人、多人、自動化與其他雲端支援不列為 0.2.7 目標。
+- `docs/*.html`：公開 HTML 不再預告未交付功能；HTML 只保留現有可用流程與必要邊界。
 
 ## 巢狀檢查結果
 
 | 層級 / 項目 | 結果 | 證據 |
 |---|---|---|
-| 快檢 1：Agent Handoff Kit doctor | 通過 | 主工作區 doctor 通過 46 項檢查 |
-| 快檢 2：git 狀態一致性 | 通過，帶已知 dirty-worktree 邊界 | status 包含既有 closeout governance edits 與本次 0.2.7 候選版改動；未 commit、未 push、未 publish |
-| 快檢 3：驗收掃描 | 通過 | 已掃描 route、skill、cloud、refresh、preflight 關鍵詞與舊詞漂移 |
-| 快檢 4：`tools/*.ps1` 檢查 | 不適用 | 本候選版沒有修改 `tools/*.ps1` |
-| 外發前檢 1：佔位符與硬編碼值 | 通過 | active package / public surfaces 無 B-class `mpedu` 或 Adam / Jay default；歷史設計稿與 demo workspace 屬 A-class 歷史 / fixture |
-| 外發前檢 2：跨面一致性 | 通過，帶候選版邊界 | README / public HTML 仍描述 npm latest 0.2.6；CLI / package 是本地 0.2.7 candidate。發布前可接受，正式發布前須同步改成 0.2.7 release-prep wording |
-| 外發前檢 3：HTML preview | 通過 | Chrome DevTools 開啟 `docs/index.html`、`docs/guides/index.html`、walkthrough、maintainer page、governance map；全部無 console messages |
-| 外發前檢 4：PII / secrets sweep | 通過 | 命中皆為政策文字，未見 credential value |
-| 外發前檢 5：語氣與術語 | 通過 | active skill 與 public surfaces 保持繁體書面語；內部或協定名詞只在必要檔名、命令或技術邊界出現 |
-| 外發前檢 6：技能刷新 | 通過 | `node bin\aps.js init --refresh-skill --dry-run` 顯示 Claude Code 與 Codex 的備份後刷新路徑 |
-| 外發前檢 7：交接命名分流 | 通過 | `SKILL.md` 已有澄清路由；新 packet default 是 `L2-aps-packet`；舊 `L2-handoff` 只在歷史文件或舊 packet 相容語境出現 |
-| 外發前檢 8：雲端支援邊界 | 通過 | `SKILL.md`、setup reference、public docs 與 QC card 均說明 Google Drive 是已驗證主路徑、不固定磁碟機代號；其他同步資料夾為未正式驗證實驗路徑 |
-| 全面檢 1：跨工作目錄審核 | 通過，只讀收集 | Demo Adam 與 Demo Jay 的 Handoff Kit doctor 均通過 46 項；Bridge Pack 內硬編碼值屬 fixture identity，不是 package default |
-| 全面檢 2：協定往返回歸 | 通過 | 隔離 evidence folder `dev/qc/evidence/2026-05-28-full-check-027-final-20260528-090908/` 走通 init、doctor、publish、inbox、consume、reply、revise、close、withdraw、雙方 final no-pending inbox 與 final doctor |
-| 全面檢 3：啟動可發現性 | 通過 | 隔離 `aps init` 寫入 Handoff Kit route、project-index registration、Bridge Pack 與 `.aps/config.json`；兩邊 `doctor` 通過 |
-| 全面檢 4：自審紀律回顧 | 通過，並記錄一次漏點 | 較早一次回歸誤用不存在的 `--cwd` 參數；已判為無效證據，清理誤寫，改用真實工作目錄切換重跑 |
-| 全面檢 5：審核報告輸出 | 已完成但未提交 | 本檔即報告；按 QC 真源，正式聲稱 🔴 全面檢通過前仍須 commit |
-| 全面檢 6：規格與 runtime 落差 | 通過本地候選版檢查 | 首次使用、收件總覽、語義澄清、技能刷新與雲端邊界，已存在於 bundled skill / reference / CLI output；既有已安裝 runtime 仍須刷新技能並重啟 AI 工具 |
+| 快檢 1：Agent Handoff Kit doctor | 通過 | `npx @adamchanadam/agent-handoff-kit doctor` 通過 46 項，`status: passed` |
+| 快檢 2：git 狀態一致性 | 通過，帶 release-prep 邊界 | `git status --short` 顯示 0.2.7 release-prep 改動；提交後再 npm publish |
+| 快檢 3：本次 acceptance grep | 通過 | HTML 未交付功能字眼掃描、`.md` / `file:` / 磁碟路徑 href 掃描、公開頁內部導流掃描均清零 |
+| 快檢 4：script parse | 通過 | `node --check bin\aps.js` 通過 |
+| 外發前檢 1：跨面一致性 | 通過 | CLI / skill / README / HTML / QC 真源已對齊 Reliable Pair first 與 0.2.7 pre-release wording |
+| 外發前檢 2：HTML 全文逐行與視覺檢查 | 通過 | 已讀 `docs/index.html`、`docs/guides/index.html`、walkthrough、maintainer page、governance map；五張 Edge headless 截圖已更新於 `dev/qc/evidence/2026-05-28-html-render/` |
+| 外發前檢 3：HTML 本機連結防誤導 | 通過 | `href` 精準掃描無本機 `.md`、`file:` 或磁碟路徑連結 |
+| 外發前檢 4：公眾 HTML 不預告未交付功能 | 通過 | `docs -g "*.html"` 掃描未命中 Contacts、watch、多人、桌面通知、平台排程、0.2.7、候選、upgrade、未來、延後等公開誤導字眼 |
+| 外發前檢 5：PII / secrets sweep | 通過 | 命中皆為安全政策、歷史審核或禁止條款文字；未見 credential value |
+| 外發前檢 6：package 預檢 | 通過 | `npm pack --dry-run` 通過，`@adamchanadam/aps@0.2.7`，14 files，未留下 `.tgz` |
+| 外發前檢 7：測試腳本 | 通過但覆蓋薄 | `npm test` 通過；現時仍只是 placeholder：`No tests yet` |
+| 外發前檢 8：npm registry 發布前讀回 | 通過 | 發布前 `npm view @adamchanadam/aps version dist-tags.latest --json` 回傳 `0.2.6`，確認 0.2.7 尚未被佔用 |
+| 全面檢 1：協定往返回歸 | 通過本地證據 | disposable UAT 已走通 `doctor`、`publish --body-file`、`inbox`、安全通知、`upgrade --dry-run`；舊完整回歸覆蓋 consume / revise / close / withdraw |
+| 全面檢 2：啟動可發現性 | 通過 | APS route、project-index registration、bridge pack 與 doctor 檢查均有證據 |
+| 全面檢 3：UAT 目錄落地 | 接受風險 | `AI_Public_Squares_UAT` 曾完成 0.2.7 實測；最後一輪文案 / skill 修正後未再刷新。Adam 已批准簡化流程,發布後再用 npm latest 重跑 UAT |
+| 全面檢 4：GitHub Pages 線上讀回 | 不阻擋 npm | 本輪不 push,所以 Pages 不會即時更新；待另行授權 push 後再讀回 |
+| 全面檢 5：真實雙機 Google Drive 往返 | 發布後驗收 | npm 發布後 Jay 才可用標準 `@latest` 安裝同一版本；因此真實雙機驗證列為 post-publish UAT |
+| 全面檢 6：報告輸出 | 通過 | 本檔即最新全面檢報告；release-prep commit 會一併提交 |
 
-## 協定回歸摘要
+## HTML 逐行檢查摘要
 
-證據資料夾：
+已逐行閱讀與檢查的 HTML：
 
-`dev/qc/evidence/2026-05-28-full-check-027-final-20260528-090908/`
+- `docs/index.html`
+- `docs/guides/index.html`
+- `docs/guides/aps-onboarding-walkthrough.html`
+- `docs/maintainers/index.html`
+- `docs/qc/governance-map.html`
 
-實際 packet：
+已修正的公開面風險：
 
-- A → B：`20260528T080909Z__aps_full_check` v1，之後以 `revise` 產生 v2
-- B → A：`20260528T080910Z__aps_full_reply` v1
-- 撤回路徑：`20260528T080910Z__aps_withdraw_check` v1
+- 移除公眾頁的候選版語氣；`upgrade` 現作 0.2.7 現有能力描述。
+- 移除公眾頁的未交付功能名稱、後續拆頁與前期測試標籤。
+- 公眾頁不再導流到維護者 HTML 或分層 QC HTML。
+- 通知文字明確要求對方在自己電腦上使用已接入 APS 的項目，不使用發送方本機 Google Drive 路徑。
+- HTML 仍可用 `<span class="path">` 顯示內部路徑；未使用本機 Markdown `href`。
 
-已驗證結果：
+## 命令證據
 
-- 兩個生成出的 Handoff Kit workspace 均通過 APS `doctor`；
-- B 的 inbox 顯示可直接複製的 `consume` 命令；
-- A 讀到 B 的回覆；
-- B 讀到 A 的 v2 修訂；
-- A 與 B 最終 inbox 均無待處理項目；
-- A 與 B 最終 `doctor` 均通過。
-
-## 外部讀回
-
-| 外部面 | 結果 |
+| 命令 | 結果 |
 |---|---|
-| npm registry | `@adamchanadam/aps` latest 仍為 0.2.6，bin 為 `aps`，fileCount 為 14 |
-| GitHub release | `v0.2.6` 是 pre-release，非 draft |
-| GitHub Pages | `docs/index.html` 回傳 HTTP 200，含 `0.2.6` 與 pre-release wording |
+| `npx @adamchanadam/agent-handoff-kit doctor` | 通過，46 項，`status: passed` |
+| `node --check bin\aps.js` | 通過 |
+| `node bin\aps.js --help` | 通過；繁體中文 help + APS brand card |
+| `npm test` | 通過；placeholder 覆蓋薄 |
+| `npm pack --dry-run` | 通過；14 files；未留下 `.tgz` |
+| `npm view @adamchanadam/aps version dist-tags.latest --json` | 發布前通過；latest 仍為 `0.2.6` |
+| `git diff --check` | 通過；只有 Windows LF→CRLF 提示 |
+| HTML future-feature grep | 通過；0 命中 |
+| HTML local href grep | 通過；0 命中 |
+| secrets sweep | 通過；0 實際機密值 |
 
-這些讀回確認 0.2.7 仍只是本地候選版。公開文件應保持 0.2.6，直至進入明確 release-prep 才改成 0.2.7。
+## 阻擋項
 
-## 阻擋項與接受邊界
+1. `npm test` 只是 placeholder；0.2.7 發佈仍依賴 CLI smoke、UAT 與人工審核。
+2. 本輪不 push、tag 或建立 GitHub release；GitHub Pages 與 GitHub release 需要另行授權處理。
+3. Jay 真實雙機驗證要等 npm latest 讀回 0.2.7 後才能用標準路徑重跑。
 
-1. 正式全面檢清關受阻：本報告與 0.2.7 候選版改動尚未提交。未執行 commit、push、tag、GitHub release 或 npm publish。
-2. 0.2.7 未做新的真實雙機 Google Drive 測試。同機協定回歸已通過；歷史維護者真實 Drive 驗證仍可作協定證據，但每個真實項目仍須自行驗證 Drive 同步。
-3. 一次無效回歸誤用不存在的 `--cwd` 參數，曾在 repo root 產生暫時 APS runtime registration。該誤寫已移除；有效回歸已用真實 working directory 切換重跑。
-4. `git status` 仍包含本任務前已有的 closeout-only governance edits。除非 Adam 要求提交 / 推送，否則保持本地未提交狀態。
+## 建議下一步
 
-## 重跑計劃
-
-發布 0.2.7 前應執行：
-
-1. 提交 0.2.7 候選版改動與本報告。
-2. 重跑 `node --check bin\aps.js`、`npm test`、`npm pack --dry-run --json`、`git diff --check`、技能刷新 dry-run 與隔離往返回歸。
-3. 只有在明確準備發布時，才把 README / public HTML / release notes 從 npm latest 0.2.6 改成 0.2.7 release-prep wording。
-4. 發布後再讀回 npm、GitHub release 與 GitHub Pages，才可聲稱發布完成。
+1. commit release-prep 與 release notes。
+2. 執行 `npm publish --access public`。
+3. 讀回 npm latest、bin 與 fileCount。
+4. npm 讀回成功後,再安排 UAT 目錄以標準 `@latest` 路徑重跑。
+5. GitHub push / tag / GitHub release / Pages 讀回另行授權處理。

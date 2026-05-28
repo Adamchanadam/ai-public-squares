@@ -195,10 +195,12 @@
 
 <section>
   <h2>公開承諾邊界</h2>
-  <p class="lede">任何公開頁、README、CLI help 或技能提示都不可讓讀者誤以為前期測試已等同正式產品。</p>
+  <p class="lede">任何公開頁、README、CLI help 或技能提示都不可讓讀者誤以為尚未列入現有能力的事已可使用。</p>
   <ul>
     <li><strong>可說：</strong><code>npx aps init</code> 可建立初始設定，CLI 已支援最小收發、修訂、撤回、收結與健康檢查。</li>
-    <li><strong>必須同時說：</strong>自然語言日常引導與補救流程仍在硬化；每個真實跨機項目仍需各自驗證 Google Drive 同步。</li>
+    <li><strong>必須同時說：</strong>每個真實跨機項目仍需各自驗證 Google Drive 同步；外部通知仍由人貼出。</li>
+    <li><strong>必須標清：</strong>0.2.x 主路徑是可靠二人協作。未列入本頁現有能力的事，不可寫成已支援。</li>
+    <li><strong>不可要求：</strong>核心設置不得要求額外雲端開發者專案、外部服務憑證或密鑰設定。</li>
     <li><strong>不可說：</strong>完全自動、正式生產可用、免檢查、免人工確認、或工具會自動向對方推送通知。</li>
   </ul>
   <div class="callout">
@@ -239,6 +241,11 @@
         <td>修改「教我用 APS」、日常收發或補救引導。</td>
       </tr>
       <tr>
+        <td>公開產品邊界</td>
+        <td><span class="path">docs\plans\2026-05-28-aps-public-product-multi-agent-roadmap.md</span></td>
+        <td>新增或公開承諾任何本頁未列入的能力前，先回到產品真源核對。</td>
+      </tr>
+      <tr>
         <td>人類可視 QC 地圖</td>
         <td><a href="../qc/governance-map.html">分層 QC</a></td>
         <td>維護者需要以 HTML 方式閱讀檢查分層時。</td>
@@ -251,7 +258,7 @@
   <h2>發佈前最低核對</h2>
   <p class="lede">發佈前不要只看文案是否順眼，要核對工具是否支撐了文案承諾。</p>
   <ul>
-    <li>公開頁是否清楚分開「目前可用」與「目標體驗」。</li>
+    <li>公開頁是否只承諾現有可用能力，未把目標體驗寫成已支援。</li>
     <li>新手教學是否不再要求閱讀或修改內部規格。</li>
     <li>CLI 是否能用真實或 throw-away Hub 跑通 <code>init</code>、<code>doctor</code>、<code>publish</code>、<code>inbox</code>、<code>consume</code>、<code>close</code>。</li>
     <li><code>aps init</code> 是否已註冊 Handoff Kit 可發現路徑：<span class="path">dev\RULE_PACKS.md</span> 有 APS route，<span class="path">dev\PROJECT_INDEX.md</span> 有 APS installed skill block，且 <code>doctor</code> 會檢查這兩項。</li>
@@ -268,6 +275,7 @@
     <li>日常主路徑須是自然語言請 AI 操作；命令列只可作備用、排錯或維護者驗證。</li>
     <li>一語交接、發送前完整性預檢、收件後完整性預檢、補交需求、共識確認、回覆與收結，須在公開文檔、skill 與 QC 真源之間對齊。</li>
     <li>APS 不自動發 WhatsApp / Email，也不保證對方電腦即時同步；公開文檔與通知文字不得暗示相反能力。</li>
+    <li>公開 HTML 只寫現有可用能力；未列入現有能力的產品路線名稱留在 Markdown 真源與審核報告，不放入公眾頁面。</li>
     <li>若 HTML 參考卡與 <span class="path">dev\qc\triggers.md</span> 不一致，先以該真源為準，再立即同步 HTML。</li>
   </ul>
 </section>

@@ -222,7 +222,7 @@
   <a class="site-nav__link site-nav__link--active" href="index.html">入口</a>
   <a class="site-nav__link" href="guides/index.html">教學中心</a>
   <span class="site-nav__spacer"></span>
-  <span class="site-nav__hint">2026-05-27</span>
+  <span class="site-nav__hint">2026-05-28</span>
 </nav>
 
 <header class="cover">
@@ -230,27 +230,29 @@
   <h1>讓兩部電腦上的 AI 有一個共同交接處。</h1>
   <p class="subtitle">AI Public Squares 用 Google Drive 上的一個共享資料夾，替兩邊的 AI 留下交接包、上下文、版本記錄與收件狀態。它不是伺服器，也不會自動傳訊息；它的價值是讓對方 AI 在檢查 Hub 時讀到完整交接，而不是靠人類重複搬運背景。</p>
   <div class="meta">
-    <span class="badge ok">npm latest 0.2.6</span>
-    <span class="badge warn">前期測試階段</span>
-    <span class="badge">既有資料夾升級已開始實測</span>
+    <span class="badge ok">npm latest 0.2.7</span>
+    <span class="badge">公眾可用版本</span>
   </div>
 </header>
 
 <section>
-  <h2>先講清楚：目前是否完整實現？</h2>
-  <p class="lede">核心協定與命令列流程已經實作並多次驗證；但「完全由 AI 以自然語言帶新手完成所有日常使用與補救」仍未達到正式產品水準。</p>
+  <h2>先講清楚：目前可依賴甚麼？</h2>
+  <p class="lede">本頁只列公眾可照做的現有流程：安裝、設定、健康檢查、交接、收件、修訂、撤回與收結。</p>
   <div class="grid two">
     <div class="tile">
       <h3>已可實際使用的部分</h3>
       <p><code>npx aps init</code> 可安裝 APS 技能、建立 Hub 骨架、寫入本地設定；<code>doctor</code>、<code>publish</code>、<code>inbox</code>、<code>consume</code>、<code>revise</code>、<code>withdraw</code>、<code>close</code> 已可支援最小日常往返。</p>
     </div>
     <div class="tile">
-      <h3>仍屬前期測試的部分</h3>
-      <p>AI 對話中的自然語言引導、錯誤補救、跨機項目首次驗證，仍需要保守試用。工具不會自動推送通知，但 AI 應替你生成可直接複製貼上的 WhatsApp 或 Email 通知。</p>
+      <h3>使用時要知道的邊界</h3>
+      <p>AI 對話中的自然語言引導、錯誤補救、跨機項目首次驗證，仍需要保守試用。工具不會自動推送通知，但 AI 應替你生成可直接複製貼上的 WhatsApp 或 Email 通知。通知應叫對方在自己電腦上使用已接入 APS 的對應項目，不應複製發送方的本機 Google Drive 路徑。</p>
     </div>
   </div>
   <div class="callout">
     <strong>對新用戶的正確期待：</strong>今天最可靠的路徑是「照教學安裝 → 由 <code>npx aps init</code> 建立設定 → 打開 AI 說『教我用 APS』→ 讓 AI 協助你做第一次測試交接」。命令列保留作可驗證備用；日常主路徑應是自然語言。
+  </div>
+  <div class="callout warn">
+    <strong>產品邊界：</strong>0.2.x 主路徑是二人協作。現在只承諾本頁寫明的安裝、健康檢查、交接、收件、修訂、撤回與收結能力。核心方向是不要求雲端開發者專案、額外 API 權限或密鑰設定。
   </div>
 </section>
 
@@ -333,7 +335,7 @@ npx aps doctor</pre>
 
 <section>
   <h2>日常使用應該多簡單？</h2>
-  <p class="lede">本工具的目標不是讓你記更多命令，而是讓 AI 可按同一套規矩代你處理交接。現階段保留命令列，是為了讓前期測試可驗證、可追溯；一般使用時應先對 AI 說你想完成甚麼。</p>
+  <p class="lede">本工具的目標不是讓你記更多命令，而是讓 AI 可按同一套規矩代你處理交接。命令列保留作可驗證、可追溯的備用路徑；一般使用時應先對 AI 說你想完成甚麼。</p>
   <div class="grid three">
     <div class="tile">
       <h3>你有內容給對方</h3>
@@ -349,7 +351,7 @@ npx aps doctor</pre>
     </div>
   </div>
   <div class="callout warn">
-    <strong>目前限制：</strong>APS 不會自動提醒對方電腦有新內容。AI 應替你生成可直接複製貼上的 WhatsApp / Email 通知，你只需貼到平常渠道請對方「check Hub」。自然語言日常流程仍在硬化中；若 AI 未能順利完成，才回到命令列備用路徑：<code>npx aps doctor</code>、<code>npx aps inbox</code>、<code>npx aps publish</code>、<code>npx aps consume</code>、<code>npx aps revise</code>、<code>npx aps withdraw</code>、<code>npx aps close</code>、<code>npx aps config</code>。
+    <strong>目前限制：</strong>APS 不會自動提醒對方電腦有新內容。AI 應替你生成可直接複製貼上的 WhatsApp / Email 通知，你只需貼到平常渠道請對方「check Hub」。通知文字應用項目代號、主題與交接編號識別內容；本機 <code>hubRoot</code> 不應當成對方電腦上的路徑。若 AI 未能順利完成，才回到命令列備用路徑：<code>npx aps doctor</code>、<code>npx aps inbox</code>、<code>npx aps publish</code>、<code>npx aps consume</code>、<code>npx aps revise</code>、<code>npx aps withdraw</code>、<code>npx aps close</code>、<code>npx aps config</code>。
   </div>
 </section>
 
@@ -389,8 +391,8 @@ npx aps doctor</pre>
 
 <section>
   <h2>公眾文檔與內部文檔如何分工</h2>
-  <p>公眾頁面只保留新用戶需要知道的事：工具做甚麼、目前能做到甚麼、如何安裝、如何完成第一次測試、遇錯怎樣求助。內部檢查、分層 QC、規格真源與維護者紀錄不放在公眾主導航中，避免新手把維護者流程誤讀成使用流程。</p>
-  <p>若你是維護者，請改讀 <a href="maintainers/index.html">維護者規格</a>。該頁會指向 <span class="path">docs\qc\governance-map.html</span>、<span class="path">dev\qc\triggers.md</span> 與 <span class="path">dev\DOC_SYNC_REGISTRY.md</span> 等內部真源。</p>
+  <p>公眾頁面只保留新用戶需要知道的事：工具做甚麼、目前能做到甚麼、如何安裝、如何完成第一次測試、遇錯怎樣求助。內部檢查、規格真源與維護者紀錄不放在公眾主導航中，避免新手把維護者流程誤讀成使用流程。</p>
+  <p>維護者可在 repo 內依內部真源核對規格與檢查責任；公眾入口不要求新用戶閱讀這些材料。</p>
 </section>
 
 <section>
@@ -400,7 +402,7 @@ npx aps doctor</pre>
 </section>
 
 <footer>
-  AI Public Squares · 前期測試階段 · 最新更新 2026-05-28
+  AI Public Squares · 公眾可用版本 · 最新更新 2026-05-28
 </footer>
 
 </main>

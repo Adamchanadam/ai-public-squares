@@ -307,8 +307,8 @@
         <li>HTML preview 視覺確認,包括 walkthrough SVG 與能力清單</li>
         <li>PII / secrets sweep</li>
         <li>語氣與用語紀律掃描</li>
-        <li>已安裝 skill 刷新路徑檢查</li>
-        <li>APS 跨機交接包與會話交接命名分流檢查</li>
+        <li>新安裝與既有項目升級路徑檢查</li>
+        <li>APS 跨機交接包、會話交接、品牌與版本分流檢查</li>
         <li>Google Drive 已驗證主路徑與其他同步資料夾未驗證邊界檢查</li>
       </ul>
       <p><strong>驗收</strong>：12 項全過。<br><strong>失敗</strong>：handover stop。</p>
@@ -343,7 +343,7 @@
     <tbody>
       <tr>
         <td>公開承諾一致性</td>
-        <td>README、入口頁、教學中心、第一次安裝與測試、本頁、維護者頁、CLI help、skill spec 對「目前可用」「正在硬化」「目標體驗」「手動替代路徑」「npm publish 狀態」描述一致。</td>
+        <td>README、入口頁、教學中心、第一次安裝與測試、本頁、維護者頁、CLI help、skill spec 對「目前可用」「使用邊界」「手動替代路徑」「npm publish 狀態」描述一致。</td>
         <td>公開面可能把未發佈或未實作能力寫成已可用。</td>
       </tr>
       <tr>
@@ -378,7 +378,7 @@
       </tr>
       <tr>
         <td>宏觀理解與能力邊界</td>
-        <td>walkthrough 須先讓新手理解 APS 如何運作、已具備甚麼、正在硬化甚麼、刻意不做甚麼。SVG 流程圖與能力清單不可誇大自動化能力。</td>
+        <td>walkthrough 須先讓新手理解 APS 如何運作、已具備甚麼、使用邊界是甚麼。SVG 流程圖與能力清單不可誇大工具能力。</td>
       </tr>
       <tr>
         <td>一語交接與雙向預檢</td>
@@ -393,16 +393,28 @@
         <td>APS 不自動發 WhatsApp / Email,也不保證對方電腦即時同步。AI 應生成可複製通知,並在對方看不到時先檢查 Drive 同步。</td>
       </tr>
       <tr>
-        <td>skill 刷新與版本落地</td>
-        <td>若套件內 skill 有變,須驗證新安裝與既有安裝兩條路徑。既有安裝必須有備份後刷新機制,並提示用戶重啟 AI 工具後再測。</td>
+        <td>新安裝與版本升級落地</td>
+        <td>若套件內 skill、CLI 或 setup wording 有變,須驗證新安裝與既有項目更新路徑。公開 HTML 只寫已公開可用的命令;其他測試路徑只記錄於 Markdown 真源與審核報告。</td>
       </tr>
       <tr>
         <td>交接語義防混淆</td>
         <td>「收工」應走會話交接;「交給 Jay / 對方 / Hub」應走 APS 跨機交接包;只說「交接包」時必須先澄清,不得直接寫檔或寫 Hub。</td>
       </tr>
       <tr>
+        <td>品牌與版本防混淆</td>
+        <td>APS CLI 版本與 Agent Handoff Kit 版本必須分開核實。APS skill 不得輸出 Agent Handoff Kit 啟動卡,也不得把 <code>APS Hub doctor v...</code> 當成 Agent Handoff Kit 版本。</td>
+      </tr>
+      <tr>
+        <td>長正文發包安全</td>
+        <td>正式交接、長正文、多行摘要、表格或含特殊符號的正文,應使用 <code>--body-file</code> 或等效安全輸入,不得把整段內容塞進一條多行 shell 引號命令。</td>
+      </tr>
+      <tr>
         <td>雲端支援邊界</td>
-        <td>已驗證主路徑是 Google Drive,但不可固定磁碟機代號。Dropbox、OneDrive 或其他同步資料夾只可列為未正式驗證的實驗路徑。</td>
+        <td>已驗證主路徑是 Google Drive,但不可固定磁碟機代號。其他同步資料夾若未完成驗證,不可在公開 HTML 寫成支援能力。</td>
+      </tr>
+      <tr>
+        <td>可靠二人協作防誇大</td>
+        <td>近期主線是可靠二人交接、發送前確認、收件總覽、補交 / 共識確認與 UAT。未列入現有能力的事,未有實作與 QC 證據前不可對外寫成已支援。核心設置不得要求額外雲端開發者專案、外部服務憑證或密鑰設定。</td>
       </tr>
     </tbody>
   </table>
@@ -418,12 +430,12 @@
     <tbody>
       <tr>
         <td>零認知讀者入口流程</td>
-        <td>讀者由 README 進入後,能分清「目前可試」「正在硬化」與「目標體驗」;walkthrough 的流程圖與能力清單能先解釋 APS 價值。</td>
+        <td>讀者由 README 進入後,能分清目前可用能力與使用邊界;walkthrough 的流程圖與能力清單能先解釋 APS 價值。</td>
         <td><code>README.md</code>、<a class="site-nav__link" href="../index.html">入口</a>、<a class="site-nav__link" href="../guides/index.html">教學中心</a></td>
       </tr>
       <tr>
         <td>手動設置流程</td>
-        <td>由前置事項、工作目錄、Agent Handoff Kit、<code>npx aps init</code>、Handoff Kit APS route、project-index registration、<code>doctor</code> 到首次交接包,每一步不依賴不存在的 npm package、私有本機路徑或手改 <code>AGENTS.md</code>。</td>
+        <td>新安裝由前置事項、工作目錄、Agent Handoff Kit、<code>npx aps init</code>、Handoff Kit APS route、project-index registration、<code>doctor</code> 到首次交接包。既有項目更新須以當前公開 CLI 可用能力為準。每一步不依賴不存在的 npm package、私有本機路徑或手改 <code>AGENTS.md</code>。</td>
         <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html">第一次安裝與測試</a></td>
       </tr>
       <tr>
@@ -528,8 +540,8 @@
   <p>對 AI 說一句觸發詞即可：</p>
   <ul>
     <li>「<strong>跑快檢</strong>」— AI 跑 doctor + git status + grep set</li>
-    <li>「<strong>跑外發前檢</strong>」— AI 跑快檢 + 五項外發 audit</li>
-    <li>「<strong>跑全面檢</strong>」— AI 跑外發前檢 + 五項全面審核;如涉及跨工作目錄,AI 列出需於對應工作目錄另開新對話處理的子任務</li>
+    <li>「<strong>跑外發前檢</strong>」— AI 跑快檢 + 8 項外發審核</li>
+    <li>「<strong>跑全面檢</strong>」— AI 跑外發前檢 + 6 項人工 / 跨工作目錄審核;如涉及跨工作目錄,AI 列出需於對應工作目錄另開新對話處理的子任務</li>
   </ul>
   <div class="callout warn">
     <strong>使用含混詞 = 觸發反問</strong>。如果用「做 QC / 跑驗收 / 整體 audit」此類詞,AI 會停手問「你指快檢 / 外發前檢 / 全面檢?」。這是防止範圍漂移的紀律,不是錯誤。

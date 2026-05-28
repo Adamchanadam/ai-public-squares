@@ -62,9 +62,9 @@
 3. **HTML preview 視覺確認** — 入口頁 / 教學中心 / walkthrough / maintainer page / governance-map 經瀏覽器 render clean；若 walkthrough 含 SVG 流程圖或能力清單,須確認可見、可讀、無遮擋、無 console error。
 4. **PII / secrets sweep** — `grep -iE "api[_-]?key|password|token|secret|credential"` 各 user-facing doc + tool，預期 0 命中
 5. **語氣與用語紀律** — 內部 codes（`Block 4*` / `Bridge Pack` / `round-trip` / `PROTOCOL.md`）不可作為句子主體；中英並用的 user-facing string 須一致；公開通用面不得把 specific person name 當成 hardcoded default,只可作明確示例、fixture 名或歷史證據。
-6. **Skill 安裝刷新檢查** — 若 npm package 內 `skills/aps/**` 有變,外發前檢必須驗證已存在的 user-level skill 不會永遠停留舊版。CLI 必須提供安全刷新路徑(例如備份後 refresh),並在 help / init output / skill spec 中說明重啟 AI 工具後才會讀新 skill。只「skip existing skill」不可通過。
-7. **交接命名分流檢查** — 掃描 `bin/aps.js`、`skills/aps/**`、README / public docs 是否把 APS packet 與 Agent Handoff Kit session handoff 混稱。用戶只說「交接包」時必須有澄清路由;APS 新 packet 預設 level / topic 不得使用會誤導為 session handoff 的名稱。舊資料相容可保留,但新預設不可繼續漂移。
-8. **雲端支援邊界檢查** — 公開文檔、CLI prompt、skill wording 必須一致:已驗證主路徑是 Google Drive,但不固定磁碟機代號;Dropbox / OneDrive / 其他同步資料夾只可列為未正式驗證的實驗路徑,不得由 AI 主動推薦為正式支援。
+6. **新安裝與升級路徑檢查** — 若 npm package 內 `skills/aps/**`、CLI 或 setup wording 有變,外發前檢必須同時驗證兩條路徑:新安裝可用 `npm install --save-dev @adamchanadam/aps@latest` + `npx aps init`;既有項目可用 `npm install --save-dev @adamchanadam/aps@latest` + `npx aps upgrade` 備份並刷新 skill、更新橋接與註冊、保留既有 packet / outbox / ack / Hub 協定檔。測試未發布候選版時,還要核對 UAT 的 `npx aps --help` / `doctor` 是否實際顯示候選版本;若仍讀 npm latest,必須先安裝本地 package 或改用本地 CLI 路徑。只「skip existing skill」不可通過。
+7. **交接命名與品牌版本分流檢查** — 掃描 `bin/aps.js`、`skills/aps/**`、README / public docs 是否把 APS packet 與 Agent Handoff Kit session handoff 混稱。用戶只說「交接包」時必須有澄清路由;APS 新 packet 預設 level / topic 不得使用會誤導為 session handoff 的名稱。APS skill 不得輸出 Agent Handoff Kit 啟動卡,不得把 `APS Hub doctor v<版本>` 當作 Agent Handoff Kit 版本。舊資料相容可保留,但新預設不可繼續漂移。
+8. **雲端支援與產品路線邊界檢查** — 公開文檔、CLI prompt、skill wording 必須一致:已驗證主路徑是 Google Drive,但不固定磁碟機代號;Dropbox / OneDrive / 其他同步資料夾只可列為未正式驗證的實驗路徑,不得由 AI 主動推薦為正式支援。核心設置不得要求 Google Drive API、Dropbox API、OneDrive API、OAuth app、API key 或雲端開發者專案。近期主線是 Reliable Pair first;Contacts selector / 選對方體驗已延後,不屬 0.2.7 目標。真正多人平台、`_notify`、`aps watch`、桌面通知、平台排程與自動檢查屬延後路線,未完成實作與 QC 前不可寫成 0.2.x 已支援。
 
 **驗收**：快檢 + 上 8 項全部通過。任何一項失敗,handover 不可進行。
 
@@ -93,7 +93,7 @@
 3. **啟動可發現性與橋接行為 trace** — 驗證 `aps init` 寫入 Handoff Kit APS route、project-index registration、Bridge Pack、本地 config 後,新 session 可按 `AGENTS.md` 啟動讀序發現 APS；協定或 setup 改版尤其要做。
 4. **五區段 + 自審紀律回顧** — 回看 last N 個 session 的自審紀錄；統計「caught vs missed」gap 比例；檢查是否存在系統性盲點。
 5. **審核報告輸出** — 寫一份 markdown 於 `dev/qc/<YYYY-MM-DD>-full-audit.md`,含：健康結論 / 阻擋項 / cross-workspace 註記 / 重跑計劃。
-6. **Spec-to-runtime 執行落差審核** — 對照 UAT / 實際 AI 行為、`skills/aps/SKILL.md`、bundled reference、CLI help / output。凡規格說「AI 應先讀設定 / 不應重做設置 / 不應 consume / 應先總覽」,必須有實際入口或測試證據可觸發;若只停留在文案而已安裝 runtime 仍可能讀舊 skill,列為失敗。
+6. **Spec-to-runtime 執行落差審核** — 對照 UAT / 實際 AI 行為、`skills/aps/SKILL.md`、bundled reference、CLI help / output。凡規格說「AI 應先讀設定 / 不應重做設置 / 不應 consume / 應先總覽 / 不應顯示 Agent Handoff Kit 啟動卡 / 發包前須確認內容、topic 與寫入行為 / 長正文須使用 `--body-file` 或等效安全輸入」,必須有實際入口或測試證據可觸發;若只停留在文案而已安裝 runtime 仍可能讀舊 skill,列為失敗。
 
 ### APS 全面檢三條主線與橫切保障
 
@@ -114,15 +114,18 @@
 - **Drive 同步邊界** — 發包成功只代表本機 Hub 已寫入,不可暗示對方電腦已即時同步完成。通知與補救流程必須提示:若對方未見,先等待 / 檢查 Google Drive 同步並重試 `check Hub`,不要立即重複發包。
 - **共同目標與任務邊界** — 公眾教學與 skill spec 不可假設兩邊 agent 正在做同一任務。交接包必須能表達共同目標、本方任務、對方任務或「未確認」、交叉協作點、請對方做的事、不應誤解的事、證據位置。若兩邊 brief 可能矛盾,AI 應標示為需要確認,不可強行合併成一致目標。
 - **共識確認回路** — 若收件時發現任務要求、共同目標、檔案版本或本方理解不一致,AI 不可單向吸收 prompt 後直接開工。必須先停工,整理差異,發出共識確認包,生成可複製貼上的通知,等待對方回覆或修訂後才繼續;原交接不得在共識未成立前 close。
-- **Skill 刷新與版本落地** — 外發版本若改動 `skills/aps/**`,全面檢須驗證新安裝與既有安裝兩條路徑:新裝可取得新 skill;既有安裝可透過明確刷新命令備份舊 skill 並安裝新 skill。若 AI 工具需重啟才讀新 skill,輸出必須明確提示。
+- **新安裝與版本升級落地** — 外發版本若改動 `skills/aps/**`、CLI 或 setup wording,全面檢須驗證新安裝與既有項目升級兩條路徑。新裝可取得新 skill;既有項目可透過 `npx aps upgrade` 讀現有設定、備份舊 skill、刷新新 skill、更新本地橋接與 Handoff Kit 註冊,並保留既有 Hub 交接資料。若 AI 工具需重啟才讀新 skill,輸出必須明確提示。
 - **交接語義防混淆** — 全面檢須用至少三條 prompt 驗證路由:「收工」走 Agent Handoff Kit 會話交接;「幫我做 APS 交接包給 Jay」走 APS packet;只說「幫我做交接包」必須先澄清,不得直接寫任何檔案或 Hub packet。
+- **品牌與版本防混淆** — APS 全面檢須驗證 AI 實際回覆不會把 APS CLI 版本顯示成 Agent Handoff Kit 版本,亦不會在 APS skill 回覆內輸出 Agent Handoff Kit 啟動卡。若要提版本,APS CLI 與 Agent Handoff Kit 必須分開核實與分開顯示。
+- **長正文發包安全** — 正式交接、長正文、多行摘要、表格或含引號 / 特殊符號的正文,必須使用 `--body-file` 或等效安全輸入;不得把整段 packet body 直接塞進一條多行 shell 引號命令。
+- **Reliable Pair 與延後路線防誇大** — 近期主線是 Reliable Pair first:先完成可靠二人交接、升級、發送前確認、收件總覽、補交 / 共識確認與 UAT。Contacts selector / 選對方體驗、真正多人平台、`_notify`、`aps watch`、桌面通知、OS 排程、AI 平台自動任務、Dropbox / OneDrive 正式支援均屬延後路線,未有實作與 QC 證據前不可對外寫成已支援。群組只是發送別名,不等於可寫 lane;核心設置不得改為要求雲端儲存 API、OAuth 或雲端開發者設定。
 
 ### 主要使用流程走通
 
 每次全面檢須至少覆蓋下列流程；若某流程因尚未 publish / 未具備對方機 / 無 Drive Hub 而不能跑,報告中須列為「受阻」並寫明缺少甚麼證據：
 
 1. **零認知讀者入口流程** — 由 `README.md` → `docs/index.html` → `docs/guides/index.html` → walkthrough,讀者能分清「目前可試」「正在硬化」「目標體驗」；walkthrough 的宏觀流程圖與能力清單須幫讀者先理解 APS 價值,而不是直接跳入命令。
-2. **手動設置流程** — 按 walkthrough 由前置事項 → 工作目錄 → Agent Handoff Kit → `npx aps init` → Handoff Kit APS route / project-index registration → `doctor` → 首次 packet,每一步不依賴不存在的 npm package、私有本機路徑或手改 `AGENTS.md`。
+2. **手動設置與版本升級流程** — 新安裝按 walkthrough 由前置事項 → 工作目錄 → Agent Handoff Kit → `npx aps init` → Handoff Kit APS route / project-index registration → `doctor` → 首次 packet;既有項目升級按 `npm install --save-dev @adamchanadam/aps@latest` → `npx aps upgrade` → `doctor` → 重啟 AI 工具。每一步不依賴不存在的 npm package、私有本機路徑或手改 `AGENTS.md`,升級不可覆寫既有 Hub 交接資料。
 3. **日常協作流程** — one-sentence handoff request → AI reads config / runs doctor / packages common goal / own task / counterpart task / crossing point / requested action / evidence → completeness preflight → user A confirms → AI publishes packet → AI generates copy-ready WhatsApp / Email notification → human pastes notification → receiver says check Hub → receiver-side completeness preflight → if complete and aligned,ack / consume → reply / close; if incomplete,missing-info packet → user A / Agent A supplements; if not aligned,alignment-check packet → counterpart confirmation / revise / withdraw → continue only after consensus,在 CLI、Bridge Pack、skill spec、README、public docs 與 walkthrough 中可追蹤同一條邏輯。命令列流程只可作備用驗證路徑。
 4. **出錯補救流程** — Drive 同步延遲、conflict、wrong-lane、packet 格式錯誤、版本不對齊、啟動找不到 APS route、設定指向舊 project、對方看不到 packet,每項有偵測、停手、用戶確認、修復或升級路徑。
 

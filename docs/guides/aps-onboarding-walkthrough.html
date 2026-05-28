@@ -227,8 +227,8 @@
   <p class="subtitle">這份教學只做一件事：讓非技術用戶由安裝走到第一次 APS 測試交接。你不需要理解內部規格，也不需要修改任何治理文件。</p>
 </header>
 
-<div class="callout warn">
-  <strong>目前仍是前期測試。</strong>本頁描述 npm latest 0.2.6 可用路徑，包括新版安裝畫面、中文 doctor、重跑 init 更新設定、Handoff Kit APS 註冊與 copy-ready 通知。若你的畫面與本頁稍有不同，請先以終端機實際輸出為準。
+<div class="callout">
+  <strong>以終端機實際輸出為準。</strong>本頁只描述公開版本可照做的安裝、設定、健康檢查與第一次測試交接。若你的畫面與本頁稍有不同，先保留終端機輸出，再請 AI 協助判斷。
 </div>
 
 <div class="toc">
@@ -326,8 +326,8 @@
   <div class="capability-grid">
     <div class="capability"><strong>已具備：</strong>互動式安裝、Hub 骨架、本地設定、技能安裝、健康檢查。</div>
     <div class="capability"><strong>已具備：</strong>發佈、收件、已讀、修訂、撤回、收結與 copy-ready 通知。</div>
-    <div class="capability"><strong>正在硬化：</strong>一語交接、發送前預檢、收件後預檢、補交需求與共識確認。</div>
-    <div class="capability"><strong>刻意保留：</strong>外部通知由人貼出；APS 不代發 WhatsApp / Email，也不假裝即時同步。</div>
+    <div class="capability"><strong>使用重點：</strong>一語交接、發送前預檢、收件後預檢、補交需求與共識確認。</div>
+    <div class="capability"><strong>清楚邊界：</strong>外部通知由人貼出；APS 不代發 WhatsApp / Email，也不假裝即時同步。</div>
   </div>
 </section>
 
@@ -444,14 +444,14 @@
   <pre>幫我發一個 APS 測試交接給對方，內容只寫「APS setup test」。</pre>
   <p>AI 應讀取本地 APS 設定、檢查 Hub 狀態、建立測試交接包，然後用白話告訴你已寫入哪個主題與交接編號。命令列只屬 AI 內部執行與排錯備用，不應要求新手自己記住。</p>
   <h3>通知對方</h3>
-  <p>APS 目前不會自動發 WhatsApp、Email 或系統推送。你仍需要用平常的聯絡方式通知對方，但不應自行重寫內容；AI 應替你生成可直接複製貼上的通知：</p>
+  <p>APS 目前不會自動發 WhatsApp、Email 或系統推送。你仍需要用平常的聯絡方式通知對方，但不應自行重寫內容；AI 應替你生成可直接複製貼上的通知。通知只應包含項目代號、主題、交接編號與「check Hub」指示，不應要求對方使用你電腦上的 Google Drive 本機路徑：</p>
   <h4>WhatsApp / 即時訊息</h4>
-  <pre>我已用 APS 放了一個測試交接。請打開你的 AI 工具，輸入「check Hub」。</pre>
+  <pre>我已用 APS 放了一個測試交接。請在你自己電腦上打開已接入 APS 的對應項目資料夾，輸入「check Hub」。</pre>
   <h4>Email</h4>
   <pre>主旨：APS 有新測試交接
 
-我已用 APS 放了一個測試交接。請打開你的 AI 工具，進入同一個項目資料夾，輸入「check Hub」。</pre>
-  <p>正式工作時，AI 應把項目代號、主題、交接編號、共同目標與請對方做的事放進通知文字；你只負責複製貼上到 WhatsApp、Email 或你們平常使用的通訊工具。</p>
+我已用 APS 放了一個測試交接。請在你自己電腦上打開已接入 APS 的對應項目資料夾，輸入「check Hub」。不要使用發送方的本機 Google Drive 路徑；你的 AI 會讀取你自己的 APS 設定。</pre>
+  <p>正式工作時，AI 應把項目代號、主題、交接編號、共同目標與請對方做的事放進通知文字；你只負責複製貼上到 WhatsApp、Email 或你們平常使用的通訊工具。本機 <code>hubRoot</code> 只代表當前電腦的同步路徑，不是雙方都相同的路徑。</p>
   <p>發送成功代表本機 Hub 已寫入，不等於對方電腦已即時同步完成。若對方暫時看不到，先等 Google Drive 同步完成，再請對方重試 <code>check Hub</code>；不要急著重複發多個交接包。</p>
   <h3>對方對 AI 說</h3>
   <pre>check Hub</pre>
@@ -563,7 +563,7 @@
 
 <section>
   <h2>這頁刻意不放甚麼</h2>
-  <p>本頁不要求你閱讀或修改 <span class="path">RULE_PACKS.md</span>、內部計劃、QC 真源或維護者同步表。那些文件仍然重要，但它們是維護者與 AI 的工作材料，不是新手安裝教學；維護者可改讀 <a href="../maintainers/index.html">維護者規格</a>。</p>
+  <p>本頁不要求你閱讀或修改 <span class="path">RULE_PACKS.md</span>、內部計劃、QC 真源或維護者同步表。那些文件仍然重要，但它們是維護者與 AI 的工作材料，不是新手安裝教學。</p>
   <p>如果你只是想把兩部電腦接起來，照本頁做即可。</p>
 </section>
 

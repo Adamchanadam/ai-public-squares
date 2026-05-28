@@ -33,6 +33,27 @@ function getRequiredFlagValue(name) {
   return value && !value.startsWith('--') ? value : null;
 }
 
+function readBodyInput() {
+  const body = getRequiredFlagValue('--body');
+  const bodyFile = getRequiredFlagValue('--body-file');
+  if (body && bodyFile) {
+    throw new Error('Use either --body or --body-file, not both.');
+  }
+  if (bodyFile) {
+    const resolvedPath = path.resolve(process.cwd(), bodyFile);
+    if (!fs.existsSync(resolvedPath)) {
+      throw new Error(`--body-file not found: ${resolvedPath}`);
+    }
+    const stat = fs.statSync(resolvedPath);
+    if (!stat.isFile()) {
+      throw new Error(`--body-file is not a file: ${resolvedPath}`);
+    }
+    return fs.readFileSync(resolvedPath, 'utf8');
+  }
+  if (body) return body;
+  throw new Error('Missing required flag: --body or --body-file');
+}
+
 function configPath() {
   return path.join(process.cwd(), '.aps', 'config.json');
 }
@@ -165,6 +186,9 @@ function escapeRegExp(value) {
 }
 
 function ensureDirectory(dirPath, dryRun) {
+  if (fs.existsSync(dirPath)) {
+    return { ok: false, skipped: true, path: dirPath, message: `exists; not overwriting (${dirPath})` };
+  }
   if (!dryRun) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
@@ -324,6 +348,36 @@ async function askWithDefault(rl, question, defaultValue, validate) {
   }
 }
 
+function brandCardLines() {
+  const bannerWidth = 37;
+  const centerLine = (text = '') => {
+    const safeText = String(text).slice(0, bannerWidth);
+    const left = Math.floor((bannerWidth - safeText.length) / 2);
+    return `${' '.repeat(left)}${safeText}`.padEnd(bannerWidth, ' ');
+  };
+  return [
+    '-'.repeat(bannerWidth),
+    centerLine('✦ AI Public Squares ✦'),
+    centerLine('=^._.^=  <-- APS Hub -->  =^._.^='),
+    centerLine('packets  |  versions  |  ack'),
+    centerLine(`v${packageVersion} pre-release`),
+    '-'.repeat(bannerWidth),
+  ];
+}
+
+function printBrandCard() {
+  const useAnsi = Boolean(process.stdout.isTTY && !process.env.NO_COLOR);
+  for (const [index, line] of brandCardLines().entries()) {
+    if (useAnsi && (index === 1 || index === 2)) {
+      console.log(`\x1b[36;1m${line}\x1b[0m`);
+    } else if (useAnsi && index === 4) {
+      console.log(`\x1b[33m${line}\x1b[0m`);
+    } else {
+      console.log(line);
+    }
+  }
+}
+
 async function runInteractiveInit() {
   const root = homeDir();
   if (!root) {
@@ -331,21 +385,7 @@ async function runInteractiveInit() {
     return 1;
   }
 
-  const bannerWidth = 37;
-  const useAnsi = Boolean(process.stdout.isTTY && !process.env.NO_COLOR);
-  const color = (code, text) => (useAnsi ? `\x1b[${code}m${text}\x1b[0m` : text);
-  const centerLine = (text = '', ansiCode = null) => {
-    const safeText = String(text).slice(0, bannerWidth);
-    const left = Math.floor((bannerWidth - safeText.length) / 2);
-    const padded = `${' '.repeat(left)}${safeText}`.padEnd(bannerWidth, ' ');
-    return ansiCode ? color(ansiCode, padded) : padded;
-  };
-  console.log('-'.repeat(bannerWidth));
-  console.log(centerLine('✦ AI Public Squares ✦', '36;1'));
-  console.log(centerLine('=^._.^=  <-- APS Hub -->  =^._.^=', '36'));
-  console.log(centerLine('packets  |  versions  |  ack'));
-  console.log(centerLine(`v${packageVersion} pre-release`, '33'));
-  console.log('-'.repeat(bannerWidth));
+  printBrandCard();
   console.log('');
   console.log('APS 初次設定');
   console.log('');
@@ -538,6 +578,18 @@ function yamlDoubleQuote(value) {
   return String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
+function packetScopeFromBody(body, fallback) {
+  const meaningful = String(body || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find((line) => line && !line.startsWith('#'));
+  return yamlDoubleQuote((meaningful || fallback).slice(0, 120));
+}
+
+function receiverNotice({ projectSlug, topic, packetId, version, label }) {
+  return `我已用 APS ${label}。項目: ${projectSlug};主題: ${topic};交接編號: ${packetId} v${version}。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入「check Hub」。不要使用發送方的本機 Google Drive 路徑;你的 AI 會讀取你自己的 APS 設定。`;
+}
+
 function parseOutboxLine(line) {
   if (!line.trim() || line.trim().startsWith('<!--') || line.trim().startsWith('#')) return null;
   const parts = line.split('|').map((part) => part.trim());
@@ -653,7 +705,7 @@ function writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level })
     throw new Error(`packet folder already exists: ${packetDir}`);
   }
   fs.mkdirSync(packetDir, { recursive: true });
-  const scope = yamlDoubleQuote(body.split(/\r?\n/)[0].slice(0, 120) || topic);
+  const scope = packetScopeFromBody(body, topic);
   const packetMd = `---\npacket_id: ${packetId}\nversion: 1\nfrom: ${fromId}\nto: ${toId}\nproject: ${projectSlug}\nlevel: ${level}\nsupersedes: null\ncreated_at: ${now}\nssot_refs: []\nscope: \"${scope}\"\nitems: []\n---\n\n# ${topic}\n\n${body}\n`;
   fs.writeFileSync(path.join(packetDir, 'packet.md'), packetMd, 'utf8');
   appendLine(outboxPath, `${now} | publish | ${packetId} v1 | to:${toId} | items:none`);
@@ -677,7 +729,7 @@ function revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason })
     throw new Error(`packet folder already exists: ${packetDir}`);
   }
   fs.mkdirSync(packetDir, { recursive: true });
-  const scope = yamlDoubleQuote(body.split(/\r?\n/)[0].slice(0, 120) || previousHeader.scope || packetId);
+  const scope = packetScopeFromBody(body, previousHeader.scope || packetId);
   const level = previousHeader.level || 'L2-aps-packet';
   const packetMd = `---\npacket_id: ${packetId}\nversion: ${nextVersion}\nfrom: ${agentId}\nto: ${toId}\nproject: ${projectSlug}\nlevel: ${level}\nsupersedes: ${packetId}__v${previousVersion}\ncreated_at: ${now}\nssot_refs: []\nscope: \"${scope}\"\nitems: []\n---\n\n# Revision ${nextVersion} for ${packetId}\n\n${body}\n`;
   fs.writeFileSync(path.join(packetDir, 'packet.md'), packetMd, 'utf8');
@@ -954,56 +1006,58 @@ function registerHandoffKitIntegration(values, dryRun) {
 }
 
 if (!subcommand || subcommand === '--help' || subcommand === '-h') {
+  printBrandCard();
   console.log(`
-APS — AI Public Squares v${packageVersion}
-Two-machine AI agent collaboration via a shared Google Drive folder.
+透過共用 Google Drive Hub,讓兩部電腦上的 AI 代理做二人交接。
 
-Usage:
-  npx aps init                    Guided setup: ask questions, create Hub, and save config
-  npx aps init --target claude    Install APS skill for Claude Code only
-  npx aps init --target codex     Install APS skill for Codex only
-  npx aps init --refresh-skill    Backup and refresh existing installed APS skill
+用法:
+  npx aps init                    互動式設定:回答問題、建立 Hub、保存本機設定
+  npx aps init --target claude    只安裝 Claude Code 的 APS skill
+  npx aps init --target codex     只安裝 Codex 的 APS skill
+  npx aps init --refresh-skill    先備份既有 APS skill,再刷新安裝
   npx aps init --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
-                                  Advanced non-interactive setup
-  npx aps init --dry-run          Show planned install paths without writing
-  npx aps config                  Show saved local APS config
+                                  進階非互動設定
+  npx aps init --dry-run          只顯示會寫入的位置,不真正改檔
+  npx aps upgrade                 npm 更新後刷新既有 APS 項目
+  npx aps config                  顯示已保存的本機 APS 設定
   npx aps config --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
-                                  Save or update local APS config only
+                                  只保存或更新本機 APS 設定
   npx aps publish --topic <snake> --body <text>
-                                  Publish a v1 packet and append outbox
+  npx aps publish --topic <snake> --body-file <path>
+                                  發佈 v1 交接包並追加 outbox
   npx aps revise --packet-id <id> --body <text> --reason <text>
-                                  Publish the next immutable version of my packet
+  npx aps revise --packet-id <id> --body-file <path> --reason <text>
+                                  為自己發出的交接包建立下一個不可變版本
   npx aps inbox
-                                  List pending packets from the other agent
+                                  查看對方交來而本機尚未處理的項目
   npx aps consume --packet-id <id> --version <n> --result <text>
-                                  Mark a packet consumed in my ack file
+                                  在自己的 ack 檔標記某版本已處理
   npx aps withdraw --packet-id <id> --reason <text>
-                                  Withdraw my unconsumed latest packet version
+                                  撤回自己尚未被對方處理的最新版本
   npx aps close --packet-id <id> --reason <text>
-                                  Append a close event to my outbox
+                                  在自己的 outbox 追加收結事件
   npx aps doctor
-                                  Check Hub skeleton, ack files, outboxes, and conflict filenames
-  npx aps bridge-pack             Print Bridge Pack fixture (User A default)
-  npx aps bridge-pack --role B    Print Bridge Pack fixture for User B role
-  npx aps --help                  Show this help
+                                  檢查 Hub 骨架、ack、outbox 與疑似衝突檔名
+  npx aps bridge-pack             輸出 Bridge Pack 範本,預設為 User A 角色
+  npx aps bridge-pack --role B    輸出 User B 角色的 Bridge Pack 範本
+  npx aps --help                  顯示本說明
 
-bridge-pack writes fixture content to stdout — redirect to your workspace's
-Bridge Pack location, e.g.:
+bridge-pack 會把範本內容輸出到 stdout;可重導向到工作目錄的
+Bridge Pack 位置,例如:
   npx aps bridge-pack > dev/rules/aps-bridge.md
 
-Local source test:
+本地原始碼測試:
   node bin/aps.js bridge-pack > dev/rules/aps-bridge.md
 
-After init saves .aps/config.json, daily commands can omit --hub-root,
---project, --agent-id, and --other-agent-id. You may still pass those flags
-to override the saved config.
+init 保存 .aps/config.json 後,日常命令可省略 --hub-root、--project、
+--agent-id 與 --other-agent-id。需要臨時覆蓋設定時,仍可傳入這些參數。
 
-Status: bridge-pack, skill install, initial Hub setup, saved local config,
-publish / revise / inbox / consume / withdraw / close, and read-only doctor
-are available.
-This pre-release has one maintainer-run Google Drive round-trip verification, but
-each real project still needs its own project-specific verification.
-Repo: https://github.com/Adamchanadam/ai-public-squares
+狀態:已可使用 bridge-pack、skill 安裝、初始 Hub 設置、既有項目升級、
+本機設定保存、publish / revise / inbox / consume / withdraw / close,
+以及只讀 doctor。
+這個預發布版本已有一次維護者真實 Google Drive 往返驗證;每個真實項目
+仍需要各自做項目級同步驗證。
+GitHub: https://github.com/Adamchanadam/ai-public-squares
 `);
   process.exit(0);
 }
@@ -1120,14 +1174,14 @@ if (subcommand === 'init' && args.length === 0) {
     console.log('有一個或多個目標安裝失敗。已盡量保留既有檔案不變。');
   } else if (dryRun && results.some((result) => result.refreshed)) {
     console.log('Dry run 完成。上方只列出將會備份與刷新哪些 skill;目前未改動任何檔案。');
+  } else if (dryRun) {
+    console.log('Dry run 完成。上方只列出將會寫入、刷新或略過的位置;目前未改動任何檔案。');
   } else if (results.some((result) => result.refreshed)) {
     console.log('✅ APS skill 已刷新。原有 skill 已改名備份,新版本已安裝。');
     console.log('🚀 下一步:請重新啟動 Claude Code 或 Codex,再在項目資料夾輸入「教我用 APS」。');
   } else if (skipped.length > 0) {
     console.log('安裝完成,並安全略過既有檔案。既有檔案沒有被覆寫。');
     console.log('如要刷新既有安裝,請執行 `npx aps init --refresh-skill`;工具會先備份舊 skill,再安裝新版本。');
-  } else if (dryRun) {
-    console.log('Dry run 完成。移除 `--dry-run` 後重新執行,才會真正寫入。');
   } else {
     console.log('✅ 設定完成。如果 Claude Code 或 Codex 未即時看到 APS skill,請重新啟動該 AI 工具。');
     console.log('🚀 下一步:打開 AI 工具並輸入「教我用 APS」。AI 應讀取 `.aps/config.json`,檢查 Hub,查看 inbox,再主動建議測試交接或正式交接。');
@@ -1138,13 +1192,114 @@ if (subcommand === 'init' && args.length === 0) {
   process.exit(failed.length > 0 ? 1 : 0);
 }
 
+if (subcommand === 'upgrade') {
+  const validTargets = ['claude', 'codex', 'both'];
+  const target = getFlagValue('--target', 'both').toLowerCase();
+  const dryRun = hasFlag('--dry-run');
+  if (!validTargets.includes(target)) {
+    console.error(`Invalid --target value: must be claude, codex, or both (got '${target}').`);
+    process.exit(1);
+  }
+  const config = loadConfigOrExit();
+  const setupValues = {
+    hubRoot: flagOrConfig('--hub-root', 'hubRoot', config),
+    projectSlug: flagOrConfig('--project', 'projectSlug', config),
+    agentId: flagOrConfig('--agent-id', 'agentId', config),
+    otherAgentId: flagOrConfig('--other-agent-id', 'otherAgentId', config),
+    role: (getFlagValue('--role', config.role || '') || '').toUpperCase(),
+  };
+  requireValues({
+    '--hub-root': setupValues.hubRoot,
+    '--project': setupValues.projectSlug,
+    '--agent-id': setupValues.agentId,
+    '--other-agent-id': setupValues.otherAgentId,
+    '--role': setupValues.role,
+  });
+  const errors = [
+    validateNoPlaceholder('--hub-root', setupValues.hubRoot),
+    validateSnakeCase('--project', setupValues.projectSlug),
+    validateSnakeCase('--agent-id', setupValues.agentId),
+    validateSnakeCase('--other-agent-id', setupValues.otherAgentId),
+    setupValues.role === 'A' || setupValues.role === 'B' ? null : `--role must be A or B (got '${setupValues.role}').`,
+  ].filter(Boolean);
+  if (errors.length > 0) {
+    for (const error of errors) console.error(error);
+    process.exit(1);
+  }
+  try {
+    ensureHandoffKitReady();
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+  const root = homeDir();
+  if (!root) {
+    console.error('Could not detect your home directory. Set HOME or USERPROFILE, then rerun `npx aps upgrade`.');
+    process.exit(1);
+  }
+  const installTargets = [];
+  if (target === 'claude' || target === 'both') {
+    installTargets.push({ label: 'Claude Code', targetDir: path.join(root, '.claude', 'skills', 'aps') });
+  }
+  if (target === 'codex' || target === 'both') {
+    installTargets.push({ label: 'Codex', targetDir: path.join(root, '.codex', 'skills', 'aps') });
+  }
+
+  console.log(`APS upgrade v${packageVersion}${dryRun ? ' (dry run)' : ''}`);
+  console.log('');
+  console.log('這個命令用於已安裝 APS 的項目。');
+  console.log('建議先執行 `npm install --save-dev @adamchanadam/aps@latest`,再執行 `npx aps upgrade`。');
+  console.log('工具會讀取既有 `.aps/config.json`,備份並刷新 APS skill,更新本地橋接與註冊,再檢查 Hub 狀態。');
+  console.log('');
+
+  const results = installTargets.map((item) => installSkill({ ...item, dryRun, refresh: true }));
+  for (const result of results) {
+    console.log(formatSetupResult(result, `${result.label}: `));
+  }
+  const failed = results.filter((result) => !result.ok && !result.skipped);
+  if (failed.length > 0) {
+    console.log('');
+    console.log('有一個或多個 skill 目標刷新失敗。已盡量保留既有檔案不變。');
+    process.exit(1);
+  }
+
+  console.log('');
+  console.log('☁️ 更新既有 APS 項目設定:');
+  let setupResults = [];
+  try {
+    setupResults = setupHub(setupValues, dryRun);
+    for (const result of setupResults) {
+      console.log(formatSetupResult(result));
+    }
+  } catch (err) {
+    console.error(`Upgrade failed:${err.message}`);
+    process.exit(1);
+  }
+  if (dryRun) {
+    console.log('');
+    console.log('Dry run 完成。移除 `--dry-run` 後重新執行,才會真正刷新。');
+    process.exit(0);
+  }
+
+  const output = doctorHub(setupValues);
+  const failedChecks = output.checks.filter((check) => !check.ok).length + output.conflicts.length;
+  console.log('');
+  if (failedChecks === 0) {
+    console.log('✅ APS 升級完成,doctor 預檢通過。');
+    console.log('🚀 下一步:重新啟動 Claude Code 或 Codex,再在項目資料夾輸入「教我用 APS」。');
+  } else {
+    console.log('⚠️ APS 已刷新,但 doctor 預檢仍有問題。請執行 `npx aps doctor` 查看細節。');
+  }
+  process.exit(failedChecks === 0 ? 0 : 1);
+}
+
 if (subcommand === 'bridge-pack') {
   const roleFlag = process.argv.indexOf('--role');
   const roleArg = (roleFlag >= 0 && process.argv[roleFlag + 1])
     ? process.argv[roleFlag + 1].toUpperCase()
     : 'A';
   if (roleArg !== 'A' && roleArg !== 'B') {
-    console.error(`Invalid --role value: must be 'A' or 'B' (got '${process.argv[roleFlag + 1]}').`);
+    console.error(`❌ --role 只可使用 A 或 B。目前收到: ${process.argv[roleFlag + 1]}`);
     process.exit(1);
   }
   const fixtureDir = roleArg === 'B' ? 'demo-agent-b' : 'demo-agent-a';
@@ -1171,7 +1326,7 @@ if (subcommand === 'config') {
     const writeFlags = [values.hubRoot, values.projectSlug, values.agentId, values.otherAgentId, values.role].filter(Boolean);
     if (writeFlags.length > 0) {
       if (writeFlags.length < 5) {
-        console.error('Config write requires all flags: --hub-root, --project, --agent-id, --other-agent-id, and --role A|B.');
+        console.error('❌ 寫入設定需要同時提供 --hub-root、--project、--agent-id、--other-agent-id 與 --role A|B。');
         process.exit(1);
       }
       const errors = [
@@ -1186,43 +1341,49 @@ if (subcommand === 'config') {
         process.exit(1);
       }
       const result = writeConfig(values, dryRun);
-      console.log(`APS config ${dryRun ? 'dry run' : 'saved'}`);
-      console.log(result.message);
+      console.log(`⚙️ APS config ${dryRun ? 'dry run' : 'saved'}`);
+      console.log(localizeSetupMessage(result.message));
       process.exit(0);
     }
 
     const filePath = configPath();
     const config = loadConfig();
     if (!fs.existsSync(filePath)) {
-      console.log('APS config: not found');
-      console.log(filePath);
+      console.log('❌ APS config: 找不到');
+      console.log(`📄 ${filePath}`);
       console.log('');
-      console.log('下一步:執行 `npx aps init` 進入互動式設定。');
+      console.log('🚀 下一步:執行 `npx aps init` 進入互動式設定。');
       process.exit(1);
     }
-    console.log('APS config');
-    console.log(`path: ${filePath}`);
-    console.log(`hubRoot: ${config.hubRoot || '(missing)'}`);
-    console.log(`projectSlug: ${config.projectSlug || '(missing)'}`);
-    console.log(`agentId: ${config.agentId || '(missing)'}`);
-    console.log(`otherAgentId: ${config.otherAgentId || '(missing)'}`);
-    console.log(`role: ${config.role || '(missing)'}`);
+    console.log('⚙️ APS 本機設定');
+    console.log(`📄 設定檔: ${filePath}`);
+    console.log(`☁️ Hub root: ${config.hubRoot || '(缺少)'}`);
+    console.log(`📁 項目代號: ${config.projectSlug || '(缺少)'}`);
+    console.log(`👤 本機 agent: ${config.agentId || '(缺少)'}`);
+    console.log(`🤝 對方 agent: ${config.otherAgentId || '(缺少)'}`);
+    console.log(`🎭 角色: ${config.role || '(缺少)'}`);
     process.exit(0);
   } catch (err) {
-    console.error(`Config failed: ${err.message}`);
+    console.error(`❌ 設定失敗:${err.message}`);
     process.exit(1);
   }
 }
 
 if (subcommand === 'publish') {
-  requireFlags(['--topic', '--body']);
+  requireFlags(['--topic']);
   const config = loadConfigOrExit();
   const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
   const projectSlug = flagOrConfig('--project', 'projectSlug', config);
   const fromId = getRequiredFlagValue('--from') || getRequiredFlagValue('--agent-id') || config.agentId || null;
   const toId = getRequiredFlagValue('--to') || getRequiredFlagValue('--other-agent-id') || config.otherAgentId || null;
   const topic = getRequiredFlagValue('--topic');
-  const body = getRequiredFlagValue('--body');
+  let body;
+  try {
+    body = readBodyInput();
+  } catch (err) {
+    console.error(`❌ 發佈失敗:${err.message}`);
+    process.exit(1);
+  }
   const level = getFlagValue('--level', 'L2-aps-packet');
   requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--from': fromId, '--to': toId });
   const errors = [
@@ -1237,31 +1398,38 @@ if (subcommand === 'publish') {
   }
   try {
     const result = writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level });
-    console.log(`Published ${result.packetId} v${result.version}`);
-    console.log(result.packetDir);
+    const notice = receiverNotice({ projectSlug, topic, packetId: result.packetId, version: result.version, label: '放了一個新交接包' });
+    console.log(`✅ 已發佈 ${result.packetId} v${result.version}`);
+    console.log(`📦 交接包: ${result.packetDir}`);
     console.log('');
-    console.log('可直接複製貼上的通知訊息:');
-    console.log(`我已用 APS 放了一個新交接包。項目: ${projectSlug};主題: ${topic};交接編號: ${result.packetId} v${result.version}。請打開你的 AI 工具,進入同一個項目資料夾,輸入「check Hub」。`);
+    console.log('📣 可直接複製貼上的通知訊息:');
+    console.log(notice);
     console.log('');
-    console.log('Email 主旨: APS 有新交接包');
-    console.log(`Email 正文: 我已用 APS 放了一個新交接包。項目: ${projectSlug};主題: ${topic};交接編號: ${result.packetId} v${result.version}。請打開你的 AI 工具,進入同一個項目資料夾,輸入「check Hub」。`);
+    console.log('📧 Email 主旨: APS 有新交接包');
+    console.log(`📧 Email 正文: ${notice}`);
     console.log('');
-    console.log('下一步:把上面的通知訊息複製貼上到 WhatsApp、Email 或你們平常使用的通訊工具。CLI inbox 命令只作排錯備用。');
+    console.log('🚀 下一步:把上面的通知訊息複製貼上到 WhatsApp、Email 或你們平常使用的通訊工具。CLI inbox 命令只作排錯備用。');
     process.exit(0);
   } catch (err) {
-    console.error(`Publish failed: ${err.message}`);
+    console.error(`❌ 發佈失敗:${err.message}`);
     process.exit(1);
   }
 }
 
 if (subcommand === 'revise') {
-  requireFlags(['--packet-id', '--body', '--reason']);
+  requireFlags(['--packet-id', '--reason']);
   const config = loadConfigOrExit();
   const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
   const projectSlug = flagOrConfig('--project', 'projectSlug', config);
   const agentId = flagOrConfig('--agent-id', 'agentId', config);
   const packetId = getRequiredFlagValue('--packet-id');
-  const body = getRequiredFlagValue('--body');
+  let body;
+  try {
+    body = readBodyInput();
+  } catch (err) {
+    console.error(`❌ 修訂失敗:${err.message}`);
+    process.exit(1);
+  }
   const reason = getRequiredFlagValue('--reason');
   requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId });
   const errors = [
@@ -1275,13 +1443,13 @@ if (subcommand === 'revise') {
   }
   try {
     const output = revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason });
-    console.log(`已修訂 ${packetId}: v${output.previousVersion} -> v${output.version}`);
-    console.log(output.packetDir);
+    console.log(`✅ 已修訂 ${packetId}: v${output.previousVersion} -> v${output.version}`);
+    console.log(`📦 交接包: ${output.packetDir}`);
     console.log('');
-    console.log('下一步:請通知對方在 AI 工具中說「check Hub」。命令列備用做法是請對方執行 `npx aps inbox`;最新未讀版本會重新顯示為待處理項目。');
+    console.log('🚀 下一步:請通知對方在自己電腦的 AI 工具中說「check Hub」。命令列備用做法是請對方執行 `npx aps inbox`;最新未讀版本會重新顯示為待處理項目。');
     process.exit(0);
   } catch (err) {
-    console.error(`Revise failed: ${err.message}`);
+    console.error(`❌ 修訂失敗:${err.message}`);
     process.exit(1);
   }
 }
@@ -1305,20 +1473,20 @@ if (subcommand === 'inbox') {
   try {
     const pending = pendingPackets({ hubRoot, projectSlug, agentId, otherAgentId });
     if (pending.length === 0) {
-      console.log(`APS Hub: ${agentId} 沒有待處理項目`);
+      console.log(`📭 APS Hub: ${agentId} 沒有待處理項目`);
     } else {
-      console.log(`APS Hub: ${agentId} 有 ${pending.length} 個待處理項目`);
+      console.log(`📬 APS Hub: ${agentId} 有 ${pending.length} 個待處理項目`);
       for (const item of pending) {
-        console.log(`- ${item.packetId} v${item.version} | scope:${item.scope} | items:${item.items.join(',') || '(none)'}`);
-        console.log(`  packet: ${item.packetPath}`);
-        console.log(`  標記已處理命令: npx aps consume --packet-id ${item.packetId} --version ${item.version} --result "<你做了甚麼>"`);
+        console.log(`- 📦 ${item.packetId} v${item.version} | 摘要:${item.scope} | 項目:${item.items.join(',') || '(無)'}`);
+        console.log(`  📄 交接包: ${item.packetPath}`);
+        console.log(`  ✅ 標記已處理命令: npx aps consume --packet-id ${item.packetId} --version ${item.version} --result "<你做了甚麼>"`);
       }
       console.log('');
-      console.log('下一步:請先閱讀交接包內容。只有在確認要接受這個版本後,才標記已處理;若資料不足,應先請對方補交。');
+      console.log('🚀 下一步:請先閱讀交接包內容。只有在確認要接受這個版本後,才標記已處理;若資料不足,應先請對方補交。');
     }
     process.exit(0);
   } catch (err) {
-    console.error(`Inbox failed: ${err.message}`);
+    console.error(`❌ 收件檢查失敗:${err.message}`);
     process.exit(1);
   }
 }
@@ -1345,13 +1513,13 @@ if (subcommand === 'consume') {
   }
   try {
     const output = consumePacket({ hubRoot, projectSlug, agentId, packetId, version, result });
-    console.log(output.already ? `已標記過 ${packetId} v${version}` : `已標記處理 ${packetId} v${version}`);
-    console.log(output.ackPath);
+    console.log(output.already ? `✅ 已標記過 ${packetId} v${version}` : `✅ 已標記處理 ${packetId} v${version}`);
+    console.log(`📄 ack: ${output.ackPath}`);
     console.log('');
-    console.log('下一步:如需要回覆對方,請優先在 AI 工具中說「幫我回覆這個 APS 交接」。命令列備用做法是 `npx aps publish ...`;如事情已完成,請原發包方收結原交接。');
+    console.log('🚀 下一步:如需要回覆對方,請優先在 AI 工具中說「幫我回覆這個 APS 交接」。命令列備用做法是 `npx aps publish ...`;如事情已完成,請原發包方收結原交接。');
     process.exit(0);
   } catch (err) {
-    console.error(`Consume failed: ${err.message}`);
+    console.error(`❌ 標記處理失敗:${err.message}`);
     process.exit(1);
   }
 }
@@ -1379,14 +1547,14 @@ if (subcommand === 'withdraw') {
   }
   try {
     const output = withdrawPacket({ hubRoot, projectSlug, agentId, packetId, version, reason });
-    console.log(`已撤回 ${packetId} v${output.version}`);
-    console.log(output.outboxPath);
+    console.log(`✅ 已撤回 ${packetId} v${output.version}`);
+    console.log(`📄 outbox: ${output.outboxPath}`);
     console.log('');
-    console.log(`已在可用時檢查接收方 ack: ${output.ackPath}`);
-    console.log('下一步:請通知對方在 AI 工具中說「check Hub」。這個版本不應再顯示為待處理項目。');
+    console.log(`🔎 已在可用時檢查接收方 ack: ${output.ackPath}`);
+    console.log('🚀 下一步:請通知對方在自己電腦的 AI 工具中說「check Hub」。這個版本不應再顯示為待處理項目。');
     process.exit(0);
   } catch (err) {
-    console.error(`Withdraw failed: ${err.message}`);
+    console.error(`❌ 撤回失敗:${err.message}`);
     process.exit(1);
   }
 }
@@ -1411,13 +1579,13 @@ if (subcommand === 'close') {
   }
   try {
     const output = closePacket({ hubRoot, projectSlug, agentId, packetId, reason });
-    console.log(`已收結 ${packetId} v${output.version}`);
-    console.log(output.outboxPath);
+    console.log(`✅ 已收結 ${packetId} v${output.version}`);
+    console.log(`📄 outbox: ${output.outboxPath}`);
     console.log('');
-    console.log('下一步:雙方可再說「check Hub」或執行 `npx aps inbox`;已收結的交接不應再顯示為待處理項目。');
+    console.log('🚀 下一步:雙方可再說「check Hub」或執行 `npx aps inbox`;已收結的交接不應再顯示為待處理項目。');
     process.exit(0);
   } catch (err) {
-    console.error(`Close failed: ${err.message}`);
+    console.error(`❌ 收結失敗:${err.message}`);
     process.exit(1);
   }
 }
@@ -1441,12 +1609,12 @@ if (subcommand === 'doctor') {
   try {
     const output = doctorHub({ hubRoot, projectSlug, agentId, otherAgentId });
     let failed = 0;
-    console.log(`APS Hub doctor v${packageVersion}`);
-    console.log(`設定檔: ${configPath()}`);
-    console.log(`Hub root: ${hubRoot}`);
-    console.log(`項目代號: ${projectSlug}`);
-    console.log(`本機 agent: ${agentId}`);
-    console.log(`對方 agent: ${otherAgentId}`);
+    console.log(`🩺 APS Hub doctor v${packageVersion}`);
+    console.log(`📄 設定檔: ${configPath()}`);
+    console.log(`☁️ Hub root: ${hubRoot}`);
+    console.log(`📁 項目代號: ${projectSlug}`);
+    console.log(`👤 本機 agent: ${agentId}`);
+    console.log(`🤝 對方 agent: ${otherAgentId}`);
     console.log('');
     for (const check of output.checks) {
       console.log(`${check.ok ? '✅ 正常' : '❌ 缺少'}  ${check.label}: ${check.path}`);
@@ -1463,20 +1631,20 @@ if (subcommand === 'doctor') {
     }
     console.log('');
     if (failed === 0) {
-      console.log('狀態: 通過');
-      console.log('下一步:請優先在 AI 工具中輸入「教我用 APS」。AI 應先讀現有設定,再檢查收件箱,用總覽、摘要、預檢、細節與下一步整理結果。命令列備用指令包括 `npx aps inbox`、`npx aps publish --topic ... --body ...`、`npx aps consume ...`、`npx aps revise ...`、`npx aps withdraw ...`、`npx aps close ...`、`npx aps config`。');
+      console.log('✅ 狀態: 通過');
+      console.log('🚀 下一步:請優先在 AI 工具中輸入「教我用 APS」。AI 應先讀現有設定,再檢查收件箱,用總覽、摘要、預檢、細節與下一步整理結果。命令列備用指令包括 `npx aps inbox`、`npx aps publish --topic ... --body-file ...`、`npx aps consume ...`、`npx aps revise --body-file ...`、`npx aps withdraw ...`、`npx aps close ...`、`npx aps config`。');
     } else {
-      console.log('狀態: 未通過');
-      console.log('下一步:先修正缺少的路徑或疑似衝突檔,再繼續使用 APS。不要在未檢查內容前刪除衝突檔。');
-      console.log('提示:如果剛剛重新執行過 `npx aps init`,請確認上方「項目代號」是否就是你剛才建立的項目。');
+      console.log('❌ 狀態: 未通過');
+      console.log('🚀 下一步:先修正缺少的路徑或疑似衝突檔,再繼續使用 APS。不要在未檢查內容前刪除衝突檔。');
+      console.log('💡 提示:如果剛剛重新執行過 `npx aps init`,請確認上方「項目代號」是否就是你剛才建立的項目。');
     }
     process.exit(failed === 0 ? 0 : 1);
   } catch (err) {
-    console.error(`Doctor failed: ${err.message}`);
+    console.error(`❌ doctor 失敗:${err.message}`);
     process.exit(1);
   }
 }
 
-console.error(`Unknown subcommand: ${subcommand}`);
-console.error('Try: npx aps --help');
+console.error(`❌ 不認識的子命令: ${subcommand}`);
+console.error('💡 請先執行: npx aps --help');
 process.exit(1);

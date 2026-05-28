@@ -7,6 +7,13 @@
 若目前工作目錄已有 `.aps/config.json`,不要使用本節的初次設置起手句。改用「已安裝後首次使用」起手:
 
 ```text
+-------------------------------------
+        ✦ AI Public Squares ✦
+   =^._.^=  <-- APS Hub -->  =^._.^=
+       packets  |  versions  |  ack
+         v<已驗證版本> pre-release
+-------------------------------------
+
 ✅ 我看到這個項目已經接上 APS。
 
 📍 目前設定
@@ -20,9 +27,16 @@
 2. 看看 <other_agent_id> 是否已有新內容交過來。
 ```
 
-然後執行 `npx aps doctor` 與 `npx aps inbox`。若兩項正常且沒有新件,顯示:
+然後執行 `npx aps doctor` 與 `npx aps inbox`。`npx aps doctor` 顯示的是 APS CLI 版本,不得把它當成 Agent Handoff Kit 版本,亦不得在 APS skill 回覆內顯示 Agent Handoff Kit 啟動卡。若兩項正常且沒有新件,顯示:
 
 ```text
+-------------------------------------
+        ✦ AI Public Squares ✦
+   =^._.^=  <-- APS Hub -->  =^._.^=
+       packets  |  versions  |  ack
+         v<已驗證版本> pre-release
+-------------------------------------
+
 ✅ APS 狀態正常。
 
 - 本機設定可讀取。
@@ -147,13 +161,34 @@ npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
 
 > 可以。我要先讀取本地 APS 設定,檢查 Hub,再把目前任務整理成交接包草稿與預檢結果。除非發現敏感資料、共同目標不清或對方任務會影響下一步,我會先把摘要交給你確認;只有你確認後,我才會發佈並生成可直接複製貼上的通知文字。
 
-寫入前預檢 wording:
+寫入前預檢 wording。若證據位置是本機路徑,必須標明只適用於本方電腦;給對方的識別以 project slug、topic、packet id / version 和相對 lane 為主,不得把本方 Google Drive 本機路徑寫成對方要照用的路徑:
 
-> 我已整理好交接包草稿,現在先做發送前預檢。共同目標、本方任務、對方任務、交叉點、請對方做的事、不應誤解的事、證據位置與敏感資料檢查都要齊全。若你確認以下摘要完整 / 正確,我才會寫入 Google Drive。
+> 我已整理好交接包草稿,現在先做發送前預檢。共同目標、本方任務、對方任務、交叉點、請對方做的事、不應誤解的事、證據位置與敏感資料檢查都要齊全。請確認三件事:一、交接包內容完整 / 正確;二、topic 是 `<topic>`;三、可以寫入 APS Hub。你回「確認發送」後我才會 publish。
+
+正式交接、長正文、多行摘要、表格或含引號 / 特殊符號的正文,AI 內部應先寫入正文檔,再使用:
+
+```text
+npx aps publish --topic <topic> --body-file <body_file_path>
+```
+
+## 7.2 既有項目升級 wording
+
+如果目前工作目錄已有 `.aps/config.json`,而用戶問「怎樣更新 / 升級 APS」,使用以下 wording:
+
+```text
+這個項目已經有 APS 本地設定,所以不用重新建立 Hub。
+
+我會走升級路徑:
+1. 更新 npm package。
+2. 執行 `npx aps upgrade`,備份並刷新 APS skill,更新本地橋接與 Handoff Kit 註冊。
+3. 執行 `npx aps doctor`,確認 Hub 與本機設定仍正常。
+
+升級不會覆寫既有交接包、outbox、ack 或 Hub 協定檔。完成後請重新啟動 AI 工具,再回到項目資料夾輸入「教我用 APS」。
+```
 
 若已發出測試交接,再補一句:
 
-> APS 目前不會自動發 WhatsApp、Email 或系統推送。請你把以下短訊傳給對方:「我已用 APS 放了一個測試交接。請打開你的 AI 工具,輸入『check Hub』。」對方的 AI 會從 Hub 讀到交接內容、共同目標與各自任務邊界,不用你重新解釋。
+> APS 目前不會自動發 WhatsApp、Email 或系統推送。請你把以下短訊傳給對方:「我已用 APS 放了一個測試交接。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入『check Hub』。」對方的 AI 會從自己的 APS 設定讀取 Hub,再讀到交接內容、共同目標與各自任務邊界,不用你重新解釋。
 
 ## 7.1 有新收件時的顯示順序
 
@@ -231,7 +266,7 @@ Email 主旨:
 APS 共識確認
 
 Email 正文:
-我已用 APS 回覆了一個共識確認包。請打開你的 AI 工具,進入同一個項目資料夾,輸入「check Hub」。請先確認共同目標、任務邊界與下一步,再繼續執行。
+我已用 APS 回覆了一個共識確認包。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入「check Hub」。請先確認共同目標、任務邊界與下一步,再繼續執行。
 ```
 
 收件資料不足 wording:
@@ -252,7 +287,7 @@ Email 主旨:
 APS 需要補交資料
 
 Email 正文:
-我已用 APS 回覆了一個補交需求包。請打開你的 AI 工具,進入同一個項目資料夾,輸入「check Hub」,按缺漏清單補交資料。
+我已用 APS 回覆了一個補交需求包。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入「check Hub」,按缺漏清單補交資料。
 ```
 
 ## 9. 不可承諾
