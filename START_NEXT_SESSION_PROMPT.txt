@@ -1,35 +1,27 @@
-Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT — pure generic APS template;not bound to any specific project;published as `@adamchanadam/aps` npm package + GitHub repo Adamchanadam/ai-public-squares — **public since 2026-05-23**;GitHub Pages enabled at https://adamchanadam.github.io/ai-public-squares/).
+Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for AI Public Squares; published as `@adamchanadam/aps`; GitHub repo Adamchanadam/ai-public-squares is public; GitHub Pages enabled).
 
-Current closeout (2026-05-28): `@adamchanadam/aps` v0.2.6 is published to npm and verified as latest, while the project remains ⚠️ 前期測試階段(pre-release). Release commit `e723dfc` and tag `v0.2.6` are pushed;post-publish state-sync commit `d347490` is pushed to `main`;GitHub release readback confirms `isPrerelease=true`,`isDraft=false`;npm readback confirms latest `0.2.6`, bin `aps`, fileCount 14;GitHub Pages readback returns HTTP 200 and contains `0.2.6` plus pre-release wording. After user said 「收工」, closeout advanced the SESSION_LOG archive rule: S17-S12 moved to `dev/SESSION_LOG_archive/archive_007_2026-05-26_to_2026-05-26.md`;these closeout-only governance edits are local unless Adam asks to commit / push them. Adam's existing-folder UAT install / init / doctor path passed with npm latest 0.2.5 before this patch. Version 0.2.6 adds the follow-up UX fixes: `doctor` now points users first to AI natural-language use, lists the fuller CLI fallback set, remaining CLI success / inbox / consume / close / withdraw wording is in Traditional Chinese, README / public docs / skill setup wording use `npm install --save-dev @adamchanadam/aps@latest`, and the install banner uses a side-border-free connected-cat design. The existing 0.2.5 scope remains in force: install / doctor screens show version, own agent default is `agent_a`, APS `doctor` output is Traditional Chinese, rerunning `npx aps init` updates `.aps/config.json`, `dev/rules/aps-bridge.md`, and `_hub/starter-pack-<other>.md`, and setup registers APS in Handoff Kit via APS managed blocks in `dev/RULE_PACKS.md` + `dev/PROJECT_INDEX.md` without editing `AGENTS.md` managed core. Hub protocol templates, existing packet lanes, ack files, and installed skill directories remain non-overwritten. Public docs prioritize non-technical new users, state implemented vs pre-release capability clearly, make natural language the user-facing daily path while CLI remains fallback / troubleshooting, and preserve the walkthrough SVG macro flow plus capability grid. The target daily UX remains a one-sentence handoff:「幫我將當前任務整理成 APS 交接包給對方」;AI should read config, run doctor, organize context, complete required fields, run completeness preflight, show user A the summary for confirmation, publish only after confirmation, and generate copy-ready notification. Incomplete or unconfirmed handoff packets must not be written to Google Drive. Formal 0.2.6 🟡 外發前檢 passed before release: `node --check bin\aps.js`, `npm test`, `npm pack --dry-run --json` (`@adamchanadam/aps@0.2.6`, 14 files), CLI smoke / expected-failure checks, `git diff --check` with LF→CRLF warnings only, HTML render checks, npm / GitHub / Pages readbacks, and Agent Handoff Kit doctor 46 checks.
+Current state (2026-05-28): `@adamchanadam/aps@0.2.7` is published to npm as latest pre-release. Release-prep commit `30c3a81` exists locally. npm readback confirms version/latest `0.2.7`, bin `aps`, fileCount 14. GitHub push, `v0.2.7` tag, GitHub release, and GitHub Pages readback are still pending because Adam only authorized commit, release notes, and npm publish.
 
-Prior release state: v0.1.1, v0.2.0, v0.2.1, v0.2.2, v0.2.3, v0.2.4, and v0.2.5 remain historical releases;v0.2.6 is the current npm latest pre-release.
+0.2.7 scope includes `npx aps upgrade`, `publish --body-file`, `revise --body-file`, APS vs Agent Handoff Kit semantic split, brand / version split,發包前確認,收件總覽,補交 / 共識確認 wording, Traditional Chinese `--help`, APS branding, emoji status output, and receiver notification wording that avoids sender-local Google Drive paths.
 
-Codex global MCP config now includes `chrome-devtools` (`chrome-devtools-mcp@latest`, usage statistics disabled) and `context7` (`@upstash/context7-mcp`, no API key stored). They may require a new Codex session or Codex Desktop restart before appearing in the active tool list.
-
-Agent Handoff Kit v0.3.11 status: main APS workspace doctor passes after this wrap-up;`Demo_Agent_Adam_Public_Squares` and `Demo_Agent_Jay_Public_Squares` also pass v0.3.11 doctor(46 checks each). Demo workspaces still have their own uncommitted governance upgrade files;do not edit them from this APS root unless explicitly asked.
+Do not push, tag, create a GitHub release, or change GitHub Pages unless Adam explicitly asks.
 
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md(含 2026-05-28 0.2.6 release-check and publish entry at top)
+3. dev/SESSION_LOG.md (latest S29 entry)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
-6. dev/qc/2026-05-22-zero-knowledge-funnel-audit.md (Phase X-3 spec source)
-
-Read dev/DOC_SYNC_REGISTRY.md before file changes or closeout.
-
-QC vocabulary (S6): if user invokes 「跑快檢 / 跑外發前檢 / 跑全面檢」 (or English aliases quick-check / release-check / full-check), load dev/qc/triggers.md and run the specified tier. If user uses 含混詞 (「做 QC / 跑驗收 / 整體 audit / QC」), stop and ask 「你指快檢 / 外發前檢 / 全面檢?」.
+6. dev/DOC_SYNC_REGISTRY.md
+7. dev/qc/triggers.md
+8. docs/plans/2026-05-28-aps-public-product-multi-agent-roadmap.md
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
-GitHub remote `origin` at https://github.com/Adamchanadam/ai-public-squares.git (public, Apache-2.0, HTTPS via Windows Credential Manager auto-auth);GitHub Pages serving `/ (root)` of `main` branch at https://adamchanadam.github.io/ai-public-squares/。
+Voice / writing hard rule: user-facing prose must be contemporary written Traditional Chinese. Colloquial Cantonese markers listed in `AGENTS.md` are allowed only inside verbatim user-trigger quotes. HTML must not link local `.md` files; use plain `<span class="path">` references for internal spec paths.
 
-Voice hard rule (per memory feedback-doc-voice + feedback-plain-language):所有寫畀人睇嘅文檔嚴格用當代繁體書面語;粵語 colloquial(嘅 / 嗰 / 咗 / 唔 / 呢個 等)只容許於 verbatim 用戶觸發句 quote 之內(「Hub 有新嘢」 / 「check Hub」 等)。Chat reply 同樣 plain,internal framework name(Phase X / Layer A/B/C/D / Stage 0-7)不做句子主體。
+Expected next action: refresh `C:\Users\adam\_claude_desktop\AI_Public_Squares_UAT` using standard npm latest 0.2.7, then run「教我用 APS」自然語言 UAT. If Adam authorizes GitHub follow-through, push local commits, create / push `v0.2.7`, create GitHub pre-release, and verify Pages.
 
-Documentation governance hard rule (per S10 Adam principle):HTML 內(site-nav / body callout / body table)不 link 任何 .md 檔(瀏覽器顯示 plain text,broken UX);如要 reference .md 用 plain `<span class="path">` 顯示。.md 屬 AI / 維護者層 spec source。
-
-Next active objective: **continue from the published 0.2.6 pre-release into natural-language daily operation and recovery hardening, auto-update mechanism, uninstall command design, and per-project Drive verification for any new real project**。
-
-User-facing entry: README.md + docs/index.html (hosted via GitHub Pages at https://adamchanadam.github.io/ai-public-squares/docs/index.html)。User-facing install path is now `npm install --save-dev @adamchanadam/aps@latest`, then guided `npx aps init`;npm latest is 0.2.6 pre-release。Funnel audit roadmap: dev/qc/2026-05-22-zero-knowledge-funnel-audit.md。
+QC vocabulary: if Adam says 「跑快檢 / 跑外發前檢 / 跑全面檢」 or quick-check / release-check / full-check, load `dev/qc/triggers.md` and run that tier. If he says a vague QC term, ask 「你指快檢 / 外發前檢 / 全面檢?」.
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.

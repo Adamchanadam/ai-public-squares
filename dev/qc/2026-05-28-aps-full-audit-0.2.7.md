@@ -4,7 +4,7 @@
 
 範圍：`@adamchanadam/aps` 0.2.7 pre-release，涵蓋 Reliable Pair 主線、CLI / skill / public docs / HTML / UAT evidence、Handoff Kit route、body-file 發包 / 修訂、公開承諾邊界與 Google Drive 本機路徑誤導風險。
 
-結論：機器檢查與本地協定回歸通過；公開 HTML 已完成「不預告未交付功能」收口；Adam 已授權在 release-prep 對齊後 commit release notes 並執行 npm publish。`AI_Public_Squares_UAT` 最終刷新、GitHub Pages 巢狀頁面讀回與 Jay 真實雙機驗證列為發布後驗收，不阻擋 npm pre-release。
+結論：機器檢查與本地協定回歸通過；公開 HTML 已完成「不預告未交付功能」收口；Adam 已授權在 release-prep 對齊後 commit release notes 並執行 npm publish。npm 發布已完成，registry 讀回確認 `@adamchanadam/aps@0.2.7` 是 latest，bin 為 `aps`，fileCount 為 14。`AI_Public_Squares_UAT` 最終刷新、GitHub Pages 巢狀頁面讀回與 Jay 真實雙機驗證列為發布後驗收。
 
 ## 本輪新增修正
 
@@ -28,7 +28,7 @@
 | 外發前檢 5：PII / secrets sweep | 通過 | 命中皆為安全政策、歷史審核或禁止條款文字；未見 credential value |
 | 外發前檢 6：package 預檢 | 通過 | `npm pack --dry-run` 通過，`@adamchanadam/aps@0.2.7`，14 files，未留下 `.tgz` |
 | 外發前檢 7：測試腳本 | 通過但覆蓋薄 | `npm test` 通過；現時仍只是 placeholder：`No tests yet` |
-| 外發前檢 8：npm registry 發布前讀回 | 通過 | 發布前 `npm view @adamchanadam/aps version dist-tags.latest --json` 回傳 `0.2.6`，確認 0.2.7 尚未被佔用 |
+| 外發前檢 8：npm registry 發布後讀回 | 通過 | 發布後 `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json` 回傳 version/latest `0.2.7`、bin `aps`、fileCount 14 |
 | 全面檢 1：協定往返回歸 | 通過本地證據 | disposable UAT 已走通 `doctor`、`publish --body-file`、`inbox`、安全通知、`upgrade --dry-run`；舊完整回歸覆蓋 consume / revise / close / withdraw |
 | 全面檢 2：啟動可發現性 | 通過 | APS route、project-index registration、bridge pack 與 doctor 檢查均有證據 |
 | 全面檢 3：UAT 目錄落地 | 接受風險 | `AI_Public_Squares_UAT` 曾完成 0.2.7 實測；最後一輪文案 / skill 修正後未再刷新。Adam 已批准簡化流程,發布後再用 npm latest 重跑 UAT |
@@ -63,7 +63,8 @@
 | `node bin\aps.js --help` | 通過；繁體中文 help + APS brand card |
 | `npm test` | 通過；placeholder 覆蓋薄 |
 | `npm pack --dry-run` | 通過；14 files；未留下 `.tgz` |
-| `npm view @adamchanadam/aps version dist-tags.latest --json` | 發布前通過；latest 仍為 `0.2.6` |
+| `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json` | 發布後通過；latest 為 `0.2.7`，bin `aps`，fileCount 14 |
+| `npx --yes @adamchanadam/aps@latest --help` | 發布後通過；顯示 v0.2.7 pre-release 與繁體中文 help |
 | `git diff --check` | 通過；只有 Windows LF→CRLF 提示 |
 | HTML future-feature grep | 通過；0 命中 |
 | HTML local href grep | 通過；0 命中 |
@@ -73,12 +74,10 @@
 
 1. `npm test` 只是 placeholder；0.2.7 發佈仍依賴 CLI smoke、UAT 與人工審核。
 2. 本輪不 push、tag 或建立 GitHub release；GitHub Pages 與 GitHub release 需要另行授權處理。
-3. Jay 真實雙機驗證要等 npm latest 讀回 0.2.7 後才能用標準路徑重跑。
+3. Jay 真實雙機驗證現在可用標準 `@latest` 路徑重跑。
 
 ## 建議下一步
 
-1. commit release-prep 與 release notes。
-2. 執行 `npm publish --access public`。
-3. 讀回 npm latest、bin 與 fileCount。
-4. npm 讀回成功後,再安排 UAT 目錄以標準 `@latest` 路徑重跑。
-5. GitHub push / tag / GitHub release / Pages 讀回另行授權處理。
+1. 在 `AI_Public_Squares_UAT` 用標準 `@latest` 路徑刷新並重跑「教我用 APS」自然語言 UAT。
+2. 請 Jay 用標準 `@latest` 路徑安裝 / 升級,再做真實雙機 `check Hub` 往返。
+3. GitHub push / tag / GitHub release / Pages 讀回另行授權處理。

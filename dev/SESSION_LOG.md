@@ -8,7 +8,35 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-28 (S27, latest) — 0.2.6 release closeout
+## 2026-05-28 (S29, latest) — 0.2.7 npm publish
+
+- **ID:** S29
+- **Summary:** Adam authorized the simplified release path: if no known unfixed blocking bug remained, align governance docs, commit, write release notes, and publish npm. Release-prep commit `30c3a81` was created, then `npm publish --access public` published `@adamchanadam/aps@0.2.7`.
+- **Changed:** This workspace and npm registry.
+  - Commit `30c3a81` records 0.2.7 Reliable Pair release-prep source / docs / release notes / QC report.
+  - npm registry now reports `@adamchanadam/aps` version/latest `0.2.7`, bin `aps`, fileCount 14.
+  - Post-publish state was updated locally in `dev/SESSION_HANDOFF.md`, `START_NEXT_SESSION_PROMPT.txt`, `dev/SESSION_LOG.md`, `dev/PROJECT_INDEX.md`, and `dev/qc/2026-05-28-aps-full-audit-0.2.7.md`.
+- **QC:** `node --check bin\aps.js`, `node bin\aps.js --help`, `npm test`, `npm pack --dry-run --json`, `git diff --check`, HTML local href scan, HTML future-feature scan, Handoff Kit doctor, `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json`, and `npx --yes @adamchanadam/aps@latest --help` all passed. `npm test` remains placeholder-only.
+- **Result:** npm publish complete. GitHub push, `v0.2.7` tag, GitHub release, and GitHub Pages verification were not performed because Adam did not authorize those steps in this message.
+- **Pending:** Refresh `AI_Public_Squares_UAT` from npm latest 0.2.7; then ask Jay to install / upgrade from `@latest` and run real two-machine UAT.
+- **Risks:** Project remains pre-release. GitHub repo / Pages are not yet updated with the local 0.2.7 release-prep commit unless Adam separately authorizes push / tag / GitHub release.
+
+## 2026-05-28 (S28) — Reliable Pair roadmap rescope and closeout
+
+- **ID:** S28
+- **Summary:** Re-scoped post-0.2.6 product work from broad multi-agent / watch ambitions to 0.2.7 Reliable Pair first;Contacts selector, `_notify`, `aps watch`, desktop notifications, platform scheduling, true multi-agent, and multi-recipient packets are deferred.
+- **Changed:** This workspace only.
+  - Modified: `README.md`, `docs/index.html`, `docs/maintainers/index.html`, `docs/qc/governance-map.html`, `dev/qc/triggers.md`, `dev/PROJECT_INDEX.md`, `dev/DOC_SYNC_REGISTRY.md`, `dev/SESSION_HANDOFF.md`, `START_NEXT_SESSION_PROMPT.txt`, `dev/SESSION_LOG.md`, `dev/PROJECT_DECISIONS.md`, and `dev/SESSION_LOG_archive/INDEX.md`.
+  - New: `docs/plans/2026-05-28-aps-public-product-multi-agent-roadmap.md` and `dev/SESSION_LOG_archive/archive_008_2026-05-26_to_2026-05-26.md`.
+  - Existing local candidate files remain modified: `bin/aps.js`, `skills/aps/SKILL.md`, `skills/aps/references/setup-dialogue.md`, `docs/guides/aps-onboarding-walkthrough.html`, and `dev/RULE_PACKS.md`.
+- **Done:** Runtime UAT feedback was converted into product decisions and local documentation / governance alignment. The roadmap now states Reliable Pair as the next publishable direction, with Contacts selector later and watch / notify / multi-agent platform explicitly deferred. Handoff state was reconciled and the next-session prompt regenerated.
+- **QC:** Handoff Kit doctor and final local checks are run as part of this closeout. Earlier focused checks in this session passed for Handoff Kit doctor 46 checks, `git diff --check` with LF→CRLF warnings only, targeted Reliable Pair / Contacts / single-recipient packet scans, HTML `.md` link governance scans, and local 0.2.7 `node --check` / help checks. No release-check or full-check was run after the final product-strategy rescope.
+- **Sync:** Handoff, project index, doc sync registry, QC triggers, public docs, maintainer docs, roadmap, decisions log, start prompt, and session log now carry the same current decision: Reliable Pair first, Contacts / watch / notify deferred.
+- **Pending:** Focused 0.2.7 Reliable Pair UAT, existing-project upgrade validation, `--body-file` publish / revise validation, sender confirmation flow, receiver summary-first / missing-info / consensus flow, and only then a commit / publish decision if Adam asks.
+- **Risks:** Project remains pre-release;local 0.2.7 candidate is uncommitted and unpublished;AI behavior still needs real UAT;deferred scope must not leak back into current release promises.
+- **Log maintenance:** Prepended S28 and moved S18 into archive batch 008 so the hot log keeps S28-S19 plus the large S22 historical composite already present.
+
+## 2026-05-28 (S27) — 0.2.6 release closeout
 
 - **ID:** S27
 - **Summary:** Closed the session after publishing `@adamchanadam/aps@0.2.6` as npm latest pre-release and pushing the post-publish state-sync commit. The repo remains a generic public APS template, not a project-specific runtime.
@@ -23,7 +51,7 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 - **Risks:** Project remains ⚠️ pre-release;natural-language daily use and recovery orchestration are not production-complete. Demo workspaces remain independent and should not be edited from this root unless explicitly asked.
 - **Log maintenance:** Prepended S27 and moved S17-S12 into archive batch 007 so the hot log keeps S27-S18 only.
 
-## 2026-05-28 (S26, latest) — 0.2.6 release-check and release prep
+## 2026-05-28 (S26) — 0.2.6 release-check and release prep
 
 - **ID:** S26
 - **Summary:** Adam approved formal 🟡 外發前檢 followed by commit / push / tag / GitHub pre-release / npm publish if the gate passes. The check used `dev/qc/triggers.md` as the single source of truth. During the gate, public release wording was advanced from npm latest 0.2.5 / local 0.2.6 candidate to 0.2.6 pre-release release-prep wording, because publishing 0.2.6 with 0.2.5 public docs would immediately drift.
@@ -148,20 +176,6 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 - **QC:** Drift grep was run across current docs and package surfaces with historical logs, migration backups, release notes, and evidence folders excluded. Remaining hits are classified as code variable names, security phrases such as `unpublished financials`, historical release reports, or current correct 0.2.0 pre-release statements. Full verification also includes `git diff --check`, HTML `.md` hyperlink audit, package-surface drift grep, and Agent Handoff Kit doctor after prompt regeneration.
 - **Result:** Current-state internal docs no longer imply that 0.2.0 is unpublished or that no real Adam ↔ Jay Drive verification exists. Historical docs remain unchanged as audit history.
 - **Sync:** Existing `dev/DOC_SYNC_REGISTRY.md` rows for public behavior, closeout/startup contract, workspace identity, skill source change, APS product consistency, and npm package change cover this update;no new registry row is needed.
-
-## 2026-05-26 (S18) — 0.2.0 pre-release published
-
-- **ID:** S18
-- **Summary:** Adam authorized commit and continuation through npm publish. The 0.2.0 pre-release candidate was committed, pushed, tagged, released on GitHub as a pre-release, published to npm, and then read back from the registry, GitHub release, GitHub Pages, and a fresh install probe.
-- **Changed:** This workspace and external release surfaces.
-  - Commit `47bf2d29c8bae7339730d9b655dadbf0b8da64da` (`release: prepare APS 0.2.0 pre-release`) was pushed to `origin/main`.
-  - Tag `v0.2.0` was pushed and points to the release commit.
-  - GitHub release `v0.2.0` was created as a pre-release: `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.0`.
-  - npm package `@adamchanadam/aps@0.2.0` was published with `latest = 0.2.0`.
-  - Post-publish state files were updated: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/PROJECT_INDEX.md`, `START_NEXT_SESSION_PROMPT.txt`, and `dev/qc/2026-05-26-aps-full-audit.md`.
-- **QC:** `npm view @adamchanadam/aps version dist-tags.latest bin dist.fileCount --json` confirms version `0.2.0`, latest `0.2.0`, bin `aps`, fileCount 14. GitHub release readback confirms `isPrerelease=true` and `isDraft=false`. GitHub Pages returned HTTP 200 and contains `0.2.0` plus pre-release wording. Published-package install probe passed via the documented path: install package first, then use `node_modules\.bin\aps.cmd --help` and `aps.cmd bridge-pack --role B`. One-off `npx @adamchanadam/aps@0.2.0 --help` remains unreliable and is not the documented path.
-- **Result:** 0.2.0 is now published and verified, but the project remains ⚠️ pre-release. Natural-language daily operation and recovery orchestration are still hardening work, not production-complete claims.
-- **Sync:** Existing `dev/DOC_SYNC_REGISTRY.md` rows for npm package change, release, public behavior change, closeout/startup contract, workspace identity, and APS product consistency cover this update;no new registry row is needed.
 
 ## Entry Template
 
