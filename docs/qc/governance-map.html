@@ -229,13 +229,13 @@
   <a class="site-nav__link" href="../guides/index.html">教學中心</a>
   <a class="site-nav__link site-nav__link--active" href="governance-map.html">分層 QC</a>
   <span class="site-nav__spacer"></span>
-  <span class="site-nav__hint">2026-05-26</span>
+  <span class="site-nav__hint">2026-05-28</span>
 </nav>
 
 <header class="cover">
   <div class="eyebrow">QC 機制 · 參考卡</div>
   <h1>分層 QC — 觸發詞彙</h1>
-  <p class="subtitle">三級觸發詞彙將既有 6 層 QC 機制收口成 3 個入口。</p>
+  <p class="subtitle">三級觸發詞彙將既有 QC 機制收口成 3 個入口。</p>
   <div class="meta">
     <span>本卡片：參考</span>
     <span>單一真源：<code>dev/qc/triggers.md</code></span>
@@ -265,7 +265,7 @@
       <tr>
         <td>🟡 外發前檢</td>
         <td><code>跑外發前檢</code> / <code>release-check</code> / <code>handover-verify</code></td>
-        <td>推送遠端 / 分享計劃 / 跨工作目錄傳檔之前</td>
+        <td>推送遠端 / 分享教學或維護者頁 / 傳送 APS 設置資料之前</td>
         <td>5–10 分鐘</td>
       </tr>
       <tr>
@@ -299,12 +299,12 @@
     <article class="tier amber">
       <h3>🟡 外發前檢</h3>
       <p><strong>別名</strong>：<code>跑外發前檢</code> / <code>release-check</code> / <code>handover-verify</code></p>
-      <p><strong>時機</strong>:物件離開本工作目錄之前(推送遠端 / 分享計劃 / 傳橋接規則包予協作夥伴)。</p>
+      <p><strong>時機</strong>:物件離開本工作目錄之前(推送遠端 / 分享教學或維護者頁 / 傳橋接規則包、starter pack 或設置指引予協作夥伴)。</p>
       <p><strong>覆蓋</strong>：快檢 4 項 + 5 項：</p>
       <ul>
         <li>跨工作目錄佔位符審核</li>
-        <li>計劃 / 教學頁 / 橋接規則包三處交叉閱讀</li>
-        <li>HTML preview 視覺確認</li>
+        <li>README / 入口 / 教學 / 維護者 / skill / CLI 跨面交叉閱讀</li>
+        <li>HTML preview 視覺確認,包括 walkthrough SVG 與能力清單</li>
         <li>PII / secrets sweep</li>
         <li>語氣與用語紀律掃描</li>
       </ul>
@@ -318,8 +318,8 @@
       <p><strong>覆蓋</strong>：外發前檢 + 5 項人工 / 跨工作目錄：</p>
       <ul>
         <li>跨工作目錄審核</li>
-        <li>MVP 形式往返流程回歸測試</li>
-        <li>橋接規則包啟動行為記錄</li>
+        <li>協定往返流程回歸測試</li>
+        <li>啟動可發現性與橋接行為記錄</li>
         <li>五區段 / 自審 retrospective</li>
         <li>審核報告輸出</li>
       </ul>
@@ -339,18 +339,54 @@
     <tbody>
       <tr>
         <td>公開承諾一致性</td>
-        <td>README、入口頁、教學中心、完整落地教學、本頁、CLI help、skill spec 對「目前可用」「目標體驗」「手動替代路徑」「npm publish 狀態」描述一致。</td>
+        <td>README、入口頁、教學中心、第一次安裝與測試、本頁、維護者頁、CLI help、skill spec 對「目前可用」「正在硬化」「目標體驗」「手動替代路徑」「npm publish 狀態」描述一致。</td>
         <td>公開面可能把未發佈或未實作能力寫成已可用。</td>
       </tr>
       <tr>
         <td>發佈前可信度</td>
-        <td>任何會離開本工作目錄的內容,包括 README、GitHub Pages、npm package、Bridge Pack、walkthrough、QC 卡片,皆須讓外部讀者理解並按當前狀態操作。</td>
+        <td>任何會離開本工作目錄的內容,包括 README、GitHub Pages、npm package、Bridge Pack、starter pack、walkthrough、QC 卡片、維護者頁,皆須讓外部讀者理解並按當前狀態操作。</td>
         <td>外人可能照文件操作卻撞上未核實、未發佈或不完整流程。</td>
       </tr>
       <tr>
         <td>協定實際運行正確性</td>
-        <td>Hub 協定、橋接規則包樣板、示範與實際工作目錄、發件記錄、收件記錄、單寫通道、交接包版本、啟動時待處理計算、收結 / 撤回行為須有實際操作記錄或對應工作目錄證據。</td>
+        <td>Hub 協定、橋接規則包樣板、實際工作目錄、發件記錄、收件記錄、單寫通道、交接包版本、啟動時待處理計算、修訂 / 撤回 / 收結行為、Handoff Kit APS route registration 與 project-index registration 須有實際操作記錄或對應工作目錄證據。</td>
         <td>文檔說得通,但實際共享資料夾流程未必跑得通。</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>最新橫切保障</h2>
+  <p class="lede">以下不是第四條主線,而是三條主線都必須覆蓋的防漏線。此段鏡像 <code>dev/qc/triggers.md</code>;若不一致,以該檔為準並同步本頁。</p>
+  <table class="params">
+    <thead>
+      <tr><th>保障</th><th>檢查重點</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>啟動可發現性</td>
+        <td><code>aps init</code> 必須註冊 APS route 到 <code>dev/RULE_PACKS.md</code>,並在 <code>dev/PROJECT_INDEX.md</code> 記錄 APS local bridge / config;不可手改 <code>AGENTS.md</code> managed core。</td>
+      </tr>
+      <tr>
+        <td>新手主路徑</td>
+        <td>日常使用以自然語言請 AI 操作為主;命令列只可作備用、排錯或維護者驗證路徑。</td>
+      </tr>
+      <tr>
+        <td>宏觀理解與能力邊界</td>
+        <td>walkthrough 須先讓新手理解 APS 如何運作、已具備甚麼、正在硬化甚麼、刻意不做甚麼。SVG 流程圖與能力清單不可誇大自動化能力。</td>
+      </tr>
+      <tr>
+        <td>一語交接與雙向預檢</td>
+        <td>發送前須檢查共同目標、任務邊界、交叉點、請對方做的事、證據、風險與敏感資料;收件後也須檢查是否足夠回應。</td>
+      </tr>
+      <tr>
+        <td>補交與共識確認</td>
+        <td>交接不足時先發補交需求;理解不一致時先發共識確認包。未補齊或未達成共識前,不得把原交接收結。</td>
+      </tr>
+      <tr>
+        <td>通知與同步邊界</td>
+        <td>APS 不自動發 WhatsApp / Email,也不保證對方電腦即時同步。AI 應生成可複製通知,並在對方看不到時先檢查 Drive 同步。</td>
       </tr>
     </tbody>
   </table>
@@ -366,23 +402,23 @@
     <tbody>
       <tr>
         <td>零認知讀者入口流程</td>
-        <td>讀者由 README 進入後,能分清「目前可試」與「目標體驗」。</td>
+        <td>讀者由 README 進入後,能分清「目前可試」「正在硬化」與「目標體驗」;walkthrough 的流程圖與能力清單能先解釋 APS 價值。</td>
         <td><code>README.md</code>、<a class="site-nav__link" href="../index.html">入口</a>、<a class="site-nav__link" href="../guides/index.html">教學中心</a></td>
       </tr>
       <tr>
         <td>手動設置流程</td>
-        <td>由前置事項、工作目錄、橋接規則包、治理列到首次交接包,每一步不依賴不存在的 npm package 或私有本機路徑。</td>
-        <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html">完整落地教學</a></td>
+        <td>由前置事項、工作目錄、Agent Handoff Kit、<code>npx aps init</code>、Handoff Kit APS route、project-index registration、<code>doctor</code> 到首次交接包,每一步不依賴不存在的 npm package、私有本機路徑或手改 <code>AGENTS.md</code>。</td>
+        <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html">第一次安裝與測試</a></td>
       </tr>
       <tr>
         <td>日常協作流程</td>
-        <td>發出內容、WhatsApp 通知、收方檢查 Hub、收件 / 消化、回覆 / 收結能追蹤同一條邏輯。</td>
-        <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html#s10">完整落地教學第 10 節</a></td>
+        <td>一語交接、AI 讀設定、健康檢查、整理上下文、發送前預檢、用戶確認、發佈、生成通知、接收方 <code>check Hub</code>、收件後預檢、補交 / 共識確認、回覆 / 收結能追蹤同一條邏輯。</td>
+        <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html#daily">第一次測試交接</a></td>
       </tr>
       <tr>
         <td>出錯補救流程</td>
-        <td>Drive 同步延遲、衝突副本、寫錯通道、交接包格式錯誤、版本不對齊,皆有偵測、停手、用戶確認、修復或升級路徑。</td>
-        <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html#s12">完整落地教學第 12 節</a></td>
+        <td>Drive 同步延遲、衝突副本、寫錯通道、交接包格式錯誤、版本不對齊、啟動找不到 APS route、設定指向舊 project、對方看不到 packet,皆有偵測、停手、用戶確認、修復或升級路徑。</td>
+        <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html">第一次安裝與測試</a></td>
       </tr>
     </tbody>
   </table>
@@ -412,21 +448,21 @@
       <tr><td><code>QC</code>(單字)</td><td>反問</td></tr>
     </tbody>
   </table>
-  <p>未列於以上 list 之含混表達,按字面 + context 解;如仍有 ambiguity 寧反問。</p>
+  <p>未列於以上清單的含混表達,按字面與上下文判斷;如仍有歧義,寧可反問。</p>
 </section>
 
 <section>
   <h2>典型用法</h2>
   <ul>
     <li><strong>🟢 快檢</strong>:commit 前 spot-check;五區段執行完之後之 baseline 驗證;改完 doc 試 anchor 不斷</li>
-    <li><strong>🟡 外發前檢</strong>:push remote 之前;User A 傳 Bridge Pack 予 User B 之前;新 Phase plan 分享予外人之前</li>
+    <li><strong>🟡 外發前檢</strong>:push remote 之前;傳 Bridge Pack / starter pack / 設置指引予協作夥伴之前;新教學頁或維護者頁分享予外人之前</li>
     <li><strong>🔴 全面檢</strong>：跨機往返落地之前；協定升版之前；引入新 AI 程式之前；連續多輪工作後重置基線</li>
   </ul>
 </section>
 
 <section>
   <h2>既有 mechanism mapping</h2>
-  <p class="lede">此套詞彙<strong>不重複定義</strong>既有 6 層機制;下表只說明「哪個機制觸發於哪個級別」。詳細規格各有自己的單一真源。</p>
+  <p class="lede">此套詞彙<strong>不重複定義</strong>既有機制;下表只說明「哪個機制觸發於哪個級別」。詳細規格各有自己的單一真源。</p>
   <table class="params">
     <thead>
       <tr><th>機制</th><th>單一真源位置</th><th>觸發級別</th></tr>
@@ -448,6 +484,11 @@
         <td>🟢 / 🟡 視 scope</td>
       </tr>
       <tr>
+        <td>APS Handoff Kit route registration</td>
+        <td><code>aps init</code> 寫入 runtime workspace 的 <code>dev/RULE_PACKS.md</code> managed block + <code>dev/PROJECT_INDEX.md</code> APS installed skill block</td>
+        <td>🔴</td>
+      </tr>
+      <tr>
         <td>橋接規則包實際運行補充規則</td>
         <td>示範工作區或實際工作區之 <code>dev/rules/aps-bridge.md</code></td>
         <td>實際運行時自動觸發,不屬於檢查級別</td>
@@ -467,20 +508,20 @@
 </section>
 
 <section>
-  <h2>點呼叫</h2>
-  <p>對住 AI 講一句 trigger keyword 即可：</p>
+  <h2>如何呼叫</h2>
+  <p>對 AI 說一句觸發詞即可：</p>
   <ul>
     <li>「<strong>跑快檢</strong>」— AI 跑 doctor + git status + grep set</li>
     <li>「<strong>跑外發前檢</strong>」— AI 跑快檢 + 五項外發 audit</li>
     <li>「<strong>跑全面檢</strong>」— AI 跑外發前檢 + 五項全面審核;如涉及跨工作目錄,AI 列出需於對應工作目錄另開新對話處理的子任務</li>
   </ul>
   <div class="callout warn">
-    <strong>講含混詞 = 觸發反問</strong>。如果用「做 QC / 跑驗收 / 整體 audit」此類詞,AI 會停手問「你指快檢 / 外發前檢 / 全面檢?」。此乃紀律,不為出 bug — 防止 scope 漂移。
+    <strong>使用含混詞 = 觸發反問</strong>。如果用「做 QC / 跑驗收 / 整體 audit」此類詞,AI 會停手問「你指快檢 / 外發前檢 / 全面檢?」。這是防止範圍漂移的紀律,不是錯誤。
   </div>
 </section>
 
 <footer>
-  AI Public Squares · 分層 QC 參考卡 · 建立 2026-05-21 S6 · 同步 2026-05-26 · 單一真源於 <code>dev/qc/triggers.md</code>
+  AI Public Squares · 分層 QC 參考卡 · 建立 2026-05-21 S6 · 同步 2026-05-28 · 單一真源於 <code>dev/qc/triggers.md</code>
 </footer>
 
 </main>

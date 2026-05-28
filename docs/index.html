@@ -7,78 +7,111 @@
 <style>
   :root {
     --ink: #1b2230;
-    --ink-soft: #4a5468;
-    --ink-fade: #8892a3;
+    --ink-soft: #4b5568;
+    --ink-fade: #7c8798;
     --bg: #f6f3ec;
-    --bg-card: #fffdf7;
-    --line: #d9d4c5;
+    --paper: #fffdf7;
+    --line: #d8d1c0;
     --accent: #2f5d7c;
-    --accent-soft: #e3edf3;
+    --accent-soft: #e2edf3;
     --ok: #2e7d4f;
-    --pending: #8a6a23;
-    --mono: ui-monospace, "Cascadia Code", "Source Code Pro", Consolas, "PingFang TC", monospace;
+    --warn: #a55d1f;
+    --bad: #b94a3a;
+    --mono: ui-monospace, "Cascadia Code", Consolas, "PingFang TC", monospace;
     --serif: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", "Songti TC", Georgia, serif;
     --sans: "Noto Sans TC", "Source Han Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
   body {
+    margin: 0;
     background: var(--bg);
     color: var(--ink);
     font-family: var(--sans);
     font-size: 16px;
     line-height: 1.75;
-    padding: 32px 16px 64px;
+    padding: 28px 16px 56px;
   }
-  main {
-    max-width: 760px;
-    margin: 0 auto;
+  main { max-width: 880px; margin: 0 auto; }
+  .site-nav {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    align-items: baseline;
+    font-size: 14px;
   }
-  header.cover {
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 24px;
-    margin-bottom: 28px;
+  .site-nav__brand {
+    font-family: var(--serif);
+    font-weight: 700;
+    letter-spacing: 0.02em;
   }
-  header.cover .eyebrow {
-    font-size: 13px;
-    letter-spacing: 0.12em;
+  .site-nav__brand-tag {
+    margin-left: 5px;
     color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .site-nav__link {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+  }
+  .site-nav__link:hover, .site-nav__link--active { border-bottom-color: var(--accent); }
+  .site-nav__link--active { color: var(--ink); font-weight: 600; }
+  .site-nav__spacer { flex: 1; }
+  .site-nav__hint { color: var(--ink-fade); font-size: 12px; }
+  header.cover {
+    padding: 26px 0 24px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-bottom: 8px;
   }
-  header.cover h1 {
+  h1, h2, h3 { color: var(--ink); }
+  h1 {
     font-family: var(--serif);
-    font-size: 32px;
-    font-weight: 700;
-    margin: 0 0 4px;
-    color: var(--ink);
-    letter-spacing: 0.02em;
+    font-size: clamp(32px, 7vw, 58px);
+    line-height: 1.08;
+    margin: 0 0 12px;
+    letter-spacing: 0;
   }
-  header.cover .subtitle {
-    font-size: 17px;
+  .subtitle {
+    max-width: 780px;
     color: var(--ink-soft);
+    font-size: 18px;
     margin: 0 0 18px;
   }
-  header.cover .meta {
+  .meta {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    font-size: 13px;
-    color: var(--ink-fade);
   }
   .badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
     border: 1px solid currentColor;
-    background: rgba(255,255,255,0.4);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.5);
   }
   .badge.ok { color: var(--ok); }
-  .badge.pending { color: var(--pending); }
+  .badge.warn { color: var(--warn); }
   section {
-    background: var(--bg-card);
+    background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 6px;
     padding: 24px 28px;
@@ -86,230 +119,98 @@
   }
   section > h2 {
     font-family: var(--serif);
-    font-size: 22px;
-    font-weight: 700;
-    margin: 0 0 6px;
-    color: var(--ink);
+    font-size: 24px;
+    line-height: 1.28;
+    margin: 0 0 8px;
+    letter-spacing: 0;
   }
   section > p.lede {
-    margin: 0 0 16px;
     color: var(--ink-soft);
-    font-size: 15px;
-  }
-  section h3 {
-    font-size: 15px;
-    font-weight: 600;
-    margin: 18px 0 4px;
-    color: var(--accent);
+    margin: 0 0 16px;
   }
   p { margin: 0 0 12px; }
-  ul, ol { margin: 6px 0 14px; padding-left: 22px; }
-  li { margin-bottom: 6px; }
-  code, .path, .sha {
+  ul, ol { margin: 8px 0 14px; padding-left: 24px; }
+  li { margin-bottom: 7px; }
+  a { color: var(--accent); }
+  code, .path {
     font-family: var(--mono);
     font-size: 13px;
     background: #ece6d3;
-    padding: 1px 6px;
     border-radius: 3px;
-    color: var(--ink);
-    word-break: break-all;
+    padding: 1px 6px;
+    word-break: break-word;
   }
-  .key { color: var(--accent); font-weight: 600; }
-  .step-list {
-    counter-reset: step;
-    list-style: none;
-    padding-left: 0;
-    margin: 12px 0 0;
-  }
-  .step-list li {
-    counter-increment: step;
-    padding-left: 38px;
-    position: relative;
-    margin-bottom: 10px;
-  }
-  .step-list li::before {
-    content: counter(step);
-    position: absolute;
-    left: 0;
-    top: 4px;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: white;
-    text-align: center;
-    line-height: 26px;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: var(--mono);
-  }
-  table.entry {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 8px;
-    font-size: 14px;
-  }
-  table.entry th, table.entry td {
-    text-align: left;
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--line);
-    vertical-align: top;
-  }
-  table.entry th {
-    font-weight: 600;
-    color: var(--accent);
-    background: var(--accent-soft);
-    font-size: 13px;
-    letter-spacing: 0.04em;
-  }
-  table.entry tr:last-child td { border-bottom: none; }
-  .callout {
-    background: var(--accent-soft);
-    border-left: 3px solid var(--accent);
-    padding: 14px 16px;
-    margin: 14px 0;
-    font-size: 14px;
-    color: var(--ink-soft);
-    border-radius: 0 4px 4px 0;
-  }
-  .callout.warn {
-    background: rgba(185,74,58,0.08);
-    border-left-color: #b94a3a;
-  }
-  .callout.warn strong { color: #b94a3a; }
-  .callout strong { color: var(--ink); }
-  .pain-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 14px;
-  }
-  @media (min-width: 640px) {
-    .pain-grid { grid-template-columns: 1fr 1fr; }
-  }
-  .pain-card {
-    background: #fbf6e9;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 14px;
-  }
-  .pain-card .icon {
-    font-size: 20px;
-    margin-bottom: 4px;
-  }
-  .pain-card .title {
-    font-weight: 600;
-    color: var(--ink);
-    font-size: 14px;
-    margin-bottom: 2px;
-  }
-  .pain-card .body {
-    font-size: 13px;
-    color: var(--ink-soft);
-    line-height: 1.6;
-  }
-  .trick {
-    display: flex;
-    gap: 14px;
-    padding: 12px 0;
-    border-bottom: 1px dashed var(--line);
-  }
-  .trick:last-child { border-bottom: none; }
-  .trick .num {
-    font-family: var(--mono);
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 14px;
-    min-width: 28px;
-  }
-  .trick .body { flex: 1; }
-  .trick .head { font-weight: 600; color: var(--ink); margin-bottom: 2px; }
-  .trick .why { font-size: 13px; color: var(--ink-soft); }
-  .status-list { list-style: none; padding-left: 0; margin: 0; }
-  .status-list li {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    padding: 6px 0;
-    border-bottom: 1px dashed var(--line);
-    font-size: 14px;
-  }
-  .status-list li:last-child { border-bottom: none; }
-  .status-list .mark {
-    font-family: var(--mono);
-    font-weight: 600;
-    min-width: 30px;
-    text-align: center;
-  }
-  .status-list .mark.done { color: var(--ok); }
-  .status-list .mark.wait { color: var(--pending); }
-  .install-block {
+  pre {
     background: #1b2230;
     color: #f6f3ec;
     border-radius: 6px;
-    padding: 18px 22px;
-    margin: 14px 0;
+    padding: 16px 18px;
+    overflow-x: auto;
     font-family: var(--mono);
     font-size: 14px;
-    overflow-x: auto;
+    line-height: 1.55;
+    margin: 12px 0 16px;
   }
-  .install-block .prompt {
-    color: var(--ink-fade);
-    margin-right: 8px;
-    user-select: none;
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 720px) {
+    .grid.two { grid-template-columns: 1fr 1fr; }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+  }
+  .tile {
+    background: #fbf6e9;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px;
+  }
+  .tile h3 {
+    font-size: 16px;
+    margin: 0 0 6px;
+  }
+  .tile p {
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 0;
+  }
+  .callout {
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    color: var(--ink-soft);
+    padding: 14px 16px;
+    border-radius: 0 4px 4px 0;
+    margin: 14px 0;
+  }
+  .callout strong { color: var(--ink); }
+  .callout.warn {
+    border-left-color: var(--bad);
+    background: rgba(185,74,58,0.08);
+  }
+  .callout.warn strong { color: var(--bad); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+    padding: 10px 12px;
+  }
+  th {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
   }
   footer {
     text-align: center;
     color: var(--ink-fade);
     font-size: 12px;
-    margin-top: 30px;
-  }
-  /* === Shared site nav (keep in sync across docs/index.html and docs/guides/*.html) === */
-  .site-nav {
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 10px 14px;
-    margin-bottom: 22px;
-    font-size: 14px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 20px;
-    align-items: baseline;
-  }
-  .site-nav__brand {
-    font-family: var(--serif);
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: 0.02em;
-    margin-right: 8px;
-  }
-  .site-nav__brand-tag {
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-left: 4px;
-  }
-  .site-nav__link {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 2px;
-    white-space: nowrap;
-    transition: border-color 0.15s ease;
-  }
-  .site-nav__link:hover { border-bottom-color: var(--accent); }
-  .site-nav__link--active {
-    color: var(--ink);
-    border-bottom-color: var(--accent);
-    font-weight: 600;
-  }
-  .site-nav__spacer { flex: 1; }
-  .site-nav__hint {
-    color: var(--ink-fade);
-    font-size: 12px;
+    margin-top: 28px;
   }
 </style>
 </head>
@@ -320,242 +221,186 @@
   <span class="site-nav__brand">AI Public Squares<span class="site-nav__brand-tag">APS</span></span>
   <a class="site-nav__link site-nav__link--active" href="index.html">入口</a>
   <a class="site-nav__link" href="guides/index.html">教學中心</a>
-  <a class="site-nav__link" href="qc/governance-map.html">分層 QC</a>
   <span class="site-nav__spacer"></span>
   <span class="site-nav__hint">2026-05-27</span>
 </nav>
 
 <header class="cover">
-  <div class="eyebrow">項目入口頁</div>
-  <h1>AI Public Squares</h1>
-  <p class="subtitle">兩個人,各自在自己的電腦上,以 AI 共同製作一份品牌指引、撰寫一份報告、設計一個項目 — 但檔案來去往返、上下文重複交代?</p>
+  <div class="eyebrow">公開入口</div>
+  <h1>讓兩部電腦上的 AI 有一個共同交接處。</h1>
+  <p class="subtitle">AI Public Squares 用 Google Drive 上的一個共享資料夾，替兩邊的 AI 留下交接包、上下文、版本記錄與收件狀態。它不是伺服器，也不會自動傳訊息；它的價值是讓對方 AI 在檢查 Hub 時讀到完整交接，而不是靠人類重複搬運背景。</p>
   <div class="meta">
-    <span class="badge ok">試行版 0.2.4</span>
-    <span class="badge pending">init 技能安裝器試行中</span>
-    <span>建立 2026-05-20</span>
-    <span>最新更新 2026-05-27</span>
+    <span class="badge ok">npm latest 0.2.4</span>
+    <span class="badge warn">前期測試階段</span>
+    <span class="badge">本地 0.2.5 候選改良中</span>
   </div>
 </header>
 
-<div class="callout warn">
-  <strong>⚠️ 前期測試階段(pre-release)</strong> — 本工具仍處於早期建構期。npm latest 0.2.4 pre-release 將主安裝路徑改為互動式 <code>npx aps init</code>,已支援將 APS 技能安裝到 Claude Code 與 Codex 的個人技能目錄,並可建立初始 Google Drive Hub skeleton、Bridge Pack、starter pack 與本地設定;CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並完成一次維護者真實 Google Drive 跨機往返驗證。0.2.4 保留修訂、撤回、只讀診斷與短命令日用流程。自然語言日常操作與補救流程仍未完整產品化。適合觀察、提出建議、留下回饋;不建議用於正式生產或不可中斷的重要流程。
-</div>
-
 <section>
-  <h2>這個工具是什麼</h2>
-  <p>兩個人在兩部電腦上 — 可能是朋友、同事,或是隔著一個太平洋的協作夥伴 — 以 AI 共同完成一份品牌指引、撰寫一份報告、設計一個項目。最常遇到的問題:</p>
-  <div class="pain-grid">
-    <div class="pain-card">
-      <div class="icon">📦</div>
-      <div class="title">「最新版的檔案在哪裡?」</div>
-      <div class="body">每次更新都要透過 WhatsApp 通知一次,Google Drive 一邊更新一邊覆蓋。</div>
+  <h2>先講清楚：目前是否完整實現？</h2>
+  <p class="lede">核心協定與命令列流程已經實作並多次驗證；但「完全由 AI 以自然語言帶新手完成所有日常使用與補救」仍未達到正式產品水準。</p>
+  <div class="grid two">
+    <div class="tile">
+      <h3>已可實際使用的部分</h3>
+      <p><code>npx aps init</code> 可安裝 APS 技能、建立 Hub 骨架、寫入本地設定；<code>doctor</code>、<code>publish</code>、<code>inbox</code>、<code>consume</code>、<code>revise</code>、<code>withdraw</code>、<code>close</code> 已可支援最小日常往返。</p>
     </div>
-    <div class="pain-card">
-      <div class="icon">🤖</div>
-      <div class="title">「我這部 AI 記不起我們之前的討論」</div>
-      <div class="body">對方開啟新 AI 對話時,須重新交代上下文,費時費力。</div>
-    </div>
-    <div class="pain-card">
-      <div class="icon">⚠️</div>
-      <div class="title">Google Drive 出現衝突副本</div>
-      <div class="body">雙方同時儲存,Google Drive 產生「(1).md」或「(conflict).md」,無法判斷哪一份是最新版。</div>
-    </div>
-    <div class="pain-card">
-      <div class="icon">🔁</div>
-      <div class="title">每次往返均須重做</div>
-      <div class="body">對方回覆之後又要重複一遍:搬運檔案、解釋背景、再次經歷整個流程。</div>
+    <div class="tile">
+      <h3>仍屬前期測試的部分</h3>
+      <p>AI 對話中的自然語言引導、錯誤補救、跨機項目首次驗證，仍需要保守試用。工具不會自動推送通知，但 AI 應替你生成可直接複製貼上的 WhatsApp 或 Email 通知。</p>
     </div>
   </div>
-  <p style="margin-top:14px;">本工具的設計:Google Drive 上一個共享資料夾,加上一套寫入規矩 = 雙方電腦的 AI 自動知道對方的進度;新內容自動呈現給使用者;衝突由結構性避免。沒有伺服器,沒有額外的雲端帳號,沒有自動推送通知(刻意如此設計),純粹依靠 Google Drive 上的檔案結構。</p>
-</section>
-
-<section>
-  <h2>安裝前置事項</h2>
-  <p class="lede">本工具有兩項先決條件,須先完成。</p>
-
-  <h3>第一項 — 安裝 Agent Handoff Kit(治理基礎)</h3>
-  <p>本 repo 與 Agent Handoff Kit 互相配合。Agent Handoff Kit 提供基本的交接、紀錄、健康檢查機制;APS 在此基礎上加入跨機協作的功能。</p>
-  <div class="callout warn">
-    <strong>未先安裝 Agent Handoff Kit,APS 的檔案結構將無法獨立運作。</strong>
-  </div>
-  <p>前往 <a href="https://github.com/Adamchanadam/agent-handoff-kit" class="site-nav__link">https://github.com/Adamchanadam/agent-handoff-kit</a>,依其指引安裝。一條命令即可;命令列印寫入計劃後,檢查路徑無誤,再輸入 <code>yes</code> 確認寫入:</p>
-  <div class="install-block"><span class="prompt">$</span>npx --yes @adamchanadam/agent-handoff-kit@latest init</div>
-
-  <h3>第二項 — 基本前提</h3>
-  <ul>
-    <li>電腦需安裝 Google Drive 桌面版(前往 <a href="https://www.google.com/drive/download/" class="site-nav__link">https://www.google.com/drive/download/</a> 下載),登入之後將共享資料夾設為「離線存取」</li>
-    <li>電腦需安裝 Claude Code(前往 <a href="https://claude.com/code" class="site-nav__link">https://claude.com/code</a> 下載)或 Codex</li>
-    <li>與你的協作夥伴之間能透過 WhatsApp 通訊</li>
-  </ul>
-  <p>以上任何一項尚未完成?各個官方網頁均有逐步指引。先安裝完成,再回來執行下一步。</p>
-</section>
-
-<section>
-  <h2>目前可以怎樣試</h2>
-  <p class="lede">npm latest 0.2.4 pre-release 的主路徑是先安裝套件,再用互動式 <code>aps init</code> 檢查與建立初始 Hub skeleton、本地設定與短命令日用流程。0.2.4 保留 <code>revise</code>、<code>withdraw</code> 與 <code>doctor</code>。正式跨機使用前,每個真實項目仍要各自驗證 Google Drive 同步。</p>
-  <div class="install-block"><span class="prompt">$</span>npm install --save-dev @adamchanadam/aps<br><span class="prompt">$</span>npx aps init</div>
-  <ol class="step-list">
-    <li><code>npx aps init</code> 會逐步問你 Hub 路徑、項目代號、雙方 agent id 與角色,並解釋每個值的用途;Hub 路徑指你電腦上 Google Drive 同步出來的 <code>AI_Public_Squares</code> 資料夾完整路徑。你可按 Enter 接受建議值。</li>
-    <li>工具會列出寫入計劃,包括技能安裝位置、Hub 項目資料夾與本地 <code>.aps/config.json</code> 路徑。</li>
-    <li>確認無誤後輸入 <code>yes</code> 才真正寫入。之後日常命令可以縮短為 <code>npx aps inbox</code>、<code>npx aps doctor</code>、<code>npx aps publish --topic ... --body ...</code>。</li>
-  </ol>
-  <table class="params">
-    <thead>
-      <tr><th>值</th><th>你要填甚麼</th><th>例子</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>hub-root</code></td>
-        <td>Google Drive 桌面版同步到本機的共享資料夾實際路徑。請在檔案總管打開該資料夾,複製地址列路徑;不要輸入 <code>G:\...\AI_Public_Squares</code> 或任何含 <code>...</code> 的省略寫法。</td>
-        <td><code>G:\我的雲端硬碟\AI_Public_Squares</code></td>
-      </tr>
-      <tr>
-        <td><code>project</code></td>
-        <td>這次協作項目的短代號。只用英文小寫、數字、底線;不要用中文或空格。第一次測試可用新的測試名。</td>
-        <td><code>aps_uat</code></td>
-      </tr>
-      <tr>
-        <td><code>agent-id</code></td>
-        <td>你這邊 AI 的名稱。發起方通常用自己的短名。</td>
-        <td><code>adam</code></td>
-      </tr>
-      <tr>
-        <td><code>other-agent-id</code></td>
-        <td>對方那邊 AI 的名稱。對方設置時會和你的 <code>agent-id</code> 對調。</td>
-        <td><code>jay</code></td>
-      </tr>
-    </tbody>
-  </table>
-  <p>若你只是單機試跑,可先用一個本機測試資料夾做 <code>hub-root</code>;若你要和協作夥伴真正跨機試用,必須使用雙方都可同步到的 Google Drive 共享資料夾。</p>
-  <p>進階用法:若由 AI 或腳本代為執行,可使用非互動命令 <code>npx aps init --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B</code>。方括號與 <code>...</code> 不可照抄;CLI 會在執行前攔截這類假路徑。</p>
-  <p>設置完成後,工具會把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack 與 starter pack。自然語言日常操作仍在硬化中;底層 CLI 已可支援以下方向:</p>
-  <ul>
-    <li>「我有嘢俾對方」 → 工具自動將內容打包,生成一句 WhatsApp 通知句供你發送</li>
-    <li>「對方嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦</li>
-    <li>「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法</li>
-  </ul>
   <div class="callout">
-    <strong>最終目標是全程無需先閱讀任何技術文檔。</strong>目前仍處於前期測試階段,公開頁先呈現 CLI 優先試行路徑與手動備用參考。
-  </div>
-  <div class="callout warn">
-    <strong>目前狀態</strong>:npm latest 0.2.4 pre-release 提供 <code>bridge-pack</code>、互動式 <code>aps init</code> 技能安裝、初始 Hub skeleton、Bridge Pack、starter pack、本地設定與短命令日用流程。CLI 已有最小 <code>publish</code> / <code>inbox</code> / <code>consume</code> / <code>close</code> 指令,並新增 <code>revise</code> / <code>withdraw</code> / <code>doctor</code>。本機互動式設定回歸已通過,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。但仍未等同自然語言日常操作或補救流程已產品化。請勿把本頁當成已可生產使用的安裝說明。
+    <strong>對新用戶的正確期待：</strong>今天最可靠的路徑是「照教學安裝 → 由 <code>npx aps init</code> 建立設定 → 打開 AI 說『教我用 APS』→ 讓 AI 協助你做第一次測試交接」。命令列保留作可驗證備用；日常主路徑應是自然語言。
   </div>
 </section>
 
 <section>
-  <h2>本工具的構想 — 5 個核心設計</h2>
-  <p class="lede">想理解背後如何運作 — 無需先閱讀即可使用,但對技術背景的讀者具參考價值。</p>
-
-  <div class="trick">
-    <div class="num">1</div>
-    <div class="body">
-      <div class="head">Google Drive 上一個雙方都見到的共享資料夾</div>
-      <div class="why">雙方 AI 程式都視之為本地資料夾直接讀寫,完全無需 API 或雲端介接機制。Google Drive 預設的同步機制已經足夠。</div>
+  <h2>它解決甚麼問題？</h2>
+  <div class="grid two">
+    <div class="tile">
+      <h3>最新版在哪裡？</h3>
+      <p>每次交接都變成一個不可直接覆寫的版本包，之後要修正就出新版本或撤回，不用靠 WhatsApp 記憶。</p>
+    </div>
+    <div class="tile">
+      <h3>新 AI 對話忘記上下文？</h3>
+      <p>AI 可以從同一個 Hub 讀到對方留下的交接包、共同目標、各自任務邊界、版本與已讀狀態，減少每次重新交代背景。</p>
+    </div>
+    <div class="tile">
+      <h3>Google Drive 衝突副本？</h3>
+      <p>雙方各自只寫自己的通道，避免兩邊同時改同一個檔案。若出現疑似衝突，工具會把它當成需要檢查的狀態。</p>
+    </div>
+    <div class="tile">
+      <h3>每次往返重做？</h3>
+      <p>第一次接駁後，你可以對 AI 說「把目前背景交給對方」或「看看對方有沒有回覆」。AI 依本地設定與 Hub 狀態協助你判斷下一步。</p>
     </div>
   </div>
-
-  <div class="trick">
-    <div class="num">2</div>
-    <div class="body">
-      <div class="head">各自寫各自的子資料夾,不寫對方的</div>
-      <div class="why">User A 的 AI 僅寫 User A 那邊,User B 的 AI 僅寫 User B 那邊。Google Drive 同步衝突由結構性避免,不靠人手紀律。</div>
-    </div>
-  </div>
-
-  <div class="trick">
-    <div class="num">3</div>
-    <div class="body">
-      <div class="head">一旦發出的檔案就鎖定,需修改則出新版本</div>
-      <div class="why">每個交接包寫入 Google Drive 之後即不再修改;要更新 = 出新版本並標明取代哪一版。雙方永遠引用清晰的版本,不會誤引到對方未定稿的中間狀態。</div>
-    </div>
-  </div>
-
-  <div class="trick">
-    <div class="num">4</div>
-    <div class="body">
-      <div class="head">協作夥伴開啟新對話時,AI 自動擷取你的新內容</div>
-      <div class="why">User B 開啟新 Claude Code 對話時,其 AI 啟動讀序中已內嵌「前往 Google Drive 查看 User A 是否留下新檔案」,自動列出待辦 — User B 無需解釋上下文。</div>
-    </div>
-  </div>
-
-  <div class="trick">
-    <div class="num">5</div>
-    <div class="body">
-      <div class="head">日常 WhatsApp 短訊 + 一句觸發句</div>
-      <div class="why">User A 發出內容之後,WhatsApp 一句「Hub 有新嘢」;User B 對著現有 AI 對話講「check Hub」,AI 立即擷取。無需貼任何模板,沒有自動推送通知(刻意如此 — 由你決定何時被打斷,而非由 AI 主動發送提示)。</div>
-    </div>
-  </div>
-</section>
-
-<section id="status">
-  <h2>目前狀態</h2>
-  <ul class="status-list">
-    <li><span class="mark done">✓</span><span>協定設計與 MVP 在同一部電腦上跑通(2026-05-20)</span></li>
-    <li><span class="mark done">✓</span><span>完整的手動設置教學(技術參考,供深入了解使用)</span></li>
-    <li><span class="mark done">✓</span><span>npm latest 0.2.4 pre-release — <code>@adamchanadam/aps</code> 提供 <code>bridge-pack</code>、互動式 <code>init</code>、Hub skeleton、最小 CLI 往返、<code>revise</code>、<code>withdraw</code>、<code>doctor</code>、本地設定與短命令日用流程</span></li>
-    <li><span class="mark done">✓</span><span><code>npx aps init</code> 已可用問答方式試行 Claude Code / Codex 技能安裝器與初始 Hub skeleton 生成器;安裝後 AI 對話應先替用戶跑 <code>doctor</code> 與 <code>inbox</code>,再引導測試交接、傳 starter pack 或開始日常收發;尚未等同一鍵完成所有跨機設置</span></li>
-    <li><span class="mark done">✓</span><span>本地 CLI 最小往返已跑通:<code>publish</code> → <code>inbox</code> → <code>consume</code> → reply → <code>close</code></span></li>
-    <li><span class="mark wait">⏳</span><span>AI 自動帶你完成的自然語言日常流程(出包 / 撿包 / 出錯處理)仍在建構中</span></li>
-    <li><span class="mark done">✓</span><span>已完成一次維護者真實 Google Drive 跨機往返;新項目仍需各自驗證 Hub 路徑與同步狀態</span></li>
-  </ul>
-  <p style="margin-top:14px;">完整建構路線見 <span class="path">dev\qc\2026-05-22-zero-knowledge-funnel-audit.md</span>(AI / 維護者層 .md 檔;目前以技術術語為主,正在重寫對齊讀者)。</p>
 </section>
 
 <section>
-  <h2>本項目如何驗收</h2>
-  <p class="lede">本項目以「全面檢」守住三件事:公開承諾一致性、發佈前可信度、協定實際運行正確性。意思是:人類入口寫了什麼,CLI 與橋接規則包便要支撐到什麼;尚未完成者必須清楚標示為前期測試或目標體驗。</p>
-  <ul>
-    <li><strong>公開承諾一致性</strong>:本頁、README、教學中心、完整落地教學、CLI help 與 skill spec 不可互相矛盾。</li>
-    <li><strong>發佈前可信度</strong>:README、GitHub Pages、npm package、橋接規則包與教學頁在外發前須能讓外部讀者按當前狀態理解與操作。</li>
-    <li><strong>協定實際運行正確性</strong>:Hub、單寫通道、交接包、收件記錄、收結 / 撤回與啟動時待處理計算須有實際操作記錄;未能驗證者須清楚標為受阻。</li>
-  </ul>
-  <p>全面檢亦須走通四條主要使用流程:零認知讀者入口流程、手動設置流程、日常協作流程、出錯補救流程。具體規則見 <a href="qc/governance-map.html" class="site-nav__link">分層 QC</a>;AI / 維護者層真源為 <span class="path">dev\qc\triggers.md</span>。</p>
+  <h2>第一次使用的最短路徑</h2>
+  <p class="lede">你不需要先讀內部規格，也不需要自行編輯任何治理文件。照以下次序走即可。</p>
+  <ol>
+    <li>在你的項目資料夾打開終端機。</li>
+    <li>先安裝 Agent Handoff Kit，讓這個資料夾具備基本交接與健康檢查能力。</li>
+    <li>安裝 APS 套件。</li>
+    <li>執行 <code>npx aps init</code>，按畫面提問填入五個值。</li>
+    <li>執行 <code>npx aps doctor</code>，確認 Hub 與本機設定正常。</li>
+    <li>在 AI 工具打開同一個項目資料夾，輸入「教我用 APS」。</li>
+  </ol>
+  <pre>npx --yes @adamchanadam/agent-handoff-kit@latest init
+npm install --save-dev @adamchanadam/aps
+npx aps init
+npx aps doctor</pre>
+  <p><a href="guides/aps-onboarding-walkthrough.html">前往完整新手教學</a>，按畫面逐步做。</p>
 </section>
 
 <section>
-  <h2>想深入了解</h2>
-  <p class="lede">下列文檔屬技術參考,<strong>無需先閱讀即可使用</strong>。想理解工具背後的協定,或自行手動執行某個步驟,再回到此處查閱。</p>
-  <table class="entry">
+  <h2><code>npx aps init</code> 問你的五個值</h2>
+  <p class="lede">這五個值不是技術考試，只是讓兩部電腦對準同一個共享空間。</p>
+  <table>
     <thead>
-      <tr><th>想了解</th><th>前往</th></tr>
+      <tr><th>畫面會問</th><th>意思</th><th>建議填法</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td>目前手動設置與目標使用流程</td>
-        <td><a href="guides/aps-onboarding-walkthrough.html" class="site-nav__link">完整設置教學</a>(技術參考)</td>
+        <td>你的角色</td>
+        <td>A 代表你先建立 Hub 給對方加入；B 代表你收到對方 starter pack 後加入。</td>
+        <td>第一次建立通常選 A。</td>
       </tr>
       <tr>
-        <td>協定的設計理據(AI / 維護者層 .md)</td>
-        <td><span class="path">docs\plans\2026-05-20-agent-public-square-design.md</span></td>
+        <td>項目代號</td>
+        <td>Hub 內用來分開不同合作項目的資料夾名稱。</td>
+        <td><code>aps_uat</code>、<code>branding_2026</code>。只用小寫英文、數字、底線。</td>
       </tr>
       <tr>
-        <td>跨機落地的技術步驟(AI / 維護者層 .md)</td>
-        <td><span class="path">docs\plans\2026-05-21-aps-phase4-plan.md</span></td>
+        <td>你的 agent id</td>
+        <td>你這邊 AI 在 Hub 內的通道名稱。</td>
+        <td>通用測試可用 <code>agent_a</code>。</td>
       </tr>
       <tr>
-        <td>本 repo 的建構路線(AI / 維護者層 .md)</td>
-        <td><span class="path">dev\qc\2026-05-22-zero-knowledge-funnel-audit.md</span></td>
+        <td>對方 agent id</td>
+        <td>對方 AI 在 Hub 內的通道名稱。</td>
+        <td>通用測試可用 <code>agent_b</code>。</td>
       </tr>
       <tr>
-        <td>本 repo 的治理與 QC 機制</td>
-        <td><a href="qc/governance-map.html" class="site-nav__link">分層 QC</a></td>
-      </tr>
-      <tr>
-        <td>原始碼與 issue tracker</td>
-        <td><a href="https://github.com/Adamchanadam/ai-public-squares" class="site-nav__link">GitHub repo</a></td>
+        <td>Google Drive 本機路徑</td>
+        <td>你電腦上 Google Drive 同步出來的 <code>AI_Public_Squares</code> 資料夾完整路徑。</td>
+        <td>請在檔案總管打開該資料夾，複製地址列完整路徑。不要輸入含 <code>...</code> 的省略路徑。</td>
       </tr>
     </tbody>
   </table>
 </section>
 
 <section>
-  <h2>License 與反饋</h2>
-  <p><a class="site-nav__link" href="https://github.com/Adamchanadam/ai-public-squares/blob/main/LICENSE">Apache License 2.0</a>。本 repo 已公開,可按 Apache-2.0 條款閱讀、引用與參與改進。</p>
-  <p>遇到錯誤、想試用、或有功能建議?前往 <a class="site-nav__link" href="https://github.com/Adamchanadam/ai-public-squares/issues">GitHub issues</a> 留言。</p>
+  <h2>日常使用應該多簡單？</h2>
+  <p class="lede">本工具的目標不是讓你記更多命令，而是讓 AI 可按同一套規矩代你處理交接。現階段保留命令列，是為了讓前期測試可驗證、可追溯；一般使用時應先對 AI 說你想完成甚麼。</p>
+  <div class="grid three">
+    <div class="tile">
+      <h3>你有內容給對方</h3>
+      <p>告訴 AI：「幫我將當前任務整理成 APS 交接包給對方」。AI 應自動讀設定、檢查 Hub、整理共同目標、本方任務、對方任務、交叉點、待處理事項、關鍵檔案與請對方回應的問題。發送前，AI 必須先做完整性預檢並給你確認，然後才發佈交接包並生成可貼上的通知。</p>
+    </div>
+    <div class="tile">
+      <h3>對方說有新內容</h3>
+      <p>告訴 AI：「check Hub」。AI 應檢查收件、列出待處理內容，並先判斷交接包是否齊全；若資料不足，AI 應主動整理缺漏並生成補交需求包給對方。</p>
+    </div>
+    <div class="tile">
+      <h3>出現錯誤或同步問題</h3>
+      <p>AI 應先跑 <code>doctor</code>，再用官方資料協助你檢查 Google Drive、Connector 或工具安裝問題。</p>
+    </div>
+  </div>
+  <div class="callout warn">
+    <strong>目前限制：</strong>APS 不會自動提醒對方電腦有新內容。AI 應替你生成可直接複製貼上的 WhatsApp / Email 通知，你只需貼到平常渠道請對方「check Hub」。自然語言日常流程仍在硬化中；若 AI 未能順利完成，才回到命令列備用路徑：<code>npx aps inbox</code>、<code>npx aps publish</code>、<code>npx aps consume</code>、<code>npx aps close</code>。
+  </div>
+</section>
+
+<section>
+  <h2>先確認共識，再開始做</h2>
+  <p class="lede">若對方交來的內容與你這邊理解不一致，APS 不應讓 AI 直接照做。正確流程是先回饋、先確認，再開工。</p>
+  <div class="grid two">
+    <div class="tile">
+      <h3>AI 應先停下來</h3>
+      <p>它應列出對方說法、本方理解、衝突點、風險與需要對方確認的問題。</p>
+    </div>
+    <div class="tile">
+      <h3>回覆一個共識確認包</h3>
+      <p>AI 應用 APS 發出確認包，並生成可直接複製貼上的 WhatsApp / Email 通知。雙方確認共同目標與任務邊界後，才繼續執行。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>它不是假設兩邊做同一件事</h2>
+  <p class="lede">實際協作中，兩個 AI 可能收到不同 brief，也可能只在一小段流程交會。APS 的交接包應把共同目標與各自邊界寫清楚。</p>
+  <div class="grid three">
+    <div class="tile">
+      <h3>常見情景</h3>
+      <p>一邊整理品牌語氣，另一邊製作網站。交接包要講清楚共同目標是「網站文案符合品牌語氣」，不是要求對方接手整個品牌工作。</p>
+    </div>
+    <div class="tile">
+      <h3>流程交叉</h3>
+      <p>一邊做研究，另一邊寫報告。交接包要標明哪些研究結論可用、哪些仍未核實、對方要回覆甚麼。</p>
+    </div>
+    <div class="tile">
+      <h3>極端情況</h3>
+      <p>若兩邊 brief 互相矛盾，AI 不應假裝已對齊。交接包應列出差異，要求對方或人類先確認共同目標。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>公眾文檔與內部文檔如何分工</h2>
+  <p>公眾頁面只保留新用戶需要知道的事：工具做甚麼、目前能做到甚麼、如何安裝、如何完成第一次測試、遇錯怎樣求助。內部檢查、分層 QC、規格真源與維護者紀錄不放在公眾主導航中，避免新手把維護者流程誤讀成使用流程。</p>
+  <p>若你是維護者，請改讀 <a href="maintainers/index.html">維護者規格</a>。該頁會指向 <span class="path">docs\qc\governance-map.html</span>、<span class="path">dev\qc\triggers.md</span> 與 <span class="path">dev\DOC_SYNC_REGISTRY.md</span> 等內部真源。</p>
+</section>
+
+<section>
+  <h2>下一步</h2>
+  <p>第一次使用請由 <a href="guides/index.html">教學中心</a> 開始；若你只是想理解工具定位，讀完本頁已足夠。</p>
+  <p>原始碼與問題回報：<a href="https://github.com/Adamchanadam/ai-public-squares">GitHub repo</a>。授權條款：<a href="https://github.com/Adamchanadam/ai-public-squares/blob/main/LICENSE">Apache License 2.0</a>。</p>
 </section>
 
 <footer>
-  AI Public Squares · 試行版 0.2.4 · 最新更新 2026-05-27
+  AI Public Squares · 前期測試階段 · 最新更新 2026-05-27
 </footer>
 
 </main>

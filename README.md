@@ -29,8 +29,8 @@ npx aps init
 |---|---|---|
 | `hub-root` | Google Drive 桌面版同步到本機的共享資料夾實際路徑。請在檔案總管打開該資料夾,複製地址列路徑;不要輸入 `G:\...\AI_Public_Squares` 或任何含 `...` 的省略寫法。 | `G:\我的雲端硬碟\AI_Public_Squares` |
 | `project` | 這次協作項目的短代號。只用英文小寫、數字、底線;不要用中文或空格。第一次測試可用新的測試名。 | `aps_uat` |
-| `agent-id` | 你這邊 AI 的名稱。發起方通常用自己的短名。 | `adam` |
-| `other-agent-id` | 對方那邊 AI 的名稱。對方設置時會和你的 `agent-id` 對調。 | `jay` |
+| `agent-id` | 你這邊 AI 的名稱。可先用通用值,也可改成自己的短名。 | `agent_a` |
+| `other-agent-id` | 對方那邊 AI 的名稱。對方設置時會和你的 `agent-id` 對調。 | `agent_b` |
 
 若只是單機試跑,可先用一個本機測試資料夾做 `hub-root`;若要和協作夥伴真正跨機試用,必須使用雙方都可同步到的 Google Drive 共享資料夾。
 
@@ -80,12 +80,14 @@ npm latest 0.2.4 pre-release 仍屬前期測試版本,但已可用 CLI 跑完整
 2. 參考下方「想深入了解」中的設置教學,照 0.2.4 CLI 主路徑完成首次設置。
 3. 先執行 `npm install --save-dev @adamchanadam/aps`,再用 `npx aps init` 由工具逐步問你 Hub 路徑、項目代號、雙方 agent id 與角色。互動式設定會解釋每個值的用途;Hub 路徑指你電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。工具列出寫入計劃後,你輸入 `yes` 才建立 skill、Hub skeleton、Bridge Pack、starter pack 與本地設定。
 
-目前可用路徑是:使用者在自己的項目資料夾內先安裝 npm 套件,再執行 `npx aps init`。工具會用問答方式收集必要資料、拒絕明顯 placeholder、列出計劃,並在你輸入 `yes` 後把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack、starter pack 與本地 `.aps/config.json` 設定。設置完成後,AI 對話應先讀取本地設定、替你跑 `doctor` 與 `inbox`,再引導你發測試交接包、把 starter pack 傳給對方,或開始日常收發。自然語言日常體驗仍在打磨中:
-   - 「我有嘢俾對方」 → 工具自動將內容打包,並生成一句 WhatsApp 通知句供你發送
+目前可用路徑是:使用者在自己的項目資料夾內先安裝 npm 套件,再執行 `npx aps init`。工具會用問答方式收集必要資料、拒絕明顯 placeholder、列出計劃,並在你輸入 `yes` 後把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack、starter pack 與本地 `.aps/config.json` 設定。它亦會在 `dev/RULE_PACKS.md` 與 `dev/PROJECT_INDEX.md` 加入可移除的 APS managed registration,讓新 AI session 按 Agent Handoff Kit 啟動讀序後,可在你提到 APS / `check Hub` / 同步問題時載入 APS 橋接規則。設置完成後,日常主路徑應是你向 AI 說自然語言,由 AI 讀取本地設定、替你跑健康檢查、收件、整理上下文、發測試交接包、把 starter pack 傳給對方,或開始日常收發;命令列只作可驗證備用路徑。自然語言日常體驗仍在打磨中:
+   - 「幫我將當前任務整理成 APS 交接包給對方」 → AI 自動讀設定、檢查 Hub、整理上下文、補齊交接欄位、做完整性預檢,交給你確認後才發佈交接包,並生成可直接複製貼上的 WhatsApp / Email 通知供你發送
    - 「對方嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦
+   - 「這個交接資料不足」 → AI 主動列出缺漏,生成補交需求包,並生成可直接複製貼上的通知請對方補交
+   - 「這個交接和我理解不一致」 → 工具先停工,整理差異,再生成共識確認包與通知文字給對方
    - 「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法
 
-上述三個日常流程的底層 CLI 已有最小測試路徑,並已跑過一次維護者真實跨機 Google Drive 往返驗證;但尚未完整包成技能內的自然語言日常操作,目前仍不可視為可生產使用功能。
+上述三個日常流程的底層 CLI 已有最小測試路徑,並已跑過一次維護者真實跨機 Google Drive 往返驗證;但尚未完整包成技能內的自然語言日常操作,目前仍不可視為可生產使用功能。APS 目前也不是自動通知服務:發送方 AI 寫入交接後,接收方 AI 不會自動彈出提示;人類仍需用現有渠道簡短通知對方「check Hub」。APS 的增值在於通知之後,對方 AI 可直接讀到結構化上下文、共同目標、各自任務邊界、交叉協作點、任務需求、版本與已讀狀態,不用人類重新搬運整段背景。
 
 ---
 
@@ -98,19 +100,24 @@ npm latest 0.2.4 pre-release 仍屬前期測試版本,但已可用 CLI 跑完整
 - **同步衝突** — 雙方同時儲存,Google Drive 產生「(conflict)」副本,無法判斷哪一份是最新版
 - **每次往返均須重做** — 對方回覆之後又要重複一遍,搬運檔案、解釋背景、再次經歷整個流程
 
-本工具的構想:**Google Drive 上一個共享資料夾,加上一套寫入規矩 = 雙方電腦的 AI 自動知道對方的進度**;新內容自動呈現給使用者;衝突由結構性避免。沒有伺服器,沒有額外的雲端帳號,沒有自動推送通知(刻意如此設計 — 由使用者決定何時被打斷,而非由 AI 主動發送提示)。
+本工具的構想:**Google Drive 上一個共享資料夾,加上一套寫入規矩 = 雙方電腦的 AI 在檢查 Hub 時可讀懂對方進度**;交接內容、共同目標、各自任務邊界、上下文、版本與已讀狀態集中留痕;衝突由結構性避免。它不假設兩邊 AI 正在做同一件事,只要求每次交接講清楚共同交叉點與需要對方完成的事。沒有伺服器,沒有額外的雲端帳號,沒有自動推送通知(刻意如此設計 — 由使用者決定何時被打斷,而非由 AI 主動發送提示)。
 
 ---
 
 ## 想深入了解
 
-下列分兩層。**HTML 兩份為 polished 人類面文檔**(瀏覽器直接讀);**其餘三份 .md 為 AI / 維護者層技術文檔**,人類讀者一般無需閱讀(於 GitHub web 自動 render,本地 clone 用 browser 開為 plain text;主要供 AI 程式直接讀,或維護者改 protocol / 升 Bridge Pack 時 reference)。
+下列分三層。新用戶只需要讀前兩項;維護者規格與 `.md` 真源不是安裝起步材料。
 
-人類面(HTML,GitHub Pages hosted — click 即開 rendered 頁):
+公眾入口(HTML,GitHub Pages hosted):
 
 - [入口頁](https://adamchanadam.github.io/ai-public-squares/docs/index.html) — 由零認知讀者起步的項目簡介
-- [設置教學](https://adamchanadam.github.io/ai-public-squares/docs/guides/aps-onboarding-walkthrough.html) — 完整落地步驟(由前置到日常試行)
-- [分層 QC](https://adamchanadam.github.io/ai-public-squares/docs/qc/governance-map.html) — 三 tier 觸發詞彙 reference card
+- [教學中心](https://adamchanadam.github.io/ai-public-squares/docs/guides/index.html) — 按情景選擇教學
+- [第一次安裝與測試](https://adamchanadam.github.io/ai-public-squares/docs/guides/aps-onboarding-walkthrough.html) — 非技術用戶跟著完成首次設置與測試
+
+維護者入口(HTML,GitHub Pages hosted):
+
+- [維護者規格](https://adamchanadam.github.io/ai-public-squares/docs/maintainers/index.html) — 公開承諾邊界、QC 路由、同步真源與發佈前核對
+- [分層 QC](https://adamchanadam.github.io/ai-public-squares/docs/qc/governance-map.html) — 維護者閱讀的 QC 觸發詞與檢查分層
 
 AI / 維護者層(.md,予 AI 程式 / repo 維護者讀):
 

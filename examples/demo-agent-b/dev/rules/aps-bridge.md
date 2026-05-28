@@ -14,7 +14,7 @@ Architectural rationale: see APS design doc in `AI_Public_Squares` repo,
 - agent_id: `<your_agent_id>` (snake_case,1-30 字;此 fixture 之 example role 為 User B,示例值可用 `example_agent_b`)
 - project_slug: `<your_project_slug>` (snake_case;示例值可用 `example_project`)
 - hub_root: `<your_Drive_AI_Public_Squares_absolute_path>` (如 `H:\Cloud\AI_Public_Squares`)
-- other_agent_id: `<counterpart_agent_id>` (對方之 agent_id;此 fixture 之 example counterpart 為 `adam`)
+- other_agent_id: `<counterpart_agent_id>` (對方之 agent_id;此 fixture 之 example counterpart 為 `example_agent_a`)
 
 ## When this pack is loaded
 

@@ -41,7 +41,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 第一項:
 
-> 對方是誰?請給我一個短名稱,例如 Jay、Sarah、DesignTeam。這會用作對方的 agent_id 草稿。
+> 對方是誰?可先用 `agent_b`,也可給我一個短名稱,例如 sarah 或 design_team。這會用作對方的 agent_id 草稿。
 
 第二項:
 
@@ -68,11 +68,11 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 正在建立共用資料夾。
 正在建立協定資料夾。
 正在寫入橋接規則包。
-正在更新本項目的啟動規則。
-正在記錄本項目的 APS 接駁資料。
+正在註冊 APS 路由,讓新 AI 對話知道要讀橋接規則。
+正在記錄本項目的 APS 本地設定位置。
 ```
 
-0.2.4 pre-release 已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在完整設置時寫入 Hub skeleton、Bridge Pack、starter pack 與 `.aps/config.json`,令後續日常命令毋須重複輸入 Hub / project / agent 長參數。互動式 CLI 應以繁體中文解釋每個設定值用途,尤其要說明 Hub root path 是使用者電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
+0.2.x pre-release 已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在完整設置時寫入 Hub skeleton、Bridge Pack、starter pack 與 `.aps/config.json`,令後續日常命令毋須重複輸入 Hub / project / agent 長參數。互動式 CLI 應以繁體中文解釋每個設定值用途,尤其要說明 Hub root path 是使用者電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
 
 > 目前執行環境找不到 PROTOCOL source 檔案。這一步不能假裝完成。需要先確認 package 是否完整安裝,或由已驗證的 Hub template source 讀取。
 
@@ -88,11 +88,11 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 > APS 這邊已設置好。Starter pack 已放在共用雲端資料夾的 `_hub` 子資料夾。你同步後打開該檔,按裡面的安裝指令在自己的工作目錄執行;完成後告訴我即可。
 
-## 7. 首次 dry-run
+## 7. 首次測試交接
 
-> 我會用 CLI 建立一個測試交接包,只用來確認兩邊能否看見同一個共用資料夾。內容不包含正式工作資料。
+> 我可以替你建立一個測試交接包,只用來確認兩邊能否看見同一個共用資料夾。內容不包含正式工作資料。你不用記命令;你只需要確認是否現在發出。
 
-指令形態:
+AI 內部可用以下命令執行,但不要把它當成新手主路徑:
 
 ```text
 npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
@@ -100,12 +100,75 @@ npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
 
 完成後:
 
-> 設置完成。這個工作目錄已有 APS 本地設定。我會先替你做兩件事:一,執行 `npx aps doctor` 檢查 Hub 與本機設定是否完整;二,執行 `npx aps inbox` 看看對方是否已有新內容。若兩項都正常,我可以立即替你建立一個 `setup_test` 測試交接包,或生成一段給對方的 WhatsApp 短訊。你不需要記住命令;之後只要直接說「有東西給對方」「看看對方有沒有回覆」或「Drive 同步不到」即可。
+> 設置完成。這個工作目錄已有 APS 本地設定。我會先替你做兩件事:一,檢查 Hub 與本機設定是否完整;二,看看對方是否已有新內容。若兩項都正常,我可以立即替你建立一個測試交接包,或生成一段給對方的 WhatsApp 短訊。你不需要記住命令;之後只要直接說「幫我將當前任務整理成 APS 交接包給對方」「看看對方有沒有回覆」或「Drive 同步不到」即可。
 
-## 8. 不可承諾
+日常一語交接可用以下 wording:
 
-- 不承諾直接發 WhatsApp。
+> 可以。我要先讀取本地 APS 設定,檢查 Hub,再把目前任務整理成交接包。除非發現敏感資料、共同目標不清或對方任務會影響下一步,否則我會自動完成發佈並生成可直接複製貼上的通知文字。
+
+寫入前預檢 wording:
+
+> 我已整理好交接包草稿,現在先做發送前預檢。共同目標、本方任務、對方任務、交叉點、請對方做的事、不應誤解的事、證據位置與敏感資料檢查都要齊全。若你確認以下摘要完整 / 正確,我才會寫入 Google Drive。
+
+若已發出測試交接,再補一句:
+
+> APS 目前不會自動發 WhatsApp、Email 或系統推送。請你把以下短訊傳給對方:「我已用 APS 放了一個測試交接。請打開你的 AI 工具,輸入『check Hub』。」對方的 AI 會從 Hub 讀到交接內容、共同目標與各自任務邊界,不用你重新解釋。
+
+## 8. 共識確認 wording
+
+若 AI 讀取對方交接後發現任務要求、共同目標、檔案版本或本方理解不一致,先用以下句式停手:
+
+> 我不建議直接開工。這個交接與本方目前理解有差異,需要先向對方確認共識。
+
+接著輸出:
+
+```text
+差異摘要
+- 對方交接包的理解:
+- 本方目前理解:
+- 衝突或未確認之處:
+- 若直接開工的風險:
+- 需要對方確認的問題:
+```
+
+然後生成可複製貼上的通知:
+
+```text
+WhatsApp / 即時訊息:
+我已用 APS 回覆了一個共識確認包。請打開你的 AI 工具,輸入「check Hub」,先確認共同目標與任務邊界後再繼續。
+
+Email 主旨:
+APS 共識確認
+
+Email 正文:
+我已用 APS 回覆了一個共識確認包。請打開你的 AI 工具,進入同一個項目資料夾,輸入「check Hub」。請先確認共同目標、任務邊界與下一步,再繼續執行。
+```
+
+收件資料不足 wording:
+
+> 我已讀到對方交接包,但目前資料不足以可靠回應。我會先整理缺漏,生成一個補交需求包,請對方補充後再繼續。
+
+```text
+缺漏摘要
+- 缺少的資料:
+- 為何影響回應:
+- 可以先做的局部工作:
+- 需要對方補交的內容:
+
+WhatsApp / 即時訊息:
+我已用 APS 回覆了一個補交需求包。請打開你的 AI 工具,輸入「check Hub」,按缺漏清單補交資料。
+
+Email 主旨:
+APS 需要補交資料
+
+Email 正文:
+我已用 APS 回覆了一個補交需求包。請打開你的 AI 工具,進入同一個項目資料夾,輸入「check Hub」,按缺漏清單補交資料。
+```
+
+## 9. 不可承諾
+
+- 不承諾直接發 WhatsApp、Email 或系統推送;APS 目前是共享 Hub 與交接狀態機制,不是通知服務。
 - 不承諾更改雲端硬碟分享權限。
 - 不承諾對方電腦已完成設置。
-- 不承諾自然語言日常操作或補救流程已完成;只可說專案已完成一次維護者真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。0.2.4 pre-release 已提供互動式設置、`revise`、`withdraw`、`doctor` 與短命令日用流程;本機互動式設定回歸與全面檢已通過,但仍需實際協作雙方做真機日常演練。
+- 不承諾自然語言日常操作或補救流程已完成;只可說專案已完成一次維護者真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。0.2.x pre-release 已提供互動式設置、`revise`、`withdraw`、`doctor` 與短命令日用流程;本機互動式設定回歸與全面檢已通過,但仍需實際協作雙方做真機日常演練。
 - 不承諾 PROTOCOL source 可用;實作時必須先驗證 package 內 `resources/protocol/` 存在。

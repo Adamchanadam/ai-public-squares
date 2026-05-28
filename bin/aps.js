@@ -15,6 +15,8 @@ const readline = require('readline');
 
 const subcommand = process.argv[2];
 const args = process.argv.slice(3);
+const packageJson = require('../package.json');
+const packageVersion = packageJson.version || 'version unknown';
 
 function hasFlag(name) {
   return args.includes(name);
@@ -56,15 +58,7 @@ function loadConfigOrExit() {
 }
 
 function saveConfig(values, dryRun) {
-  const filePath = configPath();
-  const content = {
-    hubRoot: values.hubRoot,
-    projectSlug: values.projectSlug,
-    agentId: values.agentId,
-    otherAgentId: values.otherAgentId,
-    role: values.role,
-  };
-  return writeFileIfMissing(filePath, `${JSON.stringify(content, null, 2)}\n`, dryRun);
+  return writeConfig(values, dryRun);
 }
 
 function writeConfig(values, dryRun) {
@@ -80,7 +74,7 @@ function writeConfig(values, dryRun) {
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     fs.writeFileSync(filePath, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
   }
-  return { ok: true, path: filePath, message: dryRun ? `would write ${filePath}` : `wrote ${filePath}` };
+  return { ok: true, path: filePath, message: dryRun ? `would write/update ${filePath}` : `wrote/updated ${filePath}` };
 }
 
 function flagOrConfig(flagName, configKey, config) {
@@ -126,11 +120,67 @@ function writeFileIfMissing(filePath, content, dryRun) {
   return { ok: true, skipped: false, path: filePath, message: dryRun ? `would write ${filePath}` : `wrote ${filePath}` };
 }
 
+function writeFileOrUpdate(filePath, content, dryRun) {
+  if (!dryRun) {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, content, 'utf8');
+  }
+  return { ok: true, skipped: false, path: filePath, message: dryRun ? `would write/update ${filePath}` : `wrote/updated ${filePath}` };
+}
+
+function upsertManagedBlock(filePath, blockName, blockContent, insertBeforePattern, dryRun) {
+  const begin = `<!-- BEGIN APS managed ${blockName} -->`;
+  const end = `<!-- END APS managed ${blockName} -->`;
+  const block = `${begin}\n${blockContent.trim()}\n${end}`;
+  const current = fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '';
+  const pattern = new RegExp(`${escapeRegExp(begin)}[\\s\\S]*?${escapeRegExp(end)}`);
+  let next;
+  let verb;
+  if (pattern.test(current)) {
+    next = current.replace(pattern, block);
+    verb = 'refresh';
+  } else if (insertBeforePattern && insertBeforePattern.test(current)) {
+    next = current.replace(insertBeforePattern, `\n${block}\n\n$&`);
+    verb = 'add';
+  } else {
+    next = `${current.replace(/\s*$/, '')}\n\n${block}\n`;
+    verb = 'add';
+  }
+  if (!dryRun && next !== current) {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, next, 'utf8');
+  }
+  return {
+    ok: true,
+    skipped: next === current,
+    path: filePath,
+    message: dryRun
+      ? `would ${verb} APS ${blockName} registration in ${filePath}`
+      : (next === current ? `APS ${blockName} registration already current (${filePath})` : `${verb}ed APS ${blockName} registration in ${filePath}`),
+  };
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function ensureDirectory(dirPath, dryRun) {
   if (!dryRun) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
   return { ok: true, path: dirPath, message: dryRun ? `would create ${dirPath}` : `created ${dirPath}` };
+}
+
+function ensureHandoffKitReady() {
+  const required = [
+    'AGENTS.md',
+    path.join('dev', 'RULE_PACKS.md'),
+    path.join('dev', 'PROJECT_INDEX.md'),
+  ];
+  const missing = required.filter((relativePath) => !fs.existsSync(path.join(process.cwd(), relativePath)));
+  if (missing.length > 0) {
+    throw new Error(`Agent Handoff Kit is not initialized in this project. Missing: ${missing.join(', ')}. Run \`npx --yes @adamchanadam/agent-handoff-kit@latest init\` first, then rerun \`npx aps init\`.`);
+  }
 }
 
 function installSkill({ label, targetDir, dryRun }) {
@@ -254,8 +304,9 @@ async function runInteractiveInit() {
   }
 
   console.log('┌────────────────────────────────────────────┐');
-  console.log('│  AI Public Squares                         │');
-  console.log('│  APS 初次設定                              │');
+  console.log('│  /\\_/\\        AI Public Squares           │');
+  console.log('│ ( o.o )───( o.o )  APS 初次設定           │');
+  console.log(`│  > ^ <        v${packageVersion.padEnd(28, ' ')}│`);
   console.log('└────────────────────────────────────────────┘');
   console.log('');
   console.log('👋 這一步會把本項目接到你與對方共用的 Google Drive Hub。');
@@ -277,16 +328,16 @@ async function runInteractiveInit() {
     const projectSlug = await askWithDefault(rl, '2/5 項目代號', defaultProject, (value) => (
       localizeValidation(validateNoPlaceholder('--project', value) || validateSnakeCase('--project', value))
     ));
-    const defaultAgent = toSnakeCase(process.env.USERNAME || process.env.USER || 'agent_a', 'agent_a');
+    const defaultAgent = 'agent_a';
     console.log('');
-    console.log('👤 你的 agent id 是你這一邊在 Hub 內的名字,例如 adam。');
+    console.log('👤 你的 agent id 是你這一邊在 Hub 內的名字,例如 agent_a 或你的短名。');
     console.log('   APS 會用它建立 from_<你的 id> 通道及你的收件確認檔。');
     const agentId = await askWithDefault(rl, '3/5 你的 agent id', defaultAgent, (value) => (
       localizeValidation(validateNoPlaceholder('--agent-id', value) || validateSnakeCase('--agent-id', value))
     ));
     const defaultOther = agentId === 'agent_b' ? 'agent_a' : 'agent_b';
     console.log('');
-    console.log('🤝 對方 agent id 是合作夥伴在 Hub 內的名字,例如 jay。');
+    console.log('🤝 對方 agent id 是合作夥伴在 Hub 內的名字,例如 agent_b 或對方的短名。');
     console.log('   APS 會用它建立 from_<對方 id> 通道,讓你之後可以收對方交來的內容。');
     const otherAgentId = await askWithDefault(rl, '4/5 對方 agent id', defaultOther, (value) => (
       localizeValidation(validateNoPlaceholder('--other-agent-id', value) || validateSnakeCase('--other-agent-id', value))
@@ -318,6 +369,7 @@ async function runInteractiveInit() {
       console.log('已取消。沒有寫入 APS Hub 檔案。');
       return 1;
     }
+    ensureHandoffKitReady();
 
     const installTargets = [
       { label: 'Claude Code', targetDir: path.join(root, '.claude', 'skills', 'aps') },
@@ -371,6 +423,18 @@ function localizeSetupMessage(message) {
     .replace(/^created /, '已建立 ')
     .replace(/^would write /, '將會寫入 ')
     .replace(/^wrote /, '已寫入 ')
+    .replace(/^would write\/update /, '將會寫入或更新 ')
+    .replace(/^wrote\/updated /, '已寫入或更新 ')
+    .replace(/^would add APS rule-pack-route registration in /, '將會新增 APS 路由註冊到 ')
+    .replace(/^would refresh APS rule-pack-route registration in /, '將會更新 APS 路由註冊於 ')
+    .replace(/^added APS rule-pack-route registration in /, '已新增 APS 路由註冊到 ')
+    .replace(/^refreshed APS rule-pack-route registration in /, '已更新 APS 路由註冊於 ')
+    .replace(/^APS rule-pack-route registration already current \((.*)\)$/, 'APS 路由註冊已是最新 ($1)')
+    .replace(/^would add APS project-index-skill registration in /, '將會新增 APS 項目索引註冊到 ')
+    .replace(/^would refresh APS project-index-skill registration in /, '將會更新 APS 項目索引註冊於 ')
+    .replace(/^added APS project-index-skill registration in /, '已新增 APS 項目索引註冊到 ')
+    .replace(/^refreshed APS project-index-skill registration in /, '已更新 APS 項目索引註冊於 ')
+    .replace(/^APS project-index-skill registration already current \((.*)\)$/, 'APS 項目索引註冊已是最新 ($1)')
     .replace(/^exists; not overwriting \((.*)\)$/, '已存在,不覆寫 ($1)');
 }
 
@@ -650,10 +714,20 @@ function doctorHub({ hubRoot, projectSlug, agentId, otherAgentId }) {
     const ok = fs.existsSync(filePath) && fs.statSync(filePath).isFile();
     checks.push({ ok, label, path: filePath });
   }
+  function checkFileContains(filePath, label, expected) {
+    const ok = fs.existsSync(filePath)
+      && fs.statSync(filePath).isFile()
+      && fs.readFileSync(filePath, 'utf8').includes(expected);
+    checks.push({ ok, label, path: filePath });
+  }
   function checkDir(dirPath, label) {
     const ok = fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory();
     checks.push({ ok, label, path: dirPath });
   }
+  checkFile(configPath(), 'local APS config');
+  checkFile(path.join(process.cwd(), 'dev', 'rules', 'aps-bridge.md'), 'local APS bridge');
+  checkFileContains(path.join(process.cwd(), 'dev', 'RULE_PACKS.md'), 'Handoff Kit APS route', 'dev/rules/aps-bridge.md');
+  checkFileContains(path.join(process.cwd(), 'dev', 'PROJECT_INDEX.md'), 'Handoff Kit APS project index', '.aps/config.json');
   checkDir(hubRoot, 'Hub root');
   checkFile(path.join(hubRoot, '_hub', 'PROTOCOL.md'), 'protocol');
   checkFile(path.join(hubRoot, '_hub', 'CHANGELOG.md'), 'changelog');
@@ -747,6 +821,7 @@ npx aps bridge-pack --role ${counterpartRole} > dev/rules/aps-bridge.md
 }
 
 function setupHub(values, dryRun) {
+  ensureHandoffKitReady();
   const resourcesDir = path.join(__dirname, '..', 'resources', 'protocol');
   const templatesDir = path.join(resourcesDir, 'templates');
   const projectDir = path.join(values.hubRoot, values.projectSlug);
@@ -784,20 +859,60 @@ function setupHub(values, dryRun) {
   steps.push(writeFileIfMissing(path.join(projectDir, '_ack', `${values.otherAgentId}.ack.json`), ackJson(values.otherAgentId, values.projectSlug), dryRun));
 
   const bridgeTarget = path.join(process.cwd(), 'dev', 'rules', 'aps-bridge.md');
-  steps.push(writeFileIfMissing(bridgeTarget, bridgePackContent(values.role, values), dryRun));
+  steps.push(writeFileOrUpdate(bridgeTarget, bridgePackContent(values.role, values), dryRun));
 
   steps.push(saveConfig(values, dryRun));
 
   const counterpartRole = values.role === 'A' ? 'B' : 'A';
   const starterTarget = path.join(values.hubRoot, '_hub', `starter-pack-${values.otherAgentId}.md`);
-  steps.push(writeFileIfMissing(starterTarget, starterPackContent(values, counterpartRole), dryRun));
+  steps.push(writeFileOrUpdate(starterTarget, starterPackContent(values, counterpartRole), dryRun));
+  steps.push(...registerHandoffKitIntegration(values, dryRun));
+
+  return steps;
+}
+
+function registerHandoffKitIntegration(values, dryRun) {
+  const projectRoot = process.cwd();
+  const rulePacksPath = path.join(projectRoot, 'dev', 'RULE_PACKS.md');
+  const projectIndexPath = path.join(projectRoot, 'dev', 'PROJECT_INDEX.md');
+  const steps = [];
+
+  const routeRow = '| APS / AI Public Squares / 教我用 APS / check Hub / Hub 有新嘢 / 跨機合作 / Drive 同步不到 / sync stuck / conflict | `dev/rules/aps-bridge.md` | APS cross-machine collaboration route: load the bridge rules and `.aps/config.json` before APS setup, daily use, inbox checks, or recovery. |';
+  steps.push(upsertManagedBlock(
+    rulePacksPath,
+    'rule-pack-route',
+    routeRow,
+    /^## Routing Rule/m,
+    dryRun
+  ));
+
+  const today = new Date().toISOString().slice(0, 10);
+  const skillBlock = `### APS Installed Skill
+
+| Field | Value |
+|---|---|
+| Installed by | \`@adamchanadam/aps init\` |
+| Local bridge | \`dev/rules/aps-bridge.md\` |
+| Local config | \`.aps/config.json\` |
+| Hub project | \`${values.projectSlug}\` |
+| Local agent | \`${values.agentId}\` |
+| Partner agent | \`${values.otherAgentId}\` |
+| Trigger route | Registered in \`dev/RULE_PACKS.md\`; when the user mentions APS / AI Public Squares / 教我用 APS / check Hub / Hub 有新嘢 / Drive sync / conflict, read \`dev/rules/aps-bridge.md\` and \`.aps/config.json\` before answering. |
+| Last verified | ${today} |`;
+  steps.push(upsertManagedBlock(
+    projectIndexPath,
+    'project-index-skill',
+    skillBlock,
+    /^### Source-of-truth Architecture/m,
+    dryRun
+  ));
 
   return steps;
 }
 
 if (!subcommand || subcommand === '--help' || subcommand === '-h') {
   console.log(`
-APS — AI Public Squares
+APS — AI Public Squares v${packageVersion}
 Two-machine AI agent collaboration via a shared Google Drive folder.
 
 Usage:
@@ -896,6 +1011,14 @@ if (subcommand === 'init' && args.length === 0) {
     console.error('Could not detect your home directory. Set HOME or USERPROFILE, then rerun `npx aps init`.');
     process.exit(1);
   }
+  if (setupFlags.length === 5) {
+    try {
+      ensureHandoffKitReady();
+    } catch (err) {
+      console.error(err.message);
+      process.exit(1);
+    }
+  }
 
   const installTargets = [];
   if (target === 'claude' || target === 'both') {
@@ -911,7 +1034,7 @@ if (subcommand === 'init' && args.length === 0) {
     });
   }
 
-  console.log(`APS init — skill installer${setupFlags.length === 5 ? ' + Hub setup' : ''}${dryRun ? ' (dry run)' : ''}`);
+  console.log(`APS init v${packageVersion} — skill installer${setupFlags.length === 5 ? ' + Hub setup' : ''}${dryRun ? ' (dry run)' : ''}`);
   console.log('');
   console.log('這個命令會安裝 APS skill 檔案,讓 AI 工具懂得使用 APS。');
   if (setupFlags.length === 5) {
@@ -1046,8 +1169,8 @@ if (subcommand === 'publish') {
   const config = loadConfigOrExit();
   const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
   const projectSlug = flagOrConfig('--project', 'projectSlug', config);
-  const fromId = getRequiredFlagValue('--from') || config.agentId || null;
-  const toId = getRequiredFlagValue('--to') || config.otherAgentId || null;
+  const fromId = getRequiredFlagValue('--from') || getRequiredFlagValue('--agent-id') || config.agentId || null;
+  const toId = getRequiredFlagValue('--to') || getRequiredFlagValue('--other-agent-id') || config.otherAgentId || null;
   const topic = getRequiredFlagValue('--topic');
   const body = getRequiredFlagValue('--body');
   const level = getFlagValue('--level', 'L2-handoff');
@@ -1067,10 +1190,13 @@ if (subcommand === 'publish') {
     console.log(`Published ${result.packetId} v${result.version}`);
     console.log(result.packetDir);
     console.log('');
-    console.log('Copy-ready message for the other side:');
-    console.log(`APS has new Hub traffic for you: ${topic} (${result.packetId} v${result.version}). Please open your AI tool in the project workspace and say "check Hub".`);
+    console.log('可直接複製貼上的通知訊息:');
+    console.log(`我已用 APS 放了一個新交接包。項目: ${projectSlug};主題: ${topic};交接編號: ${result.packetId} v${result.version}。請打開你的 AI 工具,進入同一個項目資料夾,輸入「check Hub」。`);
     console.log('');
-    console.log('Next: tell the other side there is new Hub traffic, then ask them to run `npx aps inbox` or say "check Hub" in their AI tool.');
+    console.log('Email 主旨: APS 有新交接包');
+    console.log(`Email 正文: 我已用 APS 放了一個新交接包。項目: ${projectSlug};主題: ${topic};交接編號: ${result.packetId} v${result.version}。請打開你的 AI 工具,進入同一個項目資料夾,輸入「check Hub」。`);
+    console.log('');
+    console.log('下一步:把上面的通知訊息複製貼上到 WhatsApp、Email 或你們平常使用的通訊工具。CLI inbox 命令只作排錯備用。');
     process.exit(0);
   } catch (err) {
     console.error(`Publish failed: ${err.message}`);
@@ -1265,27 +1391,34 @@ if (subcommand === 'doctor') {
   try {
     const output = doctorHub({ hubRoot, projectSlug, agentId, otherAgentId });
     let failed = 0;
-    console.log('APS Hub doctor');
+    console.log(`APS Hub doctor v${packageVersion}`);
+    console.log(`設定檔: ${configPath()}`);
+    console.log(`Hub root: ${hubRoot}`);
+    console.log(`項目代號: ${projectSlug}`);
+    console.log(`本機 agent: ${agentId}`);
+    console.log(`對方 agent: ${otherAgentId}`);
+    console.log('');
     for (const check of output.checks) {
-      console.log(`${check.ok ? 'ok' : 'missing'}  ${check.label}: ${check.path}`);
+      console.log(`${check.ok ? '✅ 正常' : '❌ 缺少'}  ${check.label}: ${check.path}`);
       if (!check.ok) failed += 1;
     }
     if (output.conflicts.length > 0) {
       console.log('');
-      console.log('Conflict-like filenames found:');
+      console.log('⚠️ 找到疑似衝突檔名:');
       for (const filePath of output.conflicts) console.log(`- ${filePath}`);
       failed += 1;
     } else {
       console.log('');
-      console.log('No conflict-like filenames found.');
+      console.log('✅ 沒有找到疑似衝突檔名。');
     }
     console.log('');
     if (failed === 0) {
-      console.log('status: passed');
-      console.log('Next: run inbox, publish, consume, revise, withdraw, or close as needed.');
+      console.log('狀態: 通過');
+      console.log('下一步:可以按需要執行 `npx aps inbox`、`npx aps publish --topic ... --body ...` 或在 AI 工具中輸入「教我用 APS」。');
     } else {
-      console.log('status: failed');
-      console.log('Next: fix the missing paths or conflict-like files before continuing. Do not delete conflict files without reviewing them.');
+      console.log('狀態: 未通過');
+      console.log('下一步:先修正缺少的路徑或疑似衝突檔,再繼續使用 APS。不要在未檢查內容前刪除衝突檔。');
+      console.log('提示:如果剛剛重新執行過 `npx aps init`,請確認上方「項目代號」是否就是你剛才建立的項目。');
     }
     process.exit(failed === 0 ? 0 : 1);
   } catch (err) {

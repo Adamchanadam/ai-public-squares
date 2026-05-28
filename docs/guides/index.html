@@ -5,60 +5,90 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>APS 教學中心</title>
 <style>
-  /* === Shared design tokens (keep in sync with docs/index.html) === */
   :root {
     --ink: #1b2230;
-    --ink-soft: #4a5468;
-    --ink-fade: #8892a3;
+    --ink-soft: #4b5568;
+    --ink-fade: #7c8798;
     --bg: #f6f3ec;
-    --bg-card: #fffdf7;
-    --line: #d9d4c5;
+    --paper: #fffdf7;
+    --line: #d8d1c0;
     --accent: #2f5d7c;
-    --accent-soft: #e3edf3;
+    --accent-soft: #e2edf3;
     --ok: #2e7d4f;
-    --pending: #8a6a23;
-    --mono: ui-monospace, "Cascadia Code", "Source Code Pro", Consolas, "PingFang TC", monospace;
+    --warn: #a55d1f;
+    --mono: ui-monospace, "Cascadia Code", Consolas, "PingFang TC", monospace;
     --serif: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", "Songti TC", Georgia, serif;
     --sans: "Noto Sans TC", "Source Han Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
   body {
+    margin: 0;
     background: var(--bg);
     color: var(--ink);
     font-family: var(--sans);
     font-size: 16px;
     line-height: 1.75;
-    padding: 32px 16px 64px;
+    padding: 28px 16px 56px;
   }
-  main { max-width: 760px; margin: 0 auto; }
-  header.cover {
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 24px;
-    margin-bottom: 28px;
+  main { max-width: 880px; margin: 0 auto; }
+  .site-nav {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    align-items: baseline;
+    font-size: 14px;
   }
-  header.cover .eyebrow {
-    font-size: 13px;
-    letter-spacing: 0.12em;
+  .site-nav__brand { font-family: var(--serif); font-weight: 700; letter-spacing: 0.02em; }
+  .site-nav__brand-tag {
+    margin-left: 5px;
     color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .site-nav__link {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+  }
+  .site-nav__link:hover, .site-nav__link--active { border-bottom-color: var(--accent); }
+  .site-nav__link--active { color: var(--ink); font-weight: 600; }
+  .site-nav__spacer { flex: 1; }
+  .site-nav__hint { color: var(--ink-fade); font-size: 12px; }
+  header.cover {
+    padding: 26px 0 24px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-bottom: 8px;
   }
-  header.cover h1 {
+  h1 {
     font-family: var(--serif);
-    font-size: 30px;
-    font-weight: 700;
-    margin: 0 0 4px;
-    color: var(--ink);
-    letter-spacing: 0.02em;
+    font-size: clamp(32px, 6vw, 50px);
+    line-height: 1.12;
+    margin: 0 0 12px;
+    letter-spacing: 0;
   }
-  header.cover .subtitle {
-    font-size: 17px;
+  .subtitle {
+    max-width: 760px;
     color: var(--ink-soft);
+    font-size: 18px;
     margin: 0;
   }
   section {
-    background: var(--bg-card);
+    background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 6px;
     padding: 24px 28px;
@@ -66,163 +96,74 @@
   }
   section > h2 {
     font-family: var(--serif);
-    font-size: 22px;
-    font-weight: 700;
-    margin: 0 0 6px;
-    color: var(--ink);
-  }
-  section > p.lede {
-    margin: 0 0 16px;
-    color: var(--ink-soft);
-    font-size: 15px;
+    font-size: 24px;
+    margin: 0 0 8px;
+    letter-spacing: 0;
   }
   p { margin: 0 0 12px; }
-  ul, ol { margin: 6px 0 14px; padding-left: 22px; }
-  li { margin-bottom: 6px; }
+  .lede { color: var(--ink-soft); margin-bottom: 16px; }
+  a { color: var(--accent); }
   code, .path {
     font-family: var(--mono);
     font-size: 13px;
     background: #ece6d3;
-    padding: 1px 6px;
     border-radius: 3px;
-    color: var(--ink);
-    word-break: break-all;
+    padding: 1px 6px;
   }
-  .callout {
-    background: var(--accent-soft);
-    border-left: 3px solid var(--accent);
-    padding: 14px 16px;
-    margin: 14px 0;
-    font-size: 14px;
-    color: var(--ink-soft);
-    border-radius: 0 4px 4px 0;
+  .guide-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
-  .callout strong { color: var(--ink); }
-  footer {
-    text-align: center;
-    color: var(--ink-fade);
-    font-size: 12px;
-    margin-top: 30px;
-  }
-  /* === Shared site nav (sync with docs/index.html) === */
-  .site-nav {
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 10px 14px;
-    margin-bottom: 22px;
-    font-size: 14px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 20px;
-    align-items: baseline;
-  }
-  .site-nav__brand {
-    font-family: var(--serif);
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: 0.02em;
-    margin-right: 8px;
-  }
-  .site-nav__brand-tag {
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-left: 4px;
-  }
-  .site-nav__link {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 2px;
-    white-space: nowrap;
-    transition: border-color 0.15s ease;
-  }
-  .site-nav__link:hover { border-bottom-color: var(--accent); }
-  .site-nav__link--active {
-    color: var(--ink);
-    border-bottom-color: var(--accent);
-    font-weight: 600;
-  }
-  .site-nav__spacer { flex: 1; }
-  .site-nav__hint {
-    color: var(--ink-fade);
-    font-size: 12px;
-  }
-  /* === Guides hub: card list === */
   .guide-card {
     display: block;
+    text-decoration: none;
+    color: var(--ink);
     background: #fbf6e9;
     border: 1px solid var(--line);
     border-radius: 6px;
     padding: 18px 20px;
-    margin-bottom: 14px;
-    text-decoration: none;
-    color: var(--ink);
-    transition: border-color 0.15s ease, transform 0.15s ease;
   }
-  .guide-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-1px);
-  }
-  .guide-card__head {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 4px;
-  }
-  .guide-card__title {
+  .guide-card:hover { border-color: var(--accent); }
+  .guide-card h3 {
+    font-size: 20px;
     font-family: var(--serif);
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--ink);
-    margin: 0;
-    flex: 1;
+    margin: 0 0 6px;
+    letter-spacing: 0;
   }
-  .guide-card__tag {
+  .guide-card p {
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 0 0 8px;
+  }
+  .tag {
+    display: inline-block;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 2px 8px;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 999px;
-    border: 1px solid var(--accent);
-    color: var(--accent);
+  }
+  .tag.ok { color: var(--ok); }
+  .tag.warn { color: var(--warn); }
+  .callout {
+    border-left: 4px solid var(--accent);
     background: var(--accent-soft);
+    color: var(--ink-soft);
+    padding: 14px 16px;
+    border-radius: 0 4px 4px 0;
+    margin: 14px 0;
   }
-  .guide-card__tag--ok { color: var(--ok); border-color: var(--ok); background: rgba(46,125,79,0.08); }
-  .guide-card__tag--pending { color: var(--pending); border-color: var(--pending); background: rgba(138,106,35,0.08); }
-  .guide-card__meta {
-    font-size: 12px;
+  ul { margin: 8px 0 14px; padding-left: 24px; }
+  li { margin-bottom: 7px; }
+  footer {
+    text-align: center;
     color: var(--ink-fade);
-    margin-bottom: 6px;
-    font-family: var(--mono);
+    font-size: 12px;
+    margin-top: 28px;
   }
-  .guide-card__desc {
-    font-size: 14px;
-    color: var(--ink-soft);
-    margin: 0;
-    line-height: 1.65;
-  }
-  .planned-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .planned-list li {
-    padding: 10px 0;
-    border-bottom: 1px dashed var(--line);
-    font-size: 14px;
-    color: var(--ink-soft);
-  }
-  .planned-list li:last-child { border-bottom: none; }
-  .planned-list li::before {
-    content: "⏳";
-    margin-right: 8px;
-  }
-  .planned-list strong { color: var(--ink); }
 </style>
 </head>
 <body>
@@ -232,56 +173,51 @@
   <span class="site-nav__brand">AI Public Squares<span class="site-nav__brand-tag">APS</span></span>
   <a class="site-nav__link" href="../index.html">入口</a>
   <a class="site-nav__link site-nav__link--active" href="index.html">教學中心</a>
-  <a class="site-nav__link" href="../qc/governance-map.html">分層 QC</a>
   <span class="site-nav__spacer"></span>
   <span class="site-nav__hint">2026-05-27</span>
 </nav>
 
 <header class="cover">
   <div class="eyebrow">教學中心</div>
-  <h1>APS 教學中心</h1>
-  <p class="subtitle">一份教學對一個情景。揀適合你當前面對者,跟著做。</p>
+  <h1>先完成第一次接駁，再談日常使用。</h1>
+  <p class="subtitle">這裡只放公眾用戶需要的操作教學。內部檢查、規格來源與維護者流程不放入新手路徑。</p>
 </header>
 
 <section>
-  <h2>想由零開始學</h2>
-  <p class="lede">第一次接觸,由此一份開始。讀完跟著做,你與協作夥伴可按目前 pre-release 路徑完成第一次跨機試行接駁與驗證。</p>
-
-  <a class="guide-card" href="aps-onboarding-walkthrough.html">
-    <div class="guide-card__head">
-      <h3 class="guide-card__title">APS 完整落地教學</h3>
-      <span class="guide-card__tag guide-card__tag--ok">推薦先讀</span>
-    </div>
-    <div class="guide-card__meta">約 20 分鐘讀完,跟著做另計時間</div>
-    <p class="guide-card__desc">由你部機未接過 APS 之那一刻起,走至第一次跨機試行交接完成。主路徑採用 npm latest 0.2.4 pre-release 互動式 CLI,包含本地設定與短命令日用流程。</p>
-  </a>
+  <h2>由這一份開始</h2>
+  <p class="lede">如果你未用過 APS，請只讀這一份。它會帶你完成安裝、建立 Hub、檢查狀態，以及第一次測試交接。</p>
+  <div class="guide-list">
+    <a class="guide-card" href="aps-onboarding-walkthrough.html">
+      <span class="tag ok">推薦先做</span>
+      <h3>第一次安裝與測試</h3>
+      <p>給非技術用戶閱讀。不要求你理解內部規則，也不要求你手動修改任何 <code>dev</code> 或規格檔案。</p>
+      <p>目標：你可以在自己的電腦上完成 <code>npx aps init</code>，跑通 <code>doctor</code>，並知道下一句該如何請 AI 幫你。</p>
+    </a>
+  </div>
 </section>
 
 <section>
-  <h2>按情景走通流程</h2>
-  <p class="lede">教學中心與分層 QC 對齊:每份教學不只是解釋概念,而是服務一條可驗收的使用流程。</p>
+  <h2>你現在可能處於哪個狀態？</h2>
   <ul>
-    <li><strong>零認知讀者入口流程</strong>:由 README、本項目入口頁與本教學中心負責,重點是讓讀者分清目前可試與目標體驗。</li>
-    <li><strong>設置流程</strong>:由「APS 完整落地教學」負責,以 CLI 優先,由前置事項走到首次交接包。</li>
-    <li><strong>日常協作流程</strong>:目前先由完整落地教學第 10 節承接,日後再拆成獨立日常用法教學。</li>
-    <li><strong>出錯補救流程</strong>:目前先由完整落地教學第 12 節承接,日後再拆成獨立補救教學。</li>
+    <li><strong>第一次聽到 APS：</strong>先回到 <a href="../index.html">入口頁</a>，用三分鐘理解它解決甚麼問題。</li>
+    <li><strong>已準備安裝：</strong>直接打開「第一次安裝與測試」，照步驟做。</li>
+    <li><strong>已完成安裝：</strong>在 AI 工具輸入「教我用 APS」，讓 AI 先幫你跑 <code>doctor</code> 與 <code>inbox</code>。</li>
+    <li><strong>遇到錯誤：</strong>先不要刪檔或重設，回到教學的補救段落，保留終端機輸出，再讓 AI 協助判斷。</li>
   </ul>
-  <p>四條流程須同時對齊 <a class="site-nav__link" href="../qc/governance-map.html">分層 QC</a> 的三條主線:公開承諾一致性、發佈前可信度、協定實際運行正確性。</p>
 </section>
 
 <section>
-  <h2>之後會逐步加</h2>
-  <p class="lede">每一份對應一個落地之後之實際情景。將跟著項目進度逐步補上。</p>
-  <ul class="planned-list">
-    <li><strong>接下來之日常用法</strong> — 第一次跨機接通之後,每日如何開新對話、對方收到通知後做什麼、出包與收包之重複動作。</li>
-    <li><strong>大檔如何過</strong> — 設計圖、影片過大,不應放入交接包之內。應另存於外部位置,再於包之內註明於何處取。此一份講具體做法。</li>
-    <li><strong>協定升版之做法</strong> — 雙方覺得規矩要改、要加欄、要動流程,如何有秩序過版本,留底以便將來追溯。</li>
-    <li><strong>多一個人加入協作</strong> — 三個或以上之人同時做一個項目,如何開新通道,如何計算多方之待辦。</li>
-    <li><strong>換另一個 AI 程式</strong> — 由 Claude Code 轉去其他同類程式之後,哪些位需重新驗,會否出現不同行為。</li>
-    <li><strong>出現重複檔如何救</strong> — 萬一真之出現 Drive 衝突副本,如何順序處理,如何找原因,如何避免越救越亂。</li>
-    <li><strong>用 Notion 做進度看板</strong> — 將活動與消化記錄單向同步至 Notion,予人手一眼覽盡每單對應狀況。</li>
+  <h2>之後會拆出的獨立教學</h2>
+  <p class="lede">目前先把最重要的內容集中在第一份教學。正式使用愈多，後續會拆成更短的專題頁。</p>
+  <ul>
+    <li><strong>日常收發：</strong>有內容給對方、對方說有新內容、如何收結一輪交接。</li>
+    <li><strong>出錯補救：</strong>Hub 路徑錯、Google Drive 未同步、doctor 未通過、交接包需要修訂或撤回。</li>
+    <li><strong>跨機驗證：</strong>兩個真實用戶如何確認雙方 Google Drive 真的同步。</li>
+    <li><strong>大檔處理：</strong>設計檔、影片、簡報等不適合直接放入交接包時，如何只留下引用位置。</li>
   </ul>
-  <p style="margin-top:14px;color:var(--ink-soft);font-size:14px;">此教學中心將跟著每一階段落實,逐步補上新教學。</p>
+  <div class="callout">
+    公眾教學不再要求新手閱讀 <span class="path">RULE_PACKS.md</span>、內部計劃或維護者檢查表。那些文件仍存在，但只服務維護者與 AI；維護者可改讀 <a href="../maintainers/index.html">維護者規格</a>。
+  </div>
 </section>
 
 <footer>
