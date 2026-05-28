@@ -1,6 +1,6 @@
 # Session Handoff
 
-Last Updated: 2026-05-28 (`@adamchanadam/aps` 0.2.8 local GitHub pre-release candidate; npm latest remains 0.2.7 until separate npm publish)
+Last Updated: 2026-05-28 (`@adamchanadam/aps` v0.2.8 GitHub pre-release published; npm latest remains 0.2.7 until separate npm publish)
 
 <!-- ack:section:durable-anchors -->
 ## Durable Anchors
@@ -11,7 +11,7 @@ Stable facts that should survive across sessions. Update only when they change, 
 2. Product identity: AI Public Squares is a cross-machine collaboration protocol and npm package (`@adamchanadam/aps`, Apache-2.0) for AI agents exchanging structured packets through a locally synced shared folder. Current npm latest is `0.2.7` pre-release; local source candidate is `0.2.8`.
 3. Governance model: Agent Handoff Kit v0.3.11 managed-core block at `AGENTS.md`. External skill flows, demo workspaces, and other tool outputs are subordinate evidence;this root's handoff / log / index / registry are authoritative for this workspace.
 4. Runtime storage boundary: the Google Drive Hub at `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\` owns runtime `_hub/`, templates, lane data, and ack files. This repo owns npm package source, public docs, plans, and QC truth.
-5. Release boundary: GitHub repo is public since 2026-05-23. GitHub Pages serves from `main` root. npm latest `0.2.7` was published and verified on 2026-05-28. Local source is now `0.2.8` candidate for GitHub pre-release; npm publish remains a separate explicit operation. Project remains pre-release.
+5. Release boundary: GitHub repo is public since 2026-05-23. GitHub Pages serves from `main` root. GitHub pre-release `v0.2.8` exists and points to commit `136042c`; npm latest remains `0.2.7` until a separate npm publish. Project remains pre-release.
 
 <!-- ack:section:closeout-reconciled-state -->
 ## Closeout-Reconciled State
@@ -22,8 +22,8 @@ This is the current-state area. At every full closeout, rewrite or explicitly co
 ## Current Baseline
 
 1. Workspace: `C:\Users\adam\_claude_desktop\AI_Public_Squares`, branch `main`, remote `origin=https://github.com/Adamchanadam/ai-public-squares.git`.
-2. Public release: npm latest is `@adamchanadam/aps@0.2.7` pre-release. Local source candidate is `0.2.8` for GitHub pre-release only until npm publish is explicitly authorized. The public npm user path remains `npm install --save-dev @adamchanadam/aps@latest`, then guided `npx aps init`; existing APS projects can run `npx aps upgrade`.
-3. Release state: npm readback confirms version/latest `0.2.7`, bin `aps`, fileCount 14. Local package version is `0.2.8`; local HEAD before current release commit is `466d3b0` (`Record APS 0.2.7 npm publish`) and is not pushed; remote `main` remains `d347490`.
+2. Public release: GitHub pre-release `v0.2.8` is published at `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.8`. npm latest is still `@adamchanadam/aps@0.2.7` pre-release. The public npm user path remains `npm install --save-dev @adamchanadam/aps@latest`, then guided `npx aps init`; existing APS projects can run `npx aps upgrade`.
+3. Release state: release commit `136042c` was pushed to `origin/main`; tag `v0.2.8` was pushed and points to that commit; GitHub release readback confirms `isPrerelease=true`, `isDraft=false`. npm readback confirms version/latest `0.2.7`, bin `aps`, fileCount 14, as intended because npm publish was not requested.
 4. Product strategy state: Adam agreed to defer Contacts selector, watch, `_notify`, platform scheduling, Dropbox / OneDrive formal support, true multi-agent platform, and multi-recipient packet work. The immediate product scope remains **Reliable Pair**: make the two-person APS handoff reliable before adding target-selection or automation.
 5. Documentation state: `docs/plans/2026-05-28-aps-public-product-multi-agent-roadmap.md` exists and has been rewritten to say the near-term roadmap is Reliable Pair first, Contacts selector later, and true multi-agent / notify / watch / platform adapters deferred. README, `docs/index.html`, `docs/maintainers/index.html`, `docs/qc/governance-map.html`, `dev/qc/triggers.md`, `dev/PROJECT_INDEX.md`, and `dev/DOC_SYNC_REGISTRY.md` are aligned locally to that decision.
 6. Governance state: Handoff Kit doctor passed 46 checks during post-UAT full-check, with SESSION_LOG N-rule warning now active again because the hot log reached the closeout archive boundary.
@@ -45,9 +45,9 @@ Continue from published npm 0.2.7 into **v0.2.8 GitHub pre-release follow-throug
 
 Near-term objective:
 
-1. Adam authorized commit, tag, GitHub release, and push.
-2. npm publish is not authorized unless explicitly requested separately.
-3. Treat v0.2.8 as a GitHub pre-release candidate: package version is 0.2.8 locally, public docs state npm latest remains 0.2.7 until npm publish.
+1. Adam authorized commit, tag, GitHub release, and push; these actions are complete for `v0.2.8`.
+2. npm publish is not authorized and was not performed.
+3. Treat v0.2.8 as a GitHub pre-release source release; npm latest remains 0.2.7 until Adam separately asks to publish npm.
 
 Deferred by explicit user agreement:
 
@@ -81,9 +81,8 @@ Record only work actually completed in the current session.
 <!-- ack:section:next-priorities -->
 ## Next Priorities
 
-1. **Release decision**: if Adam wants to externalize the post-UAT fixes, bump to a later npm version and run release-check first.
-2. **GitHub follow-through**: if Adam authorizes, commit / push local changes, create the matching tag / GitHub release, and verify GitHub Pages readback.
-3. **Runtime UAT**: rerun `AI_Public_Squares_UAT` and Jay-side real two-machine `check Hub` flow after the next package version or local candidate install path is clear.
+1. **npm decision**: if Adam wants npm users to receive v0.2.8, run release-check and then `npm publish --access public` only after explicit instruction.
+2. **Runtime UAT**: rerun `AI_Public_Squares_UAT` and Jay-side real two-machine `check Hub` flow after deciding whether to install from GitHub source, local package, or npm after publish.
 4. **Natural-language Reliable Pair flow**: verify that installed Claude / Codex skill routes all three product aliases:「教我用 APS」「教我用 AI Public Squares」「教我用 Agent Public Squares」.
 
 <!-- ack:section:next-task-required-reading -->
@@ -108,9 +107,9 @@ Before acting on the next task, read or mark blocked:
 <!-- ack:section:risks-blockers -->
 ## Risks / Blockers
 
-1. **Project remains pre-release**: npm latest 0.2.7 is verified, and v0.2.8 is being prepared as a GitHub pre-release candidate only.
-2. **npm publish not authorized yet**: package version is now 0.2.8 locally, but npm latest remains 0.2.7 until a separate explicit npm publish instruction.
-3. **GitHub Pages may lag after push**: verify live Pages after push before treating the public page as current.
+1. **Project remains pre-release**: GitHub v0.2.8 is a pre-release; npm latest 0.2.7 remains the installable npm version.
+2. **npm publish not authorized yet**: package version is 0.2.8 in GitHub source, but npm latest remains 0.2.7 until a separate explicit npm publish instruction.
+3. **Session log archive warning**: Handoff Kit doctor passes but warns SESSION_LOG count is beyond the N-rule closeout boundary; next closeout should archive/collapse old entries.
 4. **Worktree is dirty**: many files have uncommitted runtime, documentation, QC, and governance changes. Do not revert user / prior-session changes. Commit only if Adam asks.
 5. **AI behavior risk**: the biggest remaining product risk is not CLI capability alone, but whether Claude / Codex reliably follow the skill: read config, run doctor, summarize, preflight, confirm, then publish.
 6. **Deferred scope must stay deferred**: Contacts selector, watch, notify, platform scheduling, true multi-agent, and Dropbox / OneDrive support are not current work.
@@ -127,7 +126,7 @@ Current closeout QC summary:
 - Targeted scan found no disallowed colloquial markers in the new roadmap; README still intentionally contains user-trigger quote examples with colloquial words.
 - `node --check bin\aps.js` and `node bin\aps.js --help` passed after bumping local package version to 0.2.8.
 - `cmd /c claude -p "<bounded read-only review prompt>"` succeeded from this repo root after a too-long first prompt timed out. Use it for read-only external Claude review when Adam asks; keep prompt scope bounded and say `只讀，不改檔`. If a future technical blocker remains after shortening the prompt, verify current Claude Code official docs or web guidance before changing the command pattern.
-- S31 post-UAT full-check produced `dev/qc/2026-05-28-aps-full-audit-0.2.7-post-uat.md`. Local runtime regression passed after role-B identity-default fix, but external release is blocked by stale GitHub Pages and the need for a later npm version.
+- S32 release checks passed: release commit and tag read back at `136042c`; GitHub release readback confirms `v0.2.8` pre-release; GitHub Pages readback contains `GitHub source 0.2.8`, `npm latest 0.2.7`, `摘要式通知`, and `不會自動觸發對方 AI`. npm readback remains 0.2.7 by design.
 
 <!-- ack:section:workspace-identity -->
 ## Workspace Identity
@@ -135,9 +134,9 @@ Current closeout QC summary:
 Expected project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares`
 Git root: same
 Branch: `main`
-Latest pushed release state: release commit `e723dfc` (`v0.2.6`) and post-publish state-sync commit `d347490` are pushed. Local HEAD `466d3b0` records 0.2.7 npm publish but is not pushed.
+Latest pushed release state: release commit `136042c` is pushed; tag `v0.2.8` points to `136042c`; GitHub pre-release `v0.2.8` exists.
 Remote: `origin` = `https://github.com/Adamchanadam/ai-public-squares.git` (public, Apache-2.0, HTTPS via Windows Credential Manager).
-Worktree status: dirty, with local 0.2.7 post-UAT runtime / roadmap / documentation / QC / handoff changes uncommitted. No commit, push, tag, GitHub release, or npm publish should be performed without Adam's explicit instruction.
+Worktree status: post-release state-sync edits are local until committed/pushed. npm publish was not performed.
 
 <!-- ack:section:sync-status -->
 ## Sync Status
@@ -149,7 +148,7 @@ Use statuses from `dev/DOC_SYNC_REGISTRY.md`: `confirmed`, `unverified`, `pendin
 - Public docs / README: `confirmed` locally; public wording says GitHub source is 0.2.8 candidate while npm latest remains 0.2.7, with Contacts / watch / notify deferred.
 - Maintainer docs / QC map / QC triggers: `confirmed` locally; they guard against overclaiming true multi-agent, notify, watch, platform scheduling, or cloud APIs.
 - npm package: `confirmed` externally for latest 0.2.7; npm readback confirmed version/latest `0.2.7`, bin `aps`, fileCount 14.
-- GitHub / Pages: `blocked` for current local state. GitHub Pages live page returned HTTP 200, but did not include local 0.2.7 / summary notification / no-auto-trigger wording.
+- GitHub / Pages: `confirmed`; GitHub release `v0.2.8` readback passed and GitHub Pages live page returned HTTP 200 with current source / npm boundary wording.
 - SESSION_LOG archive: `confirmed` locally; S18 moved to archive batch 008 during this closeout.
 
 <!-- ack:section:state-reconciliation-check -->
@@ -190,7 +189,7 @@ Continuity rule: this file carries current state and next action. `SESSION_LOG.m
 ```text
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for AI Public Squares; published as `@adamchanadam/aps`; GitHub repo Adamchanadam/ai-public-squares is public; GitHub Pages enabled).
 
-Current state (2026-05-28): `@adamchanadam/aps@0.2.8` is the local GitHub pre-release candidate. npm latest remains `@adamchanadam/aps@0.2.7` until Adam separately authorizes npm publish. Adam has authorized commit, tag, GitHub release, and push for the current local state.
+Current state (2026-05-28): GitHub pre-release `v0.2.8` is published at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.8 and points to commit `136042c`. npm latest remains `@adamchanadam/aps@0.2.7` until Adam separately authorizes npm publish.
 
 0.2.8 GitHub candidate scope includes the published 0.2.7 Reliable Pair base plus summary-style human notifications, receiver local-alignment reporting wording, `claude -p` external-review governance note, and role-B interactive `init` defaults (`agent_b / agent_a`). Public docs must keep saying npm latest is 0.2.7 until npm publish actually happens.
 
@@ -210,7 +209,7 @@ If this root does not match the expected project root, stop and ask for confirma
 
 Voice / writing hard rule: user-facing prose must be contemporary written Traditional Chinese. Colloquial Cantonese markers listed in `AGENTS.md` are allowed only inside verbatim user-trigger quotes. HTML must not link local `.md` files; use plain `<span class="path">` references for internal spec paths.
 
-Expected next action: complete the authorized v0.2.8 GitHub pre-release path: commit, push main, tag `v0.2.8`, push tag, create GitHub pre-release, then verify GitHub release and Pages. Do not run `npm publish` unless Adam separately asks.
+Expected next action: if Adam wants npm users to receive v0.2.8, run release-check and then publish npm only after explicit instruction. Otherwise continue UAT from GitHub source / local package, remembering npm latest is still 0.2.7.
 
 QC vocabulary: if Adam says 「跑快檢 / 跑外發前檢 / 跑全面檢」 or quick-check / release-check / full-check, load `dev/qc/triggers.md` and run that tier. If he says a vague QC term, ask 「你指快檢 / 外發前檢 / 全面檢?」.
 

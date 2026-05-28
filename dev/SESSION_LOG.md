@@ -8,15 +8,15 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-28 (S32, latest) — v0.2.8 GitHub pre-release prep
+## 2026-05-28 (S32, latest) — v0.2.8 GitHub pre-release
 
 - **ID:** S32
-- **Summary:** Adam authorized commit, tag, GitHub release, and push. npm publish was not requested. Local source was bumped to `@adamchanadam/aps@0.2.8` as a GitHub pre-release candidate, with public docs explicitly stating npm latest remains `0.2.7` until a separate npm publish.
-- **Changed:** This workspace only so far.
+- **Summary:** Adam authorized commit, tag, GitHub release, and push. npm publish was not requested. Local source was bumped to `@adamchanadam/aps@0.2.8` as a GitHub pre-release candidate, with public docs explicitly stating npm latest remains `0.2.7` until a separate npm publish. Release commit `136042c` was pushed to `origin/main`; tag `v0.2.8` was pushed and points to the same commit; GitHub pre-release was created at `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.8`.
+- **Changed:** This workspace, GitHub remote, GitHub release, and GitHub Pages.
   - Modified: `package.json`, `README.md`, `docs/index.html`, `skills/aps/SKILL.md`, `dev/PROJECT_INDEX.md`, `dev/SESSION_HANDOFF.md`, and `START_NEXT_SESSION_PROMPT.txt`.
   - Added: `dev/release-notes/v0.2.8.md`.
-- **QC:** `node --check bin\aps.js`, `node bin\aps.js --help`, `npm test`, `npm pack --dry-run --json`, HTML local `.md` link scan, `git diff --check`, and Handoff Kit doctor passed. `npm test` remains placeholder-only. Handoff Kit doctor still warns SESSION_LOG is beyond N-rule closeout boundary.
-- **Pending:** Create release commit, push `main`, tag / push `v0.2.8`, create GitHub pre-release from `dev/release-notes/v0.2.8.md`, then verify GitHub release and GitHub Pages. Do not run `npm publish` unless Adam explicitly asks.
+- **QC:** `node --check bin\aps.js`, `node bin\aps.js --help`, `npm test`, `npm pack --dry-run --json`, HTML local `.md` link scan, `git diff --check`, and Handoff Kit doctor passed. `npm test` remains placeholder-only. Remote readback passed: `git ls-remote` shows `origin/main` and `v0.2.8` at `136042c`; GitHub release readback confirms `isPrerelease=true`, `isDraft=false`; GitHub Pages readback returned HTTP 200 and contains `GitHub source 0.2.8`, `npm latest 0.2.7`, `摘要式通知`, and `不會自動觸發對方 AI`. npm readback confirms latest remains `0.2.7`, as intended.
+- **Pending:** npm publish is not done and not authorized in this step. If Adam wants npm users to receive 0.2.8, run release-check and then `npm publish --access public` only after explicit instruction.
 
 ## 2026-05-28 (S31) — 0.2.7 post-UAT full-check blocker
 

@@ -1,6 +1,6 @@
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for AI Public Squares; published as `@adamchanadam/aps`; GitHub repo Adamchanadam/ai-public-squares is public; GitHub Pages enabled).
 
-Current state (2026-05-28): `@adamchanadam/aps@0.2.8` is the local GitHub pre-release candidate. npm latest remains `@adamchanadam/aps@0.2.7` until Adam separately authorizes npm publish. Adam has authorized commit, tag, GitHub release, and push for the current local state.
+Current state (2026-05-28): GitHub pre-release `v0.2.8` is published at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.8 and points to commit `136042c`. npm latest remains `@adamchanadam/aps@0.2.7` until Adam separately authorizes npm publish.
 
 0.2.8 GitHub candidate scope includes the published 0.2.7 Reliable Pair base plus summary-style human notifications, receiver local-alignment reporting wording, `claude -p` external-review governance note, and role-B interactive `init` defaults (`agent_b / agent_a`). Public docs must keep saying npm latest is 0.2.7 until npm publish actually happens.
 
@@ -20,7 +20,7 @@ If this root does not match the expected project root, stop and ask for confirma
 
 Voice / writing hard rule: user-facing prose must be contemporary written Traditional Chinese. Colloquial Cantonese markers listed in `AGENTS.md` are allowed only inside verbatim user-trigger quotes. HTML must not link local `.md` files; use plain `<span class="path">` references for internal spec paths.
 
-Expected next action: complete the authorized v0.2.8 GitHub pre-release path: commit, push main, tag `v0.2.8`, push tag, create GitHub pre-release, then verify GitHub release and Pages. Do not run `npm publish` unless Adam separately asks.
+Expected next action: if Adam wants npm users to receive v0.2.8, run release-check and then publish npm only after explicit instruction. Otherwise continue UAT from GitHub source / local package, remembering npm latest is still 0.2.7.
 
 QC vocabulary: if Adam says 「跑快檢 / 跑外發前檢 / 跑全面檢」 or quick-check / release-check / full-check, load `dev/qc/triggers.md` and run that tier. If he says a vague QC term, ask 「你指快檢 / 外發前檢 / 全面檢?」.
 
