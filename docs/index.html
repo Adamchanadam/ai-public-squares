@@ -230,14 +230,14 @@
   <h1>讓兩部電腦上的 AI 有一個共同交接處。</h1>
   <p class="subtitle">AI Public Squares 用 Google Drive 上的一個共享資料夾，替兩邊的 AI 留下交接包、上下文、版本記錄與收件狀態。它不是伺服器，也不會自動傳訊息；它的價值是讓對方 AI 在檢查 Hub 時讀到完整交接，而不是靠人類重複搬運背景。</p>
   <div class="meta">
-    <span class="badge ok">npm latest 0.2.7</span>
-    <span class="badge">公眾可用版本</span>
+    <span class="badge ok">GitHub source 0.2.8 候選</span>
+    <span class="badge">npm latest 0.2.7</span>
   </div>
 </header>
 
 <section>
   <h2>先講清楚：目前可依賴甚麼？</h2>
-  <p class="lede">本頁只列公眾可照做的現有流程：安裝、設定、健康檢查、交接、收件、修訂、撤回與收結。</p>
+  <p class="lede">本頁只列公眾可照做的現有流程：安裝、設定、健康檢查、交接、收件、修訂、撤回與收結。npm latest 仍是 0.2.7；0.2.8 是 GitHub source 候選，待後續 npm publish。</p>
   <div class="grid two">
     <div class="tile">
       <h3>已可實際使用的部分</h3>
@@ -245,11 +245,11 @@
     </div>
     <div class="tile">
       <h3>使用時要知道的邊界</h3>
-      <p>AI 對話中的自然語言引導、錯誤補救、跨機項目首次驗證，仍需要保守試用。工具不會自動推送通知，但 AI 應替你生成可直接複製貼上的 WhatsApp 或 Email 通知。通知應叫對方在自己電腦上使用已接入 APS 的對應項目，不應複製發送方的本機 Google Drive 路徑。</p>
+      <p>AI 對話中的自然語言引導、錯誤補救、跨機項目首次驗證，仍需要保守試用。工具不會自動觸發對方 AI，但 AI 應替你生成可直接複製貼上的摘要式通知。通知可貼到 Telegram、WhatsApp 或 Email，並應叫對方在自己電腦上使用已接入 APS 的對應項目，不應複製發送方的本機 Google Drive 路徑。</p>
     </div>
   </div>
   <div class="callout">
-    <strong>對新用戶的正確期待：</strong>今天最可靠的路徑是「照教學安裝 → 由 <code>npx aps init</code> 建立設定 → 打開 AI 說『教我用 APS』→ 讓 AI 協助你做第一次測試交接」。命令列保留作可驗證備用；日常主路徑應是自然語言。
+    <strong>對新用戶的正確期待：</strong>今天最可靠的路徑是「照教學安裝 → 由 <code>npx aps init</code> 建立設定 → 打開 AI 說『教我用 APS』或『教我用 Agent Public Squares』→ 讓 AI 協助你做第一次測試交接」。AI Public Squares 是正式產品名；Agent Public Squares 是同一產品的自然語言別名。命令列保留作可驗證備用；日常主路徑應是自然語言。
   </div>
   <div class="callout warn">
     <strong>產品邊界：</strong>0.2.x 主路徑是二人協作。現在只承諾本頁寫明的安裝、健康檢查、交接、收件、修訂、撤回與收結能力。核心方向是不要求雲端開發者專案、額外 API 權限或密鑰設定。
@@ -287,7 +287,7 @@
     <li>安裝 APS 套件。</li>
     <li>執行 <code>npx aps init</code>，按畫面提問填入五個值。</li>
     <li>執行 <code>npx aps doctor</code>，確認 Hub 與本機設定正常。</li>
-    <li>在 AI 工具打開同一個項目資料夾，輸入「教我用 APS」。</li>
+    <li>在 AI 工具打開同一個項目資料夾，輸入「教我用 APS」。若你自然說成「教我用 Agent Public Squares」，AI 也應走同一條 APS 流程。</li>
   </ol>
   <pre>npx --yes @adamchanadam/agent-handoff-kit@latest init
 npm install --save-dev @adamchanadam/aps@latest
@@ -316,13 +316,13 @@ npx aps doctor</pre>
       </tr>
       <tr>
         <td>你的 agent id</td>
-        <td>你這邊 AI 在 Hub 內的通道名稱。</td>
-        <td>通用測試可用 <code>agent_a</code>。</td>
+        <td>你這邊在 Hub 內的共享身份。</td>
+        <td>例如 <code>adam</code>。兩部電腦都要用同一個名字代表 Adam。</td>
       </tr>
       <tr>
         <td>對方 agent id</td>
-        <td>對方 AI 在 Hub 內的通道名稱。</td>
-        <td>通用測試可用 <code>agent_b</code>。</td>
+        <td>對方在 Hub 內的共享身份。對方設置時要與你對調。</td>
+        <td>例如 <code>jay</code>。Jay 加入時填自己 <code>jay</code>、對方 <code>adam</code>。</td>
       </tr>
       <tr>
         <td>Google Drive 本機路徑</td>
@@ -331,6 +331,9 @@ npx aps doctor</pre>
       </tr>
     </tbody>
   </table>
+  <div class="callout">
+    <strong>身份要對調，不要重命名。</strong>若 Adam 這邊是 <code>adam</code> / <code>jay</code>，Jay 那邊就是 <code>jay</code> / <code>adam</code>。
+  </div>
 </section>
 
 <section>
@@ -339,11 +342,11 @@ npx aps doctor</pre>
   <div class="grid three">
     <div class="tile">
       <h3>你有內容給對方</h3>
-      <p>告訴 AI：「幫我將當前任務整理成 APS 交接包給對方」。AI 應自動讀設定、檢查 Hub、整理共同目標、本方任務、對方任務、交叉點、待處理事項、關鍵檔案與請對方回應的問題。發送前，AI 必須先做完整性預檢並給你確認，然後才發佈交接包並生成可貼上的通知。</p>
+      <p>告訴 AI：「幫我將當前任務整理成 APS 交接包給對方」。AI 應自動讀設定、檢查 Hub、整理共同目標、本方任務、對方任務、交叉點、待處理事項、關鍵檔案與請對方回應的問題。發送前，AI 必須先做完整性預檢並給你確認，然後才發佈交接包並生成可貼上的摘要式通知。</p>
     </div>
     <div class="tile">
       <h3>對方說有新內容</h3>
-      <p>告訴 AI：「check Hub」。AI 應檢查收件、列出待處理內容，並先判斷交接包是否齊全；若資料不足，AI 應主動整理缺漏並生成補交需求包給對方。</p>
+      <p>告訴 AI：「check Hub」。AI 應檢查收件、列出待處理內容，先生成方便閱讀的收件報告，再核對交接包是否齊全、是否與本機文件資料和任務要求一致；若資料不足或不一致，AI 應先整理缺漏、發補交需求或共識確認包，不應直接開工。</p>
     </div>
     <div class="tile">
       <h3>出現錯誤或同步問題</h3>
@@ -351,7 +354,7 @@ npx aps doctor</pre>
     </div>
   </div>
   <div class="callout warn">
-    <strong>目前限制：</strong>APS 不會自動提醒對方電腦有新內容。AI 應替你生成可直接複製貼上的 WhatsApp / Email 通知，你只需貼到平常渠道請對方「check Hub」。通知文字應用項目代號、主題與交接編號識別內容；本機 <code>hubRoot</code> 不應當成對方電腦上的路徑。若 AI 未能順利完成，才回到命令列備用路徑：<code>npx aps doctor</code>、<code>npx aps inbox</code>、<code>npx aps publish</code>、<code>npx aps consume</code>、<code>npx aps revise</code>、<code>npx aps withdraw</code>、<code>npx aps close</code>、<code>npx aps config</code>。
+    <strong>目前限制：</strong>APS 不會自動提醒對方電腦有新內容，也不會自動觸發對方 AI。AI 應替你生成可直接複製貼上的 Telegram / WhatsApp / Email 通知，你只需貼到平常渠道請對方「check Hub」。通知文字應包含重點摘要與注意事項，不應只列項目代號、主題與交接編號；本機 <code>hubRoot</code> 不應當成對方電腦上的路徑。若 AI 未能順利完成，才回到命令列備用路徑：<code>npx aps doctor</code>、<code>npx aps inbox</code>、<code>npx aps publish</code>、<code>npx aps consume</code>、<code>npx aps revise</code>、<code>npx aps withdraw</code>、<code>npx aps close</code>、<code>npx aps config</code>。
   </div>
 </section>
 
@@ -365,7 +368,7 @@ npx aps doctor</pre>
     </div>
     <div class="tile">
       <h3>回覆一個共識確認包</h3>
-      <p>AI 應用 APS 發出確認包，並生成可直接複製貼上的 WhatsApp / Email 通知。雙方確認共同目標與任務邊界後，才繼續執行。</p>
+      <p>AI 應用 APS 發出確認包，並生成可直接複製貼上的摘要式通知。雙方確認共同目標與任務邊界後，才繼續執行。</p>
     </div>
   </div>
 </section>

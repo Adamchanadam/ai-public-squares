@@ -1,15 +1,15 @@
 ---
 name: aps
-description: Sets up and runs cross-machine collaboration between two AI agents working on the same project, using a shared cloud-drive folder as the exchange. Use when the user wants to set up APS (also called AI Public Squares) on a new machine, resolve the pain of two people editing the same files from two different computers, start a partner workflow with someone on another machine, post or receive an inter-agent packet, check the shared folder for new items from the other side, or troubleshoot cross-machine sync issues. Triggers on phrases like "set up APS", "set up AI Public Squares", "教我用 APS", "教我用 AI Public Squares", "裝 APS", "裝 AI Public Squares", "啟動 AI Public Squares", "跨機合作", "想同 [對方] 兩部機合作", "兩部電腦改同一份嘢成日撞", "兩個人改緊同一份文件", "partner workflow", "cross-machine collab", "two AIs collaborating", "我有嘢俾 [對方]", "post to [對方]", "check Hub", "Hub 有新嘢", "[對方] 嗰邊有冇新嘢", "Drive 同步唔到", "[對方] 話收唔到", "sync stuck", "conflict".
+description: Sets up and runs cross-machine collaboration between two AI agents working on the same project, using a shared cloud-drive folder as the exchange. Use when the user wants to set up APS, AI Public Squares, or Agent Public Squares on a new machine, resolve the pain of two people editing the same files from two different computers, start a partner workflow, post or receive an inter-agent packet, check the shared folder for new items, or troubleshoot cross-machine sync issues. Triggers on phrases like "set up APS", "set up AI Public Squares", "set up Agent Public Squares", "教我用 APS", "教我用 AI Public Squares", "教我用 Agent Public Squares", "裝 APS", "裝 AI Public Squares", "裝 Agent Public Squares", "啟動 AI Public Squares", "啟動 Agent Public Squares", "跨機合作", "想同 [對方] 兩部機合作", "兩部電腦改同一份嘢成日撞", "partner workflow", "cross-machine collab", "two AIs collaborating", "我有嘢俾 [對方]", "post to [對方]", "check Hub", "Drive 同步唔到", "sync stuck", "conflict".
 ---
 
 # AI Public Squares — 跨機合作 skill
 
-> **狀態(2026-05-28):** npm package `@adamchanadam/aps` v0.2.7 pre-release 已發布。套件提供 `bridge-pack`、互動式 `init` 技能安裝、既有項目 `upgrade`、初始 Hub skeleton、Bridge Pack、starter pack、最小 `publish` / `inbox` / `consume` / `close` 指令,以及 `revise`、`withdraw`、只讀 `doctor`、`config`、`.aps/config.json` 專案本地設定、`publish --body-file`、`revise --body-file` 與短命令日用流程。0.2.7 延續 Handoff Kit APS route / project-index registration、中文 `doctor` 輸出、copy-ready 通知與既有 Hub 保留策略,並改善 APS 品牌畫面、繁體中文 help、發送前確認、收件總覽、補交 / 共識確認 wording,以及通知對方時不得誤用發送方本機 Google Drive 路徑的安全邊界。設置完成後日常命令可省略 Hub / project / agent 長參數。專案已通過一次維護者真實 Google Drive 跨機往返驗證;技能內自然語言日常操作與補救流程仍為前期測試。此檔是可隨 npm package 發出的 skill runtime 規格草稿。設置對話 wording 的精簡隨包版本見 `references/setup-dialogue.md`;repo 內長版維護稿見 `docs/plans/2026-05-23-aps-skill-dialogue-script.md`。
+> **狀態(2026-05-28):** npm package `@adamchanadam/aps` v0.2.7 pre-release 已發布;本地 source 已推進至 v0.2.8 pre-release 候選,待後續 npm publish。套件提供 `bridge-pack`、互動式 `init` 技能安裝、既有項目 `upgrade`、初始 Hub skeleton、Bridge Pack、starter pack、最小 `publish` / `inbox` / `consume` / `close` 指令,以及 `revise`、`withdraw`、只讀 `doctor`、`config`、`.aps/config.json` 專案本地設定、`publish --body-file`、`revise --body-file` 與短命令日用流程。0.2.8 候選延續 Handoff Kit APS route / project-index registration、中文 `doctor` 輸出、copy-ready 通知與既有 Hub 保留策略,並改善 APS 品牌畫面、繁體中文 help、發送前確認、收件總覽、補交 / 共識確認 wording、摘要式人類通知、角色 B 預設身份,以及通知對方時不得誤用發送方本機 Google Drive 路徑的安全邊界。設置完成後日常命令可省略 Hub / project / agent 長參數。專案已通過一次維護者真實 Google Drive 跨機往返驗證;技能內自然語言日常操作與補救流程仍為前期測試。此檔是可隨 npm package 發出的 skill runtime 規格草稿。設置對話 wording 的精簡隨包版本見 `references/setup-dialogue.md`;repo 內長版維護稿見 `docs/plans/2026-05-23-aps-skill-dialogue-script.md`。
 
 ## 1. 此 skill 的職責
 
-帶用戶行完整個跨機合作生命周期:初次設置、日常交接、收取對方回覆、出錯補救。用戶多數對協定內部結構沒有預備知識,亦不應需要知道。Skill 的目標是將整套協定包成「用戶回答少量問題,AI 代理處理其餘步驟」的形態。**目前此檔是 runtime 規格草稿,不是已通過真實用戶流程測試的能力清單;已由 CLI 驗證的範圍包括本地一次性 Hub 的發佈、修訂、收件、消化、撤回、收結與只讀診斷。技能內自然語言操作、starter pack 對方落地、補救動作與真實跨機 Drive 同步,實作前仍須以當前 CLI 與 bundled files 重新驗證。**
+帶用戶行完整個跨機合作生命周期:初次設置、日常交接、收取對方回覆、出錯補救。用戶多數對協定內部結構沒有預備知識,亦不應需要知道。Skill 的目標是將整套協定包成「用戶回答少量問題,AI 代理處理其餘步驟」的形態。產品正式名是 AI Public Squares,常用簡稱是 APS;若用戶說 Agent Public Squares,視為同一產品的自然語言別名,不得回答「不確定」或改走其他 onboarding skill。**目前此檔是 runtime 規格草稿,不是已通過真實用戶流程測試的能力清單;已由 CLI 驗證的範圍包括本地一次性 Hub 的發佈、修訂、收件、消化、撤回、收結與只讀診斷。技能內自然語言操作、starter pack 對方落地、補救動作與真實跨機 Drive 同步,實作前仍須以當前 CLI 與 bundled files 重新驗證。**
 
 ## 2. 對用戶輸出的 voice 規矩(嚴格遵守)
 
@@ -18,7 +18,7 @@ description: Sets up and runs cross-machine collaboration between two AI agents 
 - 敍事與解釋並行:每一句獨立讀都自足,用戶讀完即知意義,而非要靠前後句拼湊或要打開另一份文件參考。
 - 句可短,氣須足。用戶非技術背景,但是成年人,有自己的節奏與判斷力。
 - 粵語 colloquial 字詞(「嘅」「嗰」「咗」「唔」「呢個」等)僅可出現於 verbatim 引述用戶原話的觸發短語(例如「Hub 有新嘢」「check Hub」),其他位置一律書面語。
-- **APS 品牌卡統一規則**:用戶輸入「教我用 APS」、`check Hub` 或完成 APS 發佈 / 收件狀態整理時,可在回覆開首顯示 APS 自己的短品牌卡,但必須放在 fenced `text` block 內保留排版。固定格式為:
+- **APS 品牌卡統一規則**:用戶輸入「教我用 APS」、「教我用 AI Public Squares」、「教我用 Agent Public Squares」、`check Hub` 或完成 APS 發佈 / 收件狀態整理時,可在回覆開首顯示 APS 自己的短品牌卡,但必須放在 fenced `text` block 內保留排版。固定格式為:
   ```text
   -------------------------------------
           ✦ AI Public Squares ✦
@@ -33,10 +33,11 @@ description: Sets up and runs cross-machine collaboration between two AI agents 
 - **品牌與版本分流硬規則**:APS 與 Agent Handoff Kit 是不同產品層。APS skill 不得輸出 Agent Handoff Kit 的啟動卡、貓圖 banner、`continuity ready` 或 `Agent Handoff Kit v<版本>`。若需要提版本,只能分開列明:「APS CLI: 由 `npx aps doctor` 或 `npx aps --help` 實測所得」;「Agent Handoff Kit: 只有實際執行 kit doctor 或讀到已驗證本地紀錄時才可列明,否則寫未核實」。不得把 APS package 版本當成 Agent Handoff Kit 版本。
 - **候選版本測試規則**:若用戶正在測試未發布候選版,先核對 `npx aps --help` 或 `npx aps doctor` 顯示的 APS CLI 版本。若它仍是 npm 最新公開版,不得聲稱正在測試候選版;需改用本地 CLI 路徑或先把本地 package 安裝到該 UAT 專案。
 - **新安裝 / 升級分流硬規則**:沒有 `.aps/config.json` 的項目走新安裝:先 `npm install --save-dev @adamchanadam/aps@latest`,再 `npx aps init`。已有 `.aps/config.json` 的項目走升級:先 `npm install --save-dev @adamchanadam/aps@latest`,再 `npx aps upgrade`。升級時不得要求用戶重建 Hub,不得覆寫既有交接包、outbox、ack 或 Hub 協定檔。
+- **agent_id 一致性硬規則**:`agent_id` 是整個 Hub 共用的身份名稱,不是每部電腦各自重新命名的暱稱。若 Adam 這邊用 `agent-id=adam`、`other-agent-id=jay`,Jay 那邊必須用 `agent-id=jay`、`other-agent-id=adam`。不得建議兩部電腦都把自己叫 `agent_a`。若兩邊名稱不一致,AI 必須先提醒會讀錯 `from_<agent>` 通道,導致 inbox 看不到交接包或 Hub 內出現多套 lane,再協助用戶用 `npx aps config` 或 `npx aps upgrade` 對齊。
 
 ## 3. 起手 routing
 
-Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何 reference 前,先檢查目前工作目錄是否已有 `.aps/config.json`。若存在,這是最高優先訊號。**用戶說「教我用 APS」「set up APS」「下一步」「怎樣試」時,意思是「帶我開始用」,不是「重新教我安裝」。此時不得直接讀 setup 起手稿,不得重問雲端硬碟是否已安裝或對方是誰;先讀 `.aps/config.json`,再進入「首次使用子流程」。
+Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何 reference 前,先檢查目前工作目錄是否已有 `.aps/config.json`。若存在,這是最高優先訊號。**用戶說「教我用 APS」「教我用 AI Public Squares」「教我用 Agent Public Squares」「set up APS」「下一步」「怎樣試」時,意思是「帶我開始用」,不是「重新教我安裝」。此時不得直接讀 setup 起手稿,不得重問雲端硬碟是否已安裝或對方是誰;先讀 `.aps/config.json`,再進入「首次使用子流程」。
 
 字面短語只是樣本;字面命中或語意命中,任一即足以 route 至該子流程。
 
@@ -53,9 +54,9 @@ Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何
   如果你是要交給對方,選 B;如果你是準備收工或下次繼續,選 A。
   ```
   若用戶明確提到「對方」「Jay」「另一台機」「Hub」「check Hub」「WhatsApp 通知」「APS」,才走 APS 發佈 / 收件流程。若用戶明確提到「收工」「wrap up」「下一個 session」「下次繼續」「handoff ready」,交由 Agent Handoff Kit closeout 流程處理,不要建立 APS packet。
-- **雲端支援邊界**:目前已驗證主路徑是 Google Drive,但 Google Drive 不等於固定磁碟機代號,必須以 `.aps/config.json` 的 `hubRoot` 或用戶提供的真實本機路徑為準。`hubRoot` 是本機設定,只代表當前使用者這部電腦的同步路徑;不得把發送方的本機 `G:\...`、`C:\...` 或任何本機 Hub path 寫成對方應使用的路徑。給對方的通知應說「在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入『check Hub』」,並以 project slug、topic、packet id / version 作識別。Dropbox、OneDrive 或其他同步資料夾只可描述為未正式驗證的實驗路徑,不得主動推薦為正式支援路徑;若用戶指定非 Google Drive,先標示未驗證並要求做該項目的單獨同步驗證。
-- **初次設置**:用戶語句出現「set up APS」「set up AI Public Squares」「教我用 APS」「教我用 AI Public Squares」「裝 APS」「裝 AI Public Squares」「啟動 AI Public Squares」「跨機合作」「想同 X 兩部機合作」「partner workflow」「cross-machine collab」「two AIs collaborating」「兩部電腦改同一份嘢成日撞」「兩個人改緊同一份文件」等,或語意指向「初次設置一個跨機合作機制」的同類語句 → 進入「設置子流程」(第 4 節)。
-- **安裝後首次對話**:若目前工作目錄已有 `.aps/config.json`,而用戶說「教我用 APS」「set up APS」「已安裝」「下一步」「怎樣試」等,不要重做初次設置;先進入「首次使用子流程」(第 5 節)。
+- **通知與雲端支援邊界**:目前已驗證主路徑是 Google Drive,但 Google Drive 不等於固定磁碟機代號,必須以 `.aps/config.json` 的 `hubRoot` 或用戶提供的真實本機路徑為準。`hubRoot` 是本機設定,只代表當前使用者這部電腦的同步路徑;不得把發送方的本機 `G:\...`、`C:\...` 或任何本機 Hub path 寫成對方應使用的路徑。給對方的通知必須先讓人看懂,再讓人決定是否叫 AI 介入:包含 project slug、來源 agent、topic、packet id / version、`🔎 重點摘要`、`⚠️ 注意事項`、以及唯一主行動「在你自己電腦上打開已接入 APS 的對應項目資料夾,由你本人確認可以處理後,向 AI 輸入『check Hub』」。通知不可只列交接編號,亦不可要求對方使用發送方本機路徑。Telegram、WhatsApp、Email 或其他渠道都只是人類通知渠道;APS skill 不應透過通知自動觸發對方 AI,也不得自動 consume、close、revise 或 withdraw。Dropbox、OneDrive 或其他同步資料夾只可描述為未正式驗證的實驗路徑,不得主動推薦為正式支援路徑;若用戶指定非 Google Drive,先標示未驗證並要求做該項目的單獨同步驗證。
+- **初次設置**:用戶語句出現「set up APS」「set up AI Public Squares」「set up Agent Public Squares」「教我用 APS」「教我用 AI Public Squares」「教我用 Agent Public Squares」「裝 APS」「裝 AI Public Squares」「裝 Agent Public Squares」「啟動 AI Public Squares」「啟動 Agent Public Squares」「跨機合作」「想同 X 兩部機合作」「partner workflow」「cross-machine collab」「two AIs collaborating」「兩部電腦改同一份嘢成日撞」「兩個人改緊同一份文件」等,或語意指向「初次設置一個跨機合作機制」的同類語句 → 進入「設置子流程」(第 4 節)。
+- **安裝後首次對話**:若目前工作目錄已有 `.aps/config.json`,而用戶說「教我用 APS」「教我用 AI Public Squares」「教我用 Agent Public Squares」「set up APS」「set up AI Public Squares」「set up Agent Public Squares」「已安裝」「下一步」「怎樣試」等,不要重做初次設置;先進入「首次使用子流程」(第 5 節)。
 - **一語交接 / 發佈**:用戶語句出現「幫我將當前任務交接給 B」「把目前任務整理成 APS 交接包給對方」「我有嘢俾 X」「post to X」「交份嘢」「publish」「我做完份嘢,要俾 [對方]」等,或語意指向「將當前任務、目前上下文或已完成工作交給對方」的同類語句 → 進入「發佈子流程」(第 6 節)。
 - **收件**:用戶語句出現「check Hub」「Hub 有新嘢」「X 嗰邊有冇新嘢」「check inbox」「未消化」「[對方] 整咗咩」等,或語意指向「查看對方有甚麼新東西交過來」的同類語句 → 進入「收件子流程」(第 7 節)。
 - **共識確認**:用戶語句出現「理解不一致」「不是做同一任務」「brief 不一致」「要求不同」「先確認共識」「不要先做」「alignment」「clarification」等,或 AI 讀取交接包後發現共同目標、任務範圍、檔案版本、交付要求與本方已知狀態不一致 → 進入「共識確認子流程」(第 8 節)。
@@ -74,6 +75,7 @@ Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何
    - 雲端硬碟:skill 無法直接 detect Drive 桌面版狀態,透過用戶口頭確認 + 第 5 步寫入時的 io error 偵測雙重保險。
    - 若用戶不知道怎樣安裝、登入、同步或分享雲端硬碟,AI 要先查官方 Google Drive / 對應雲端工具文件,再給一步一步指引。若當前 AI 工具提供 Google Drive Connector / MCP,涉及啟用、授權或設定時亦須先查官方產品說明;不得憑記憶猜測介面位置或權限流程。
 3. **三項決定**:逐項問,接著記入內部狀態(對方 agent_id / 項目代號 / 第一個交接包發起方)。
+   - 問 agent_id 時,按「agent_id 一致性硬規則」處理,只提醒兩邊沿用同一套身份名稱並對調自己 / 對方。
 4. **預設值確認**:列預設值,等用戶回「OK」或指明想改哪一件 + 改成甚麼。
 5. **執行 CLI 設置**— 優先使用互動式 `npx aps init`,不要手寫 Hub skeleton、Bridge Pack 或 starter pack:
    - 先確認目前工作目錄已執行 `npm install --save-dev @adamchanadam/aps@latest`。
@@ -92,7 +94,7 @@ Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何
      npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
      ```
    - 指令成功後,記下輸出的 `<packet_id>` 與 v1,用白話回報:測試交接已寫入 Hub、主題是甚麼、對方應如何收件。
-   - 明確說明 APS 目前沒有自動推送通知;請用戶把短訊傳給對方。短訊只需一句,因為上下文與內容已放入 Hub:「我已用 APS 放了一個測試交接。請打開你的 AI 工具,輸入『check Hub』。」
+   - 明確說明 APS 目前不會自動觸發對方 AI;請用戶把通知傳給對方。即使測試包很短,通知亦應包含交接摘要與注意事項,讓收件人先理解重點,再自行決定何時在自己的 AI 工具輸入「check Hub」。
 
 設置完成後,不要只叫用戶下次再說固定句。若用戶仍在同一段 AI 對話內,直接進入首次使用子流程。
 
@@ -126,7 +128,7 @@ Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何
    若沒有待處理項,說「目前沒有對方交來的新內容」。若有待處理項,不要立即 consume;轉入收件子流程,先用總覽表與摘要展示。
 4. **給三個自然下一步**:
    - 「發一個測試交接包給對方」:轉入發佈子流程,topic 建議 `setup_test`,body 用一句測試文字。
-   - 「生成給對方的 starter pack 通知」:讀 `<hub_root>/_hub/starter-pack-<other_agent_id>.md` 是否存在,然後生成一段 WhatsApp / Email 短訊供用戶手動傳送。
+   - 「生成給對方的 starter pack 通知」:讀 `<hub_root>/_hub/starter-pack-<other_agent_id>.md` 是否存在,然後生成一段可貼到 Telegram、WhatsApp 或 Email 的摘要式通知供用戶手動傳送。
    - 「把目前任務整理成 APS 交接包」:轉入一語交接 / 發佈子流程,先做交接摘要與完整性預檢,經用戶確認後才 publish。
 5. **不要要求用戶記命令**:命令可放在括號或補充句,但主要表達應是「我可以替你檢查 / 發測試包 / 生成給對方的短訊」。若用戶不是在排錯,不要把 `npx aps publish`、`npx aps inbox`、`npx aps consume` 當成主操作指引。
 
@@ -147,7 +149,7 @@ Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何
 7. 向用戶 A 顯示交接包摘要與預檢結果,請用戶確認內容、topic 與寫入 APS Hub 三件事。只有用戶明確確認後才可寫入。
 8. 用 CLI 發佈 packet。長正文或由 AI 生成的正文必須優先寫入暫存正文檔,再用 `--body-file` 發佈,避免在 shell 內塞入多行文字、表格或特殊符號。
 9. 回報 packet id / version / 主題,並提醒這代表本機 Hub 已寫入,不等於對方電腦已完成 Google Drive 同步。若對方稍後未見,先等同步或進入補救子流程。
-10. 輸出可直接複製貼上的 WhatsApp / Email 通知。
+10. 輸出可直接複製貼上的摘要式 Telegram / WhatsApp / Email 通知。
 11. 告訴用戶下一步只需把通知貼給對方;之後可說「看看對方有沒有回覆」。
 
 ### 6.2 交接內容整理規則
@@ -176,13 +178,14 @@ Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何
    請確認三件事:一、交接包內容完整 / 正確;二、topic 是 `<topic>`;三、可以寫入 APS Hub。你回「確認發送」後我才會 publish。
    ```
    取得用戶明確同意後才執行 CLI。
+   正式交接不得教用戶直接手動執行 `npx aps publish` 來繞過摘要、預檢與確認閘。命令列只作 AI 背後執行、排錯或維護者驗證路徑。
 6. **執行 CLI**:
    ```text
    npx aps publish --topic <topic> --body-file <body_file_path>
    ```
    短測試句可使用 `--body`;正式交接、長正文、多行摘要、表格或含引號 / 特殊符號的正文,一律使用 `--body-file`。若目前 CLI 尚未支援 `--body-file`,不得用脆弱的多行 shell 引號硬塞內容;先提示需要更新 APS CLI 或改用本地候選 CLI。
    成功輸出會包含 `已發佈 <packet_id> v1`、packet folder 路徑,以及一段可直接複製給對方的通知文字。把 packet id 與通知文字回報給用戶。
-7. **生成通知短訊**:輸出給用戶手動傳給對方。短訊必須包含 project slug、topic、packet id / version、請對方在自己電腦上打開已接入 APS 的對應項目資料夾並說「check Hub」。短訊不得要求對方使用發送方的本機 Google Drive 路徑,亦不得寫成「進入同一個項目資料夾」這類可能被理解為同一條本機路徑的句子。skill 不代發 WhatsApp,不操作 clipboard。說明邊界:APS 不會在對方電腦彈出提示;它的作用是讓對方 AI 一旦檢查 Hub,即可讀到共同目標、各自任務邊界、交叉協作點、任務需求與已讀狀態,不用人類重新搬運背景。若對方未見,先等待 Google Drive 同步並重試 `check Hub`,不要立即重發多個重複交接包。
+7. **生成通知短訊**:輸出給用戶手動傳給對方。通知必須包含 project slug、來源 agent、topic、packet id / version、`🔎 重點摘要`、`⚠️ 注意事項` 與 `🚀 下一步`。重點摘要應用一至三句寫明共同目標、請對方做的事或最重要的判斷;注意事項應列明風險、未決或「請先由收件人確認工作目錄與資料狀態已準備好,再叫 AI 介入」。通知不得只列交接編號,不得要求對方使用發送方的本機 Google Drive 路徑,亦不得寫成「進入同一個項目資料夾」這類可能被理解為同一條本機路徑的句子。skill 不代發 WhatsApp,不操作 clipboard。Telegram、WhatsApp、Email 或其他渠道都只是人類通知渠道;由收件人本人決定何時打開自己的 AI 並輸入「check Hub」。說明邊界:APS 不會在對方電腦彈出提示,亦不應因通知自動觸發 consume、close、revise 或 withdraw;它的作用是讓對方 AI 一旦檢查 Hub,即可讀到共同目標、各自任務邊界、交叉協作點、任務需求與已讀狀態,不用人類重新搬運背景。若對方未見,先等待 Google Drive 同步並重試 `check Hub`,不要立即重發多個重複交接包。
 8. **提示下一步**:告訴用戶稍後可說「看看對方有沒有回覆」查看對方回覆或確認是否已消化。
 
 失敗處理:
@@ -205,11 +208,12 @@ Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何
    - 多個新件時,先用總覽表列 `序號`、`來源`、`主題`、`版本`、`判斷`、`建議`,再推薦最應先處理的一件。只有用戶同意逐件處理後,才展開該件的細節。
    - 單一新件時,先顯示總覽表,欄位包括 `來源`、`主題`、`版本`、`類型`、`建議狀態`、`建議下一步`;接著用一段摘要說明對方交來甚麼,再列預檢結果表。
    - 讀取交接包後,先做收件完整性預檢:共同目標、本方 / 對方任務邊界、交叉點、請本方做的事、不應誤解的事、證據位置、風險 / 未決事項是否足夠。預檢結果以表格顯示,欄位為 `檢查項`、`結果`、`說明`。若有缺漏或不足以回應,不要直接執行,先提醒用戶 B,並轉入補交需求流程。
-   - 若欄位齊全,再判斷共同目標、任務邊界、檔案版本、要求與本方已知狀態是否一致。若不一致,不要直接執行,轉入共識確認子流程。
+   - 接著做「本機對接檢查報告」,用於判斷交接內容能否和收件方目前工作環境接上。報告必須方便快速閱讀,建議順序為:`🔎 交接重點`、`📌 本機已知狀態`、`✅ 可直接對接`、`⚠️ 需要確認`、`❌ 不可開工原因`、`🚀 建議下一步`。檢查範圍包括:本機 `.aps/config.json` 是否指向同一 project、交接包版本是否最新、交接要求是否與本機當前任務或已讀文件衝突、證據位置是否是本機可讀的相對位置或共享 Hub 標識、是否誤用了發送方本機路徑、是否缺少必要背景或檔案版本。不可因為收到 packet 就直接開工。
+   - 若欄位齊全,再判斷共同目標、任務邊界、檔案版本、要求與本方已知狀態是否一致。若不一致,不要直接執行,轉入共識確認子流程。只有完整性預檢與本機對接檢查都通過,才可建議用戶開始處理、標記已消化或回覆。
 4. **補交需求流程**:
    - 若交接包不完整,先向用戶 B 說明缺甚麼、為何影響回應、需要 A 補交甚麼。
    - 生成補交需求包,topic 可用 `<原 topic>_missing_info` 或 `aps_missing_info`。body 必須包含缺漏清單、需要補交的資料、為何需要、B 目前能否先做局部工作。
-   - 生成可複製貼上的 WhatsApp / Email 通知,請用戶 A / Agent A 補交資料。
+   - 生成可複製貼上的摘要式通知,請用戶 A / Agent A 補交資料。
    - 在 A 補交前,不要把原交接 close。預設不要 consume 原交接,讓它下次 `check Hub` 仍然可見。只有在用戶 B 明確想把它標為已讀 / 等待補交時,才可 consume,且 result 必須寫「已讀,等待補充資料」而不是 `done`;同時要提醒用戶 B:一旦 consume,原交接不會再以 pending 形式出現,後續要靠補交需求包與 A 的修訂 / 補充包追蹤。
    - A 補交時,若原交接尚未收結且仍由 A 擁有,優先請 A 用 `revise` 修訂原 packet,保留同一條交接線。若 A 的工具版本不支援 `revise`、原 packet 已不適合修訂、或補交內容屬新分支,才請 A 發一個 supplemental packet,topic 用 `<原 topic>_supplement` 或同等清楚名稱。
    - 收到 A 的修訂 / 補充包後,重新做收件完整性預檢;通過後才進入消化與回覆。
@@ -247,7 +251,7 @@ Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何
    - 需要對方確認的一至三個問題。
 3. **不要收結原交接**:若原交接尚未被確認完成,不要 close。若已讀取內容,可用具體 ack result 表示「已讀,但受阻於共識確認」;不得寫 `done`。
 4. **發出共識確認包**:轉入發佈子流程,topic 用 `<原 topic>_clarification`、`alignment_check` 或同等清楚名稱。body 必須包含差異表與問題,並明確要求對方 agent 回覆確認、修訂或撤回。
-5. **生成可複製貼上的通知**:輸出 WhatsApp / Email 兩種格式。訊息必須包含:有共識確認包、topic / packet id、請對方 AI 說「check Hub」、需要對方先確認後再繼續。skill 不代發外部訊息。
+5. **生成可複製貼上的通知**:輸出摘要式通知,可貼到 Telegram、WhatsApp 或 Email。訊息必須包含:有共識確認包、topic / packet id、`🔎 重點摘要`、`⚠️ 注意事項`、請對方本人確認後再叫 AI 說「check Hub」。skill 不代發外部訊息,亦不自動觸發對方 AI。
 6. **等待對方回覆**:在收到對方確認前,不要把共識確認後續工作當成已批准。若對方修訂原交接,讀新版本再重新判斷;若對方撤回,向用戶回報原任務取消或等待新指示。
 7. **確認後才開工**:只有當共同目標、各自任務邊界、交叉協作點、下一步輸出都清楚後,才回到正常發佈 / 收件 / 執行流程。
 

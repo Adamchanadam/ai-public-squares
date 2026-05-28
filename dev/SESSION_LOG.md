@@ -8,6 +8,39 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
+## 2026-05-28 (S32, latest) — v0.2.8 GitHub pre-release prep
+
+- **ID:** S32
+- **Summary:** Adam authorized commit, tag, GitHub release, and push. npm publish was not requested. Local source was bumped to `@adamchanadam/aps@0.2.8` as a GitHub pre-release candidate, with public docs explicitly stating npm latest remains `0.2.7` until a separate npm publish.
+- **Changed:** This workspace only so far.
+  - Modified: `package.json`, `README.md`, `docs/index.html`, `skills/aps/SKILL.md`, `dev/PROJECT_INDEX.md`, `dev/SESSION_HANDOFF.md`, and `START_NEXT_SESSION_PROMPT.txt`.
+  - Added: `dev/release-notes/v0.2.8.md`.
+- **QC:** `node --check bin\aps.js`, `node bin\aps.js --help`, `npm test`, `npm pack --dry-run --json`, HTML local `.md` link scan, `git diff --check`, and Handoff Kit doctor passed. `npm test` remains placeholder-only. Handoff Kit doctor still warns SESSION_LOG is beyond N-rule closeout boundary.
+- **Pending:** Create release commit, push `main`, tag / push `v0.2.8`, create GitHub pre-release from `dev/release-notes/v0.2.8.md`, then verify GitHub release and GitHub Pages. Do not run `npm publish` unless Adam explicitly asks.
+
+## 2026-05-28 (S31) — 0.2.7 post-UAT full-check blocker
+
+- **ID:** S31
+- **Summary:** Adam asked whether `claude -p` belongs in `dev/PROJECT_INDEX.md` and then requested 🔴 全面檢 if no new work remained. The check confirmed `claude -p` is correctly recorded as an optional local QC command, not a mandatory gate. During full-check, an interactive setup identity bug was found and patched: role B now defaults to `agent_b / agent_a` instead of letting both machines accept `agent_a / agent_b` defaults.
+- **Changed:** This workspace only.
+  - Runtime: `bin/aps.js` role-B interactive `init` defaults.
+  - QC evidence / report: `dev/qc/2026-05-28-aps-full-audit-0.2.7-post-uat.md` plus ignored evidence under `dev/qc/evidence/full-check-post-uat-20260528-142556/` and `dev/qc/evidence/full-check-html-20260528/`.
+- **QC:** Handoff Kit doctor passed 46 checks with the existing SESSION_LOG N-rule warning. `node --check bin\aps.js`, `node bin\aps.js --help`, `npm test`, `npm pack --dry-run --json`, `git diff --check`, npm registry readback, local HTML href scan, Chrome DevTools local HTML preview, role-B default simulation, isolated two-workspace APS round-trip, withdraw path, and existing-project `upgrade` all ran. GitHub Pages readback returned HTTP 200 but did not include local 0.2.7 / summary-notification / no-auto-trigger wording.
+- **Result:** Local runtime regression is healthy after the identity-default fix, but 🔴 全面檢 is not a release pass. Blockers: GitHub Pages is stale because local docs are not pushed, and npm latest is already 0.2.7 so the post-publish fix needs a later version before any npm publish.
+- **Pending:** If Adam wants to externalize the current local state, next step is version bump + release-check, then explicit authorization for commit / push / tag / GitHub release / npm publish. Do not perform those actions without Adam's explicit instruction.
+
+## 2026-05-28 (S30) — Reliable Pair UX review and Claude headless note
+
+- **ID:** S30
+- **Summary:** Adam requested deeper Reliable Pair send/receive UX analysis and asked to verify `claude -p` as a reusable external review path. Local UX work aligned the roadmap, CLI, skill, setup dialogue, README, public docs, maintainer docs, QC map, project index, and doc sync registry around summary-style human notifications and receiver-side `check Hub` reports with local alignment checks.
+- **Changed:** This workspace only.
+  - Runtime / skill: `bin/aps.js`, `skills/aps/SKILL.md`, `skills/aps/references/setup-dialogue.md`.
+  - Docs / governance: `README.md`, `docs/index.html`, `docs/guides/aps-onboarding-walkthrough.html`, `docs/maintainers/index.html`, `docs/qc/governance-map.html`, `docs/plans/2026-05-28-aps-public-product-multi-agent-roadmap.md`, `dev/qc/triggers.md`, `dev/DOC_SYNC_REGISTRY.md`, `dev/PROJECT_INDEX.md`.
+- **External review evidence:** Initial `cmd /c claude -p ...` with a long prompt timed out. A shorter bounded `cmd /c claude -p "只讀，不改檔..."` prompt succeeded from the repo root and returned a read-only Reliable Pair UX review. Two Codex subagents also completed read-only reviews. Their blocking points were applied: Reliable Pair no longer implies Contacts selector; summary-style human notification is separated from deferred `_notify` / `watch` / Telegram bot auto-send; CLI `inbox` no longer foregrounds `consume`; skill wording no longer hardcodes Jay.
+- **QC:** `node --check bin\aps.js`, `npm pack --dry-run --json`, targeted UAT `publish` / `inbox`, HTML local `.md` link scan, targeted drift scans, `git diff --check`, and Handoff Kit doctor passed. Doctor still warns that SESSION_LOG count is at N=11 and must be advanced at closeout.
+- **Reusable command note:** For next sessions, use `cmd /c claude -p "<bounded read-only review prompt>"` from `C:\Users\adam\_claude_desktop\AI_Public_Squares`. If it times out, shorten scope first. If a genuine technical blocker remains, check official Claude Code docs or web guidance before changing the command pattern.
+- **Pending:** Continue local 0.2.7 post-publish candidate hardening. Do not commit, push, tag, create GitHub release, or publish npm unless Adam explicitly asks.
+
 ## 2026-05-28 (S29, latest) — 0.2.7 npm publish
 
 - **ID:** S29

@@ -198,10 +198,10 @@
   <p class="lede">任何公開頁、README、CLI help 或技能提示都不可讓讀者誤以為尚未列入現有能力的事已可使用。</p>
   <ul>
     <li><strong>可說：</strong><code>npx aps init</code> 可建立初始設定，CLI 已支援最小收發、修訂、撤回、收結與健康檢查。</li>
-    <li><strong>必須同時說：</strong>每個真實跨機項目仍需各自驗證 Google Drive 同步；外部通知仍由人貼出。</li>
+    <li><strong>必須同時說：</strong>每個真實跨機項目仍需各自驗證 Google Drive 同步；外部通知仍由人貼出，並應包含交接摘要與注意事項。</li>
     <li><strong>必須標清：</strong>0.2.x 主路徑是可靠二人協作。未列入本頁現有能力的事，不可寫成已支援。</li>
     <li><strong>不可要求：</strong>核心設置不得要求額外雲端開發者專案、外部服務憑證或密鑰設定。</li>
-    <li><strong>不可說：</strong>完全自動、正式生產可用、免檢查、免人工確認、或工具會自動向對方推送通知。</li>
+    <li><strong>不可說：</strong>完全自動、正式生產可用、免檢查、免人工確認、工具會自動向對方推送通知，或通知會自動觸發對方 AI。</li>
   </ul>
   <div class="callout">
     <strong>Handoff Kit 整合邊界：</strong>APS 不改寫 <span class="path">AGENTS.md</span> managed core。<code>aps init</code> 應只追加可移除的 APS managed block 到 <span class="path">dev\RULE_PACKS.md</span> 與 <span class="path">dev\PROJECT_INDEX.md</span>，並寫入 <span class="path">dev\rules\aps-bridge.md</span> 與 <span class="path">.aps\config.json</span>。日後 uninstall 應移除這些 APS managed block 與 APS 自有檔案，而不碰用戶原有 Handoff Kit 內容。
@@ -273,8 +273,8 @@
   <ul>
     <li>新手頁的 SVG 宏觀流程圖與能力清單，須與 README、入口頁、CLI、skill spec、QC 真源一致。</li>
     <li>日常主路徑須是自然語言請 AI 操作；命令列只可作備用、排錯或維護者驗證。</li>
-    <li>一語交接、發送前完整性預檢、收件後完整性預檢、補交需求、共識確認、回覆與收結，須在公開文檔、skill 與 QC 真源之間對齊。</li>
-    <li>APS 不自動發 WhatsApp / Email，也不保證對方電腦即時同步；公開文檔與通知文字不得暗示相反能力。</li>
+    <li>一語交接、發送前完整性預檢、摘要式通知、收件報告、本機對接檢查、補交需求、共識確認、回覆與收結，須在公開文檔、skill 與 QC 真源之間對齊。</li>
+    <li>APS 不自動發 Telegram / WhatsApp / Email，也不自動觸發對方 AI，不保證對方電腦即時同步；公開文檔與通知文字不得暗示相反能力。</li>
     <li>公開 HTML 只寫現有可用能力；未列入現有能力的產品路線名稱留在 Markdown 真源與審核報告，不放入公眾頁面。</li>
     <li>若 HTML 參考卡與 <span class="path">dev\qc\triggers.md</span> 不一致，先以該真源為準，再立即同步 HTML。</li>
   </ul>

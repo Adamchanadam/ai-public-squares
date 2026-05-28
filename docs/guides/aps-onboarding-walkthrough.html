@@ -277,7 +277,7 @@
 
       <rect class="box" x="590" y="188" width="220" height="96"></rect>
       <text x="610" y="218" font-size="17" font-weight="700">AI 生成通知</text>
-      <text x="610" y="244" font-size="14">WhatsApp / Email 可貼上</text>
+      <text x="610" y="244" font-size="14">摘要通知可貼上</text>
       <text x="610" y="266" font-size="14">含項目、主題、交接編號</text>
 
       <rect class="guard" x="310" y="182" width="230" height="108"></rect>
@@ -327,7 +327,7 @@
     <div class="capability"><strong>已具備：</strong>互動式安裝、Hub 骨架、本地設定、技能安裝、健康檢查。</div>
     <div class="capability"><strong>已具備：</strong>發佈、收件、已讀、修訂、撤回、收結與 copy-ready 通知。</div>
     <div class="capability"><strong>使用重點：</strong>一語交接、發送前預檢、收件後預檢、補交需求與共識確認。</div>
-    <div class="capability"><strong>清楚邊界：</strong>外部通知由人貼出；APS 不代發 WhatsApp / Email，也不假裝即時同步。</div>
+    <div class="capability"><strong>清楚邊界：</strong>外部通知由人貼出；APS 不代發 Telegram / WhatsApp / Email，也不假裝即時同步。</div>
   </div>
 </section>
 
@@ -378,11 +378,11 @@
       </tr>
       <tr>
         <td>你的 agent id</td>
-        <td>你這邊 AI 的通道名稱。通用測試可用 <code>agent_a</code>。</td>
+        <td>你這邊在 Hub 內的共享身份名稱。例：Adam 用 <code>adam</code>。</td>
       </tr>
       <tr>
         <td>對方 agent id</td>
-        <td>對方 AI 的通道名稱。通用測試可用 <code>agent_b</code>。</td>
+        <td>對方在 Hub 內的共享身份名稱。例：Jay 用 <code>jay</code>。Jay 加入時要對調，自己填 <code>jay</code>，對方填 <code>adam</code>。</td>
       </tr>
       <tr>
         <td>Google Drive 本機路徑</td>
@@ -390,6 +390,9 @@
       </tr>
     </tbody>
   </table>
+  <div class="callout warn">
+    <strong>身份名稱要對調，不要重命名。</strong>若 Adam 這邊用 <code>adam</code> / <code>jay</code>，Jay 那邊就是 <code>jay</code> / <code>adam</code>。
+  </div>
   <p>工具會列出寫入計劃。確認 Hub 路徑、項目代號與 agent id 無誤後，輸入 <code>yes</code>。它會安裝 APS 技能、建立 Hub 骨架、寫入本地設定，並產生給對方看的 starter pack。</p>
   <p>同時，APS 會在 Agent Handoff Kit 既有檔案中加入兩段可移除的 APS managed registration：一段在 <code>dev/RULE_PACKS.md</code>，讓新 session 在你提到 APS、<code>check Hub</code> 或同步問題時知道要讀 APS 橋接規則；另一段在 <code>dev/PROJECT_INDEX.md</code>，記錄本項目已安裝 APS、橋接檔與本地設定位置。工具不會改寫 <code>AGENTS.md</code> managed core。</p>
 </section>
@@ -412,6 +415,7 @@
   <h2>請 AI 接手引導</h2>
   <p class="lede">完成安裝後，打開能讀寫這個項目資料夾的 AI 工具，輸入：</p>
   <pre>教我用 APS</pre>
+  <p>如果你自然說成「教我用 Agent Public Squares」，AI 也應視為同一個產品。AI Public Squares 是正式產品名，APS 是簡稱。</p>
   <p>理想情況下，AI 應該主動做四件事：</p>
   <ol>
     <li>確認目前資料夾是否正確。</li>
@@ -444,18 +448,36 @@
   <pre>幫我發一個 APS 測試交接給對方，內容只寫「APS setup test」。</pre>
   <p>AI 應讀取本地 APS 設定、檢查 Hub 狀態、建立測試交接包，然後用白話告訴你已寫入哪個主題與交接編號。命令列只屬 AI 內部執行與排錯備用，不應要求新手自己記住。</p>
   <h3>通知對方</h3>
-  <p>APS 目前不會自動發 WhatsApp、Email 或系統推送。你仍需要用平常的聯絡方式通知對方，但不應自行重寫內容；AI 應替你生成可直接複製貼上的通知。通知只應包含項目代號、主題、交接編號與「check Hub」指示，不應要求對方使用你電腦上的 Google Drive 本機路徑：</p>
+  <p>APS 目前不會自動發 WhatsApp、Email、Telegram 或系統推送,也不會自動觸發對方 AI。你仍需要用平常的聯絡方式通知對方，但不應自行重寫內容；AI 應替你生成可直接複製貼上的摘要式通知。通知應包含項目代號、來源、主題、交接編號、重點摘要、注意事項與「check Hub」指示，不應只列交接編號，也不應要求對方使用你電腦上的 Google Drive 本機路徑：</p>
   <h4>WhatsApp / 即時訊息</h4>
-  <pre>我已用 APS 放了一個測試交接。請在你自己電腦上打開已接入 APS 的對應項目資料夾，輸入「check Hub」。</pre>
+  <pre>📨 APS 有新交接
+
+🔎 重點摘要
+這是一個測試交接，用來確認雙方可透過 APS Hub 收發內容。
+
+⚠️ 注意事項
+請先確認你自己電腦上的 APS 專案資料夾已準備好；不要使用發送方的本機 Google Drive 路徑。
+
+🚀 下一步
+在你自己電腦上打開已接入 APS 的對應項目資料夾，由你本人確認可以處理後，向 AI 輸入「check Hub」。</pre>
   <h4>Email</h4>
   <pre>主旨：APS 有新測試交接
 
-我已用 APS 放了一個測試交接。請在你自己電腦上打開已接入 APS 的對應項目資料夾，輸入「check Hub」。不要使用發送方的本機 Google Drive 路徑；你的 AI 會讀取你自己的 APS 設定。</pre>
-  <p>正式工作時，AI 應把項目代號、主題、交接編號、共同目標與請對方做的事放進通知文字；你只負責複製貼上到 WhatsApp、Email 或你們平常使用的通訊工具。本機 <code>hubRoot</code> 只代表當前電腦的同步路徑，不是雙方都相同的路徑。</p>
+我已用 APS 放了一個測試交接。
+
+🔎 重點摘要
+這是一個測試交接，用來確認雙方可透過 APS Hub 收發內容。
+
+⚠️ 注意事項
+請先確認你自己電腦上的 APS 專案資料夾已準備好；不要使用發送方的本機 Google Drive 路徑。
+
+🚀 下一步
+在你自己電腦上打開已接入 APS 的對應項目資料夾，由你本人確認可以處理後，向 AI 輸入「check Hub」。</pre>
+  <p>正式工作時，AI 應把項目代號、來源、主題、交接編號、共同目標、請對方做的事、注意事項與下一步放進通知文字；你只負責複製貼上到 Telegram、WhatsApp、Email 或你們平常使用的通訊工具。本機 <code>hubRoot</code> 只代表當前電腦的同步路徑，不是雙方都相同的路徑。</p>
   <p>發送成功代表本機 Hub 已寫入，不等於對方電腦已即時同步完成。若對方暫時看不到，先等 Google Drive 同步完成，再請對方重試 <code>check Hub</code>；不要急著重複發多個交接包。</p>
   <h3>對方對 AI 說</h3>
   <pre>check Hub</pre>
-  <p>對方的 AI 應讀取自己的 APS 設定、查看 Hub、列出待處理交接包、讀取內容摘要，並在對方確認後寫入已讀記錄。對方不應需要手動尋找資料夾或猜哪個檔案是最新版。</p>
+  <p>對方的 AI 應讀取自己的 APS 設定、查看 Hub、列出待處理交接包、讀取內容摘要，並先做完整性預檢與本機對接檢查。只有在對方確認資料齊全、版本正確、可以接手後，才寫入已讀或相應狀態。對方不應需要手動尋找資料夾或猜哪個檔案是最新版。</p>
   <h3>回覆與收結</h3>
   <p>對方可以直接對 AI 說「回覆這個測試交接」。你稍後對自己的 AI 說「看看對方有沒有回覆」。確認完成後，再說「幫我收結這一輪」。AI 會在背後使用 APS 的發送、收件、已讀與收結機制。</p>
   <div class="callout">
@@ -476,7 +498,7 @@
     <li>預檢交接包是否齊全；不足時先由 AI 根據上下文補充，補不到才問你。</li>
     <li>把交接包摘要與預檢結果顯示給你確認。</li>
     <li>你確認完整 / 正確後，AI 才寫入 APS 交接包，並回報交接編號與版本。</li>
-    <li>生成可直接複製貼上的 WhatsApp / Email 通知。</li>
+    <li>生成可直接複製貼上的摘要式通知,可貼到 Telegram、WhatsApp 或 Email。</li>
   </ol>
   <div class="callout warn">
     <strong>寫入前一定要確認：</strong>AI 不可把未齊全或未經你確認的交接包寫入 Google Drive。它應先補齊、預檢、列出摘要，再問你「是否完整 / 正確，可以發送？」。
@@ -518,17 +540,18 @@
 
 <section>
   <h2>對方收到後也要預檢</h2>
-  <p class="lede">完整性檢查不是只有發送方要做。用戶 B 的 AI 收到交接包後，也要主動判斷內容是否足夠回應。</p>
+  <p class="lede">完整性檢查不是只有發送方要做。用戶 B 的 AI 收到交接包後，也要先產生收件報告，判斷內容是否足夠回應，並核對是否能與本機資料和任務要求接上。</p>
   <p>如果收到的交接包缺少共同目標、任務邊界、請 B 做的事、證據位置、版本或必要背景，B 的 AI 應：</p>
   <ol>
     <li>立即提醒用戶 B：目前資料不足，不建議直接開工。</li>
     <li>列出缺漏清單，以及為何這些資料會影響回應。</li>
     <li>生成一個「補交需求包」回到 APS Hub，請用戶 A / Agent A 補交資料。</li>
-    <li>同時生成可直接複製貼上的 WhatsApp / Email 通知，讓用戶 B 傳給用戶 A。</li>
+    <li>同時生成可直接複製貼上的摘要式通知，讓用戶 B 傳給用戶 A。</li>
     <li>在補交完成前，不應把原交接收結。預設也不要把它標為已消化，讓下次 <code>check Hub</code> 仍能看見。</li>
     <li>若用戶 B 明確想標記已讀，AI 才可寫入「已讀，等待補充資料」，並說明原交接之後不會再以待辦形式出現。</li>
   </ol>
-  <p>用戶 A 補交時，優先修訂原交接包，保持同一條交接線清楚可追蹤。若原交接已不適合修訂，才另發補充包。B 的 AI 收到修訂或補充後，要重新做完整性預檢。</p>
+  <p>即使資料齊全，B 的 AI 仍要做本機對接檢查：確認本機 <code>.aps/config.json</code> 指向同一個項目、交接包版本是最新待處理版本、證據位置不是 A 的本機路徑、要求與 B 當前任務或已讀文件沒有衝突。未通過前，不應開工，也不應標記已消化。</p>
+  <p>用戶 A 補交時，優先修訂原交接包，保持同一條交接線清楚可追蹤。若原交接已不適合修訂，才另發補充包。B 的 AI 收到修訂或補充後，要重新做完整性預檢與本機對接檢查。</p>
   <div class="callout">
     <strong>可直接對 AI 說：</strong>「這個交接資料不足，幫我整理缺漏並請對方補交。」
   </div>
@@ -541,7 +564,7 @@
     <li><strong>先停工：</strong>AI 應告訴你「目前不適合直接執行」，並列出衝突點。</li>
     <li><strong>整理差異：</strong>把「對方說法」、「本方已知狀態」、「可能影響」、「需要對方確認的問題」分開列出。</li>
     <li><strong>回覆對方：</strong>AI 生成一個 APS 回覆交接包，主題可用 <code>alignment_check</code> 或原主題加上 <code>_clarification</code>。</li>
-    <li><strong>生成通知文字：</strong>AI 同時生成可直接複製貼上的 WhatsApp / Email，請對方的 AI 讀取這個共識確認包。</li>
+    <li><strong>生成通知文字：</strong>AI 同時生成可直接複製貼上的摘要式通知，請對方本人決定何時叫自己的 AI 讀取這個共識確認包。</li>
     <li><strong>等對方回覆：</strong>在對方確認前，不應把原交接收結；需要時可請原發包一方修訂或撤回原交接。</li>
     <li><strong>確認後才開工：</strong>雙方對共同目標、各自任務邊界、交叉點與下一步一致後，再繼續執行。</li>
   </ol>

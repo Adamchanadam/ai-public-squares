@@ -93,7 +93,7 @@
 3. **啟動可發現性與橋接行為 trace** — 驗證 `aps init` 寫入 Handoff Kit APS route、project-index registration、Bridge Pack、本地 config 後,新 session 可按 `AGENTS.md` 啟動讀序發現 APS；協定或 setup 改版尤其要做。
 4. **五區段 + 自審紀律回顧** — 回看 last N 個 session 的自審紀錄；統計「caught vs missed」gap 比例；檢查是否存在系統性盲點。
 5. **審核報告輸出** — 寫一份 markdown 於 `dev/qc/<YYYY-MM-DD>-full-audit.md`,含：健康結論 / 阻擋項 / cross-workspace 註記 / 重跑計劃。
-6. **Spec-to-runtime 執行落差審核** — 對照 UAT / 實際 AI 行為、`skills/aps/SKILL.md`、bundled reference、CLI help / output。凡規格說「AI 應先讀設定 / 不應重做設置 / 不應 consume / 應先總覽 / 不應顯示 Agent Handoff Kit 啟動卡 / 發包前須確認內容、topic 與寫入行為 / 長正文須使用 `--body-file` 或等效安全輸入」,必須有實際入口或測試證據可觸發;若只停留在文案而已安裝 runtime 仍可能讀舊 skill,列為失敗。
+6. **Spec-to-runtime 執行落差審核** — 對照 UAT / 實際 AI 行為、`skills/aps/SKILL.md`、bundled reference、CLI help / output。凡規格說「AI 應先讀設定 / 不應重做設置 / 不應 consume / 應先總覽 / 不應顯示 Agent Handoff Kit 啟動卡 / 發包前須確認內容、topic 與寫入行為 / 長正文須使用 `--body-file` 或等效安全輸入」,必須有實際入口或測試證據可觸發;若只停留在文案而已安裝 runtime 仍可能讀舊 skill,列為失敗。APS skill 觸發詞須同時測「教我用 APS」「教我用 AI Public Squares」「教我用 Agent Public Squares」三條入口;三者都應載入 APS skill,不得回答不確定、不得改走其他項目的 onboarding skill。
 
 ### APS 全面檢三條主線與橫切保障
 
@@ -105,16 +105,17 @@
 橫切保障:
 
 - **Handoff Kit 啟動可發現性** — APS 不可只寫 `dev/rules/aps-bridge.md` 與 `.aps/config.json`。全面檢須驗證 `aps init` 已在 `dev/RULE_PACKS.md` 註冊 APS route,並在 `dev/PROJECT_INDEX.md` 記錄 APS local bridge / config,令新 session 按 Agent Handoff Kit 啟動讀序後,可在用戶提到 APS / check Hub / Drive sync / conflict 時載入 APS。不得手改 `AGENTS.md` managed core。
-- **新手 UX 主路徑** — 公眾教學、README、CLI next-step 與 skill spec 不可把 `npx aps publish` / `npx aps inbox` 等命令列當成非技術新手的日常主入口。主路徑必須是用戶向 AI 說自然語言,由 AI 讀設定、跑命令、整理上下文與解釋結果;命令列只可作可驗證備用、排錯或維護者路徑。
+- **新手 UX 主路徑** — 公眾教學、README、CLI next-step 與 skill spec 不可把 `npx aps publish` / `npx aps inbox` 等命令列當成非技術新手的日常主入口。主路徑必須是用戶向 AI 說自然語言,由 AI 讀設定、跑命令、整理上下文與解釋結果;命令列只可作可驗證備用、排錯或維護者路徑。全面檢必須把「教我用 APS」「教我用 AI Public Squares」「教我用 Agent Public Squares」列入實測入口,因為後者是用戶會自然說出的產品名變體。
 - **新手宏觀理解與能力邊界** — walkthrough 必須在操作步驟前讓新手先理解 APS 如何運作、已具備甚麼、仍在硬化甚麼、刻意不做甚麼。若使用 SVG 流程圖或能力清單,全面檢須核對圖中流程與文字、CLI、skill、QC 真源一致,不得用視覺圖誇大自動化能力。
-- **一語交接自動化** — 日常發佈主體驗必須支援「幫我將當前任務整理成 APS 交接包給對方」這類一句指令。AI 應自動讀 `.aps/config.json`、跑 `doctor`、整理當前任務、補齊交接欄位、生成 topic、做完整性預檢,交給用戶 A 確認後才發佈 packet,再輸出 copy-ready WhatsApp / Email 通知。只有敏感資料、共同目標不清、或對方任務未知且會影響下一步時,才可停下反問。
+- **一語交接自動化** — 日常發佈主體驗必須支援「幫我將當前任務整理成 APS 交接包給對方」這類一句指令。AI 應自動讀 `.aps/config.json`、跑 `doctor`、整理當前任務、補齊交接欄位、生成 topic、做完整性預檢,交給用戶 A 確認後才發佈 packet,再輸出 copy-ready 摘要式通知。通知可貼到 Telegram、WhatsApp 或 Email,但必須包含重點摘要、注意事項與 `check Hub` 下一步,不可只列 packet id。只有敏感資料、共同目標不清、或對方任務未知且會影響下一步時,才可停下反問。
 - **發送前完整性預檢** — 任何 APS 交接包寫入 Google Drive 前,AI 必須檢查共同目標、本方任務、對方任務或「未確認」、交叉點、請對方做的事、不應誤解的事、證據位置、風險 / 未決事項、敏感資料。缺漏時先從上下文補足;補不到才問用戶。未經用戶 A 確認完整 / 正確前不可 publish。
-- **收件後完整性預檢** — 用戶 B / Agent B 收到交接包後,AI 必須先檢查資料是否足夠回應。若共同目標、任務邊界、請 B 做的事、證據位置、版本或必要背景不足,AI 要主動提醒用戶 B,整理缺漏,發出補交需求包,生成 copy-ready 通知請用戶 A / Agent A 補交;原交接不得在補交前 close。預設不得 consume 不完整原交接;若用戶 B 明確要求標記已讀,ack result 必須寫「已讀,等待補充資料」並提醒原交接不會再以 pending 形式出現。A 補交時優先 revise 原 packet;不適合 revise 時才另發 supplemental packet。
-- **通知邊界誠實性** — APS 目前不是自動推送通知服務。公開文檔與 skill spec 必須說清楚:發送方 AI 寫入交接後,接收方 AI 不會自動彈出提示;AI 必須生成可直接複製貼上的 WhatsApp / Email 通知,由人類貼到現有渠道請對方「check Hub」。APS 的增值是對方 AI 檢查 Hub 後可讀到結構化上下文、任務需求、版本與已讀狀態。
+- **收件後完整性預檢與本機對接檢查** — 用戶 B / Agent B 收到交接包後,AI 必須先產生可快速閱讀的收件報告,再檢查資料是否足夠回應。若共同目標、任務邊界、請 B 做的事、證據位置、版本或必要背景不足,AI 要主動提醒用戶 B,整理缺漏,發出補交需求包,生成 copy-ready 通知請用戶 A / Agent A 補交;原交接不得在補交前 close。即使資料齊全,AI 仍須核對交接內容與 B 本機 `.aps/config.json`、本機文件、任務要求、可讀證據位置與版本狀態是否一致;不一致時先發共識確認包,不得直接開工。預設不得 consume 不完整或未對接的原交接;若用戶 B 明確要求標記已讀,ack result 必須寫「已讀,等待補充資料」或同等具體狀態,並提醒原交接不會再以 pending 形式出現。A 補交時優先 revise 原 packet;不適合 revise 時才另發 supplemental packet。
+- **通知邊界誠實性** — APS 目前不是自動控制服務。公開文檔與 skill spec 必須說清楚:發送方 AI 寫入交接後,接收方 AI 不會自動彈出提示或自動開工;AI 必須生成可直接複製貼上的摘要式 Telegram / WhatsApp / Email 通知,由人類貼到現有渠道請對方「check Hub」。APS 的增值是對方 AI 檢查 Hub 後可讀到結構化上下文、任務需求、版本與已讀狀態,並先做完整性預檢與本機對接檢查。
 - **Drive 同步邊界** — 發包成功只代表本機 Hub 已寫入,不可暗示對方電腦已即時同步完成。通知與補救流程必須提示:若對方未見,先等待 / 檢查 Google Drive 同步並重試 `check Hub`,不要立即重複發包。
 - **共同目標與任務邊界** — 公眾教學與 skill spec 不可假設兩邊 agent 正在做同一任務。交接包必須能表達共同目標、本方任務、對方任務或「未確認」、交叉協作點、請對方做的事、不應誤解的事、證據位置。若兩邊 brief 可能矛盾,AI 應標示為需要確認,不可強行合併成一致目標。
 - **共識確認回路** — 若收件時發現任務要求、共同目標、檔案版本或本方理解不一致,AI 不可單向吸收 prompt 後直接開工。必須先停工,整理差異,發出共識確認包,生成可複製貼上的通知,等待對方回覆或修訂後才繼續;原交接不得在共識未成立前 close。
 - **新安裝與版本升級落地** — 外發版本若改動 `skills/aps/**`、CLI 或 setup wording,全面檢須驗證新安裝與既有項目升級兩條路徑。新裝可取得新 skill;既有項目可透過 `npx aps upgrade` 讀現有設定、備份舊 skill、刷新新 skill、更新本地橋接與 Handoff Kit 註冊,並保留既有 Hub 交接資料。若 AI 工具需重啟才讀新 skill,輸出必須明確提示。
+- **agent_id 身份一致性** — 全面檢須驗證新安裝、starter pack、README、walkthrough 與 skill 都清楚說明:`agent_id` 是 Hub 共享身份,不是本機暱稱。Adam / Jay 示例應是 Adam 電腦 `agent-id=adam`、`other-agent-id=jay`;Jay 電腦 `agent-id=jay`、`other-agent-id=adam`。不得讓兩部電腦都把自己叫 `agent_a`。若 `agent-id` 與 `other-agent-id` 相同,CLI 必須阻擋;若兩邊使用不同命名集合,AI 必須提示會讀錯 `from_<agent>` lane 並協助對齊。
 - **交接語義防混淆** — 全面檢須用至少三條 prompt 驗證路由:「收工」走 Agent Handoff Kit 會話交接;「幫我做 APS 交接包給 Jay」走 APS packet;只說「幫我做交接包」必須先澄清,不得直接寫任何檔案或 Hub packet。
 - **品牌與版本防混淆** — APS 全面檢須驗證 AI 實際回覆不會把 APS CLI 版本顯示成 Agent Handoff Kit 版本,亦不會在 APS skill 回覆內輸出 Agent Handoff Kit 啟動卡。若要提版本,APS CLI 與 Agent Handoff Kit 必須分開核實與分開顯示。
 - **長正文發包安全** — 正式交接、長正文、多行摘要、表格或含引號 / 特殊符號的正文,必須使用 `--body-file` 或等效安全輸入;不得把整段 packet body 直接塞進一條多行 shell 引號命令。
@@ -126,7 +127,7 @@
 
 1. **零認知讀者入口流程** — 由 `README.md` → `docs/index.html` → `docs/guides/index.html` → walkthrough,讀者能分清「目前可試」「正在硬化」「目標體驗」；walkthrough 的宏觀流程圖與能力清單須幫讀者先理解 APS 價值,而不是直接跳入命令。
 2. **手動設置與版本升級流程** — 新安裝按 walkthrough 由前置事項 → 工作目錄 → Agent Handoff Kit → `npx aps init` → Handoff Kit APS route / project-index registration → `doctor` → 首次 packet;既有項目升級按 `npm install --save-dev @adamchanadam/aps@latest` → `npx aps upgrade` → `doctor` → 重啟 AI 工具。每一步不依賴不存在的 npm package、私有本機路徑或手改 `AGENTS.md`,升級不可覆寫既有 Hub 交接資料。
-3. **日常協作流程** — one-sentence handoff request → AI reads config / runs doctor / packages common goal / own task / counterpart task / crossing point / requested action / evidence → completeness preflight → user A confirms → AI publishes packet → AI generates copy-ready WhatsApp / Email notification → human pastes notification → receiver says check Hub → receiver-side completeness preflight → if complete and aligned,ack / consume → reply / close; if incomplete,missing-info packet → user A / Agent A supplements; if not aligned,alignment-check packet → counterpart confirmation / revise / withdraw → continue only after consensus,在 CLI、Bridge Pack、skill spec、README、public docs 與 walkthrough 中可追蹤同一條邏輯。命令列流程只可作備用驗證路徑。
+3. **日常協作流程** — one-sentence handoff request → AI reads config / runs doctor / packages common goal / own task / counterpart task / crossing point / requested action / evidence → completeness preflight → user A confirms → AI publishes packet → AI generates copy-ready summary notification → human pastes notification into Telegram / WhatsApp / Email → receiver says check Hub → receiver-side overview → packet summary → completeness preflight → local handoff alignment report against receiver config / docs / task requirements → if complete and aligned,user decides whether to ack / consume → reply / close; if incomplete,missing-info packet → user A / Agent A supplements; if not aligned,alignment-check packet → counterpart confirmation / revise / withdraw → continue only after consensus,在 CLI、Bridge Pack、skill spec、README、public docs 與 walkthrough 中可追蹤同一條邏輯。命令列流程只可作備用驗證路徑。
 4. **出錯補救流程** — Drive 同步延遲、conflict、wrong-lane、packet 格式錯誤、版本不對齊、啟動找不到 APS route、設定指向舊 project、對方看不到 packet,每項有偵測、停手、用戶確認、修復或升級路徑。
 
 **驗收**：外發前檢 + 上列主要流程全部 cleared,且審核報告已 commit。任何「阻擋」項目未解決即不可放行。

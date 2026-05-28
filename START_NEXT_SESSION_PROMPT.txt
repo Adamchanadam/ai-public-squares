@@ -1,15 +1,15 @@
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for AI Public Squares; published as `@adamchanadam/aps`; GitHub repo Adamchanadam/ai-public-squares is public; GitHub Pages enabled).
 
-Current state (2026-05-28): `@adamchanadam/aps@0.2.7` is published to npm as latest pre-release. Release-prep commit `30c3a81` exists locally. npm readback confirms version/latest `0.2.7`, bin `aps`, fileCount 14. GitHub push, `v0.2.7` tag, GitHub release, and GitHub Pages readback are still pending because Adam only authorized commit, release notes, and npm publish.
+Current state (2026-05-28): `@adamchanadam/aps@0.2.8` is the local GitHub pre-release candidate. npm latest remains `@adamchanadam/aps@0.2.7` until Adam separately authorizes npm publish. Adam has authorized commit, tag, GitHub release, and push for the current local state.
 
-0.2.7 scope includes `npx aps upgrade`, `publish --body-file`, `revise --body-file`, APS vs Agent Handoff Kit semantic split, brand / version split,發包前確認,收件總覽,補交 / 共識確認 wording, Traditional Chinese `--help`, APS branding, emoji status output, and receiver notification wording that avoids sender-local Google Drive paths.
+0.2.8 GitHub candidate scope includes the published 0.2.7 Reliable Pair base plus summary-style human notifications, receiver local-alignment reporting wording, `claude -p` external-review governance note, and role-B interactive `init` defaults (`agent_b / agent_a`). Public docs must keep saying npm latest is 0.2.7 until npm publish actually happens.
 
-Do not push, tag, create a GitHub release, or change GitHub Pages unless Adam explicitly asks.
+Do not commit, push, tag, create a GitHub release, publish npm, or change GitHub Pages unless Adam explicitly asks.
 
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md (latest S29 entry)
+3. dev/SESSION_LOG.md (latest S31 entry)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/DOC_SYNC_REGISTRY.md
@@ -20,8 +20,10 @@ If this root does not match the expected project root, stop and ask for confirma
 
 Voice / writing hard rule: user-facing prose must be contemporary written Traditional Chinese. Colloquial Cantonese markers listed in `AGENTS.md` are allowed only inside verbatim user-trigger quotes. HTML must not link local `.md` files; use plain `<span class="path">` references for internal spec paths.
 
-Expected next action: refresh `C:\Users\adam\_claude_desktop\AI_Public_Squares_UAT` using standard npm latest 0.2.7, then run「教我用 APS」自然語言 UAT. If Adam authorizes GitHub follow-through, push local commits, create / push `v0.2.7`, create GitHub pre-release, and verify Pages.
+Expected next action: complete the authorized v0.2.8 GitHub pre-release path: commit, push main, tag `v0.2.8`, push tag, create GitHub pre-release, then verify GitHub release and Pages. Do not run `npm publish` unless Adam separately asks.
 
 QC vocabulary: if Adam says 「跑快檢 / 跑外發前檢 / 跑全面檢」 or quick-check / release-check / full-check, load `dev/qc/triggers.md` and run that tier. If he says a vague QC term, ask 「你指快檢 / 外發前檢 / 全面檢?」.
+
+External review note: `cmd /c claude -p "<bounded read-only review prompt>"` works from this repo root for Claude Code headless read-only review. Keep prompts short and file-scoped, include「只讀，不改檔」, and if it times out, retry with a smaller scope before treating it as blocked. If a real technical blocker remains, check current Claude Code official docs or web guidance before changing the command pattern.
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.

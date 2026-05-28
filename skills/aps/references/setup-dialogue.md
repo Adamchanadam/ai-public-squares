@@ -1,6 +1,6 @@
 # APS setup dialogue reference
 
-此檔是 `skills/aps/SKILL.md` 的 bundled setup wording bank。它會隨 npm package 的 `skills/` 目錄一起出貨。使用者觸發初次設置時,須先由 `SKILL.md` 第 3 節判斷本地狀態;只有確認目前工作目錄沒有 `.aps/config.json` 且用戶意圖是初次設置時,才讀本檔的初次設置起手句。
+此檔是 `skills/aps/SKILL.md` 的 bundled setup wording bank。它會隨 npm package 的 `skills/` 目錄一起出貨。使用者觸發初次設置時,須先由 `SKILL.md` 第 3 節判斷本地狀態;只有確認目前工作目錄沒有 `.aps/config.json` 且用戶意圖是初次設置時,才讀本檔的初次設置起手句。產品別名與 agent_id 規則以 `skills/aps/SKILL.md` 為準。
 
 ## 1. 起手句
 
@@ -51,7 +51,7 @@ A. 我替你發一個測試交接給 <other_agent_id>
    用來確認對方那邊能否看到同一個 Hub。
 
 B. 我替你生成一段給 <other_agent_id> 的通知
-   你可以直接貼到 WhatsApp 或 Email,請對方開始接入。
+   你可以直接貼到 Telegram、WhatsApp、Email 或你們平常使用的通訊工具,請對方開始接入。
 
 C. 我把目前任務整理成 APS 交接包給 <other_agent_id>
    適合你現在真的有工作要交給對方。
@@ -96,7 +96,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 第一項:
 
-> 對方是誰?可先用 `agent_b`,也可給我一個短名稱,例如 sarah 或 design_team。這會用作對方的 agent_id 草稿。
+> 對方是誰?請用一個固定短名,例如 `jay`、`sarah` 或 `design_team`。這會用作對方的 agent_id。兩邊要沿用同一套身份名稱,只是把「自己」與「對方」對調。
 
 第二項:
 
@@ -110,8 +110,8 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 > 我會用以下預設值。若你接受,回覆「OK」。若要改,請指出要改哪一項。
 >
-> 一、你的 agent_id:根據你的名字或使用者資料夾生成。
-> 二、對方的 agent_id:根據剛才的短名稱生成。
+> 一、你的 agent_id:你在 Hub 內的固定身份,例如 `adam`。
+> 二、對方的 agent_id:對方在 Hub 內的固定身份,例如 `jay`。
 > 三、共用資料夾位置:使用你提供的雲端硬碟路徑。
 > 四、共享權限:你需要親自在雲端硬碟中把資料夾分享給對方,並給予編輯權限。AI 不會代你更改雲端權限。
 
@@ -155,7 +155,7 @@ npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
 
 完成後:
 
-> 設置完成。這個工作目錄已有 APS 本地設定。我會先替你做兩件事:一,檢查 Hub 與本機設定是否完整;二,看看對方是否已有新內容。若兩項都正常,我可以立即替你建立一個測試交接包,或生成一段給對方的 WhatsApp 短訊。你不需要記住命令;之後只要直接說「幫我將當前任務整理成 APS 交接包給對方」「看看對方有沒有回覆」或「Drive 同步不到」即可。
+> 設置完成。這個工作目錄已有 APS 本地設定。我會先替你做兩件事:一,檢查 Hub 與本機設定是否完整;二,看看對方是否已有新內容。若兩項都正常,我可以立即替你建立一個測試交接包,或生成一段給對方的 WhatsApp 短訊。你不需要記住命令;之後只要直接說「教我用 APS」「教我用 Agent Public Squares」「幫我將當前任務整理成 APS 交接包給對方」「看看對方有沒有回覆」或「Drive 同步不到」即可。
 
 日常一語交接可用以下 wording:
 
@@ -188,7 +188,18 @@ npx aps publish --topic <topic> --body-file <body_file_path>
 
 若已發出測試交接,再補一句:
 
-> APS 目前不會自動發 WhatsApp、Email 或系統推送。請你把以下短訊傳給對方:「我已用 APS 放了一個測試交接。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入『check Hub』。」對方的 AI 會從自己的 APS 設定讀取 Hub,再讀到交接內容、共同目標與各自任務邊界,不用你重新解釋。
+> APS 不會自動觸發對方 AI。請你把以下通知傳給對方,由對方本人決定何時處理:
+>
+> 📨 APS 有新測試交接
+>
+> 🔎 重點摘要
+> 這是一個 APS 設置後的測試交接,用來確認雙方 Hub、收件與 AI 讀取流程可用。
+>
+> ⚠️ 注意事項
+> 請先確認你自己電腦上的 APS 專案資料夾已準備好;不要使用發送方的本機 Google Drive 路徑。
+>
+> 🚀 下一步
+> 在你自己電腦上打開已接入 APS 的對應項目資料夾,由你本人確認可以處理後,向 AI 輸入「check Hub」。
 
 ## 7.1 有新收件時的顯示順序
 
@@ -221,6 +232,16 @@ npx aps publish --topic <topic> --body-file <body_file_path>
 | 要你做的事 | ✅ 清楚 | <說明> |
 | 證據位置 | ✅ 足夠 | <說明> |
 | 風險 | ✅ 低 | <說明> |
+
+本機對接檢查
+
+| 檢查項 | 結果 | 說明 |
+|---|---|---|
+| 本機設定 | ✅ 對齊 | <確認 `.aps/config.json` 指向同一 project> |
+| 版本狀態 | ✅ 最新 | <確認交接包版本是待處理最新版本> |
+| 任務要求 | ✅ 可對接 | <確認與本機任務要求無衝突> |
+| 證據可讀性 | ✅ 可讀 | <確認不是發送方本機路徑> |
+| 開工條件 | ✅ 可開工 | <或列出不可開工原因> |
 
 細節
 

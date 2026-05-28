@@ -288,6 +288,12 @@ function validateNoPlaceholder(label, value) {
   return null;
 }
 
+function validateDistinctAgents(agentId, otherAgentId) {
+  return agentId === otherAgentId
+    ? '--agent-id 與 --other-agent-id 必須是兩個不同的 Hub 共享身份,例如 adam / jay。'
+    : null;
+}
+
 function toSnakeCase(value, fallback) {
   const normalized = String(value || '')
     .trim()
@@ -408,19 +414,22 @@ async function runInteractiveInit() {
     const projectSlug = await askWithDefault(rl, '2/5 項目代號', defaultProject, (value) => (
       localizeValidation(validateNoPlaceholder('--project', value) || validateSnakeCase('--project', value))
     ));
-    const defaultAgent = 'agent_a';
+    const defaultAgent = roleValue === 'B' ? 'agent_b' : 'agent_a';
     console.log('');
-    console.log('👤 你的 agent id 是你這一邊在 Hub 內的名字,例如 agent_a 或你的短名。');
+    console.log('👤 你的 agent id 是你這一邊在 Hub 內的共享身份,例如 adam 或 jay。');
+    console.log('   兩部電腦必須用同一套身份名稱,只是在自己 / 對方欄位對調。');
     console.log('   APS 會用它建立 from_<你的 id> 通道及你的收件確認檔。');
     const agentId = await askWithDefault(rl, '3/5 你的 agent id', defaultAgent, (value) => (
       localizeValidation(validateNoPlaceholder('--agent-id', value) || validateSnakeCase('--agent-id', value))
     ));
-    const defaultOther = agentId === 'agent_b' ? 'agent_a' : 'agent_b';
+    const defaultOther = roleValue === 'B' ? 'agent_a' : (agentId === 'agent_b' ? 'agent_a' : 'agent_b');
     console.log('');
-    console.log('🤝 對方 agent id 是合作夥伴在 Hub 內的名字,例如 agent_b 或對方的短名。');
+    console.log('🤝 對方 agent id 是合作夥伴在 Hub 內的共享身份,例如 adam 或 jay。');
+    console.log('   對方設置時會把這兩個值對調。');
     console.log('   APS 會用它建立 from_<對方 id> 通道,讓你之後可以收對方交來的內容。');
     const otherAgentId = await askWithDefault(rl, '4/5 對方 agent id', defaultOther, (value) => (
       localizeValidation(validateNoPlaceholder('--other-agent-id', value) || validateSnakeCase('--other-agent-id', value))
+      || (value === agentId ? '對方 agent id 不可等於你的 agent id。兩邊身份必須不同,例如 adam / jay。' : null)
     ));
     console.log('');
     console.log('☁️  Hub root path 是你電腦上 Google Drive 同步資料夾的完整路徑。');
@@ -441,6 +450,7 @@ async function runInteractiveInit() {
     console.log(`  📁 項目代號: ${values.projectSlug}`);
     console.log(`  👤 本機 agent: ${values.agentId} (角色 ${values.role})`);
     console.log(`  🤝 對方 agent: ${values.otherAgentId}`);
+    console.log(`  🔁 對方設置時應對調身份:本機 agent=${values.otherAgentId};對方 agent=${values.agentId}`);
     console.log(`  📂 會建立或使用的 Hub 項目資料夾: ${projectPath}`);
     console.log(`  ⚙️  本機設定檔: ${configPath()}`);
     console.log('');
@@ -586,8 +596,71 @@ function packetScopeFromBody(body, fallback) {
   return yamlDoubleQuote((meaningful || fallback).slice(0, 120));
 }
 
-function receiverNotice({ projectSlug, topic, packetId, version, label }) {
-  return `我已用 APS ${label}。項目: ${projectSlug};主題: ${topic};交接編號: ${packetId} v${version}。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入「check Hub」。不要使用發送方的本機 Google Drive 路徑;你的 AI 會讀取你自己的 APS 設定。`;
+function compactNoticeText(value, fallback, maxLength = 220) {
+  const text = String(value || '')
+    .replace(/\r?\n+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return (text || fallback).slice(0, maxLength);
+}
+
+function firstMeaningfulBodyLine(body) {
+  return String(body || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find((line) => line && !line.startsWith('#') && !line.startsWith('---') && !line.startsWith('|'));
+}
+
+function firstLineAfterHeading(body, headingPattern) {
+  const lines = String(body || '').split(/\r?\n/);
+  let inside = false;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (/^#+\s+/.test(trimmed)) {
+      inside = headingPattern.test(trimmed);
+      continue;
+    }
+    if (inside && trimmed && !trimmed.startsWith('|')) return trimmed;
+  }
+  return null;
+}
+
+function noticeSummaryFromBody(body, fallback) {
+  return compactNoticeText(
+    firstLineAfterHeading(body, /(請對方做的事|請.*做|requested action|action requested)/i)
+      || firstLineAfterHeading(body, /(共同目標|摘要|目標)/)
+      || firstMeaningfulBodyLine(body),
+    fallback
+  );
+}
+
+function noticeAttentionFromBody(body) {
+  return compactNoticeText(
+    firstLineAfterHeading(body, /(注意|不應誤解|風險|未決)/),
+    '請先由收件人確認時間、工作目錄與資料狀態已準備好,再叫 AI 介入。'
+  );
+}
+
+function receiverNotice({ projectSlug, topic, packetId, version, label, fromId, toId, summary, attention }) {
+  const receiverLabel = toId || '對方';
+  return [
+    `📨 APS ${label}`,
+    '',
+    `📌 項目: ${projectSlug}`,
+    fromId ? `👤 來源: ${fromId}` : '👤 來源: 發送方',
+    `🧭 主題: ${topic}`,
+    `📦 交接包: ${packetId} v${version}`,
+    '',
+    '🔎 重點摘要',
+    compactNoticeText(summary, '請收件方 AI 讀取 APS Hub 內的交接包正文。'),
+    '',
+    '⚠️ 注意事項',
+    compactNoticeText(attention, '請先由收件人確認時間、工作目錄與資料狀態已準備好,再叫 AI 介入。'),
+    '不要使用發送方的本機 Google Drive 路徑;收件方 AI 會讀取自己電腦上的 APS 設定。',
+    '',
+    `🚀 ${receiverLabel} 下一步`,
+    '請在你自己電腦上打開已接入 APS 的對應項目資料夾,由你本人確認可以處理後,向 AI 輸入「check Hub」。',
+  ].join('\n');
 }
 
 function parseOutboxLine(line) {
@@ -880,6 +953,13 @@ function starterPackContent(values, counterpartRole) {
 - your role: \`${counterpartRole}\`
 - Hub root on your machine:請改成你自己電腦上 Google Drive 同步資料夾的完整路徑
 
+## 身份名稱
+
+請沿用同一套 Hub 身份名稱,只對調自己 / 對方:
+
+- 你這邊: \`${values.otherAgentId}\`
+- 對方: \`${values.agentId}\`
+
 ## 安裝
 
 \`\`\`powershell
@@ -1097,6 +1177,7 @@ if (subcommand === 'init' && args.length === 0) {
       validateSnakeCase('--project', setupValues.projectSlug),
       validateSnakeCase('--agent-id', setupValues.agentId),
       validateSnakeCase('--other-agent-id', setupValues.otherAgentId),
+      validateDistinctAgents(setupValues.agentId, setupValues.otherAgentId),
       setupValues.role === 'A' || setupValues.role === 'B' ? null : `--role must be A or B (got '${setupValues.role}').`,
     ].filter(Boolean);
     if (errors.length > 0) {
@@ -1220,6 +1301,7 @@ if (subcommand === 'upgrade') {
     validateSnakeCase('--project', setupValues.projectSlug),
     validateSnakeCase('--agent-id', setupValues.agentId),
     validateSnakeCase('--other-agent-id', setupValues.otherAgentId),
+    validateDistinctAgents(setupValues.agentId, setupValues.otherAgentId),
     setupValues.role === 'A' || setupValues.role === 'B' ? null : `--role must be A or B (got '${setupValues.role}').`,
   ].filter(Boolean);
   if (errors.length > 0) {
@@ -1334,6 +1416,7 @@ if (subcommand === 'config') {
         validateSnakeCase('--project', values.projectSlug),
         validateSnakeCase('--agent-id', values.agentId),
         validateSnakeCase('--other-agent-id', values.otherAgentId),
+        validateDistinctAgents(values.agentId, values.otherAgentId),
         values.role === 'A' || values.role === 'B' ? null : `--role must be A or B (got '${values.role}').`,
       ].filter(Boolean);
       if (errors.length > 0) {
@@ -1398,7 +1481,17 @@ if (subcommand === 'publish') {
   }
   try {
     const result = writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level });
-    const notice = receiverNotice({ projectSlug, topic, packetId: result.packetId, version: result.version, label: '放了一個新交接包' });
+    const notice = receiverNotice({
+      projectSlug,
+      topic,
+      packetId: result.packetId,
+      version: result.version,
+      label: '放了一個新交接包',
+      fromId,
+      toId,
+      summary: noticeSummaryFromBody(body, topic),
+      attention: noticeAttentionFromBody(body),
+    });
     console.log(`✅ 已發佈 ${result.packetId} v${result.version}`);
     console.log(`📦 交接包: ${result.packetDir}`);
     console.log('');
@@ -1408,7 +1501,7 @@ if (subcommand === 'publish') {
     console.log('📧 Email 主旨: APS 有新交接包');
     console.log(`📧 Email 正文: ${notice}`);
     console.log('');
-    console.log('🚀 下一步:把上面的通知訊息複製貼上到 WhatsApp、Email 或你們平常使用的通訊工具。CLI inbox 命令只作排錯備用。');
+    console.log('🚀 下一步:把上面的通知訊息複製貼上到 Telegram、WhatsApp、Email 或你們平常使用的通訊工具。由收件人本人決定何時叫自己的 AI `check Hub`;CLI inbox 命令只作排錯備用。');
     process.exit(0);
   } catch (err) {
     console.error(`❌ 發佈失敗:${err.message}`);
@@ -1443,10 +1536,24 @@ if (subcommand === 'revise') {
   }
   try {
     const output = revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason });
+    const notice = receiverNotice({
+      projectSlug,
+      topic: packetId,
+      packetId,
+      version: output.version,
+      label: '修訂了一個交接包',
+      fromId: agentId,
+      toId: config.otherAgentId,
+      summary: noticeSummaryFromBody(body, packetId),
+      attention: noticeAttentionFromBody(body),
+    });
     console.log(`✅ 已修訂 ${packetId}: v${output.previousVersion} -> v${output.version}`);
     console.log(`📦 交接包: ${output.packetDir}`);
     console.log('');
-    console.log('🚀 下一步:請通知對方在自己電腦的 AI 工具中說「check Hub」。命令列備用做法是請對方執行 `npx aps inbox`;最新未讀版本會重新顯示為待處理項目。');
+    console.log('📣 可直接複製貼上的通知訊息:');
+    console.log(notice);
+    console.log('');
+    console.log('🚀 下一步:請把通知貼給對方,由對方本人決定何時叫自己的 AI「check Hub」。命令列備用做法是請對方執行 `npx aps inbox`;最新未讀版本會重新顯示為待處理項目。');
     process.exit(0);
   } catch (err) {
     console.error(`❌ 修訂失敗:${err.message}`);
@@ -1479,10 +1586,11 @@ if (subcommand === 'inbox') {
       for (const item of pending) {
         console.log(`- 📦 ${item.packetId} v${item.version} | 摘要:${item.scope} | 項目:${item.items.join(',') || '(無)'}`);
         console.log(`  📄 交接包: ${item.packetPath}`);
-        console.log(`  ✅ 標記已處理命令: npx aps consume --packet-id ${item.packetId} --version ${item.version} --result "<你做了甚麼>"`);
+        console.log('  🔎 請先在 AI 工具輸入「check Hub」取得完整收件報告,再決定是否標記已處理。');
       }
       console.log('');
-      console.log('🚀 下一步:請先閱讀交接包內容。只有在確認要接受這個版本後,才標記已處理;若資料不足,應先請對方補交。');
+      console.log('🚀 下一步:請先讓 AI 產生收件報告,摘要交接重點,再做完整性預檢與本機對接檢查。只有在內容齊全且與本機任務狀態一致後,才標記已處理;若資料不足或不一致,應先請對方補交或確認共識。');
+      console.log('✅ 通過檢查後的備用命令:npx aps consume --packet-id <id> --version <n> --result "<具體處理結果>"');
     }
     process.exit(0);
   } catch (err) {

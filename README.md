@@ -2,7 +2,7 @@
 
 > **⚠️ 前期測試階段(pre-release)**
 >
-> 本工具仍處於早期建構期。npm latest 0.2.7 pre-release 以 Reliable Pair 為主線,主安裝路徑仍是互動式 `npx aps init`,並加入既有項目 `npx aps upgrade`、長正文 `--body-file` 發佈 / 修訂、APS 品牌與版本分流、繁體中文 help、發送前確認、收件總覽與更安全的對方通知文字。CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。自然語言日常操作與補救流程仍未完整產品化。
+> 本工具仍處於早期建構期。GitHub source 已推進至 0.2.8 pre-release 候選;npm latest 仍是 0.2.7,直到另行執行 npm publish。Reliable Pair 仍是主線,主安裝路徑仍是互動式 `npx aps init`,並加入既有項目 `npx aps upgrade`、長正文 `--body-file` 發佈 / 修訂、APS 品牌與版本分流、繁體中文 help、發送前確認、收件總覽、摘要式人類通知、更安全的對方通知文字,以及角色 B 預設身份修正。CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。自然語言日常操作與補救流程仍未完整產品化。
 >
 > 0.2.x 主路徑仍是二人協作。最新產品決策是 Reliable Pair first：先把二人交接、補交、共識確認、回覆與收結做到可靠。未列入本頁現有能力的事,不可視為已支援。核心方向是不要求額外雲端開發者專案、外部服務憑證或密鑰設定。
 >
@@ -31,8 +31,10 @@ npx aps init
 |---|---|---|
 | `hub-root` | Google Drive 桌面版同步到本機的共享資料夾實際路徑。請在檔案總管打開該資料夾,複製地址列路徑;不要輸入 `G:\...\AI_Public_Squares` 或任何含 `...` 的省略寫法。 | `G:\我的雲端硬碟\AI_Public_Squares` |
 | `project` | 這次協作項目的短代號。只用英文小寫、數字、底線;不要用中文或空格。第一次測試可用新的測試名。 | `aps_uat` |
-| `agent-id` | 你這邊 AI 的名稱。可先用通用值,也可改成自己的短名。 | `agent_a` |
-| `other-agent-id` | 對方那邊 AI 的名稱。對方設置時會和你的 `agent-id` 對調。 | `agent_b` |
+| `agent-id` | 你這邊在 Hub 內的共享身份名稱。兩部電腦要對同一個人使用同一個名稱。 | `adam` |
+| `other-agent-id` | 對方在 Hub 內的共享身份名稱。對方設置時會和你的 `agent-id` 對調。 | `jay` |
+
+例:Adam 先建立 Hub 時填 `agent-id=adam`、`other-agent-id=jay`;Jay 加入時填 `agent-id=jay`、`other-agent-id=adam`。
 
 若只是單機試跑,可先用一個本機測試資料夾做 `hub-root`;若要和協作夥伴真正跨機試用,必須使用雙方都可同步到的 Google Drive 共享資料夾。
 
@@ -53,7 +55,7 @@ npx aps upgrade
 
 `npx aps upgrade` 會讀取既有 `.aps/config.json`,備份並刷新 Claude Code / Codex 的 APS skill,更新本地橋接與 Handoff Kit 註冊,然後做 Hub 預檢。它不會覆寫既有交接包、outbox、ack 或 Hub 協定檔。
 
-> **目前狀態**:npm latest 0.2.7 pre-release 提供 `bridge-pack`、互動式 `init` 技能安裝器、既有項目 `upgrade`、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並支援 `revise` / `withdraw` / `doctor` / `config`、`publish --body-file` 與 `revise --body-file`;本機互動式設定回歸已通過,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。設置一次後可用短命令作備用。日常主路徑仍應是在 AI 工具輸入自然語言,例如「教我用 APS」或「check Hub」。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
+> **目前狀態**:GitHub source 0.2.8 pre-release 候選補上 post-UAT 修正; npm latest 仍是 0.2.7,尚未包含 0.2.8 候選。0.2.7 已提供 `bridge-pack`、互動式 `init` 技能安裝器、既有項目 `upgrade`、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並支援 `revise` / `withdraw` / `doctor` / `config`、`publish --body-file` 與 `revise --body-file`;本機互動式設定回歸已通過,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。設置一次後可用短命令作備用。日常主路徑仍應是在 AI 工具輸入自然語言,例如「教我用 APS」「教我用 Agent Public Squares」或「check Hub」。`AI Public Squares` 是正式產品名,`Agent Public Squares` 是用戶常見自然語言別名,AI 應視為同一產品。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
 
 ---
 
@@ -77,7 +79,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 - 電腦需安裝 Google Drive 桌面版(前往 https://www.google.com/drive/download/ 下載),登入之後將共享資料夾設為「離線存取」
 - 電腦需安裝 Claude Code(前往 https://claude.com/code 下載)或 Codex
-- 與你的協作夥伴之間能透過 WhatsApp 通訊
+- 與你的協作夥伴之間能透過 Telegram、WhatsApp、Email 或日常通訊工具聯絡
 
 以上任何一項尚未完成?各個官方網頁均有逐步指引。先安裝完成,再回來執行下列命令。
 
@@ -85,20 +87,20 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 ## 目前可以怎樣試
 
-npm latest 0.2.7 pre-release 仍屬前期測試版本,但已可用 CLI 跑完整互動式設置、既有項目升級、最小往返、修訂、撤回、只讀診斷與短命令日用流程。你可以做三件事:
+npm latest 0.2.7 pre-release 仍屬前期測試版本,但已可用 CLI 跑完整互動式設置、既有項目升級、最小往返、修訂、撤回、只讀診斷與短命令日用流程。GitHub source 0.2.8 候選補上 post-UAT UX 與角色 B 預設身份修正,但尚未 npm publish。你可以做三件事:
 
 1. 閱讀本 repo,理解 APS 想解決的跨機協作問題。
 2. 參考下方「想深入了解」中的設置教學,照 0.2.7 CLI 主路徑完成首次設置。
 3. 先執行 `npm install --save-dev @adamchanadam/aps@latest`,再用 `npx aps init` 由工具逐步問你 Hub 路徑、項目代號、雙方 agent id 與角色。互動式設定會解釋每個值的用途;Hub 路徑指你電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。工具列出寫入計劃後,你輸入 `yes` 才建立 skill、Hub skeleton、Bridge Pack、starter pack 與本地設定。
 
 目前可用路徑是:使用者在自己的項目資料夾內先安裝 npm 套件,再執行 `npx aps init`。工具會用問答方式收集必要資料、拒絕明顯 placeholder、列出計劃,並在你輸入 `yes` 後把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack、starter pack 與本地 `.aps/config.json` 設定。它亦會在 `dev/RULE_PACKS.md` 與 `dev/PROJECT_INDEX.md` 加入可移除的 APS managed registration,讓新 AI session 按 Agent Handoff Kit 啟動讀序後,可在你提到 APS / `check Hub` / 同步問題時載入 APS 橋接規則。設置完成後,日常主路徑應是你向 AI 說自然語言,由 AI 讀取本地設定、替你跑健康檢查、收件、整理上下文、發測試交接包、把 starter pack 傳給對方,或開始日常收發;命令列只作可驗證備用路徑。自然語言日常體驗仍在打磨中:
-   - 「幫我將當前任務整理成 APS 交接包給對方」 → AI 自動讀設定、檢查 Hub、整理上下文、補齊交接欄位、做完整性預檢,交給你確認後才發佈交接包,並生成可直接複製貼上的 WhatsApp / Email 通知供你發送
+   - 「幫我將當前任務整理成 APS 交接包給對方」 → AI 自動讀設定、檢查 Hub、整理上下文、補齊交接欄位、做完整性預檢,交給你確認後才發佈交接包,並生成可直接複製貼上的 Telegram / WhatsApp / Email 通知供你發送;通知應包含交接摘要與注意事項,不能只列交接編號
    - 「對方嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦
    - 「這個交接資料不足」 → AI 主動列出缺漏,生成補交需求包,並生成可直接複製貼上的通知請對方補交
    - 「這個交接和我理解不一致」 → 工具先停工,整理差異,再生成共識確認包與通知文字給對方
    - 「Google Drive 同步唔到」 → 工具偵測問題並提出修復方法
 
-上述日常流程的底層 CLI 已有最小測試路徑,並已跑過一次維護者真實跨機 Google Drive 往返驗證;但尚未完整包成技能內的自然語言日常操作,目前仍不可視為可生產使用功能。APS 目前也不是自動通知服務:發送方 AI 寫入交接後,接收方 AI 不會自動彈出提示;人類仍需用現有渠道簡短通知對方「check Hub」。APS 的增值在於通知之後,對方 AI 可直接讀到結構化上下文、共同目標、各自任務邊界、交叉協作點、任務需求、版本與已讀狀態,不用人類重新搬運整段背景。
+上述日常流程的底層 CLI 已有最小測試路徑,並已跑過一次維護者真實跨機 Google Drive 往返驗證;但尚未完整包成技能內的自然語言日常操作,目前仍不可視為可生產使用功能。APS 目前也不是自動控制服務:發送方 AI 寫入交接後,接收方 AI 不會自動彈出提示或自動開工;人類仍需用現有渠道把摘要式通知交給對方,由對方本人決定何時在自己的 AI 工具輸入「check Hub」。APS 的增值在於通知之後,對方 AI 可直接讀到結構化上下文、共同目標、各自任務邊界、交叉協作點、任務需求、版本與已讀狀態,並先做收件報告、本機對接檢查與一致性判斷,不用人類重新搬運整段背景。
 
 0.2.x 仍以「自己 + 對方」二人通道作主路徑。近期產品方向已收斂為 Reliable Pair first：先完成可靠二人交接、補交、共識確認、回覆、收結與 UAT。未列入本頁現有能力的事,不可視為已支援功能。
 
@@ -113,7 +115,7 @@ npm latest 0.2.7 pre-release 仍屬前期測試版本,但已可用 CLI 跑完整
 - **同步衝突** — 雙方同時儲存,Google Drive 產生「(conflict)」副本,無法判斷哪一份是最新版
 - **每次往返均須重做** — 對方回覆之後又要重複一遍,搬運檔案、解釋背景、再次經歷整個流程
 
-本工具的構想:**Google Drive 上一個共享資料夾,加上一套寫入規矩 = 雙方電腦的 AI 在檢查 Hub 時可讀懂對方進度**;交接內容、共同目標、各自任務邊界、上下文、版本與已讀狀態集中留痕;衝突由結構性避免。它不假設兩邊 AI 正在做同一件事,只要求每次交接講清楚共同交叉點與需要對方完成的事。沒有伺服器,沒有額外的雲端帳號,沒有自動推送通知(刻意如此設計 — 由使用者決定何時被打斷,而非由 AI 主動發送提示)。
+本工具的構想:**Google Drive 上一個共享資料夾,加上一套寫入規矩 = 雙方電腦的 AI 在檢查 Hub 時可讀懂對方進度**;交接內容、共同目標、各自任務邊界、上下文、版本與已讀狀態集中留痕;衝突由結構性避免。它不假設兩邊 AI 正在做同一件事,只要求每次交接講清楚共同交叉點與需要對方完成的事。沒有伺服器,沒有額外的雲端帳號,也不自動觸發對方 AI;通知只把摘要交到人手上,由人決定何時打斷工作並輸入「check Hub」。
 
 ---
 
