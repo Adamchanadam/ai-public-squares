@@ -2,7 +2,7 @@
 
 > **⚠️ 前期測試階段(pre-release)**
 >
-> 本工具仍處於早期建構期。GitHub source 已推進至 0.2.8 pre-release 候選;npm latest 仍是 0.2.7,直到另行執行 npm publish。Reliable Pair 仍是主線,主安裝路徑仍是互動式 `npx aps init`,並加入既有項目 `npx aps upgrade`、長正文 `--body-file` 發佈 / 修訂、APS 品牌與版本分流、繁體中文 help、發送前確認、收件總覽、摘要式人類通知、更安全的對方通知文字,以及角色 B 預設身份修正。CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。自然語言日常操作與補救流程仍未完整產品化。
+> 本工具仍處於早期建構期。npm latest 0.2.8 pre-release 以 Reliable Pair 為主線,主安裝路徑仍是互動式 `npx aps init`,並加入既有項目 `npx aps upgrade`、長正文 `--body-file` 發佈 / 修訂、APS 品牌與版本分流、繁體中文 help、發送前確認、收件總覽、摘要式人類通知、更安全的對方通知文字,以及角色 B 預設身份修正。CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。自然語言日常操作與補救流程仍未完整產品化。
 >
 > 0.2.x 主路徑仍是二人協作。最新產品決策是 Reliable Pair first：先把二人交接、補交、共識確認、回覆與收結做到可靠。未列入本頁現有能力的事,不可視為已支援。核心方向是不要求額外雲端開發者專案、外部服務憑證或密鑰設定。
 >
@@ -55,7 +55,7 @@ npx aps upgrade
 
 `npx aps upgrade` 會讀取既有 `.aps/config.json`,備份並刷新 Claude Code / Codex 的 APS skill,更新本地橋接與 Handoff Kit 註冊,然後做 Hub 預檢。它不會覆寫既有交接包、outbox、ack 或 Hub 協定檔。
 
-> **目前狀態**:GitHub source 0.2.8 pre-release 候選補上 post-UAT 修正; npm latest 仍是 0.2.7,尚未包含 0.2.8 候選。0.2.7 已提供 `bridge-pack`、互動式 `init` 技能安裝器、既有項目 `upgrade`、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並支援 `revise` / `withdraw` / `doctor` / `config`、`publish --body-file` 與 `revise --body-file`;本機互動式設定回歸已通過,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。設置一次後可用短命令作備用。日常主路徑仍應是在 AI 工具輸入自然語言,例如「教我用 APS」「教我用 Agent Public Squares」或「check Hub」。`AI Public Squares` 是正式產品名,`Agent Public Squares` 是用戶常見自然語言別名,AI 應視為同一產品。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
+> **目前狀態**:npm latest 0.2.8 pre-release 提供 `bridge-pack`、互動式 `init` 技能安裝器、既有項目 `upgrade`、初始 Hub skeleton 生成器,預設支援 Claude Code 與 Codex。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並支援 `revise` / `withdraw` / `doctor` / `config`、`publish --body-file` 與 `revise --body-file`;本機互動式設定回歸已通過,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。設置一次後可用短命令作備用。日常主路徑仍應是在 AI 工具輸入自然語言,例如「教我用 APS」「教我用 Agent Public Squares」或「check Hub」。`AI Public Squares` 是正式產品名,`Agent Public Squares` 是用戶常見自然語言別名,AI 應視為同一產品。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
 
 ---
 
@@ -87,10 +87,10 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 ## 目前可以怎樣試
 
-npm latest 0.2.7 pre-release 仍屬前期測試版本,但已可用 CLI 跑完整互動式設置、既有項目升級、最小往返、修訂、撤回、只讀診斷與短命令日用流程。GitHub source 0.2.8 候選補上 post-UAT UX 與角色 B 預設身份修正,但尚未 npm publish。你可以做三件事:
+npm latest 0.2.8 pre-release 仍屬前期測試版本,但已可用 CLI 跑完整互動式設置、既有項目升級、最小往返、修訂、撤回、只讀診斷與短命令日用流程,並補上 post-UAT UX 與角色 B 預設身份修正。你可以做三件事:
 
 1. 閱讀本 repo,理解 APS 想解決的跨機協作問題。
-2. 參考下方「想深入了解」中的設置教學,照 0.2.7 CLI 主路徑完成首次設置。
+2. 參考下方「想深入了解」中的設置教學,照 0.2.8 CLI 主路徑完成首次設置。
 3. 先執行 `npm install --save-dev @adamchanadam/aps@latest`,再用 `npx aps init` 由工具逐步問你 Hub 路徑、項目代號、雙方 agent id 與角色。互動式設定會解釋每個值的用途;Hub 路徑指你電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。工具列出寫入計劃後,你輸入 `yes` 才建立 skill、Hub skeleton、Bridge Pack、starter pack 與本地設定。
 
 目前可用路徑是:使用者在自己的項目資料夾內先安裝 npm 套件,再執行 `npx aps init`。工具會用問答方式收集必要資料、拒絕明顯 placeholder、列出計劃,並在你輸入 `yes` 後把 APS 技能安裝到 Claude Code / Codex,建立 Hub skeleton、Bridge Pack、starter pack 與本地 `.aps/config.json` 設定。它亦會在 `dev/RULE_PACKS.md` 與 `dev/PROJECT_INDEX.md` 加入可移除的 APS managed registration,讓新 AI session 按 Agent Handoff Kit 啟動讀序後,可在你提到 APS / `check Hub` / 同步問題時載入 APS 橋接規則。設置完成後,日常主路徑應是你向 AI 說自然語言,由 AI 讀取本地設定、替你跑健康檢查、收件、整理上下文、發測試交接包、把 starter pack 傳給對方,或開始日常收發;命令列只作可驗證備用路徑。自然語言日常體驗仍在打磨中:

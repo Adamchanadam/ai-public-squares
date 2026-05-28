@@ -8,7 +8,16 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-28 (S32, latest) — v0.2.8 GitHub pre-release
+## 2026-05-28 (S33, latest) — v0.2.8 npm publish
+
+- **ID:** S33
+- **Summary:** Adam explicitly requested npm publish after the v0.2.8 GitHub pre-release. Public and package-shipped wording was updated from "GitHub candidate / npm latest 0.2.7" to "npm latest 0.2.8 pre-release" before publishing, so the npm README will not carry stale boundary text.
+- **Changed:** This workspace and npm registry.
+  - Modified: `README.md`, `docs/index.html`, `skills/aps/SKILL.md`, `dev/release-notes/v0.2.8.md`, `dev/PROJECT_INDEX.md`, `dev/SESSION_HANDOFF.md`, `START_NEXT_SESSION_PROMPT.txt`, and this log.
+- **QC:** Release checks are rerun before publish. npm publish and readbacks are recorded below once complete.
+- **Pending:** Publish `@adamchanadam/aps@0.2.8`, update GitHub release notes if needed, push state-sync, and verify npm / GitHub Pages readback.
+
+## 2026-05-28 (S32) — v0.2.8 GitHub pre-release
 
 - **ID:** S32
 - **Summary:** Adam authorized commit, tag, GitHub release, and push. npm publish was not requested. Local source was bumped to `@adamchanadam/aps@0.2.8` as a GitHub pre-release candidate, with public docs explicitly stating npm latest remains `0.2.7` until a separate npm publish. Release commit `136042c` was pushed to `origin/main`; tag `v0.2.8` was pushed and points to the same commit; GitHub pre-release was created at `https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.8`.
