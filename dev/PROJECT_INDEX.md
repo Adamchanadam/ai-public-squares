@@ -6,7 +6,7 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 
 | Field | Value | Last verified |
 |---|---|---|
-| Agent Handoff Kit template version | 0.3.13 | 2026-05-28 |
+| Agent Handoff Kit template version | 0.3.14 | 2026-05-29 |
 | Runtime | Node.js ≥18 (for `bin/aps.js` CLI); static HTML for user-facing docs under `docs/` | 2026-05-26 |
 | Framework | None — no build step; HTML hand-maintained; CLI is plain Node | 2026-05-22 |
 | Package manager | npm (`@adamchanadam/aps` published latest is 0.2.12 pre-release — naming & framing: rebrand to Agent Public Squares + check Hub→check Drive vocab + multi-peer walkthrough, published 2026-05-29 S44 on top of 0.2.11 peer-lifecycle root-fix; npm package name unchanged; prior latest was 0.2.11) | 2026-05-29 |
