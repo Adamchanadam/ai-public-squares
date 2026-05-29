@@ -86,7 +86,7 @@ Skill 觸發之初,先做本地狀態判斷,再判斷用戶 intent。**讀任何
    - 成功後驗證 `dev/rules/aps-bridge.md`、`.aps/config.json`、共用 Drive 資料夾的 `_hub/PROTOCOL.md`、自己的 `from_<own_agent_id>/outbox.log.md` 與 `_ack/<own_agent_id>.ack.json` 均存在。**三問安裝只設定用戶自己這一邊:不會建立對方通道,也不會生成 starter pack —— 那些在邀請對方時(第 6 步 / 第 5.1 節)才產生。**
    - 若需要 AI 或腳本代為執行非互動流程,使用 `npx aps init --hub-root ... --project ... --agent-id ...`(`--other-agent-id` 與 `--role A|B` 可選,只設自己即可)。不得使用含尖括號 `<>` 或 `...` 的 placeholder。
 6. **邀請對方並生成 starter pack**:
-   - 三問安裝**不會**生成 starter pack。當用戶想邀請對方時(可以即時,亦可以日後),用 `npx aps peer add --agent-id <對方> --display-name <名稱>` 建立 provisional peer,CLI 會同時把 starter pack 寫入 `<hub_root>/_hub/starter-pack-<對方>.md`。若用戶今次未決定搵邊個,跳過此步,並提醒佢設定好之後隨時可以邀請。
+   - 三問安裝**不會**生成 starter pack。當用戶想邀請對方時(可以即時,亦可以日後),用 `npx aps peer add --agent-id <對方> --display-name <名稱>` 建立 provisional peer,CLI 會同時把 starter pack 寫入 `<hub_root>/_hub/starter-pack-<項目>-<對方>.md`。若用戶今次未決定搵邊個,跳過此步,並提醒佢設定好之後隨時可以邀請。
    - 邀請後,讀取該 starter pack 並生成可複製短訊文本,輸出到 chat 顯示給用戶 copy(skill 不直接寫入 clipboard — OS clipboard API 非 Claude Code 標準 tool;改為明確 surface「以下短訊請 copy 傳給對方」+ blockquote 包圍)。對方完成自己那邊的三問安裝後才成為 confirmed peer。
 7. **設置完成後的下一步**:
    - 三問安裝完成後,項目只有用戶自己一邊,**未有對方可發測試交接**。主路徑是建議用戶邀請第一位協作對象(轉第 5.1 節 `peer add`),或提醒佢隨時可以邀請。

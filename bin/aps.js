@@ -1918,7 +1918,7 @@ if (subcommand === 'peer') {
   }
   try {
     const starterValues = { ...config, hubRoot, projectSlug, agentId: localAgentId, otherAgentId: peerId };
-    const starterTarget = path.join(hubRoot, '_hub', `starter-pack-${peerId}.md`);
+    const starterTarget = path.join(hubRoot, '_hub', `starter-pack-${projectSlug}-${peerId}.md`);
     const steps = [];
     if (action === 'add') {
       steps.push(...ensurePeerArtifacts({
@@ -1937,6 +1937,8 @@ if (subcommand === 'peer') {
     console.log(`📄 starter pack: ${starterTarget}`);
     if (action === 'add') {
       console.log('⚠️ 狀態: provisional。對方仍須在自己的電腦完成 `npx aps init` 或 `npx aps upgrade`,才可視為 confirmed peer。');
+    } else {
+      console.log('ℹ️ 只重新生成 starter pack,未建立或改動 peer。若仲未邀請過呢位對象,請先用 `npx aps peer add --agent-id ' + peerId + '`。');
     }
     console.log('🚀 下一步:把 starter pack 內容或摘要通知傳給對方;對方完成後,由對方在自己的 AI 工具輸入「check Drive」。');
     process.exit(0);

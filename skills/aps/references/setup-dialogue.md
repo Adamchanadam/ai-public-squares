@@ -140,7 +140,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 當用戶想邀請協作對象時(不是安裝時),用 `npx aps peer add --agent-id <對方> --display-name <名稱>`;CLI 會建立 provisional peer 並把 starter pack 寫入:
 
 ```text
-<hub_root>/_hub/starter-pack-<對方>.md
+<hub_root>/_hub/starter-pack-<項目>-<對方>.md
 ```
 
 新版 starter pack 本身就是一段可直接轉發的邀請訊息:背景一兩句,加幾個關鍵步驟(在 Google Drive 收下並同步共用資料夾、開一個自己的工作資料夾、叫對方的 AI 跟教學頁安裝、項目代號照抄、填對方自己的名字),最後連去逐步教學頁 `docs/guides/aps-join-invite.html`(內含實際安裝命令與排錯)。逐條 terminal 命令與細節都放在教學頁,不塞進訊息。
