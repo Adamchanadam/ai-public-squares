@@ -14,7 +14,7 @@
 跨機接駁時,讀者:
 
 1. 將此資料夾中對應角色之 `aps-bridge.md` 抄至自己 runtime workspace 之 `dev/rules/aps-bridge.md`
-2. 將 Identity section 中的 `<your_agent_id>` / `<your_project_slug>` / `<your_Drive_AI_Public_Squares_absolute_path>` / `<counterpart_agent_id>` 改為實際值
+2. 將 Identity section 中的 `<your_agent_id>` / `<your_project_slug>` / `<your_shared_drive_folder_absolute_path>` / `<counterpart_agent_id>` 改為實際值
 
 詳細安裝步驟見 [設置教學](../docs/guides/aps-onboarding-walkthrough.html) §5 與 §6。
 

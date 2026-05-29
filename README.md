@@ -28,26 +28,25 @@ npm install --save-dev @adamchanadam/aps@latest
 npx aps init
 ```
 
-第一行會先替這個項目資料夾建立 Agent Handoff Kit 治理骨架；如果資料夾已經裝好,可略過。`npx aps init` 會逐步問你幾個問題,列出寫入計劃,最後要求你輸入 `yes` 才真正寫入。你不用先把四個參數砌成一條長命令。工具會問到的資料如下:
+第一行會先替這個項目資料夾建立 Agent Handoff Kit 治理骨架；如果資料夾已經裝好,可略過。`npx aps init` 會逐步問你三條問題,列出寫入計劃,最後要求你輸入 `yes` 才真正寫入。這一步只設定你自己這一邊,不會問對方是誰;協作對象之後用邀請流程隨時加入。你不用先把參數砌成一條長命令。工具會問你三件事:
 
 | 值 | 你要填甚麼 | 例子 |
 |---|---|---|
-| `hub-root` | Google Drive 桌面版同步到本機的共享資料夾實際路徑。請在檔案總管打開該資料夾,複製地址列路徑;不要輸入 `G:\...\AI_Public_Squares` 或任何含 `...` 的省略寫法。 | `G:\我的雲端硬碟\AI_Public_Squares` |
+| `hub-root` | Google Drive 桌面版同步到本機的共享資料夾實際路徑。請在檔案總管打開該資料夾,複製地址列路徑;不要輸入 `G:\...\Agent_Public_Squares` 或任何含 `...` 的省略寫法。 | `G:\我的雲端硬碟\Agent_Public_Squares` |
 | `project` | 這次協作項目的短代號。只用英文小寫、數字、底線;不要用中文或空格。第一次測試可用新的測試名。 | `aps_uat` |
-| `agent-id` | 你這邊在共用 Drive 資料夾內的共享身份名稱。兩部電腦要對同一個人使用同一個名稱。 | `adam` |
-| `other-agent-id` | 對方在共用 Drive 資料夾內的共享身份名稱。對方設置時會和你的 `agent-id` 對調。 | `jay` |
+| `agent-id` | 你自己在共用 Drive 資料夾內的共享身份名稱。安裝只設定你自己這一邊;日後邀請對方時,雙方沿用同一套身份名稱,各自填自己那個。 | `adam` |
 
-例:Adam 先建立共用 Drive 資料夾時填 `agent-id=adam`、`other-agent-id=jay`;Jay 加入時填 `agent-id=jay`、`other-agent-id=adam`。
+例:Adam 設定自己這邊時填 `agent-id=adam`;Jay 在自己電腦設定時填 `agent-id=jay`。兩邊只要用同一個項目代號即可,毋須在安裝時填對方名字。想邀請對方,設定好之後用 `npx aps peer add --agent-id <對方> --display-name <名稱>`(或直接對 AI 說「邀請 [對方] 加入呢個項目」);對方在自己電腦完成設定後先列為待確認,完成後才成為正式協作對象。
 
 若只是單機試跑,可先用一個本機測試資料夾做 `hub-root`;若要和協作夥伴真正跨機試用,必須使用雙方都可同步到的 Google Drive 共享資料夾。
 
 進階用法:若由 AI 或腳本代為執行,仍可使用非互動命令:
 
 ```
-npx aps init --hub-root "[你的 AI_Public_Squares 共享資料夾實際路徑]" --project [項目代號] --agent-id [你的 agent id] --other-agent-id [對方 agent id] --role A
+npx aps init --hub-root "[你的 Agent_Public_Squares 共享資料夾實際路徑]" --project [項目代號] --agent-id [你的 agent id]
 ```
 
-方括號與 `...` 只是 placeholder,不可照抄。CLI 會在執行前攔截這類假路徑,避免出現低層 Windows `EINVAL` 錯誤。
+方括號與 `...` 只是 placeholder,不可照抄。CLI 會在執行前攔截這類假路徑,避免出現低層 Windows `EINVAL` 錯誤。標準安裝只需上面三條核心參數;`--other-agent-id` 與 `--role A|B` 是可選的舊式二人相容參數,單邊安裝可以不填。
 
 既有 APS 項目升級時不要重新建立新的共用 Drive 資料夾。請在同一個項目資料夾執行:
 
@@ -94,9 +93,9 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 1. 閱讀本 repo,理解 APS 想解決的跨機協作問題。
 2. 參考下方「想深入了解」中的設置教學,照 CLI 主路徑完成首次設置。
-3. 先在項目資料夾執行 `npx --yes @adamchanadam/agent-handoff-kit@latest init`,再執行 `npm install --save-dev @adamchanadam/aps@latest`,最後用 `npx aps init` 由工具逐步問你共用 Drive 資料夾路徑、項目代號、雙方 agent id 與角色。互動式設定會解釋每個值的用途;共用 Drive 資料夾路徑指你電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。工具列出寫入計劃後,你輸入 `yes` 才建立 skill、共用 Drive 資料夾 skeleton、Bridge Pack、starter pack 與本地設定。
+3. 先在項目資料夾執行 `npx --yes @adamchanadam/agent-handoff-kit@latest init`,再執行 `npm install --save-dev @adamchanadam/aps@latest`,最後用 `npx aps init` 由工具逐步問你三條問題:共用 Drive 資料夾路徑、項目代號、你自己的名稱。互動式設定會解釋每個值的用途;共用 Drive 資料夾路徑指你電腦上 Google Drive 同步出來的 `Agent_Public_Squares` 資料夾完整路徑。工具列出寫入計劃後,你輸入 `yes` 才建立 skill、共用 Drive 資料夾 skeleton、Bridge Pack 與本地設定;這一步只設定你自己這一邊,starter pack 留待你之後邀請對方時才生成。
 
-目前可用路徑是:使用者在自己的項目資料夾內先初始化 Agent Handoff Kit,再安裝 APS npm 套件,最後執行 `npx aps init`。工具會用問答方式收集必要資料、拒絕明顯 placeholder、列出計劃,並在你輸入 `yes` 後把 APS 技能安裝到 Claude Code / Codex,建立共用 Drive 資料夾 skeleton、Bridge Pack、starter pack 與本地 `.aps/config.json` 設定。它亦會在 `dev/RULE_PACKS.md` 與 `dev/PROJECT_INDEX.md` 加入可移除的 APS managed registration,讓新 AI session 按 Agent Handoff Kit 啟動讀序後,可在你提到 APS / Agent Public Squares / AI Public Squares / `check Drive` / 同步問題時載入 APS 橋接規則。設置完成後,日常主路徑應是你向 AI 說自然語言,由 AI 讀取本地設定、替你跑健康檢查、收件、整理上下文、發測試交接包、把 starter pack 傳給對方,或開始日常收發;命令列只作可驗證備用路徑。自然語言日常體驗仍在打磨中:
+目前可用路徑是:使用者在自己的項目資料夾內先初始化 Agent Handoff Kit,再安裝 APS npm 套件,最後執行 `npx aps init`。工具會用問答方式收集必要資料、拒絕明顯 placeholder、列出計劃,並在你輸入 `yes` 後把 APS 技能安裝到 Claude Code / Codex,建立你自己這一邊的共用 Drive 資料夾 skeleton、Bridge Pack 與本地 `.aps/config.json` 設定(對方通道與 starter pack 留待你邀請對方時才建立)。它亦會在 `dev/RULE_PACKS.md` 與 `dev/PROJECT_INDEX.md` 加入可移除的 APS managed registration,讓新 AI session 按 Agent Handoff Kit 啟動讀序後,可在你提到 APS / Agent Public Squares / AI Public Squares / `check Drive` / 同步問題時載入 APS 橋接規則。設置完成後,日常主路徑應是你向 AI 說自然語言,由 AI 讀取本地設定、替你跑健康檢查、收件、整理上下文、邀請協作對象並把生成的 starter pack 傳給對方,或開始日常收發;命令列只作可驗證備用路徑。自然語言日常體驗仍在打磨中:
    - 「幫我將當前任務整理成 APS 交接包給對方」 → AI 自動讀設定、檢查共用 Drive 資料夾、整理上下文、補齊交接欄位、做完整性預檢,交給你確認後才發佈交接包,並生成可直接複製貼上的 Telegram / WhatsApp / Email 通知供你發送;通知應包含交接摘要與注意事項,不能只列交接編號
    - 「對方嗰邊有冇新嘢?」 → 工具自動從共享資料夾擷取對方的檔案,列出待辦
    - 「這個交接資料不足」 → AI 主動列出缺漏,生成補交需求包,並生成可直接複製貼上的通知請對方補交

@@ -222,7 +222,7 @@
   <a class="site-nav__link site-nav__link--active" href="index.html">入口</a>
   <a class="site-nav__link" href="guides/index.html">教學中心</a>
   <span class="site-nav__spacer"></span>
-  <span class="site-nav__hint">2026-05-28</span>
+  <span class="site-nav__hint">2026-05-29</span>
 </nav>
 
 <header class="cover">
@@ -269,7 +269,7 @@
     </div>
     <div class="tile">
       <h3>Google Drive 衝突副本？</h3>
-      <p>雙方各自只寫自己的通道，避免兩邊同時改同一個檔案。若出現疑似衝突，工具會把它當成需要檢查的狀態。</p>
+      <p>各方各自只寫自己的通道，避免多人同時改同一個檔案。若出現疑似衝突，工具會把它當成需要檢查的狀態。</p>
     </div>
     <div class="tile">
       <h3>每次往返重做？</h3>
@@ -285,8 +285,8 @@
     <li>在你的項目資料夾打開終端機。</li>
     <li>先安裝 Agent Handoff Kit，讓這個資料夾具備基本交接與健康檢查能力。</li>
     <li>安裝 APS 套件。</li>
-    <li>執行 <code>npx aps init</code>，按畫面提問填入五個值。</li>
-    <li>執行 <code>npx aps doctor</code>，確認共用 Drive 資料夾與本機設定正常。</li>
+    <li>執行 <code>npx aps init</code>，按畫面回答三條問題（Google Drive 本機路徑、項目代號、你自己的名稱）。</li>
+    <li>執行 <code>npx aps doctor</code>，確認共用 Drive 資料夾與本機設定正常。還未邀請對方也會通過 —— doctor 以你本機這一邊是否齊全為準，對方狀態只作參考。</li>
     <li>在 AI 工具打開同一個項目資料夾，輸入「教我用 APS」。若你自然說成「教我用 Agent Public Squares」，AI 也應走同一條 APS 流程。</li>
   </ol>
   <pre>npx --yes @adamchanadam/agent-handoff-kit@latest init
@@ -297,17 +297,17 @@ npx aps doctor</pre>
 </section>
 
 <section>
-  <h2><code>npx aps init</code> 問你的五個值</h2>
-  <p class="lede">這五個值不是技術考試，只是讓兩部電腦對準同一個共享空間。</p>
+  <h2><code>npx aps init</code> 問你的三條問題</h2>
+  <p class="lede">這一步只設定你自己這一邊，三條問題都不是技術考試。對方是誰不在這裏問；設定好之後再用邀請流程加入。</p>
   <table>
     <thead>
       <tr><th>畫面會問</th><th>意思</th><th>建議填法</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td>設定起手方向</td>
-        <td>畫面問你是第一個建立共用資料夾的人（選 A），還是收到對方邀請後才加入（選 B）。此項只影響設定起步，不影響日後誰可發送或接收 —— 兩邊你都做得到。</td>
-        <td>第一個設定的人選 A；收到對方邀請才設定就選 B。</td>
+        <td>Google Drive 本機路徑</td>
+        <td>你電腦上 Google Drive 同步出來的 <code>Agent_Public_Squares</code> 資料夾完整路徑。</td>
+        <td>請在檔案總管打開該資料夾，複製地址列完整路徑。不要輸入含 <code>...</code> 的省略路徑。</td>
       </tr>
       <tr>
         <td>項目代號</td>
@@ -315,24 +315,14 @@ npx aps doctor</pre>
         <td><code>aps_uat</code>、<code>branding_2026</code>。只用小寫英文、數字、底線。</td>
       </tr>
       <tr>
-        <td>你的 agent id</td>
-        <td>你這邊在共用 Drive 資料夾內的共享身份。</td>
-        <td>例如 <code>adam</code>。兩部電腦都要用同一個名字代表 Adam。</td>
-      </tr>
-      <tr>
-        <td>對方 agent id</td>
-        <td>對方在共用 Drive 資料夾內的共享身份。對方設置時要與你對調。</td>
-        <td>例如 <code>jay</code>。Jay 加入時填自己 <code>jay</code>、對方 <code>adam</code>。</td>
-      </tr>
-      <tr>
-        <td>Google Drive 本機路徑</td>
-        <td>你電腦上 Google Drive 同步出來的 <code>AI_Public_Squares</code> 資料夾完整路徑。</td>
-        <td>請在檔案總管打開該資料夾，複製地址列完整路徑。不要輸入含 <code>...</code> 的省略路徑。</td>
+        <td>你自己的名稱（agent id）</td>
+        <td>你自己在共用 Drive 資料夾內的共享身份。只設定你自己這一邊。</td>
+        <td>例如 <code>adam</code>。日後邀請對方時，雙方沿用同一套身份名稱，各自填自己那個。</td>
       </tr>
     </tbody>
   </table>
   <div class="callout">
-    <strong>身份要對調，不要重命名。</strong>若 Adam 這邊是 <code>adam</code> / <code>jay</code>，Jay 那邊就是 <code>jay</code> / <code>adam</code>。
+    <strong>安裝只填你自己的名稱。</strong>每個人在自己電腦上只填自己那個 agent id（Adam 填 <code>adam</code>，Jay 填 <code>jay</code>），兩邊用同一個項目代號即可。對方不在安裝時填寫，而是設定好之後用「邀請某某加入這個項目」加入；在對方完成自己那邊的設定前，先列為待確認。
   </div>
 </section>
 
@@ -427,7 +417,7 @@ npx aps doctor</pre>
 </section>
 
 <footer>
-  Agent Public Squares · 公眾可用版本 · 最新更新 2026-05-28
+  Agent Public Squares · 公眾可用版本 · 最新更新 2026-05-29
 </footer>
 
 </main>

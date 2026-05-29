@@ -4,7 +4,7 @@
 
 Source-of-truth contract: `<hub_root>/_hub/PROTOCOL.md` (Drive).
 If any procedural wording in this Bridge Pack disagrees with the same procedure in `_hub/PROTOCOL.md`, PROTOCOL.md wins; treat the local pack as the operational form of the protocol.
-Architectural rationale: see APS design doc in `AI_Public_Squares` repo,
+Architectural rationale: see APS design doc in `agent-public-squares` repo,
 `docs/plans/2026-05-20-agent-public-square-design.md`.
 
 ## Identity (fill once per agent, per project)
@@ -13,12 +13,12 @@ Architectural rationale: see APS design doc in `AI_Public_Squares` repo,
 
 - agent_id: `<your_agent_id>` (snake_case,1-30 字;此 fixture 之 example role 為 User B,示例值可用 `example_agent_b`)
 - project_slug: `<your_project_slug>` (snake_case;示例值可用 `example_project`)
-- hub_root: `<your_Drive_AI_Public_Squares_absolute_path>` (如 `H:\Cloud\AI_Public_Squares`)
+- hub_root: `<your_shared_drive_folder_absolute_path>` (如 `H:\Cloud\Agent_Public_Squares`)
 - other_agent_id: `<counterpart_agent_id>` (對方之 agent_id;此 fixture 之 example counterpart 為 `example_agent_a`)
 
 ## When this pack is loaded
 
-Trigger phrases (any one): "APS Hub", "讀 AI_Public_Squares", "process unconsumed",
+Trigger phrases (any one): "APS Hub", "讀 Agent_Public_Squares", "process unconsumed",
 "未消化", "Hub 有新嘢", "跟 APS 協定".
 
 Also auto-engage as the last step of standard startup read order — see "Startup

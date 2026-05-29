@@ -99,7 +99,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 第一項:
 
-> 你電腦上那個共用雲端資料夾的完整路徑是甚麼?請在檔案總管打開你與對方共用的 AI_Public_Squares 資料夾,複製地址列的完整路徑,例如 `G:\我的雲端硬碟\AI_Public_Squares`。這必須是你自己電腦上的真實路徑。
+> 你電腦上那個共用雲端資料夾的完整路徑是甚麼?請在檔案總管打開你與對方共用的 Agent_Public_Squares 資料夾,複製地址列的完整路徑,例如 `G:\我的雲端硬碟\Agent_Public_Squares`。這必須是你自己電腦上的真實路徑。
 
 第二項:
 
@@ -131,7 +131,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 正在記錄本項目的 APS 本地設定位置。
 ```
 
-前期測試版已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在三問安裝時寫入用戶自己這一邊的共用 Drive 資料夾 skeleton、Bridge Pack 與 `.aps/config.json`(starter pack 不在安裝時生成,改由邀請對方時 `npx aps peer add` 產生),令後續日常命令毋須重複輸入共用 Drive 資料夾 / project / agent 長參數。互動式 CLI 應以繁體中文解釋每個設定值用途,尤其要說明共用 Drive 資料夾路徑是使用者電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
+前期測試版已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在三問安裝時寫入用戶自己這一邊的共用 Drive 資料夾 skeleton、Bridge Pack 與 `.aps/config.json`(starter pack 不在安裝時生成,改由邀請對方時 `npx aps peer add` 產生),令後續日常命令毋須重複輸入共用 Drive 資料夾 / project / agent 長參數。互動式 CLI 應以繁體中文解釋每個設定值用途,尤其要說明共用 Drive 資料夾路徑是使用者電腦上 Google Drive 同步出來的 `Agent_Public_Squares` 資料夾完整路徑。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
 
 > 目前執行環境找不到 PROTOCOL source 檔案。這一步不能假裝完成。需要先確認 package 是否完整安裝,或由已驗證的 Hub template source 讀取。
 
@@ -143,19 +143,13 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 <hub_root>/_hub/starter-pack-<對方>.md
 ```
 
-starter pack 的安裝段必須先列 Agent Handoff Kit,再列 APS:
+新版 starter pack 本身就是一段可直接轉發的邀請訊息:背景一兩句,加幾個關鍵步驟(在 Google Drive 收下並同步共用資料夾、開一個自己的工作資料夾、叫對方的 AI 跟教學頁安裝、項目代號照抄、填對方自己的名字),最後連去逐步教學頁 `docs/guides/aps-join-invite.html`(內含實際安裝命令與排錯)。逐條 terminal 命令與細節都放在教學頁,不塞進訊息。
 
-```powershell
-npx --yes @adamchanadam/agent-handoff-kit@latest init
-npm install --save-dev @adamchanadam/aps@latest
-npx aps init
-```
+AI 應讀取該 starter pack,把當中的邀請訊息原樣呈現給用戶,讓用戶經 Telegram / WhatsApp / Email 轉發給對方。不要叫對方「打開 Drive 裏的檔案照做」——對方未取得分享前根本看不到那個檔;要把訊息與教學頁連結直接交到對方手上。訊息不可包含發送方本機 Google Drive 路徑。
 
-若對方已安裝 Agent Handoff Kit,第一行可略過。若對方在乾淨資料夾直接執行 `npx aps init`,CLI 會因缺少 `AGENTS.md`、`dev/RULE_PACKS.md` 或 `dev/PROJECT_INDEX.md` 而拒絕接入;這時應先完成 Agent Handoff Kit init,再重跑 `npx aps init`。
+聊天中輸出時可這樣交代:
 
-聊天中輸出短訊:
-
-> APS 這邊已設置好。Starter pack 已放在共用雲端資料夾的 `_hub` 子資料夾。你同步後打開該檔,按裡面的安裝指令在自己的工作目錄執行;完成後告訴我即可。
+> 已替你建立邀請。下面這段請複製傳給對方;對方可以照住做,或把它貼給自己的 AI 工具請它帶做。逐步詳解在訊息底的教學頁連結。
 
 ## 7. 邀請第一位 peer 後的測試交接
 

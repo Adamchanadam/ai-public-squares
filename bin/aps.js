@@ -449,13 +449,14 @@ async function runInteractiveInit() {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   try {
     console.log('☁️  共用 Drive 資料夾 root path 是你電腦上 Google Drive 同步資料夾的完整路徑。');
-    console.log('   請在檔案總管打開你與對方共用的 AI_Public_Squares 資料夾,複製地址列完整路徑。');
-    console.log('   例: G:\\我的雲端硬碟\\AI_Public_Squares');
+    console.log('   第一次建立:喺你 Google Drive 揀個位置,新增一個資料夾叫 Agent_Public_Squares,貼佢嘅完整路徑(資料夾未存在我會幫你建,唔會覆蓋原有內容)。');
+    console.log('   受邀加入:貼返對方分享畀你嗰個資料夾嘅完整路徑(名以邀請訊息為準)。');
+    console.log('   例: G:\\我的雲端硬碟\\Agent_Public_Squares');
     const hubRoot = await askWithDefault(
       rl,
-      '1/3 Google Drive 本機 AI_Public_Squares 完整路徑',
+      '1/3 Google Drive 共用資料夾完整路徑',
       '',
-      (value) => localizeValidation(validateNoPlaceholder('--hub-root', value)) || (path.isAbsolute(value) ? null : '請貼上完整路徑,例如 G:\\我的雲端硬碟\\AI_Public_Squares 或 C:\\Users\\你\\Google Drive\\AI_Public_Squares。')
+      (value) => localizeValidation(validateNoPlaceholder('--hub-root', value)) || (path.isAbsolute(value) ? null : '請貼上完整路徑,例如 G:\\我的雲端硬碟\\Agent_Public_Squares 或 C:\\Users\\你\\Google Drive\\Agent_Public_Squares。')
     );
     const defaultProject = toSnakeCase(path.basename(process.cwd()), 'aps_uat');
     console.log('');
@@ -1288,7 +1289,7 @@ function bridgePackContent(role, values) {
   let content = fs.readFileSync(fixturePath, 'utf8');
   content = content.replace(/`<your_agent_id>`/g, `\`${values.agentId}\``);
   content = content.replace(/`<your_project_slug>`/g, `\`${values.projectSlug}\``);
-  content = content.replace(/`<your_Drive_AI_Public_Squares_absolute_path>`/g, `\`${values.hubRoot}\``);
+  content = content.replace(/`<your_shared_drive_folder_absolute_path>`/g, `\`${values.hubRoot}\``);
   const counterpartLabel = values.otherAgentId
     ? `\`${values.otherAgentId}\``
     : '(尚未邀請;用 `npx aps peer add --agent-id <對方>` 加入)';
@@ -1334,53 +1335,24 @@ function ensurePeerArtifacts({ hubRoot, projectSlug, agentId, displayName, peerS
 }
 
 function starterPackContent(values) {
-  return `# APS Starter Pack for ${values.otherAgentId}
+  const folderName = path.basename(values.hubRoot || '') || 'Agent_Public_Squares';
+  return `# APS 協作邀請 — ${values.projectSlug}
 
-這份 starter pack 由 \`aps peer add\` / \`aps peer starter\` 產生,用來讓 ${values.otherAgentId} 在自己的電腦加入同一個共用 Drive 資料夾項目。
-邀請你的人是 \`${values.agentId}\`。
+（這是給 ${values.otherAgentId} 的加入指引。把下面的訊息整段傳給對方即可，也可以直接轉發這份檔案的內容。）
 
-## 安裝
+---
 
-先在你自己的項目資料夾初始化 Agent Handoff Kit,再安裝 APS:
+📨 APS 協作邀請：${values.projectSlug}
 
-\`\`\`powershell
-npx --yes @adamchanadam/agent-handoff-kit@latest init
-npm install --save-dev @adamchanadam/aps@latest
-npx aps init
-\`\`\`
+我想邀請你一同用 Agent Public Squares（APS）跨機協作。做法很簡單：我們共用一個 Google Drive 資料夾，兩邊的 AI 就能互相交收進度，不必每次重新交代背景。
 
-如果你的資料夾已經有 Agent Handoff Kit,第一行可略過。若 \`npx aps init\` 回報缺少 AGENTS.md、dev/RULE_PACKS.md 或 dev/PROJECT_INDEX.md,請先完成 Agent Handoff Kit init,再重新執行 \`npx aps init\`。
+你大致要做這幾件事：
+☁️ 你會收到我經 Google Drive 分享的資料夾「${folderName}」（也可能收到一封 Google Drive 通知 email）。打開 Google Drive 接受它，設為「離線可用」，等它同步到你的電腦。
+📁 在你的電腦另外開一個屬於你自己的工作資料夾（名字隨你，不用跟我一樣；但不要用那個共用資料夾）。
+🤖 在那個工作資料夾打開你的 AI 工具（例如 Claude Code、Claude Cowork、Codex），請它跟下面的教學頁幫你安裝 APS。設定時，項目代號要跟我完全一樣，照抄 ${values.projectSlug}（一字不改，否則會各自落在不同項目、互相看不到）；你的名字填 ${values.otherAgentId}。
+✅ 見到「通過」就裝好了。之後我有東西交給你，你對 AI 說一句「check Drive」就會收到。
 
-## 設定時的三個答案
-
-\`npx aps init\` 只會問你三件事,請這樣回答:
-
-1. Google Drive 本機 AI_Public_Squares 完整路徑:在檔案總管打開你自己電腦上的共用 AI_Public_Squares 資料夾,複製地址列完整路徑(例如 \`G:\\我的雲端硬碟\\AI_Public_Squares\`,但必須是你自己電腦上的真實路徑,不要照抄示例)。
-2. 項目代號:\`${values.projectSlug}\`(必須與邀請你的人一致)。
-3. 你自己的名稱:\`${values.otherAgentId}\`。
-
-設定不會問「對方是誰」 —— APS 是邊做邊加,設定好你自己這一邊就可以收發。
-
-## 收發
-
-- 收件:打開 AI 工具,輸入「check Drive」,AI 會讀取共用 Drive 資料夾並整理收件報告。
-- 回覆邀請你的人:在 AI 工具說「回覆 ${values.agentId}」,或備用指令 \`npx aps publish --to ${values.agentId} --topic <主題> --body-file <檔> --items "甲;乙"\`。
-
-完成後,如果 Claude Code 或 Codex 未即時看到 APS skill,請重新啟動該 AI 工具。
-
-## 手動 Bridge Pack 備用
-
-如果只需要 Bridge Pack:
-
-\`\`\`powershell
-npx aps bridge-pack > dev/rules/aps-bridge.md
-\`\`\`
-
-## 日常觸發句
-
-當有人通知你有新交接包,打開 AI 工具並輸入:
-
-> check Drive
+逐步詳解（有圖、有安裝命令）：👉 https://adamchanadam.github.io/agent-public-squares/docs/guides/aps-join-invite.html
 `;
 }
 

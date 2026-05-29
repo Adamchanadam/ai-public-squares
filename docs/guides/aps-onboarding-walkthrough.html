@@ -218,7 +218,7 @@
   <a class="site-nav__link" href="../index.html">入口</a>
   <a class="site-nav__link" href="index.html">教學中心</a>
   <span class="site-nav__spacer"></span>
-  <span class="site-nav__hint">2026-05-28</span>
+  <span class="site-nav__hint">2026-05-29</span>
 </nav>
 
 <header class="cover">
@@ -341,12 +341,12 @@
   <h2>開始前準備</h2>
   <p class="lede">先確認三件事，否則後面容易卡住。</p>
   <ul>
-    <li>你已安裝 Google Drive 桌面版，並可在檔案總管看到雙方共享的 <code>AI_Public_Squares</code> 資料夾。</li>
+    <li>你已安裝 Google Drive 桌面版，並可在檔案總管看到雙方共享的 <code>Agent_Public_Squares</code> 資料夾。</li>
     <li>你有一個項目資料夾，例如 <code>C:\Users\你\Projects\APS_UAT</code>。終端機要在這個資料夾內打開。</li>
     <li>你有可以讀寫此資料夾的 AI 工具，例如 Claude Code 或 Codex。</li>
   </ul>
   <div class="callout">
-    <strong>Google Drive 路徑怎樣找？</strong>在檔案總管打開雙方共享的 <code>AI_Public_Squares</code> 資料夾，點一下地址列，複製完整路徑。它應該像 <code>G:\我的雲端硬碟\AI_Public_Squares</code>，不可是 <code>G:\...\AI_Public_Squares</code>。
+    <strong>Google Drive 路徑怎樣找？</strong>在檔案總管打開雙方共享的 <code>Agent_Public_Squares</code> 資料夾，點一下地址列，複製完整路徑。它應該像 <code>G:\我的雲端硬碟\Agent_Public_Squares</code>，不可是 <code>G:\...\Agent_Public_Squares</code>。
   </div>
 </section>
 
@@ -368,41 +368,33 @@
 
 <section id="init">
   <h2>執行第一次 APS 設定</h2>
-  <p class="lede"><code>npx aps init</code> 會問幾個問題。你只需要按實際情況填入，不需要懂內部檔案結構。</p>
+  <p class="lede"><code>npx aps init</code> 會問你三條問題，而且只設定你自己這一邊。你只需要按實際情況填入，不需要懂內部檔案結構；對方是誰不在這裏問，設定好之後再用邀請流程加入。</p>
   <table>
     <thead>
       <tr><th>問題</th><th>你要怎樣答</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td>設定起手方向</td>
-        <td>如果你是第一個建立共用資料夾、讓對方加入的人，選 A；如果你是收到對方邀請後才加入，選 B。此項只影響設定起步，不影響日後誰可發送或接收 —— 兩邊你都做得到。</td>
+        <td>Google Drive 本機路徑</td>
+        <td>貼上檔案總管中 <code>Agent_Public_Squares</code> 資料夾的完整路徑。</td>
       </tr>
       <tr>
         <td>項目代號</td>
         <td>這次協作項目的短名，例如 <code>aps_uat</code>。它會成為 Google Drive 內的項目資料夾。</td>
       </tr>
       <tr>
-        <td>你的 agent id</td>
-        <td>你這邊在共用 Drive 資料夾內的共享身份名稱。例：Adam 用 <code>adam</code>。</td>
-      </tr>
-      <tr>
-        <td>對方 agent id</td>
-        <td>這次交接對象在共用 Drive 資料夾內的共享身份名稱。例：Jay 用 <code>jay</code>。Jay 加入時要對調，自己填 <code>jay</code>，對方填 <code>adam</code>。</td>
-      </tr>
-      <tr>
-        <td>Google Drive 本機路徑</td>
-        <td>貼上檔案總管中 <code>AI_Public_Squares</code> 資料夾的完整路徑。</td>
+        <td>你自己的名稱（agent id）</td>
+        <td>你自己在共用 Drive 資料夾內的共享身份名稱。例：Adam 用 <code>adam</code>。只設定你自己這一邊；日後邀請對方時，雙方沿用同一套身份名稱，各自填自己那個。</td>
       </tr>
     </tbody>
   </table>
   <div class="callout warn">
-    <strong>身份名稱要對調，不要重命名。</strong>若 Adam 這邊用 <code>adam</code> / <code>jay</code>，Jay 那邊就是 <code>jay</code> / <code>adam</code>。
+    <strong>安裝只填你自己的名稱。</strong>每個人在自己電腦上只填自己那個 agent id（Adam 填 <code>adam</code>，Jay 填 <code>jay</code>），兩邊用同一個項目代號即可。對方不在安裝時填寫，而是設定好之後用邀請流程加入。
   </div>
   <div class="callout">
     <strong>本機設定檔內部仍叫 <code>hubRoot</code>。</strong>畫面與本教學現在統一稱「共用 Drive 資料夾」，但本機設定檔內部仍以 <code>hubRoot</code> 這個鍵記錄它的路徑；若你打開設定檔看到這個名稱，是正常的，不必改動。
   </div>
-  <p>工具會列出寫入計劃。確認共用資料夾路徑、項目代號與雙方身份無誤後，輸入 <code>yes</code>。它會安裝 APS 技能、在共用資料夾建立骨架、保存本機設定，並為對方準備一份起步說明。若這個項目已經存在、而你填的對方已先完成設定，畫面還會提醒「你似乎是加入者」，方便你回頭改選。</p>
+  <p>工具會列出寫入計劃，當中包括共用 Drive 資料夾路徑、項目代號、你自己的名稱，以及一行「協作對象：尚未設定」。確認無誤後輸入 <code>yes</code>，它會安裝 APS 技能、在共用資料夾建立你自己這一邊的骨架、保存本機設定（對方欄位留空）。這一步不會生成 starter pack —— 那份給對方的起步說明，留待你邀請對方時才產生。若這個項目已經有人先完成設定，畫面會自動提醒「你似乎是加入者」；這只是提示，不需要你回答。</p>
   <p>同時，APS 會在 Agent Handoff Kit 既有檔案中加入兩段可移除的 APS managed registration：一段在 <code>dev/RULE_PACKS.md</code>，讓新 session 在你提到 APS、Agent Public Squares、AI Public Squares、<code>check Drive</code> 或同步問題時知道要讀 APS 橋接規則；另一段在 <code>dev/PROJECT_INDEX.md</code>，記錄本項目已安裝 APS、橋接檔與本地設定位置。工具不會改寫 <code>AGENTS.md</code> managed core。</p>
 </section>
 
@@ -410,9 +402,9 @@
   <h2>檢查是否正常</h2>
   <p class="lede">設定完成後，先不要急著正式使用。先跑一次健康檢查。</p>
   <pre>npx aps doctor</pre>
-  <p>若畫面顯示通過，即可進入下一步。若顯示未通過，先檢查兩件事：</p>
+  <p>還未邀請對方也會顯示通過 —— doctor 以你本機這一邊是否齊全為準，「尚未邀請協作對象」是正常狀態，對方通道只作參考、不影響結果。若畫面顯示通過，即可進入下一步。若顯示未通過，先檢查兩件事：</p>
   <ul>
-    <li>你剛才填的共用 Drive 資料夾路徑是否真的是 Google Drive 本機 <code>AI_Public_Squares</code> 資料夾。</li>
+    <li>你剛才填的共用 Drive 資料夾路徑是否真的是 Google Drive 本機 <code>Agent_Public_Squares</code> 資料夾。</li>
     <li>你剛才填的項目代號是否與 doctor 正在檢查的項目一致。</li>
   </ul>
   <div class="callout warn">
@@ -428,26 +420,24 @@
   <p>理想情況下，AI 應該主動做四件事：</p>
   <ol>
     <li>確認目前資料夾是否正確。</li>
-    <li>按 <code>dev/RULE_PACKS.md</code> 的 APS route 讀取 <code>dev/rules/aps-bridge.md</code>，再讀取 <code>.aps/config.json</code>，知道共用 Drive 資料夾、項目與雙方 agent id。</li>
+    <li>按 <code>dev/RULE_PACKS.md</code> 的 APS route 讀取 <code>dev/rules/aps-bridge.md</code>，再讀取 <code>.aps/config.json</code>，知道共用 Drive 資料夾、項目、你自己的 agent id 與已登記的協作對象。</li>
     <li>替你執行 <code>doctor</code> 與收件檢查，並把結果翻譯成人能直接判斷的狀態。</li>
-    <li>根據狀態建議下一步：發第一個測試交接、檢查對方有沒有回覆，或先修正設定。</li>
+    <li>根據狀態建議下一步：邀請協作對象、發第一個測試交接、檢查對方有沒有回覆，或先修正設定。</li>
   </ol>
   <p>若你問 Google Drive、Connector、MCP、Claude Code、Codex、npm 或 GitHub 的安裝問題，AI 不應憑記憶回答；它應先查官方資料或要求你提供官方畫面，再給你步驟。</p>
 </section>
 
 <section id="partner">
   <h2>讓對方加入（可以不止一位）</h2>
-  <p class="lede">選了「建立」（A）的一方設定完成後，共用資料夾內會有一份給對方的起步說明。你可以把它的內容或位置發給對方。同一個項目不限於一位協作對象：日後想多請一位，只需對 AI 說「邀請 [某某]」，AI 會替你準備對應的加入資料；每一次交接仍是一對一。</p>
-  <p>對方要做的事很簡單：</p>
+  <p class="lede">設定好你自己這一邊之後，想找人一齊做，隨時可以邀請。對 AI 說「邀請 [某某] 加入這個項目」，或在終端機執行 <code>npx aps peer add --agent-id &lt;對方&gt; --display-name &lt;名稱&gt;</code>。這一步才會建立對方的通道，並在共用資料夾的 <code>_hub</code> 內生成一份給對方的起步說明（starter pack）。同一個項目不限於一位協作對象；每一次交接仍是一對一。</p>
+  <p>邀請後，把那份起步說明的內容發給對方。對方要做的事很簡單，按次序：</p>
   <ol>
-    <li>在自己的項目資料夾安裝 Agent Handoff Kit。</li>
-    <li>安裝 APS。</li>
-    <li>執行 <code>npx aps init</code>。</li>
-    <li>起手方向選 B（加入），項目代號與雙方身份名稱要和你對應。</li>
-    <li>共用 Drive 資料夾路徑填對方電腦上的 Google Drive <code>AI_Public_Squares</code> 完整路徑。</li>
-    <li>跑 <code>npx aps doctor</code>。</li>
+    <li>在自己的項目資料夾先安裝 Agent Handoff Kit：<code>npx --yes @adamchanadam/agent-handoff-kit@latest init</code>。缺少這一步，APS 會因為找不到 <code>AGENTS.md</code>、<code>dev/RULE_PACKS.md</code> 或 <code>dev/PROJECT_INDEX.md</code> 而拒絕接入。</li>
+    <li>安裝 APS：<code>npm install --save-dev @adamchanadam/aps@latest</code>。</li>
+    <li>執行 <code>npx aps init</code>，回答同樣的三條問題：自己電腦上的 Google Drive 本機路徑、同一個項目代號、對方自己的名稱。對方一樣不會被問「誰是協作對象」，也不會被問角色。</li>
+    <li>跑 <code>npx aps doctor</code> 確認自己那邊正常。</li>
   </ol>
-  <p>兩邊都通過後，才開始第一次測試交接。</p>
+  <p>對方完成自己那邊的設定後，就由待確認變成正式協作對象，這時即可開始第一次測試交接。</p>
 </section>
 
 <section id="daily">
@@ -455,7 +445,7 @@
   <p class="lede">先用很短的內容測試，不要一開始就放正式工作內容。一般用戶不需要記命令；請把要做的事告訴 AI，讓 AI 代你檢查、發送與解讀結果。</p>
   <h3>你這邊對 AI 說</h3>
   <pre>幫我發一個 APS 測試交接給對方，內容只寫「APS setup test」。</pre>
-  <p>AI 應讀取本地 APS 設定、檢查共用 Drive 資料夾狀態、建立測試交接包，然後用白話告訴你已寫入哪個主題與交接編號。命令列只屬 AI 內部執行與排錯備用，不應要求新手自己記住。</p>
+  <p>AI 應讀取本地 APS 設定、檢查共用 Drive 資料夾狀態、建立測試交接包，然後用白話告訴你已寫入哪個主題與交接編號。若項目有多位協作對象，AI 會先確認今次交給哪一位（用 <code>--to</code> 指名）；若交接有具體請對方做的事，由 AI 逐項明確申報（<code>--items</code>），不會靠正文自動推斷。命令列只屬 AI 內部執行與排錯備用，不應要求新手自己記住。</p>
   <h3>通知對方</h3>
   <p>APS 目前不會自動發 WhatsApp、Email、Telegram 或系統推送,也不會自動觸發對方 AI。你仍需要用平常的聯絡方式通知對方，但不應自行重寫內容；AI 應替你生成可直接複製貼上的摘要式通知。通知應包含項目代號、來源、主題、交接編號、重點摘要、注意事項與「check Drive」指示，不應只列交接編號，也不應要求對方使用你電腦上的 Google Drive 本機路徑：</p>
   <h4>WhatsApp / 即時訊息</h4>
@@ -585,7 +575,7 @@
 <section>
   <h2>常見卡位</h2>
   <ul>
-    <li><strong>共用 Drive 資料夾路徑錯：</strong>重新在檔案總管複製 <code>AI_Public_Squares</code> 完整地址，再重跑 <code>npx aps init</code>。</li>
+    <li><strong>共用 Drive 資料夾路徑錯：</strong>重新在檔案總管複製 <code>Agent_Public_Squares</code> 完整地址，再重跑 <code>npx aps init</code>。</li>
     <li><strong>doctor 檢查舊項目：</strong>代表本地設定可能仍指向舊項目。重跑 <code>npx aps init</code> 並確認寫入計劃中的項目代號。</li>
     <li><strong>對方收不到：</strong>先確認雙方 Google Drive 桌面版都已同步，然後請對方打開 AI 工具說「check Drive」。AI 應替對方做收件檢查；命令列只作排錯備用。</li>
     <li><strong>出現衝突副本：</strong>不要刪除。先保留檔名與路徑，讓 AI 讀取狀態並判斷是否違反單寫通道。</li>
@@ -600,7 +590,7 @@
 </section>
 
 <footer>
-  Agent Public Squares · 第一次安裝與測試 · 最新更新 2026-05-28
+  Agent Public Squares · 第一次安裝與測試 · 最新更新 2026-05-29
 </footer>
 
 </main>
