@@ -54,6 +54,44 @@ function readBodyInput() {
   throw new Error('Missing required flag: --body or --body-file');
 }
 
+// Collapse a single declared action item to one clean line. Items are recorded
+// verbatim from what the sender's AI declares; we only normalize whitespace so a
+// multi-line paste cannot break the frontmatter list.
+function normalizeItem(value) {
+  return String(value).replace(/\r?\n+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// Read declared action items from --items "a;b;c" or --items-file <path>.
+// Items are an explicit sender-declared contract: the AI states them, the CLI
+// records them verbatim. We never reverse-parse them out of the free-form body.
+// Returns { provided, items }; `provided` is false only when neither flag is given,
+// so callers (e.g. revise) can tell "leave items unchanged" from "set items to []".
+function readItemsInput() {
+  const itemsFlag = getRequiredFlagValue('--items');
+  const itemsFile = getRequiredFlagValue('--items-file');
+  if (itemsFlag && itemsFile) {
+    throw new Error('Use either --items or --items-file, not both.');
+  }
+  if (itemsFile) {
+    const resolvedPath = path.resolve(process.cwd(), itemsFile);
+    if (!fs.existsSync(resolvedPath) || !fs.statSync(resolvedPath).isFile()) {
+      throw new Error(`--items-file not found or not a file: ${resolvedPath}`);
+    }
+    const items = fs.readFileSync(resolvedPath, 'utf8')
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith('#'))
+      .map(normalizeItem)
+      .filter(Boolean);
+    return { provided: true, items };
+  }
+  if (itemsFlag) {
+    const items = itemsFlag.split(';').map(normalizeItem).filter(Boolean);
+    return { provided: true, items };
+  }
+  return { provided: false, items: [] };
+}
+
 function configPath() {
   return path.join(process.cwd(), '.aps', 'config.json');
 }
@@ -402,80 +440,61 @@ async function runInteractiveInit() {
   console.log('');
   console.log('APS 初次設定');
   console.log('');
-  console.log('👋 這一步會把本項目接到你與對方共用的 Drive 資料夾。');
-  console.log('🧭 工具只會問必要資料,先列出寫入計劃,你輸入 yes 之後才會寫入檔案。');
+  console.log('👋 這一步只設定你自己這一邊,把本項目接到你的共用 Drive 資料夾。');
+  console.log('🧭 工具只會問三件事,先列出寫入計劃,你輸入 yes 之後才會寫入檔案。');
+  console.log('🤝 想搵人一齊做?設定好之後隨時可以邀請對方,毋須現在決定。');
   console.log('↩️  方括號內是建議值;合適時可直接按 Enter。');
   console.log('');
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   try {
-    const role = await askWithDefault(rl, '1/5 你係邊種起手?A = 你第一個設定、建立共用 Drive 資料夾;B = 你收到對方 starter pack 後加入。(這只影響設定起手與預設值,不限制日後誰可發送或接收 —— 兩邊你都做得到)', 'A', (value) => {
-      const upper = String(value).toUpperCase();
-      return upper === 'A' || upper === 'B' ? null : '請輸入 A 或 B。';
-    });
-    const roleValue = role.toUpperCase();
+    console.log('☁️  共用 Drive 資料夾 root path 是你電腦上 Google Drive 同步資料夾的完整路徑。');
+    console.log('   請在檔案總管打開你與對方共用的 AI_Public_Squares 資料夾,複製地址列完整路徑。');
+    console.log('   例: G:\\我的雲端硬碟\\AI_Public_Squares');
+    const hubRoot = await askWithDefault(
+      rl,
+      '1/3 Google Drive 本機 AI_Public_Squares 完整路徑',
+      '',
+      (value) => localizeValidation(validateNoPlaceholder('--hub-root', value)) || (path.isAbsolute(value) ? null : '請貼上完整路徑,例如 G:\\我的雲端硬碟\\AI_Public_Squares 或 C:\\Users\\你\\Google Drive\\AI_Public_Squares。')
+    );
     const defaultProject = toSnakeCase(path.basename(process.cwd()), 'aps_uat');
     console.log('');
     console.log('📌 項目代號用來在共用 Drive 資料夾內分開不同合作項目,例如 branding_2026 或 aps_uat。');
     console.log('   它會成為 Google Drive 內的資料夾名稱,請用小寫英文字母、數字或底線。');
-    const projectSlug = await askWithDefault(rl, '2/5 項目代號', defaultProject, (value) => (
+    const projectSlug = await askWithDefault(rl, '2/3 項目代號', defaultProject, (value) => (
       localizeValidation(validateNoPlaceholder('--project', value) || validateSnakeCase('--project', value))
     ));
-    const defaultAgent = roleValue === 'B' ? 'agent_b' : 'agent_a';
+    const defaultAgent = toSnakeCase(process.env.USERNAME || process.env.USER || '', '');
     console.log('');
-    console.log('👤 你的 agent id 是你這一邊在共用 Drive 資料夾內的共享身份,例如 adam 或 jay。');
-    console.log('   兩部電腦必須用同一套身份名稱,只是在自己 / 對方欄位對調。');
-    console.log('   APS 會用它建立 from_<你的 id> 通道及你的收件確認檔。');
-    const agentId = await askWithDefault(rl, '3/5 你的 agent id', defaultAgent, (value) => (
+    console.log('👤 你自己的名稱(agent id)是你這一邊在共用 Drive 資料夾內的共享身份,例如 adam 或 jay。');
+    console.log('   請用小寫英文字母、數字或底線。APS 會用它建立 from_<你的名稱> 通道及你的收件確認檔。');
+    const agentId = await askWithDefault(rl, '3/3 你自己的名稱', defaultAgent, (value) => (
       localizeValidation(validateNoPlaceholder('--agent-id', value) || validateSnakeCase('--agent-id', value))
     ));
-    const defaultOther = roleValue === 'B' ? 'agent_a' : (agentId === 'agent_b' ? 'agent_a' : 'agent_b');
-    console.log('');
-    console.log('🤝 對方 agent id 是合作夥伴在共用 Drive 資料夾內的共享身份,例如 adam 或 jay。');
-    console.log('   對方設置時會把這兩個值對調。');
-    console.log('   APS 會用它建立 from_<對方 id> 通道,讓你之後可以收對方交來的內容。');
-    const otherAgentId = await askWithDefault(rl, '4/5 對方 agent id', defaultOther, (value) => (
-      localizeValidation(validateNoPlaceholder('--other-agent-id', value) || validateSnakeCase('--other-agent-id', value))
-      || (value === agentId ? '對方 agent id 不可等於你的 agent id。兩邊身份必須不同,例如 adam / jay。' : null)
-    ));
-    console.log('');
-    console.log('☁️  共用 Drive 資料夾 root path 是你電腦上 Google Drive 同步資料夾的完整路徑。');
-    console.log('   請在檔案總管打開雙方共用的 AI_Public_Squares 資料夾,複製地址列完整路徑。');
-    console.log('   例: G:\\我的雲端硬碟\\AI_Public_Squares');
-    const hubRoot = await askWithDefault(
-      rl,
-      '5/5 Google Drive 本機 AI_Public_Squares 完整路徑',
-      '',
-      (value) => localizeValidation(validateNoPlaceholder('--hub-root', value)) || (path.isAbsolute(value) ? null : '請貼上完整路徑,例如 G:\\我的雲端硬碟\\AI_Public_Squares 或 C:\\Users\\你\\Google Drive\\AI_Public_Squares。')
-    );
 
-    const values = { hubRoot, projectSlug, agentId, otherAgentId, role: roleValue };
-    const projectPath = projectDir(values.hubRoot, values.projectSlug);
-    // Setup-direction hint (does not reorder the questions): once the Hub path is known, peek at
-    // the Hub. If the named counterpart already has a confirmed card or real activity here, the
-    // other side set up first, so this user is most likely the joiner — surface a gentle hint only.
-    let setupHint = null;
+    const projectPath = projectDir(hubRoot, projectSlug);
+    // Role is no longer asked. It only seeds the bridge-pack fixture and is never used for
+    // authorization. Infer the setup direction: if this project already exists in the Hub and
+    // someone else is already confirmed / active here, this user is most likely the joiner.
+    let inferredRole = 'A';
     try {
       if (fs.existsSync(projectPath)) {
-        const otherCardPath = peerCardPath(values.hubRoot, values.projectSlug, values.otherAgentId);
-        let otherCard = null;
-        if (fs.existsSync(otherCardPath)) {
-          try { otherCard = readJson(otherCardPath); } catch (err) { otherCard = null; }
-        }
-        const otherAlreadyThere = peerIsConfirmed(otherCard)
-          || hasSelfActivity({ hubRoot: values.hubRoot, projectSlug: values.projectSlug, agentId: values.otherAgentId });
-        if (otherAlreadyThere && values.role === 'A') {
-          setupHint = `偵測:此項目在共用資料夾已存在,而且 ${values.otherAgentId} 已先完成設定。你似乎是加入者(起手方向應為 B)。若你確實是第一個設定的人,可忽略此提示。`;
-        }
+        const others = readPeerCards(hubRoot, projectSlug).filter((peer) => peer.agent_id && peer.agent_id !== agentId);
+        const someoneElseActive = others.some((peer) => peerIsConfirmed(peer))
+          || others.some((peer) => hasSelfActivity({ hubRoot, projectSlug, agentId: peer.agent_id }));
+        if (someoneElseActive) inferredRole = 'B';
       }
     } catch (err) { /* detection is best-effort; it never blocks setup */ }
+    const values = { hubRoot, projectSlug, agentId, otherAgentId: null, role: inferredRole };
+    const setupHint = inferredRole === 'B'
+      ? '偵測:此項目在共用資料夾已存在,而且已有其他成員先完成設定。你似乎是加入者。若你確實是第一個設定的人,可忽略此提示。'
+      : null;
     console.log('');
     console.log('📝 寫入前計劃');
     console.log(`  ☁️  共用 Drive 資料夾 root: ${values.hubRoot}`);
     console.log(`  📁 項目代號: ${values.projectSlug}`);
-    console.log(`  👤 本機 agent: ${values.agentId} (設定起手方向 ${values.role === 'A' ? '發起人' : '加入者'})`);
-    console.log(`  🤝 對方 agent: ${values.otherAgentId}`);
-    console.log(`  🔁 對方設置時應對調身份:本機 agent=${values.otherAgentId};對方 agent=${values.agentId}`);
+    console.log(`  👤 你自己: ${values.agentId}`);
+    console.log('  🤝 協作對象: 尚未設定 (設定好之後隨時可以邀請)');
     console.log(`  📂 會建立或使用的共用 Drive 項目資料夾: ${projectPath}`);
     console.log(`  ⚙️  本機設定檔: ${configPath()}`);
     if (setupHint) {
@@ -505,8 +524,11 @@ async function runInteractiveInit() {
       console.log(formatSetupResult(result));
     }
     console.log('');
-    console.log('✅ APS 設定完成。');
+    console.log('✅ APS 設定完成 (已設定你自己這一邊)。');
     console.log('🚀 下一步:在這個項目資料夾打開 AI 工具,輸入「教我用 APS」。AI 應讀取現有設定、檢查共用 Drive 資料夾、查看 inbox,再主動建議測試交接或正式交接。');
+    console.log('🤝 想搵人一齊做?隨時可以邀請對方,以下兩種方式都得,幾時加都可以:');
+    console.log('   • 在 AI 工具直接講「邀請 [對方名稱] 加入呢個項目」,AI 會幫你建立通道並生成邀請信。');
+    console.log('   • 或用終端機指令 `npx aps peer add --agent-id <對方名稱> --display-name <顯示名>`。');
     console.log('🩺 備用檢查:終端機指令是 `npx aps doctor`。請留意指令名稱是 `aps`,不是 `asp`。');
     return 0;
   } finally {
@@ -912,7 +934,7 @@ function readPacketSummary(hubRoot, projectSlug, senderId, packetId, version) {
     header = {};
   }
   const scopeMatch = text.match(/^scope:\s*"?(.+?)"?\s*$/m);
-  const itemMatches = [...text.matchAll(/^\s*-\s+id:\s*(.+?)\s*$/gm)].map((match) => match[1].trim());
+  const itemMatches = parseFrontmatterItems(text);
   return {
     packetPath,
     from: header.from,
@@ -935,6 +957,37 @@ function parsePacketHeader(packetPath) {
     if (match) header[match[1]] = match[2].replace(/^"|"$/g, '').trim();
   }
   return header;
+}
+
+// Render declared items as a YAML block for the packet frontmatter.
+// Empty list stays as `items: []` so old readers and no-items packets are unchanged.
+function renderItemsYaml(items) {
+  if (!items || items.length === 0) return 'items: []';
+  return ['items:', ...items.map((item) => `  - id: "${yamlDoubleQuote(item)}"`)].join('\n');
+}
+
+function unescapeYamlDouble(value) {
+  return String(value).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+}
+
+// Read declared items ONLY from the packet's frontmatter `items:` block, never from
+// the free-form body. This is the read side of the explicit items contract: a stray
+// `- id:` line in the body must not be mistaken for a declared action item.
+function parseFrontmatterItems(text) {
+  const headerMatch = String(text || '').match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!headerMatch) return [];
+  const items = [];
+  let inItems = false;
+  for (const line of headerMatch[1].split(/\r?\n/)) {
+    if (/^items:\s*\[\s*\]\s*$/.test(line)) { inItems = false; continue; }
+    if (/^items:\s*$/.test(line)) { inItems = true; continue; }
+    if (inItems) {
+      const match = line.match(/^\s*-\s+id:\s*"?(.*?)"?\s*$/);
+      if (match) { items.push(unescapeYamlDouble(match[1])); continue; }
+      if (/^\S/.test(line)) inItems = false;
+    }
+  }
+  return items;
 }
 
 function latestOwnPacketVersion({ hubRoot, projectSlug, agentId, packetId }) {
@@ -1051,7 +1104,7 @@ function packetStatus({ hubRoot, projectSlug, agentId, packetId }) {
   };
 }
 
-function writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level }) {
+function writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level, items = [] }) {
   const now = isoNow();
   const packetId = `${packetTimestamp()}__${topic}`;
   const outboxPath = path.join(projectDir(hubRoot, projectSlug), `from_${fromId}`, 'outbox.log.md');
@@ -1062,23 +1115,31 @@ function writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level })
   }
   fs.mkdirSync(packetDir, { recursive: true });
   const scope = packetScopeFromBody(body, topic);
-  const packetMd = `---\npacket_id: ${packetId}\nversion: 1\nfrom: ${fromId}\nto: ${toId}\nproject: ${projectSlug}\nlevel: ${level}\nsupersedes: null\ncreated_at: ${now}\nssot_refs: []\nscope: \"${scope}\"\nitems: []\n---\n\n# ${topic}\n\n${body}\n`;
+  const packetMd = `---\npacket_id: ${packetId}\nversion: 1\nfrom: ${fromId}\nto: ${toId}\nproject: ${projectSlug}\nlevel: ${level}\nsupersedes: null\ncreated_at: ${now}\nssot_refs: []\nscope: \"${scope}\"\n${renderItemsYaml(items)}\n---\n\n# ${topic}\n\n${body}\n`;
   fs.writeFileSync(path.join(packetDir, 'packet.md'), packetMd, 'utf8');
-  appendLine(outboxPath, `${now} | publish | ${packetId} v1 | to:${toId} | items:none`);
-  return { packetId, version: 1, packetDir };
+  appendLine(outboxPath, `${now} | publish | ${packetId} v1 | to:${toId} | items:${items.length || 'none'}`);
+  return { packetId, version: 1, packetDir, items };
 }
 
-function revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason }) {
+function revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason, items = [], itemsProvided = false, clearItems = false }) {
   const { outboxPath, latest } = latestOwnPacketVersion({ hubRoot, projectSlug, agentId, packetId });
   const previousVersion = latest.version;
   const nextVersion = previousVersion + 1;
   const previousPath = path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'packets', `${packetId}__v${previousVersion}`, 'packet.md');
   ensureExistingFile(previousPath, `previous packet v${previousVersion}`);
+  const previousText = fs.readFileSync(previousPath, 'utf8');
   const previousHeader = parsePacketHeader(previousPath);
   const toId = previousHeader.to || latest.kv.to;
   if (!toId) {
     throw new Error(`could not infer receiver for ${packetId}; previous packet header is missing 'to'.`);
   }
+  // Items lifecycle: an explicit --items/--items-file sets them; --clear-items empties them;
+  // otherwise the prior version's declared items carry forward, so a revision that does not
+  // mention items never silently drops the action list.
+  let finalItems;
+  if (itemsProvided) finalItems = items;
+  else if (clearItems) finalItems = [];
+  else finalItems = parseFrontmatterItems(previousText);
   const now = isoNow();
   const packetDir = path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'packets', `${packetId}__v${nextVersion}`);
   if (fs.existsSync(packetDir)) {
@@ -1087,10 +1148,10 @@ function revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason })
   fs.mkdirSync(packetDir, { recursive: true });
   const scope = packetScopeFromBody(body, previousHeader.scope || packetId);
   const level = previousHeader.level || 'L2-aps-packet';
-  const packetMd = `---\npacket_id: ${packetId}\nversion: ${nextVersion}\nfrom: ${agentId}\nto: ${toId}\nproject: ${projectSlug}\nlevel: ${level}\nsupersedes: ${packetId}__v${previousVersion}\ncreated_at: ${now}\nssot_refs: []\nscope: \"${scope}\"\nitems: []\n---\n\n# Revision ${nextVersion} for ${packetId}\n\n${body}\n`;
+  const packetMd = `---\npacket_id: ${packetId}\nversion: ${nextVersion}\nfrom: ${agentId}\nto: ${toId}\nproject: ${projectSlug}\nlevel: ${level}\nsupersedes: ${packetId}__v${previousVersion}\ncreated_at: ${now}\nssot_refs: []\nscope: \"${scope}\"\n${renderItemsYaml(finalItems)}\n---\n\n# Revision ${nextVersion} for ${packetId}\n\n${body}\n`;
   fs.writeFileSync(path.join(packetDir, 'packet.md'), packetMd, 'utf8');
-  appendLine(outboxPath, `${now} | revise | ${packetId} v${nextVersion} | to:${toId} | reason:${reason}`);
-  return { packetId, version: nextVersion, previousVersion, packetDir, outboxPath, toId };
+  appendLine(outboxPath, `${now} | revise | ${packetId} v${nextVersion} | to:${toId} | reason:${reason} | items:${finalItems.length || 'none'}`);
+  return { packetId, version: nextVersion, previousVersion, packetDir, outboxPath, toId, items: finalItems };
 }
 
 function consumePacket({ hubRoot, projectSlug, agentId, packetId, version, result }) {
@@ -1160,37 +1221,62 @@ function scanConflictFiles(rootDir) {
   return found;
 }
 
+// doctor health is split in two: local-core decides the exit code and must pass even
+// when there is no counterpart yet; peer health is informational and never flips the
+// exit code, so a solo (just-installed, not-yet-invited) project is still 通過.
 function doctorHub({ hubRoot, projectSlug, agentId, otherAgentId }) {
-  const checks = [];
-  function checkFile(filePath, label) {
-    const ok = fs.existsSync(filePath) && fs.statSync(filePath).isFile();
-    checks.push({ ok, label, path: filePath });
+  function fileCheck(filePath, label) {
+    return { ok: fs.existsSync(filePath) && fs.statSync(filePath).isFile(), label, path: filePath };
   }
-  function checkFileContains(filePath, label, expected) {
+  function dirCheck(dirPath, label) {
+    return { ok: fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory(), label, path: dirPath };
+  }
+  function containsCheck(filePath, label, expected) {
     const ok = fs.existsSync(filePath)
       && fs.statSync(filePath).isFile()
       && fs.readFileSync(filePath, 'utf8').includes(expected);
-    checks.push({ ok, label, path: filePath });
+    return { ok, label, path: filePath };
   }
-  function checkDir(dirPath, label) {
-    const ok = fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory();
-    checks.push({ ok, label, path: dirPath });
+  const projectPath = projectDir(hubRoot, projectSlug);
+  const coreChecks = [
+    fileCheck(configPath(), 'local APS config'),
+    fileCheck(path.join(process.cwd(), 'dev', 'rules', 'aps-bridge.md'), 'local APS bridge'),
+    containsCheck(path.join(process.cwd(), 'dev', 'RULE_PACKS.md'), 'Handoff Kit APS route', 'dev/rules/aps-bridge.md'),
+    containsCheck(path.join(process.cwd(), 'dev', 'PROJECT_INDEX.md'), 'Handoff Kit APS project index', '.aps/config.json'),
+    dirCheck(hubRoot, '共用 Drive 資料夾 root'),
+    fileCheck(path.join(hubRoot, '_hub', 'PROTOCOL.md'), 'protocol'),
+    fileCheck(path.join(hubRoot, '_hub', 'CHANGELOG.md'), 'changelog'),
+    fileCheck(path.join(projectPath, `from_${agentId}`, 'outbox.log.md'), `${agentId} outbox`),
+    dirCheck(path.join(projectPath, `from_${agentId}`, 'packets'), `${agentId} packets`),
+    fileCheck(path.join(projectPath, '_ack', `${agentId}.ack.json`), `${agentId} ack`),
+  ];
+
+  const peerIds = new Set();
+  for (const peer of readPeerCards(hubRoot, projectSlug)) {
+    if (peer.agent_id && peer.agent_id !== agentId) peerIds.add(peer.agent_id);
   }
-  checkFile(configPath(), 'local APS config');
-  checkFile(path.join(process.cwd(), 'dev', 'rules', 'aps-bridge.md'), 'local APS bridge');
-  checkFileContains(path.join(process.cwd(), 'dev', 'RULE_PACKS.md'), 'Handoff Kit APS route', 'dev/rules/aps-bridge.md');
-  checkFileContains(path.join(process.cwd(), 'dev', 'PROJECT_INDEX.md'), 'Handoff Kit APS project index', '.aps/config.json');
-  checkDir(hubRoot, '共用 Drive 資料夾 root');
-  checkFile(path.join(hubRoot, '_hub', 'PROTOCOL.md'), 'protocol');
-  checkFile(path.join(hubRoot, '_hub', 'CHANGELOG.md'), 'changelog');
-  checkFile(path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'outbox.log.md'), `${agentId} outbox`);
-  checkFile(path.join(projectDir(hubRoot, projectSlug), `from_${otherAgentId}`, 'outbox.log.md'), `${otherAgentId} outbox`);
-  checkDir(path.join(projectDir(hubRoot, projectSlug), `from_${agentId}`, 'packets'), `${agentId} packets`);
-  checkDir(path.join(projectDir(hubRoot, projectSlug), `from_${otherAgentId}`, 'packets'), `${otherAgentId} packets`);
-  checkFile(path.join(projectDir(hubRoot, projectSlug), '_ack', `${agentId}.ack.json`), `${agentId} ack`);
-  checkFile(path.join(projectDir(hubRoot, projectSlug), '_ack', `${otherAgentId}.ack.json`), `${otherAgentId} ack`);
-  const conflicts = scanConflictFiles(projectDir(hubRoot, projectSlug));
-  return { checks, conflicts };
+  if (otherAgentId && otherAgentId !== agentId) peerIds.add(otherAgentId);
+  const peerChecks = [];
+  for (const peerId of [...peerIds].sort()) {
+    const cardPath = peerCardPath(hubRoot, projectSlug, peerId);
+    let state = '(無 peer card;舊式預設對方)';
+    if (fs.existsSync(cardPath)) {
+      try {
+        const card = readJson(cardPath);
+        state = `${card.status || 'active'} / ${card.peer_state || 'unknown'}`;
+      } catch (_) {
+        state = 'invalid card';
+      }
+    }
+    const checks = [
+      fileCheck(path.join(projectPath, `from_${peerId}`, 'outbox.log.md'), `${peerId} outbox`),
+      dirCheck(path.join(projectPath, `from_${peerId}`, 'packets'), `${peerId} packets`),
+      fileCheck(path.join(projectPath, '_ack', `${peerId}.ack.json`), `${peerId} ack`),
+    ];
+    peerChecks.push({ peerId, state, checks, allOk: checks.every((check) => check.ok) });
+  }
+  const conflicts = scanConflictFiles(projectPath);
+  return { coreChecks, peerChecks, conflicts };
 }
 
 function bridgePackContent(role, values) {
@@ -1200,7 +1286,10 @@ function bridgePackContent(role, values) {
   content = content.replace(/`<your_agent_id>`/g, `\`${values.agentId}\``);
   content = content.replace(/`<your_project_slug>`/g, `\`${values.projectSlug}\``);
   content = content.replace(/`<your_Drive_AI_Public_Squares_absolute_path>`/g, `\`${values.hubRoot}\``);
-  content = content.replace(/`<counterpart_agent_id>`/g, `\`${values.otherAgentId}\``);
+  const counterpartLabel = values.otherAgentId
+    ? `\`${values.otherAgentId}\``
+    : '(尚未邀請;用 `npx aps peer add --agent-id <對方>` 加入)';
+  content = content.replace(/`<counterpart_agent_id>`/g, counterpartLabel);
   return content;
 }
 
@@ -1306,16 +1395,22 @@ function setupHub(values, dryRun) {
   const resourcesDir = path.join(__dirname, '..', 'resources', 'protocol');
   const templatesDir = path.join(resourcesDir, 'templates');
   const projectDir = path.join(values.hubRoot, values.projectSlug);
+  // A counterpart is only built when one is known. A three-question install sets up
+  // only the local side; the counterpart is added later via `aps peer add` (which is
+  // also where the starter pack is generated). Old two-person setups still pass an
+  // otherAgentId, so their counterpart lane / ack / provisional card stay built here.
+  const hasCounterpart = Boolean(values.otherAgentId);
   const steps = [];
 
-  for (const dirPath of [
+  const dirs = [
     path.join(values.hubRoot, '_hub'),
     path.join(values.hubRoot, '_hub', 'templates'),
     path.join(projectDir, `from_${values.agentId}`, 'packets'),
-    path.join(projectDir, `from_${values.otherAgentId}`, 'packets'),
     path.join(projectDir, '_ack'),
     peerAgentsDir(values.hubRoot, values.projectSlug),
-  ]) {
+  ];
+  if (hasCounterpart) dirs.push(path.join(projectDir, `from_${values.otherAgentId}`, 'packets'));
+  for (const dirPath of dirs) {
     steps.push(ensureDirectory(dirPath, dryRun));
   }
 
@@ -1334,32 +1429,30 @@ function setupHub(values, dryRun) {
 
   const outboxTemplate = fs.readFileSync(path.join(templatesDir, 'outbox.log.md.template'), 'utf8');
   steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.agentId}`, 'outbox.log.md'), outboxTemplate, dryRun));
-  steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.otherAgentId}`, 'outbox.log.md'), outboxTemplate, dryRun));
   steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.agentId}`, 'packets', 'README.md'), packetsReadme(values.agentId), dryRun));
-  steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.otherAgentId}`, 'packets', 'README.md'), packetsReadme(values.otherAgentId), dryRun));
   steps.push(writeFileIfMissing(path.join(projectDir, '_ack', `${values.agentId}.ack.json`), ackJson(values.agentId, values.projectSlug), dryRun));
-  steps.push(writeFileIfMissing(path.join(projectDir, '_ack', `${values.otherAgentId}.ack.json`), ackJson(values.otherAgentId, values.projectSlug), dryRun));
   steps.push(writeFileOrUpdate(peerCardPath(values.hubRoot, values.projectSlug, values.agentId), peerCardJson({
     projectSlug: values.projectSlug,
     agentId: values.agentId,
     displayName: values.agentId,
     peerState: 'confirmed',
   }), dryRun));
-  steps.push(writeFileIfMissing(peerCardPath(values.hubRoot, values.projectSlug, values.otherAgentId), peerCardJson({
-    projectSlug: values.projectSlug,
-    agentId: values.otherAgentId,
-    displayName: values.otherAgentId,
-    peerState: 'provisional',
-  }), dryRun));
+  if (hasCounterpart) {
+    steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.otherAgentId}`, 'outbox.log.md'), outboxTemplate, dryRun));
+    steps.push(writeFileIfMissing(path.join(projectDir, `from_${values.otherAgentId}`, 'packets', 'README.md'), packetsReadme(values.otherAgentId), dryRun));
+    steps.push(writeFileIfMissing(path.join(projectDir, '_ack', `${values.otherAgentId}.ack.json`), ackJson(values.otherAgentId, values.projectSlug), dryRun));
+    steps.push(writeFileIfMissing(peerCardPath(values.hubRoot, values.projectSlug, values.otherAgentId), peerCardJson({
+      projectSlug: values.projectSlug,
+      agentId: values.otherAgentId,
+      displayName: values.otherAgentId,
+      peerState: 'provisional',
+    }), dryRun));
+  }
 
   const bridgeTarget = path.join(process.cwd(), 'dev', 'rules', 'aps-bridge.md');
   steps.push(writeFileOrUpdate(bridgeTarget, bridgePackContent(values.role, values), dryRun));
 
   steps.push(saveConfig(values, dryRun));
-
-  const counterpartRole = values.role === 'A' ? 'B' : 'A';
-  const starterTarget = path.join(values.hubRoot, '_hub', `starter-pack-${values.otherAgentId}.md`);
-  steps.push(writeFileOrUpdate(starterTarget, starterPackContent(values, counterpartRole), dryRun));
   steps.push(...registerHandoffKitIntegration(values, dryRun));
 
   return steps;
@@ -1390,7 +1483,7 @@ function registerHandoffKitIntegration(values, dryRun) {
 | Local config | \`.aps/config.json\` |
 | 共用 Drive 項目 | \`${values.projectSlug}\` |
 | Local agent | \`${values.agentId}\` |
-| Partner agent | \`${values.otherAgentId}\` |
+| Partner agent | ${values.otherAgentId ? `\`${values.otherAgentId}\`` : '(尚未邀請;用 `npx aps peer add` 加入)'} |
 | Trigger route | Registered in \`dev/RULE_PACKS.md\`; when the user mentions APS / AI Public Squares / Agent Public Squares / 教我用 APS / 教我用 AI Public Squares / 教我用 Agent Public Squares / check Drive / check Hub / Hub 有新嘢 / Drive sync / conflict, read \`dev/rules/aps-bridge.md\` and \`.aps/config.json\` before answering. |
 | Last verified | ${today} |`;
   steps.push(upsertManagedBlock(
@@ -1410,28 +1503,27 @@ if (!subcommand || subcommand === '--help' || subcommand === '-h') {
 透過共用 Drive 資料夾,讓不同電腦上的 AI 代理做一對一交接。
 
 用法:
-  npx aps init                    互動式設定:回答問題、建立共用 Drive 資料夾、保存本機設定
+  npx aps init                    互動式設定:回答三條問題(Drive 資料夾 / 項目 / 你的名稱),只設定你自己這一邊
   npx aps init --target claude    只安裝 Claude Code 的 APS skill
   npx aps init --target codex     只安裝 Codex 的 APS skill
   npx aps init --refresh-skill    先備份既有 APS skill,再刷新安裝
-  npx aps init --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
-                                  進階非互動設定
+  npx aps init --hub-root <path> --project <slug> --agent-id <id> [--other-agent-id <id>] [--role A|B]
+                                  進階非互動設定 (對方與起手方向可選;只設自己也可)
   npx aps init --dry-run          只顯示會寫入的位置,不真正改檔
   npx aps upgrade                 npm 更新後刷新既有 APS 項目
   npx aps config                  顯示已保存的本機 APS 設定
-  npx aps config --hub-root <path> --project <slug> --agent-id <id> --other-agent-id <id> --role A|B
-                                  只保存或更新本機 APS 設定
+  npx aps config --hub-root <path> --project <slug> --agent-id <id> [--other-agent-id <id>] [--role A|B]
+                                  只保存或更新本機 APS 設定 (對方與起手方向可選)
   npx aps peers                   顯示本項目的 peers
   npx aps peer add --agent-id <id> [--display-name <name>]
-                                  新增候選 peer、lane、ack 與 starter pack
+                                  邀請協作對象:新增 peer、lane、ack 與 starter pack
   npx aps peer starter --agent-id <id>
                                   重新產生給指定 peer 的 starter pack
-  npx aps publish --topic <snake> --body <text>
-  npx aps publish --to <id> --topic <snake> --body-file <path>
-                                  發佈 v1 交接包並追加 outbox
-  npx aps revise --packet-id <id> --body <text> --reason <text>
-  npx aps revise --packet-id <id> --body-file <path> --reason <text>
-                                  為自己發出的交接包建立下一個不可變版本
+  npx aps publish --to <id> --topic <snake> --body <text>
+  npx aps publish --to <id> --topic <snake> --body-file <path> [--items "甲;乙" | --items-file <path>]
+                                  發佈 v1 交接包並追加 outbox;--items 由發送方申報「請對方做的事」,CLI 逐字記錄
+  npx aps revise --packet-id <id> --body-file <path> --reason <text> [--items "甲;乙" | --items-file <path> | --clear-items]
+                                  為自己發出的交接包建立下一個不可變版本;未指定 items 時沿用上一版
   npx aps inbox
   npx aps inbox --all
   npx aps inbox --from <agent_id>
@@ -1488,24 +1580,28 @@ if (subcommand === 'init' && args.length === 0) {
     projectSlug: getRequiredFlagValue('--project'),
     agentId: getRequiredFlagValue('--agent-id'),
     otherAgentId: getRequiredFlagValue('--other-agent-id'),
-    role: (getFlagValue('--role', '') || '').toUpperCase(),
+    role: (getFlagValue('--role', 'A') || 'A').toUpperCase(),
   };
-  const setupFlags = [setupValues.hubRoot, setupValues.projectSlug, setupValues.agentId, setupValues.otherAgentId, setupValues.role].filter(Boolean);
+  // Non-interactive setup needs the three self-side core values; --other-agent-id and --role
+  // are optional (solo install). If a counterpart is given, the old two-person path still runs.
+  const coreFlagCount = [setupValues.hubRoot, setupValues.projectSlug, setupValues.agentId].filter(Boolean).length;
+  const anySetupFlag = Boolean(setupValues.hubRoot || setupValues.projectSlug || setupValues.agentId || setupValues.otherAgentId || getRequiredFlagValue('--role'));
+  const doSetup = coreFlagCount === 3;
   if (!validTargets.includes(target)) {
     console.error(`Invalid --target value: must be claude, codex, or both (got '${target}').`);
     process.exit(1);
   }
-  if (setupFlags.length > 0 && setupFlags.length < 5) {
-    console.error('共用 Drive 資料夾 setup requires all flags: --hub-root, --project, --agent-id, --other-agent-id, and --role A|B.');
+  if (anySetupFlag && !doSetup) {
+    console.error('共用 Drive 資料夾 setup requires at least: --hub-root, --project, --agent-id. (--other-agent-id and --role A|B are optional; add them for an old two-person setup.)');
     process.exit(1);
   }
-  if (setupFlags.length === 5) {
+  if (doSetup) {
     const errors = [
       validateNoPlaceholder('--hub-root', setupValues.hubRoot),
       validateSnakeCase('--project', setupValues.projectSlug),
       validateSnakeCase('--agent-id', setupValues.agentId),
-      validateSnakeCase('--other-agent-id', setupValues.otherAgentId),
-      validateDistinctAgents(setupValues.agentId, setupValues.otherAgentId),
+      setupValues.otherAgentId ? validateSnakeCase('--other-agent-id', setupValues.otherAgentId) : null,
+      setupValues.otherAgentId ? validateDistinctAgents(setupValues.agentId, setupValues.otherAgentId) : null,
       setupValues.role === 'A' || setupValues.role === 'B' ? null : `--role must be A or B (got '${setupValues.role}').`,
     ].filter(Boolean);
     if (errors.length > 0) {
@@ -1519,7 +1615,7 @@ if (subcommand === 'init' && args.length === 0) {
     console.error('Could not detect your home directory. Set HOME or USERPROFILE, then rerun `npx aps init`.');
     process.exit(1);
   }
-  if (setupFlags.length === 5) {
+  if (doSetup) {
     try {
       ensureHandoffKitReady();
     } catch (err) {
@@ -1542,15 +1638,15 @@ if (subcommand === 'init' && args.length === 0) {
     });
   }
 
-  console.log(`APS init v${packageVersion} — skill installer${setupFlags.length === 5 ? ' + 共用 Drive 資料夾 setup' : ''}${dryRun ? ' (dry run)' : ''}`);
+  console.log(`APS init v${packageVersion} — skill installer${doSetup ? ' + 共用 Drive 資料夾 setup' : ''}${dryRun ? ' (dry run)' : ''}`);
   console.log('');
   console.log('這個命令會安裝 APS skill 檔案,讓 AI 工具懂得使用 APS。');
-  if (setupFlags.length === 5) {
+  if (doSetup) {
     console.log('它也會建立初始共用 Drive 資料夾 skeleton、本地 Bridge Pack 與 `.aps/config.json`。');
     console.log('完成後,日常命令可以使用已保存設定,毋須重複輸入長參數。');
     console.log('目前仍屬前期測試;每個真實項目仍要驗證自己的 Google Drive 同步狀態。');
   } else {
-    console.log('如要同時建立共用 Drive 資料夾 skeleton,請提供 --hub-root、--project、--agent-id、--other-agent-id 與 --role。');
+    console.log('如要同時建立共用 Drive 資料夾 skeleton,請至少提供 --hub-root、--project、--agent-id(--other-agent-id 與 --role A|B 可選)。');
   }
   console.log('');
 
@@ -1561,7 +1657,7 @@ if (subcommand === 'init' && args.length === 0) {
 
   const failed = results.filter((result) => !result.ok && !result.skipped);
   const setupResults = [];
-  if (setupFlags.length === 5) {
+  if (doSetup) {
     console.log('');
     console.log('☁️ 建立共用 Drive 資料夾:');
     try {
@@ -1615,21 +1711,21 @@ if (subcommand === 'upgrade') {
     projectSlug: flagOrConfig('--project', 'projectSlug', config),
     agentId: flagOrConfig('--agent-id', 'agentId', config),
     otherAgentId: flagOrConfig('--other-agent-id', 'otherAgentId', config),
-    role: (getFlagValue('--role', config.role || '') || '').toUpperCase(),
+    role: (getFlagValue('--role', config.role || 'A') || 'A').toUpperCase(),
   };
+  // A solo (self-only) project has no counterpart, so --other-agent-id / --role are
+  // optional on upgrade; old two-person config still carries them and upgrades unchanged.
   requireValues({
     '--hub-root': setupValues.hubRoot,
     '--project': setupValues.projectSlug,
     '--agent-id': setupValues.agentId,
-    '--other-agent-id': setupValues.otherAgentId,
-    '--role': setupValues.role,
   });
   const errors = [
     validateNoPlaceholder('--hub-root', setupValues.hubRoot),
     validateSnakeCase('--project', setupValues.projectSlug),
     validateSnakeCase('--agent-id', setupValues.agentId),
-    validateSnakeCase('--other-agent-id', setupValues.otherAgentId),
-    validateDistinctAgents(setupValues.agentId, setupValues.otherAgentId),
+    setupValues.otherAgentId ? validateSnakeCase('--other-agent-id', setupValues.otherAgentId) : null,
+    setupValues.otherAgentId ? validateDistinctAgents(setupValues.agentId, setupValues.otherAgentId) : null,
     setupValues.role === 'A' || setupValues.role === 'B' ? null : `--role must be A or B (got '${setupValues.role}').`,
   ].filter(Boolean);
   if (errors.length > 0) {
@@ -1692,7 +1788,7 @@ if (subcommand === 'upgrade') {
   }
 
   const output = doctorHub(setupValues);
-  const failedChecks = output.checks.filter((check) => !check.ok).length + output.conflicts.length;
+  const failedChecks = output.coreChecks.filter((check) => !check.ok).length + output.conflicts.length;
   console.log('');
   if (failedChecks === 0) {
     console.log('✅ APS 升級完成,doctor 預檢通過。');
@@ -1726,25 +1822,30 @@ if (subcommand === 'bridge-pack') {
 if (subcommand === 'config') {
   try {
     const dryRun = hasFlag('--dry-run');
-    const values = {
-      hubRoot: getRequiredFlagValue('--hub-root'),
-      projectSlug: getRequiredFlagValue('--project'),
-      agentId: getRequiredFlagValue('--agent-id'),
-      otherAgentId: getRequiredFlagValue('--other-agent-id'),
-      role: (getFlagValue('--role', '') || '').toUpperCase(),
-    };
-    const writeFlags = [values.hubRoot, values.projectSlug, values.agentId, values.otherAgentId, values.role].filter(Boolean);
-    if (writeFlags.length > 0) {
-      if (writeFlags.length < 5) {
-        console.error('❌ 寫入設定需要同時提供 --hub-root、--project、--agent-id、--other-agent-id 與 --role A|B。');
+    const existing = loadConfig();
+    // Writing config needs the three self-side core values; --other-agent-id and --role stay
+    // optional and fall back to whatever the existing config held, so a solo project can save
+    // without a counterpart and an old two-person config is not silently wiped.
+    const explicitWrite = Boolean(getRequiredFlagValue('--hub-root') || getRequiredFlagValue('--project') || getRequiredFlagValue('--agent-id') || getRequiredFlagValue('--other-agent-id') || getRequiredFlagValue('--role'));
+    if (explicitWrite) {
+      const values = {
+        hubRoot: getRequiredFlagValue('--hub-root'),
+        projectSlug: getRequiredFlagValue('--project'),
+        agentId: getRequiredFlagValue('--agent-id'),
+        otherAgentId: getRequiredFlagValue('--other-agent-id') || existing.otherAgentId || null,
+        role: (getFlagValue('--role', '') || existing.role || 'A').toUpperCase(),
+      };
+      const coreCount = [values.hubRoot, values.projectSlug, values.agentId].filter(Boolean).length;
+      if (coreCount < 3) {
+        console.error('❌ 寫入設定至少需要 --hub-root、--project、--agent-id(--other-agent-id 與 --role A|B 可選)。');
         process.exit(1);
       }
       const errors = [
         validateNoPlaceholder('--hub-root', values.hubRoot),
         validateSnakeCase('--project', values.projectSlug),
         validateSnakeCase('--agent-id', values.agentId),
-        validateSnakeCase('--other-agent-id', values.otherAgentId),
-        validateDistinctAgents(values.agentId, values.otherAgentId),
+        values.otherAgentId ? validateSnakeCase('--other-agent-id', values.otherAgentId) : null,
+        values.otherAgentId ? validateDistinctAgents(values.agentId, values.otherAgentId) : null,
         values.role === 'A' || values.role === 'B' ? null : `--role must be A or B (got '${values.role}').`,
       ].filter(Boolean);
       if (errors.length > 0) {
@@ -1771,9 +1872,9 @@ if (subcommand === 'config') {
     console.log(`☁️ 共用 Drive 資料夾 root: ${config.hubRoot || '(缺少)'}`);
     console.log(`📁 項目代號: ${config.projectSlug || '(缺少)'}`);
     console.log(`👤 本機 agent: ${config.agentId || '(缺少)'}`);
-    console.log(`🤝 對方 agent: ${config.otherAgentId || '(缺少)'}`);
-    console.log(`🧭 設定起手方向: ${config.role === 'A' ? '發起人(建立共用 Drive 資料夾)' : config.role === 'B' ? '加入者(收 starter pack)' : config.role || '(缺少)'}`);
-    console.log('   起手方向只影響設定時的預設與 starter pack 方向,不影響日後誰可發送 / 接收(收發由 agent 身份與 packet 收件人決定)。');
+    console.log(`🤝 對方 agent: ${config.otherAgentId || '尚未設定 (用 `npx aps peer add --agent-id <對方>` 邀請,或在 AI 工具講「邀請 [對方] 加入呢個項目」)'}`);
+    console.log(`🧭 設定起手方向: ${config.role === 'A' ? '發起人(建立共用 Drive 資料夾)' : config.role === 'B' ? '加入者' : config.role || '(未記錄)'}`);
+    console.log('   起手方向只影響設定時的預設,不影響日後誰可發送 / 接收(收發由 agent 身份與 packet 收件人決定)。');
     process.exit(0);
   } catch (err) {
     console.error(`❌ 設定失敗:${err.message}`);
@@ -1890,14 +1991,34 @@ if (subcommand === 'publish') {
   const toId = explicitTo || getRequiredFlagValue('--other-agent-id') || config.otherAgentId || null;
   const topic = getRequiredFlagValue('--topic');
   let body;
+  let itemsInput;
   try {
     body = readBodyInput();
+    itemsInput = readItemsInput();
   } catch (err) {
     console.error(`❌ 發佈失敗:${err.message}`);
     process.exit(1);
   }
   const level = getFlagValue('--level', 'L2-aps-packet');
-  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--from': fromId, '--to': toId });
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--from': fromId });
+  if (!toId) {
+    // No recipient resolved: actionable guidance, not a cryptic "Missing required values: --to".
+    let peers = [];
+    try {
+      peers = listProjectPeers({ hubRoot, projectSlug, config: { ...config, agentId: fromId } }).peers
+        .filter((peer) => peer.agent_id && peer.agent_id !== fromId);
+    } catch (err) { /* listing is best-effort for the hint */ }
+    console.error('❌ 未指定收件對象。每個 APS 交接包都要交畀一位協作對象。');
+    if (peers.length > 0) {
+      console.error('本項目目前的協作對象:');
+      for (const peer of peers) console.error(`  - ${peer.agent_id} (${peer.status || 'active'} / ${peer.peer_state || 'unknown'})`);
+      console.error('用 `npx aps publish --to <對方> --topic ... --body-file ...` 指定收件對象。');
+    } else {
+      console.error('本項目仲未有協作對象。');
+    }
+    console.error('想搵新人?用 `npx aps peer add --agent-id <對方> --display-name <名稱>` 邀請,或在 AI 工具講「邀請 [對方] 加入呢個項目」。');
+    process.exit(1);
+  }
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--from', fromId),
@@ -1909,13 +2030,18 @@ if (subcommand === 'publish') {
     process.exit(1);
   }
   try {
-    if (explicitTo) {
+    // Recipient reachability runs for every resolved recipient. An explicit --to (the new
+    // multi-peer path) blocks on failure; the old config-default partner (fallback) only warns,
+    // so the established two-person "publish then invite" flow is never hard-blocked.
+    {
       const peer = findPeer({ hubRoot, projectSlug, config: { ...config, agentId: fromId }, agentId: toId });
       const reach = peerReachableForPublish({ peer, hubRoot, projectSlug, toId });
       if (!reach.ok) {
-        throw new Error(reach.reason);
-      }
-      if (reach.warn) {
+        if (explicitTo) {
+          throw new Error(reach.reason);
+        }
+        console.log(`⚠️ ${reach.reason}`);
+      } else if (reach.warn) {
         console.log(`⚠️ ${reach.warn}`);
       }
     }
@@ -1925,7 +2051,7 @@ if (subcommand === 'publish') {
     if (fromId && fromId === config.agentId && !getRequiredFlagValue('--from') && !getRequiredFlagValue('--agent-id')) {
       try { selfConfirmPeer({ hubRoot, projectSlug, agentId: fromId }); } catch (err) { /* non-fatal */ }
     }
-    const result = writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level });
+    const result = writePacket({ hubRoot, projectSlug, fromId, toId, topic, body, level, items: itemsInput.items });
     const notice = receiverNotice({
       projectSlug,
       topic,
@@ -1939,6 +2065,7 @@ if (subcommand === 'publish') {
     });
     console.log(`✅ 已發佈 ${result.packetId} v${result.version}`);
     console.log(`📦 交接包: ${result.packetDir}`);
+    console.log(`📋 已申報項目: ${result.items.length ? result.items.join(' / ') : '(無 — 如要列明請對方做的事,可加 --items "甲;乙")'}`);
     console.log('');
     console.log('📣 可直接複製貼上的通知訊息:');
     console.log(notice);
@@ -1962,12 +2089,15 @@ if (subcommand === 'revise') {
   const agentId = flagOrConfig('--agent-id', 'agentId', config);
   const packetId = getRequiredFlagValue('--packet-id');
   let body;
+  let itemsInput;
   try {
     body = readBodyInput();
+    itemsInput = readItemsInput();
   } catch (err) {
     console.error(`❌ 修訂失敗:${err.message}`);
     process.exit(1);
   }
+  const clearItems = hasFlag('--clear-items');
   const reason = getRequiredFlagValue('--reason');
   requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId });
   const errors = [
@@ -1980,7 +2110,7 @@ if (subcommand === 'revise') {
     process.exit(1);
   }
   try {
-    const output = revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason });
+    const output = revisePacket({ hubRoot, projectSlug, agentId, packetId, body, reason, items: itemsInput.items, itemsProvided: itemsInput.provided, clearItems });
     const notice = receiverNotice({
       projectSlug,
       topic: packetId,
@@ -1994,6 +2124,7 @@ if (subcommand === 'revise') {
     });
     console.log(`✅ 已修訂 ${packetId}: v${output.previousVersion} -> v${output.version}`);
     console.log(`📦 交接包: ${output.packetDir}`);
+    console.log(`📋 項目: ${output.items.length ? output.items.join(' / ') : '(無)'}${(itemsInput.provided || clearItems) ? '' : ' (沿用上一版)'}`);
     console.log('');
     console.log('📣 可直接複製貼上的通知訊息:');
     console.log(notice);
@@ -2011,11 +2142,11 @@ if (subcommand === 'inbox') {
   const hubRoot = flagOrConfig('--hub-root', 'hubRoot', config);
   const projectSlug = flagOrConfig('--project', 'projectSlug', config);
   const agentId = flagOrConfig('--agent-id', 'agentId', config);
-  const allSources = hasFlag('--all');
   const otherAgentId = getRequiredFlagValue('--from') || flagOrConfig('--other-agent-id', 'otherAgentId', config);
-  requireValues(allSources
-    ? { '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId }
-    : { '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId, '--from/--other-agent-id': otherAgentId });
+  // With no explicit --from and no default counterpart (a solo project), scan all known peers so
+  // `aps inbox` never fails cryptically just because no counterpart is configured yet.
+  const allSources = hasFlag('--all') || !otherAgentId;
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--agent-id', agentId),
@@ -2213,11 +2344,11 @@ if (subcommand === 'doctor') {
   const projectSlug = flagOrConfig('--project', 'projectSlug', config);
   const agentId = flagOrConfig('--agent-id', 'agentId', config);
   const otherAgentId = flagOrConfig('--other-agent-id', 'otherAgentId', config);
-  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId, '--other-agent-id': otherAgentId });
+  requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId });
   const errors = [
     validateSnakeCase('--project', projectSlug),
     validateSnakeCase('--agent-id', agentId),
-    validateSnakeCase('--other-agent-id', otherAgentId),
+    otherAgentId ? validateSnakeCase('--other-agent-id', otherAgentId) : null,
   ].filter(Boolean);
   if (errors.length > 0) {
     for (const error of errors) console.error(error);
@@ -2231,9 +2362,9 @@ if (subcommand === 'doctor') {
     console.log(`☁️ 共用 Drive 資料夾 root: ${hubRoot}`);
     console.log(`📁 項目代號: ${projectSlug}`);
     console.log(`👤 本機 agent: ${agentId}`);
-    console.log(`🤝 對方 agent: ${otherAgentId}`);
     console.log('');
-    for (const check of output.checks) {
+    console.log('🔧 本機核心檢查:');
+    for (const check of output.coreChecks) {
       console.log(`${check.ok ? '✅ 正常' : '❌ 缺少'}  ${check.label}: ${check.path}`);
       if (!check.ok) failed += 1;
     }
@@ -2247,12 +2378,26 @@ if (subcommand === 'doctor') {
       console.log('✅ 沒有找到疑似衝突檔名。');
     }
     console.log('');
-    if (failed === 0) {
-      console.log('✅ 狀態: 通過');
-      console.log('🚀 下一步:請優先在 AI 工具中輸入「教我用 APS」。AI 應先讀現有設定,再檢查收件箱,用總覽、摘要、預檢、細節與下一步整理結果。命令列備用指令包括 `npx aps inbox`、`npx aps publish --topic ... --body-file ...`、`npx aps consume ...`、`npx aps revise --body-file ...`、`npx aps withdraw ...`、`npx aps close ...`、`npx aps config`。');
+    console.log('🤝 協作對象狀態 (僅供參考,不影響本機健康):');
+    if (output.peerChecks.length === 0) {
+      console.log('  📭 尚未邀請協作對象。想搵人一齊做?喺 AI 工具講「邀請 [對方] 加入呢個項目」,或用 `npx aps peer add --agent-id <對方> --display-name <名稱>`。隨時都做得。');
     } else {
-      console.log('❌ 狀態: 未通過');
-      console.log('🚀 下一步:先修正缺少的路徑或疑似衝突檔,再繼續使用 APS。不要在未檢查內容前刪除衝突檔。');
+      for (const peer of output.peerChecks) {
+        console.log(`  - ${peer.peerId} (${peer.state})${peer.allOk ? '' : ' ⚠️ 通道未齊'}`);
+        for (const check of peer.checks) {
+          if (!check.ok) console.log(`      ⚠️ 缺少 ${check.label}: ${check.path}`);
+        }
+      }
+    }
+    console.log('');
+    if (failed === 0) {
+      console.log('✅ 狀態: 通過 (本機核心齊全)');
+      console.log('🚀 下一步:請優先在 AI 工具中輸入「教我用 APS」。AI 應先讀現有設定,再檢查收件箱,用總覽、摘要、預檢、細節與下一步整理結果。');
+      console.log('🤝 想搵人一齊做:喺 AI 工具講「邀請 [對方] 加入呢個項目」,或備用指令 `npx aps peer add --agent-id <對方> --display-name <名稱>`;幾時想加都得。');
+      console.log('💡 其他備用命令:`npx aps inbox`、`npx aps publish --to <對方> --topic ... --body-file ... --items "甲;乙"`、`npx aps consume ...`、`npx aps revise --body-file ...`、`npx aps config`。');
+    } else {
+      console.log('❌ 狀態: 未通過 (本機核心有缺)');
+      console.log('🚀 下一步:先修正上面本機核心缺少的路徑或疑似衝突檔,再繼續使用 APS。不要在未檢查內容前刪除衝突檔。');
       console.log('💡 提示:如果剛剛重新執行過 `npx aps init`,請確認上方「項目代號」是否就是你剛才建立的項目。');
     }
     process.exit(failed === 0 ? 0 : 1);
