@@ -19,7 +19,7 @@
 📍 目前設定
 - 項目:<project_slug>
 - 你這邊:<own_agent_id>
-- 預設對方:<other_agent_id>
+- 協作對象:<列出已邀請 / confirmed peers;若仲未邀請任何人,寫「尚未邀請(設定好可隨時邀請)」>
 - 共用資料夾:<hub_root>
 
 我會先替你做兩件事:
@@ -51,29 +51,28 @@
 
 🚀 下一步你可以選一件事:
 
-A. 我替你發一個測試交接給 <other_agent_id>
-   用來確認對方那邊能否看到同一個共用 Drive 資料夾。
-
-B. 我替你邀請新 peer 加入這個 project
+A. 我替你邀請協作對象加入這個 project
    例如 Fanny / Jackie。工具會生成 provisional peer 與 starter pack,對方先完成 Agent Handoff Kit init,再完成 APS 設置後才可正式收交接。
+
+B. 我替你發一個測試交接(需先有 confirmed peer)
+   用來確認對方那邊能否看到同一個共用 Drive 資料夾。
 
 C. 我把目前任務整理成 APS 交接包給指定 peer
    適合你現在真的有工作要交給對方。
 
-💡 推薦:A。先用測試交接驗證雙方路徑,比直接交正式內容穩妥。
+💡 推薦:若仲未有協作對象,先做 A 邀請;已有 confirmed peer,可用 B 測試雙方路徑。
 ```
 
-> 收到。我會帶你由零開始設置 Agent Public Squares,後面簡稱 APS。簡單講,我們會在你的電腦與對方的電腦之間設立一個共用雲端資料夾,讓兩部 AI 代理可以交接檔案、回覆與確認收到。
+> 收到。我會帶你由零開始設置 Agent Public Squares,後面簡稱 APS。簡單講,我們會用一個你電腦上的共用雲端資料夾,讓不同電腦上的 AI 代理可以交接檔案、回覆與確認收到。這一步只設定你自己這一邊;協作對象設定好之後隨時可以邀請,毋須現在就有。
 >
-> 開始之前,請先確認三件事:
+> 開始之前,請先確認兩件事:
 >
 > 一、你的雲端硬碟桌面版是否已安裝,而且可以在本機檔案總管打開檔案?
-> 二、你是否已經與對方溝通過,雙方同意用 APS 做跨機合作?
-> 三、你想用哪一個 Google Drive 本機同步資料夾作為共用位置?目前已驗證主路徑是 Google Drive;其他同步資料夾只可作未正式驗證的實驗路徑。
+> 二、你想用哪一個 Google Drive 本機同步資料夾作為共用位置?目前已驗證主路徑是 Google Drive;其他同步資料夾只可作未正式驗證的實驗路徑。
 
-若第二項未完成,提供以下短訊,然後暫停:
+當用戶日後想邀請對方時(`peer add` 之後),可提供以下短訊讓用戶傳給對方:
 
-> 我想用 Agent Public Squares 建立一個跨機 AI 協作流程。我會先在我這邊設置,完成後會傳你一份 starter pack 和幾條安裝指令。你在自己電腦照做即可。
+> 我想用 Agent Public Squares 建立一個跨機 AI 協作流程。我已經在我這邊設置好,會傳你一份 starter pack 和幾條安裝指令。你在自己電腦照做即可。
 
 ## 2. 先決條件檢查
 
@@ -94,13 +93,13 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 然後請用戶回覆「已完成」再繼續。
 
-## 3. 三項決定
+## 3. 三項決定(三問安裝)
 
-逐項問,不要一次丟出長表。
+逐項問,不要一次丟出長表。這三項就是互動式 `npx aps init` 會問的三條;不會問對方是誰,也不會問第一個交接包由誰先發。
 
 第一項:
 
-> 對方是誰?請用一個固定短名,例如 `jay`、`sarah` 或 `design_team`。這會用作對方的 agent_id。兩邊要沿用同一套身份名稱,只是把「自己」與「對方」對調。
+> 你電腦上那個共用雲端資料夾的完整路徑是甚麼?請在檔案總管打開你與對方共用的 AI_Public_Squares 資料夾,複製地址列的完整路徑,例如 `G:\我的雲端硬碟\AI_Public_Squares`。這必須是你自己電腦上的真實路徑。
 
 第二項:
 
@@ -108,16 +107,17 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 第三項:
 
-> 第一個交接包由誰先發?預設由你這邊先發,因為你正在設置。若你想對方先發,直接說明即可。
+> 你自己在這個共用資料夾內叫甚麼名字(你的 agent_id)?請用一個固定短名,例如 `adam` 或 `jay`。日後邀請對方時,雙方要沿用同一套身份名稱,只是各自填自己那個。
 
-## 4. 預設值確認
+## 4. 設定前覆述
 
-> 我會用以下預設值。若你接受,回覆「OK」。若要改,請指出要改哪一項。
+> 我會用以下設定。若你接受,回覆「OK」。若要改,請指出要改哪一項。
 >
 > 一、你的 agent_id:你在共用 Drive 資料夾內的固定身份,例如 `adam`。
-> 二、對方的 agent_id:對方在共用 Drive 資料夾內的固定身份,例如 `jay`。
+> 二、項目代號:用你提供的短代號。
 > 三、共用資料夾位置:使用你提供的雲端硬碟路徑。
-> 四、共享權限:你需要親自在雲端硬碟中把資料夾分享給對方,並給予編輯權限。AI 不會代你更改雲端權限。
+>
+> 暫時不用設定對方。等你邀請協作對象時,我會再提你:你需要親自在雲端硬碟中把資料夾分享給對方,並給予編輯權限 —— AI 不會代你更改雲端權限。
 
 ## 5. 檔案操作進度句
 
@@ -131,16 +131,16 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 正在記錄本項目的 APS 本地設定位置。
 ```
 
-前期測試版已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在完整設置時寫入共用 Drive 資料夾 skeleton、Bridge Pack、starter pack 與 `.aps/config.json`,令後續日常命令毋須重複輸入共用 Drive 資料夾 / project / agent 長參數。互動式 CLI 應以繁體中文解釋每個設定值用途,尤其要說明共用 Drive 資料夾路徑是使用者電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
+前期測試版已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在三問安裝時寫入用戶自己這一邊的共用 Drive 資料夾 skeleton、Bridge Pack 與 `.aps/config.json`(starter pack 不在安裝時生成,改由邀請對方時 `npx aps peer add` 產生),令後續日常命令毋須重複輸入共用 Drive 資料夾 / project / agent 長參數。互動式 CLI 應以繁體中文解釋每個設定值用途,尤其要說明共用 Drive 資料夾路徑是使用者電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
 
 > 目前執行環境找不到 PROTOCOL source 檔案。這一步不能假裝完成。需要先確認 package 是否完整安裝,或由已驗證的 Hub template source 讀取。
 
-## 6. 對方 starter pack
+## 6. 邀請對方時的 starter pack
 
-完成本機設置後,生成一份 markdown starter pack,位置建議:
+當用戶想邀請協作對象時(不是安裝時),用 `npx aps peer add --agent-id <對方> --display-name <名稱>`;CLI 會建立 provisional peer 並把 starter pack 寫入:
 
 ```text
-<hub_root>/_hub/starter-pack-<other_agent_id>.md
+<hub_root>/_hub/starter-pack-<對方>.md
 ```
 
 starter pack 的安裝段必須先列 Agent Handoff Kit,再列 APS:
@@ -157,14 +157,16 @@ npx aps init
 
 > APS 這邊已設置好。Starter pack 已放在共用雲端資料夾的 `_hub` 子資料夾。你同步後打開該檔,按裡面的安裝指令在自己的工作目錄執行;完成後告訴我即可。
 
-## 7. 首次測試交接
+## 7. 邀請第一位 peer 後的測試交接
+
+三問安裝完成後只有你自己一邊;要發測試交接,先邀請對方並等對方完成自己那邊的安裝(成為 confirmed peer)。之後:
 
 > 我可以替你建立一個測試交接包,只用來確認兩邊能否看見同一個共用資料夾。內容不包含正式工作資料。你不用記命令;你只需要確認是否現在發出。
 
-AI 內部可用以下命令執行,但不要把它當成新手主路徑:
+AI 內部可用以下命令執行(必須指名收件對象),但不要把它當成新手主路徑:
 
 ```text
-npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
+npx aps publish --to <peer_agent_id> --topic setup_test --body "APS setup test from <own_agent_id>."
 ```
 
 完成後:
@@ -179,10 +181,10 @@ npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
 
 > 我已整理好交接包草稿,現在先做發送前預檢。共同目標、本方任務、對方任務、交叉點、請對方做的事、不應誤解的事、證據位置與敏感資料檢查都要齊全。請確認三件事:一、交接包內容完整 / 正確;二、topic 是 `<topic>`;三、可以寫入共用 Drive 資料夾。你回「確認發送」後我才會 publish。
 
-正式交接、長正文、多行摘要、表格或含引號 / 特殊符號的正文,AI 內部應先寫入正文檔,再使用:
+正式交接、長正文、多行摘要、表格或含引號 / 特殊符號的正文,AI 內部應先寫入正文檔,再使用(指名收件對象,並把「請對方做的事」逐項用 `--items` 明示申報;沒有明確行動項可省略 `--items`):
 
 ```text
-npx aps publish --topic <topic> --body-file <body_file_path>
+npx aps publish --to <peer_agent_id> --topic <topic> --body-file <body_file_path> --items "<請對方做的事一>;<二>"
 ```
 
 ## 7.2 既有項目升級 wording
