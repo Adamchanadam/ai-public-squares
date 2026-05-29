@@ -8,7 +8,22 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-29 (S45, latest) — Jay real-machine UAT GREEN; truncation fix; roadmap automation-layer prune; thinking-method memories + runbook codex method
+## 2026-05-29 (S46, latest) — 0.2.13 第一段 CLI + 第二段 skill built/committed; Kit 0.3.14 recorded; QC 行為真源對齊 mechanism
+
+- **ID:** S46
+- **Summary:** Built 0.2.13 第一段 (CLI「冇對方都用得」model + items explicit contract) and 第二段 (skill aligned to the new model), each verified and committed locally. Two codex read-only reviews (plan + implementation). Recorded Adam's Agent Handoff Kit upgrade 0.3.13→0.3.14. After the skill was found still teaching the old five-question model, hardened the QC mechanism with a CLI↔skill↔docs 行為真源對齊 check (外發前檢 9(d)) + blocking gate. Decided ship vehicle 方案甲. Six local commits; nothing pushed / published.
+- **第一段 (`bin/aps.js`, `387fc5e` + codex fixes `ac1ab55`):** three-question `init` (Drive / project / own name; counterpart optional; role inferred), `doctor` split (local-core decides exit / peer health informational; passes with no counterpart), `publish` actionable no-recipient prompt + reachability gate on ALL recipient sources (explicit `--to` blocks, config-default partner only warns), starter-pack moved init→`peer add`, `upgrade` / `config` / `inbox` work with no counterpart, items explicit contract (`--items` / `--items-file` verbatim into frontmatter, `readPacketSummary` frontmatter-only, `revise` preserves prior items / `--clear-items`), S45 truncation fix rides along. Verified: isolated-Hub smoke 48/48 + `node --check` + dry-runs + Handoff Kit doctor 45.
+- **codex (gpt-5.5, read-only):** plan review caught that the real coupling also spanned `upgrade` / `config` / `inbox` / publish-gate-all-paths / revise-preserve / frontmatter-only-read (folded into the build); implementation review caught starter-pack-old-wording, the nested-items parser indent, revise mutual-exclusion (fixed in `ac1ab55`). Evidence `dev/qc/evidence/2026-05-29-codex-0213-stage1-plan/` (gitignored): `out.txt`, `out-impl.txt`, `AUDIT.md`, `smoke.sh`.
+- **Kit upgrade (`d67dbaa`):** Adam upgraded Agent Handoff Kit 0.3.13→0.3.14; clean migration (all existing files Skipped Existing, no conflict, only the PROJECT_INDEX version record bumped; AGENTS.md unchanged; doctor `status: passed`, 45). Recorded PROJECT_INDEX row (Last verified 2026-05-29) + `dev/governance_migrations/20260529T143833Z/`.
+- **QC mechanism (`afd7c3a`):** after Adam flagged the skill-drift hole as a QC gap, extended 外發前檢 第 9 項 to 「文檔與教學層內容 / 行為真源對齊」 covering skill + CLI↔teaching linkage, added (d) 行為真源對齊 + 「結構過≠行為對齊」 + 分階段落地 blocking 閘; full-check spec-to-runtime CLI↔skill parity; DOC_SYNC npm + skill rows strengthened; memory `feedback-structure-vs-behaviour-drift`. Principle: `bin/aps.js` is the behaviour truth; skill + docs are teaching layers that must follow.
+- **第二段 (`skills/aps/**`, `b9061c2`):** `SKILL.md` + `references/setup-dialogue.md` aligned to three-question / items / invite; verified via the new 9(d) check (0 old-model residue; remaining matches are negations); `description` 729 ≤1024 valid.
+- **Changed (repo; six local commits, unpushed):** `bin/aps.js`; `skills/aps/SKILL.md` + `references/setup-dialogue.md`; `dev/qc/triggers.md`; `dev/DOC_SYNC_REGISTRY.md`; `dev/PROJECT_INDEX.md`; `dev/governance_migrations/20260529T143833Z/`; closeout: this log, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG_archive/*`, `dev/PROJECT_DECISIONS.md`, `START_NEXT_SESSION_PROMPT.txt`.
+- **QC:** smoke 48/48; 9(d) behaviour-truth alignment 0 old-model residue; `node --check`; `git diff --check` clean; Handoff Kit doctor 45 passed; working tree clean after `b9061c2`; local 6 ahead of origin/main (`ff044e9`); no push.
+- **Boundary:** Six local commits (Adam authorized each); NO push / tag / release / npm publish / Pages. **Live 9(d) blocking:** public HTML (`README.md` + `docs/*.html`) still teaches the old five-question / init-writes-starter model — 第三段 must align it before any release.
+- **Next:** 0.2.13 第三段 (public surfaces → three-question + maintainer vocab read-through + `dev/release-notes/v0.2.13.md`; clears the 9(d) blocking), then 第四段 UAT, 第五段 gated release.
+- **Log maintenance:** S46 prepended (hot log 11); N-rule moved the oldest entry (S36) into archive batch 009 → hot log back to 10; INDEX updated.
+
+## 2026-05-29 (S45) — Jay real-machine UAT GREEN; truncation fix; roadmap automation-layer prune; thinking-method memories + runbook codex method
 
 - **ID:** S45
 - **Summary:** Adam relayed Jay's real-machine APS feedback packet (Jay published from his Mac/Codex to the real Hub). Ran `check Drive` on Adam's side and received it — the cross-machine round-trip + the 0.2.12 `check Drive` trigger are now proven on a real second machine (prior #1 open item, substantially resolved). Triaged Jay's two defects: fixed one (truncation), deferred one (items) to a 0.2.13 explicit contract. Pruned the roadmap's automation layer to non-APS-scope. Wrote two thinking-method memories + a runbook codex-invocation entry. Full closeout. Nothing committed/pushed/published.
@@ -95,10 +110,6 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 ## 2026-05-28 (S37) — 0.2.9 Project Peers UAT and starter pack fix
 
 - Short index: Adam / Jay / Fanny UAT covered Project Peers and fixed new-peer Agent Handoff Kit preflight; durable details live in `dev/SESSION_HANDOFF.md`, `dev/PROJECT_INDEX.md`, and the latest full-audit report.
-
-## 2026-05-28 (S36) — Project Context Index direction added
-
-- Short index: Project Context Index was recorded as a later background-index direction only; durable details live in the roadmap, registry, index, and handoff.
 
 ## Entry Template
 

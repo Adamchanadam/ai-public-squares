@@ -13,6 +13,8 @@
 
 任務需求演進的長期 narrative。Newest first。AI 觀察到 substantive task evolution 時 append。
 
+- 2026-05-29 (S46) — 0.2.13「人性化上手」由設計進入落地:第一段(CLI 冇對方都用得模型 + items 明示契約)同第二段(skill 對齊三問 / items / 邀請)已 build + 驗 + 本機 commit。產品由「協定 + 候選功能」明確向「非技術新手真實可上手」推進。同時治理層成熟一階:QC 由「查結構」升級到「行為真源對齊」(`bin/aps.js` 為行為真源,skill + 公開頁跟),並把分階段落地嘅 drift 由「靠 AI 記住」變成明文 blocking 閘。
+
 - 2026-05-29 (S45) — Jay 真機 UAT 回傳,確認跨機交接 + 「check Drive」喺真正第二部機行得通,APS 由「協定 + 候選功能」進入「真實雙機可用」階段。同時產品邊界再收斂:自動化／背景通知／排程由「延後路線」改判為「非 APS 範圍」—— APS 定位鎖死為手動、human-in-loop、靠同步資料夾嘅結構化交接,自動喚醒交返畀 AI 工具／OS／通訊軟件。下一刀係 0.2.13 人性化上手(install 三問 + 四項耦合 CLI 改動 + items 明示契約)。
 
 - 2026-05-29 — APS 方向收斂為先做「正名與框架(0.2.12)」、人性化安裝四項拆去 0.2.13。觸發點:Adam 發現 onboarding walkthrough 仍純兩人框架 + 仍用舊詞「Hub」,反映文檔 QC 只查結構唔查內容模型。由此 Adam 定案:過去無真實公眾用過「check Hub」(只得佢同 Jay),索性全面切「check Drive」+ 把產品正名為 Agent Public Squares(同姊妹 Agent Handoff Kit 同家族;簡寫 APS 不變、npm 套件名不改)。產品身份由「AI Public Squares」過渡為「Agent Public Squares」,舊名保留為可識別 alias。
@@ -37,6 +39,8 @@
 
 主要架構取捨與 rationale。AI 在 plan 涉及 multi-option trade-off 時 append，並等用戶 confirm。
 
+- 2026-05-29 (S46) — 0.2.13 第一段三個架構取捨,全部經 codex 兩輪只讀覆核(計劃 + 實作)確認。(1) **publish 收件資格閘覆蓋所有收件來源**:明示 `--to`(新多 peer 路)失敗即擋,舊 config 預設對方(fallback)只警告不擋 —— 揀呢個而非「只喺 `--to` 檢查」(codex 指出嘅不一致窿)或「一刀切都擋」(會整爛舊二人『先發包、對方後加入』嘅 documented smoke)。(2) **items frontmatter-only 解析 + revise 預設保留**:揀明示契約(`--items` / `--items-file` 逐字入 frontmatter、reader 只讀 frontmatter 區塊)而非全文 regex(會誤抽正文 stray `- id:`);revise 唔傳沿用上一版而非清空(避免靜默資料丟失),清空要明示 `--clear-items`。(3) **三問安裝(純三條)**:揀 codex 偏好嘅乾淨三問 + 用緊先邀請,而非保留可選第四條問對方;最清楚、最貼「設定自己、邊做邊加」。另一治理取捨:把「結構過≠行為對齊」嘅防漂移由 HTML 推廣到 CLI↔skill↔docs(外發前檢 9(d)),揀「擴充既有第 9 項 + 立 memory + blocking 閘」而非「補一個窄 case patch」(根因治理)。
+
 - 2026-05-29 (S45) — 兩個架構取捨,均經 codex 只讀覆核。(1) **自動化層「出範圍」而非「延後」**:把 `aps watch`、檔案式 `_notify`、OS 及 AI 平台排程、桌面通知、Telegram bot 自動代發剔出 roadmap。理由:同步資料夾本質保證唔到即時推送或喚醒 AI;呢類能力屬 AI 工具／OS／通訊軟件或另一項產品,收入 APS 只會擴大權限同「見到提醒=已處理」嘅誤解,違背低門檻、人手確認定位。codex:剪裁安全、無流程斷絕、無功能缺口,只需同步 triggers / registry 口徑(已做)。(2) **packet `items` 用「AI 明示申報」契約**(`--items` / `--items-file`)而非喺正文逆向抽:正文係 AI 自由生成,認固定標題／標點會睇 AI 點寫而漏抽或抽錯(Jay 真包根本冇「請對方做的事」標題);機器要讀嘅資料一定要走明示欄位。evidence:`dev/qc/evidence/2026-05-29-codex-items-generality/` + `dev/qc/evidence/2026-05-29-codex-roadmap-prune/`。
 
 - 2026-05-29 — 決定 0.2.12「正名與框架」版的範圍與次序。品牌正式定為 Agent Public Squares(AI Public Squares 降為仍可識別 legacy alias);收件 trigger「check Hub」→「check Drive」、概念詞「Hub」→「共用 Drive 資料夾」(只改 prose;內部 hubRoot / _hub/ / 協定結構詞保留;check Hub 留隱藏 alias)。npm 套件名 @adamchanadam/aps 不改(簡寫不變、零安裝斷裂);GitHub repo slug 改 agent-public-squares;歷史紀錄與本機 folder 不改(folder 留待無 session 時專做)。人性化安裝四項拆去 0.2.13 獨立 UAT。經 codex(gpt-5.5、只讀、高 reasoning)獨立覆核補入要害:觸發詞活在 skill + bin/aps.js 生成文字(淨改 docs 無效,既有用戶要 reinstall + upgrade + 重啟);prose 與結構詞要分(PROTOCOL 結構詞不改);改名涵蓋 npm tarball 全部檔含 examples;GitHub 改名次序為先 rename → 驗 Pages 200 → 同步 URL + remote → 後 publish;0.2.12 文件不可承諾 0.2.13 三問安裝;既有 Hub 已寫協定檔不自動改名。Codex 全文:dev/qc/evidence/2026-05-29-codex-0212-naming-review/codex_review.txt。
@@ -52,6 +56,8 @@
 ## Insights & Learnings
 
 累積式學習、反思、觀察。AI 觀察到多 session 累積 pattern 時 append。
+
+- 2026-05-29 (S46) — 三條累積學習。(1) **「結構過≠行為對齊」是跨教學層通病,非 HTML 獨有**:S44/S45(入口頁 vs walkthrough)同 S46(CLI vs skill)同源 —— description 長度 / YAML / 觸發詞 / section 結構檢查全過,但行為模型已漂移。已把外發前檢第 9 項由只審 HTML 擴成 CLI↔skill↔docs 行為真源對齊(9(d)),並立 memory `feedback-structure-vs-behaviour-drift`。教訓:確定性真源(`bin/aps.js`)一改行為,教學層(skill / docs)必須對齊或明文 blocking。(2) **分階段落地嘅 drift 要做成 QC blocking 閘,唔好靠 AI 記住**:第一段 CLI 先行、docs 後補嗰段,必須喺 handoff Risks + release gate 明文 blocking,先唔會發佈時漏對齊。(3) **耦合主路徑改動,動手前同改完後各做一次 codex 只讀覆核都有回報**:計劃覆核揪出原計劃漏咗 `upgrade` / `config` / `inbox` 等耦合(否則三問安裝係假);實作覆核揪出 starter pack 舊文案、巢狀 items 解析、修訂互斥三個位。
 
 - 2026-05-29 (S45) — 兩條跨項目工程教訓,已寫入跨 session memory。(1) 確定性工具要消費「另一個 AI 自由生成嘅內容」時,機器要讀嘅資料一定要走明示契約(frontmatter / JSON / 參數),唔好認標題／標點／格式逆向估 —— 估法會睇 AI 寫法而漏／錯,規則愈加愈膨脹兼互撞;呢個係 APS `items` bug 嘅根因。(2) 喺 git bash(MSYS)永不用 `cmd /c` 包 `codex` / `claude -p`:`/c` 會被當成路徑,cmd 只彈 banner 唔執行,中文 prompt 又被 codepage 搞亂;直接 call,長／中文 prompt 用 UTF-8 檔餵入。正確 codex 方法已記入 `GENERIC_OPERATIONAL_RUNBOOK.md` §3i / §5k。
 
