@@ -131,7 +131,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 正在記錄本項目的 APS 本地設定位置。
 ```
 
-0.2.x pre-release 已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在完整設置時寫入 Hub skeleton、Bridge Pack、starter pack 與 `.aps/config.json`,令後續日常命令毋須重複輸入 Hub / project / agent 長參數。互動式 CLI 應以繁體中文解釋每個設定值用途,尤其要說明 Hub root path 是使用者電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
+前期測試版已隨包提供 `resources/protocol/PROTOCOL.md`、`resources/protocol/templates/`,並由互動式 `npx aps init` 在完整設置時寫入共用 Drive 資料夾 skeleton、Bridge Pack、starter pack 與 `.aps/config.json`,令後續日常命令毋須重複輸入共用 Drive 資料夾 / project / agent 長參數。互動式 CLI 應以繁體中文解釋每個設定值用途,尤其要說明共用 Drive 資料夾路徑是使用者電腦上 Google Drive 同步出來的 `AI_Public_Squares` 資料夾完整路徑。若 CLI 回報找不到 PROTOCOL source,不要假裝已複製。使用以下阻擋句:
 
 > 目前執行環境找不到 PROTOCOL source 檔案。這一步不能假裝完成。需要先確認 package 是否完整安裝,或由已驗證的 Hub template source 讀取。
 
