@@ -8,7 +8,23 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-29 (S44, latest) — published 0.2.11 + 0.2.12 (rename to Agent Public Squares); repo renamed + pushed; full-audit
+## 2026-05-29 (S45, latest) — Jay real-machine UAT GREEN; truncation fix; roadmap automation-layer prune; thinking-method memories + runbook codex method
+
+- **ID:** S45
+- **Summary:** Adam relayed Jay's real-machine APS feedback packet (Jay published from his Mac/Codex to the real Hub). Ran `check Drive` on Adam's side and received it — the cross-machine round-trip + the 0.2.12 `check Drive` trigger are now proven on a real second machine (prior #1 open item, substantially resolved). Triaged Jay's two defects: fixed one (truncation), deferred one (items) to a 0.2.13 explicit contract. Pruned the roadmap's automation layer to non-APS-scope. Wrote two thinking-method memories + a runbook codex-invocation entry. Full closeout. Nothing committed/pushed/published.
+- **Jay UAT:** received `aps_uat_0_2_9_jay/from_jay/.../20260529T082314Z__aps_0210_uat_feedback v1` via Adam recv config at sibling `_aps_uat_adam_recv`; doctor's ❌ was only the scratch recv dir lacking Handoff Kit files (Hub side all ✅). Did NOT consume/reply (no Hub write). Jay confirmed receive flow + `check Drive` + 「教我用 APS」 work; flagged (a) inbox/notification summary truncation looks unfinished, (b) `items: []` not populated from body. Untested: Jay's 「Adam 收到未」 status step (non-blocking).
+- **Fix (truncation):** `bin/aps.js` — added `clipWithEllipsis(value, maxLength)`; routed `packetScopeFromBody` (120) + `compactNoticeText` (220) through it (short unchanged, long → single 「…」). Verified in an isolated temp Hub (`mktemp`, real Hub untouched): long scope→「…」, short→none, >220 notice→「…」, jay inbox shows 「…」; `node --check` OK; two-agent init→publish→inbox no regression. Uncommitted, unpublished.
+- **Defer (items):** chose explicit `--items` / `--items-file` contract for 0.2.13 over prose-parsing. Codex (gpt-5.5, read-only) confirmed prose-parsing AI-generated bodies is brittle (Jay's packet had no 「請對方做的事」 heading). Evidence `dev/qc/evidence/2026-05-29-codex-items-generality/`.
+- **Roadmap prune:** removed the automation layer (watch / `_notify` / OS+AI-platform scheduling / desktop notif / Telegram-bot auto-send) and reframed as non-APS-scope (new §5; sections renumbered 一~十一; stages 6→4; success/compat/risk tables + deep-check list trimmed). Reframed `dev/qc/triggers.md` + `dev/DOC_SYNC_REGISTRY.md` 口徑 in the same unit. Codex review: 剪裁安全、無流程斷絕、無功能缺口; only requirement was the downstream 口徑 reframe (done). Evidence `dev/qc/evidence/2026-05-29-codex-roadmap-prune/`. `bin/aps.js` needs no code change for the prune.
+- **Memories (in ~/.claude/.../memory/):** `feedback-no-hardcode-ai-content-parsing` + `feedback-no-cmd-c-codex-claude`.
+- **Runbook (outside repo):** `GENERIC_OPERATIONAL_RUNBOOK.md` §3i (codex/claude-p invocation), §5k (cmd /c MSYS trap), §7 cheat row. codex reachable in git bash + PowerShell (codex-cli 0.134.0).
+- **Changed (repo, all in one local S45 closeout commit, unpushed):** `bin/aps.js`, `docs/plans/2026-05-28-aps-public-product-multi-agent-roadmap.md`, `dev/qc/triggers.md`, `dev/DOC_SYNC_REGISTRY.md`; closeout: `dev/SESSION_HANDOFF.md`, this log, `dev/SESSION_LOG_archive/*`, `dev/PROJECT_INDEX.md`, `dev/PROJECT_DECISIONS.md`, `START_NEXT_SESSION_PROMPT.txt`.
+- **QC:** truncation verified (isolated Hub + node --check); roadmap headings sequential, automation tokens only in §5/guardrails/history; doctor 45/45 passed; working tree clean after the S45 closeout commit; local 1 ahead of origin/main (`ff044e9`); no push.
+- **Boundary:** One local S45 closeout commit (Adam authorized); NO push / tag / release / npm publish / Pages this session. 0.2.13 第一段 is the approved next step (deferred to S46 for clean focus).
+- **Next:** build 0.2.13 第一段 (CLI four coupled + `--items`; truncation rides along); decide ship vehicle (0.2.13 vs 0.2.12.1) for the uncommitted fixes; maintainer-page vocab read-through in 第三段.
+- **Log maintenance:** S45 prepended (hot log 11); N-rule archived the oldest entry (S35) into batch 009 → hot log back to 10.
+
+## 2026-05-29 (S44) — published 0.2.11 + 0.2.12 (rename to Agent Public Squares); repo renamed + pushed; full-audit
 
 - **ID:** S44
 - **Summary:** Long session. (1) Published the S43-ready 0.2.11 peer-lifecycle root-fix to unblock Jay. (2) Adam flagged the onboarding walkthrough was still two-person + still said "Hub" — a doc-QC gap; added release-check item #9 (full-page content/product-model deep review) + widened the two-person-framing scan. (3) Codex (gpt-5.5, read-only) independently reviewed the 0.2.12 plan. (4) Built **0.2.12 「naming & framing」** via 7 parallel sub-agents + integration QC: rebrand AI Public Squares → Agent Public Squares (npm package name unchanged; old name kept as recognized legacy alias), check Hub → check Drive (check Hub kept as hidden alias), concept Hub → 共用 Drive 資料夾 (structural hubRoot/_hub/ kept), multi-peer walkthrough rewrite, version wording made neutral. (5) Renamed the GitHub repo `ai-public-squares` → `agent-public-squares` + synced 9 in-file URLs + git remote. (6) Ran 🔴 full-check (passed). (7) Published 0.2.12 + pushed `main`; all three surfaces (npm / repo / Pages) now show the new brand.
@@ -83,10 +99,6 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 ## 2026-05-28 (S36) — Project Context Index direction added
 
 - Short index: Project Context Index was recorded as a later background-index direction only; durable details live in the roadmap, registry, index, and handoff.
-
-## 2026-05-28 (S35) — Project Peers direction refined
-
-- Short index: product direction changed to Reliable Peer Handoff with one project / many peers / single-recipient packets; durable details live in the roadmap, index, and handoff.
 
 ## Entry Template
 

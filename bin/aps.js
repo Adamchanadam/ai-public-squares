@@ -787,12 +787,21 @@ function yamlDoubleQuote(value) {
   return String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
+// Clip a one-line summary to maxLength, appending a single ellipsis when it was
+// actually shortened, so a truncated summary never reads as an unfinished sentence.
+// Short text is returned unchanged (no spurious ellipsis). Total length stays <= maxLength.
+function clipWithEllipsis(value, maxLength) {
+  const text = String(value || '');
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
 function packetScopeFromBody(body, fallback) {
   const meaningful = String(body || '')
     .split(/\r?\n/)
     .map((line) => line.trim())
     .find((line) => line && !line.startsWith('#'));
-  return yamlDoubleQuote((meaningful || fallback).slice(0, 120));
+  return yamlDoubleQuote(clipWithEllipsis(meaningful || fallback, 120));
 }
 
 function compactNoticeText(value, fallback, maxLength = 220) {
@@ -800,7 +809,7 @@ function compactNoticeText(value, fallback, maxLength = 220) {
     .replace(/\r?\n+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  return (text || fallback).slice(0, maxLength);
+  return clipWithEllipsis(text || fallback, maxLength);
 }
 
 function firstMeaningfulBodyLine(body) {

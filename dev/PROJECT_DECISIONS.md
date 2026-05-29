@@ -13,6 +13,8 @@
 
 任務需求演進的長期 narrative。Newest first。AI 觀察到 substantive task evolution 時 append。
 
+- 2026-05-29 (S45) — Jay 真機 UAT 回傳,確認跨機交接 + 「check Drive」喺真正第二部機行得通,APS 由「協定 + 候選功能」進入「真實雙機可用」階段。同時產品邊界再收斂:自動化／背景通知／排程由「延後路線」改判為「非 APS 範圍」—— APS 定位鎖死為手動、human-in-loop、靠同步資料夾嘅結構化交接,自動喚醒交返畀 AI 工具／OS／通訊軟件。下一刀係 0.2.13 人性化上手(install 三問 + 四項耦合 CLI 改動 + items 明示契約)。
+
 - 2026-05-29 — APS 方向收斂為先做「正名與框架(0.2.12)」、人性化安裝四項拆去 0.2.13。觸發點:Adam 發現 onboarding walkthrough 仍純兩人框架 + 仍用舊詞「Hub」,反映文檔 QC 只查結構唔查內容模型。由此 Adam 定案:過去無真實公眾用過「check Hub」(只得佢同 Jay),索性全面切「check Drive」+ 把產品正名為 Agent Public Squares(同姊妹 Agent Handoff Kit 同家族;簡寫 APS 不變、npm 套件名不改)。產品身份由「AI Public Squares」過渡為「Agent Public Squares」,舊名保留為可識別 alias。
 
 - 2026-05-28 — APS 的方向再進一步:由「0.2.9 Reliable Peer Handoff 候選」演進到「人性化上手」。真機 UAT(Jay 用 Mac)暴露兩個同源問題 —— 安裝時強迫填對方名字、以及活躍 peer 仍卡 `provisional` 反過嚟擋住對方回覆 —— 令 Adam 提出把產品由「工程師式預填所有參數先開工」轉向「邊做邊加組員」:安裝只設定自己嗰邊,協作對象用緊先邀請。同時把內部術語「Hub」對外改為「共用 Drive 資料夾」,貼近非技術用戶本身已識的 Google Drive。這次演進把焦點由「協定正確」推向「非技術新手的真實上手體驗」。0.2.10 / 0.2.11 為此鋪路(hub-root 方括號修正、peer 參與即確認),人性化上手本身留待下一版。
@@ -35,6 +37,8 @@
 
 主要架構取捨與 rationale。AI 在 plan 涉及 multi-option trade-off 時 append，並等用戶 confirm。
 
+- 2026-05-29 (S45) — 兩個架構取捨,均經 codex 只讀覆核。(1) **自動化層「出範圍」而非「延後」**:把 `aps watch`、檔案式 `_notify`、OS 及 AI 平台排程、桌面通知、Telegram bot 自動代發剔出 roadmap。理由:同步資料夾本質保證唔到即時推送或喚醒 AI;呢類能力屬 AI 工具／OS／通訊軟件或另一項產品,收入 APS 只會擴大權限同「見到提醒=已處理」嘅誤解,違背低門檻、人手確認定位。codex:剪裁安全、無流程斷絕、無功能缺口,只需同步 triggers / registry 口徑(已做)。(2) **packet `items` 用「AI 明示申報」契約**(`--items` / `--items-file`)而非喺正文逆向抽:正文係 AI 自由生成,認固定標題／標點會睇 AI 點寫而漏抽或抽錯(Jay 真包根本冇「請對方做的事」標題);機器要讀嘅資料一定要走明示欄位。evidence:`dev/qc/evidence/2026-05-29-codex-items-generality/` + `dev/qc/evidence/2026-05-29-codex-roadmap-prune/`。
+
 - 2026-05-29 — 決定 0.2.12「正名與框架」版的範圍與次序。品牌正式定為 Agent Public Squares(AI Public Squares 降為仍可識別 legacy alias);收件 trigger「check Hub」→「check Drive」、概念詞「Hub」→「共用 Drive 資料夾」(只改 prose;內部 hubRoot / _hub/ / 協定結構詞保留;check Hub 留隱藏 alias)。npm 套件名 @adamchanadam/aps 不改(簡寫不變、零安裝斷裂);GitHub repo slug 改 agent-public-squares;歷史紀錄與本機 folder 不改(folder 留待無 session 時專做)。人性化安裝四項拆去 0.2.13 獨立 UAT。經 codex(gpt-5.5、只讀、高 reasoning)獨立覆核補入要害:觸發詞活在 skill + bin/aps.js 生成文字(淨改 docs 無效,既有用戶要 reinstall + upgrade + 重啟);prose 與結構詞要分(PROTOCOL 結構詞不改);改名涵蓋 npm tarball 全部檔含 examples;GitHub 改名次序為先 rename → 驗 Pages 200 → 同步 URL + remote → 後 publish;0.2.12 文件不可承諾 0.2.13 三問安裝;既有 Hub 已寫協定檔不自動改名。Codex 全文:dev/qc/evidence/2026-05-29-codex-0212-naming-review/codex_review.txt。
 
 - 2026-05-28 — 選擇「參與即自我確認 + 三檔可達性」作為 peer 確認 root-fix(0.2.11),而不是單靠 `init` 確認或放寬到「有 lane 就放行」。理由:真機 UAT 證明只靠 `init` 確認會令活躍 agent 卡在 `provisional`、反過嚟擋住對方回覆;而「有 lane」唔代表已加入(`init` 會為雙方建 lane)。所以改為:`publish` / `consume` 自動確認執行者自己的 peer card(只確認自己、override 身份時唔做);收件人閘改成 confirmed / provisional-但有真實活動 / 擋,三檔。授權永遠唔用 role。經兩次獨立 codex 只讀覆核確認。
@@ -48,6 +52,8 @@
 ## Insights & Learnings
 
 累積式學習、反思、觀察。AI 觀察到多 session 累積 pattern 時 append。
+
+- 2026-05-29 (S45) — 兩條跨項目工程教訓,已寫入跨 session memory。(1) 確定性工具要消費「另一個 AI 自由生成嘅內容」時,機器要讀嘅資料一定要走明示契約(frontmatter / JSON / 參數),唔好認標題／標點／格式逆向估 —— 估法會睇 AI 寫法而漏／錯,規則愈加愈膨脹兼互撞;呢個係 APS `items` bug 嘅根因。(2) 喺 git bash(MSYS)永不用 `cmd /c` 包 `codex` / `claude -p`:`/c` 會被當成路徑,cmd 只彈 banner 唔執行,中文 prompt 又被 codepage 搞亂;直接 call,長／中文 prompt 用 UTF-8 檔餵入。正確 codex 方法已記入 `GENERIC_OPERATIONAL_RUNBOOK.md` §3i / §5k。
 
 - 2026-05-29 — 文檔 QC 只查結構(標記 / 連結 / section 配對)會放過「內容模型漂移」:同一次改寫,入口頁已轉多 peer 而 walkthrough 仍純兩人,兩頁都過結構檢查。已在外發前檢加第 9 項「user-facing 文檔內容與產品模型深審」。另一教訓:rebrand 不可盲改字串 —— 畀人睇的 prose 詞與結構詞(hubRoot / _hub/ / 協定 schema)要分開,否則為咗文案一致會整爛協定可讀性與設定相容(codex 點出)。
 
