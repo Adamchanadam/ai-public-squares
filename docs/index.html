@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Public Squares — 入口</title>
+<title>Agent Public Squares — 入口</title>
 <style>
   :root {
     --ink: #1b2230;
@@ -218,7 +218,7 @@
 <main>
 
 <nav class="site-nav" aria-label="主目錄">
-  <span class="site-nav__brand">AI Public Squares<span class="site-nav__brand-tag">APS</span></span>
+  <span class="site-nav__brand">Agent Public Squares<span class="site-nav__brand-tag">APS</span></span>
   <a class="site-nav__link site-nav__link--active" href="index.html">入口</a>
   <a class="site-nav__link" href="guides/index.html">教學中心</a>
   <span class="site-nav__spacer"></span>
@@ -227,32 +227,32 @@
 
 <header class="cover">
   <div class="eyebrow">公開入口</div>
-  <h1>讓兩部電腦上的 AI 有一個共同交接處。</h1>
-  <p class="subtitle">AI Public Squares 用 Google Drive 上的一個共享資料夾，替兩邊的 AI 留下交接包、上下文、版本記錄與收件狀態。它不是伺服器，也不會自動傳訊息；它的價值是讓對方 AI 在檢查 Hub 時讀到完整交接，而不是靠人類重複搬運背景。</p>
+  <h1>讓協作各方的 AI，有一個共同的交接處。</h1>
+  <p class="subtitle">Agent Public Squares 在一個共用的雲端資料夾裏，為協作各方的 AI 留下交接內容、來龍去脈、版本與已讀記錄。它不是伺服器，也不會代你傳話。它的用處，是讓對方的 AI 在查看共用資料夾時一次讀齊交接，不必靠人反覆交代背景。同一個項目可以有多位協作對象，但每一次交接仍然是一對一、經人過目後才送出。</p>
   <div class="meta">
-    <span class="badge ok">npm latest 0.2.8</span>
-    <span class="badge">公眾可用版本</span>
+    <span class="badge ok">前期測試版</span>
+    <span class="badge">公眾可用</span>
   </div>
 </header>
 
 <section>
   <h2>先講清楚：目前可依賴甚麼？</h2>
-  <p class="lede">本頁只列公眾可照做的現有流程：安裝、設定、健康檢查、交接、收件、修訂、撤回與收結。npm latest 0.2.8 仍屬 pre-release,但已包含 post-UAT UX 與角色 B 預設身份修正。</p>
+  <p class="lede">本頁只列出目前公眾可以照做的事：安裝、設定、健康檢查、交接、收件、修訂、撤回與收結。產品仍屬前期測試版，請按本頁寫明的範圍使用。</p>
   <div class="grid two">
     <div class="tile">
-      <h3>已可實際使用的部分</h3>
-      <p><code>npx aps init</code> 可安裝 APS 技能、建立 Hub 骨架、寫入本地設定；<code>doctor</code>、<code>publish</code>、<code>inbox</code>、<code>consume</code>、<code>revise</code>、<code>withdraw</code>、<code>close</code> 已可支援最小日常往返。</p>
+      <h3>目前已可實際使用</h3>
+      <p>設定工具會替你安裝技能、在共用資料夾建立骨架、並保存本機設定。之後的健康檢查、發出交接、查看收件、消化、修訂、撤回與收結，都已能完成最基本的一次來回。</p>
     </div>
     <div class="tile">
       <h3>使用時要知道的邊界</h3>
-      <p>AI 對話中的自然語言引導、錯誤補救、跨機項目首次驗證，仍需要保守試用。工具不會自動觸發對方 AI，但 AI 應替你生成可直接複製貼上的摘要式通知。通知可貼到 Telegram、WhatsApp 或 Email，並應叫對方在自己電腦上使用已接入 APS 的對應項目，不應複製發送方的本機 Google Drive 路徑。</p>
+      <p>AI 在對話中的自然語言引導、出錯補救，以及每個新項目第一次的跨機驗證，仍須保守試用。工具不會自動驚動對方，也不會替你開動對方的 AI；它只會替你準備一段可直接轉發的通知，由你經平日的通訊方式傳給對方，請對方在自己電腦上打開對應的項目查看。通知不應夾雜你這邊電腦的本機路徑。</p>
     </div>
   </div>
   <div class="callout">
-    <strong>對新用戶的正確期待：</strong>今天最可靠的路徑是「照教學安裝 → 由 <code>npx aps init</code> 建立設定 → 打開 AI 說『教我用 APS』或『教我用 Agent Public Squares』→ 讓 AI 協助你做第一次測試交接」。AI Public Squares 是正式產品名；Agent Public Squares 是同一產品的自然語言別名。命令列保留作可驗證備用；日常主路徑應是自然語言。
+    <strong>對新用戶的正確期待：</strong>今天最可靠的路徑是「照教學安裝 → 由 <code>npx aps init</code> 建立設定 → 打開 AI 說『教我用 APS』或『教我用 Agent Public Squares』→ 讓 AI 協助你做第一次測試交接」。Agent Public Squares 簡稱 APS。命令列保留作可驗證備用；日常主路徑應是自然語言。
   </div>
   <div class="callout warn">
-    <strong>產品邊界：</strong>0.2.x 主路徑是二人協作。現在只承諾本頁寫明的安裝、健康檢查、交接、收件、修訂、撤回與收結能力。核心方向是不要求雲端開發者專案、額外 API 權限或密鑰設定。
+    <strong>使用邊界：</strong>目前的主路徑是可靠的逐一交接 —— 同一個項目可以有多位協作對象，你可以把不同部分交給不同人，但每一次交接都是一對一、由你過目後送出。現在只承諾本頁寫明的安裝、健康檢查、交接、收件、修訂、撤回與收結能力。核心方向是不要求雲端開發者專案、額外權限或密鑰設定。
   </div>
 </section>
 
@@ -265,7 +265,7 @@
     </div>
     <div class="tile">
       <h3>新 AI 對話忘記上下文？</h3>
-      <p>AI 可以從同一個 Hub 讀到對方留下的交接包、共同目標、各自任務邊界、版本與已讀狀態，減少每次重新交代背景。</p>
+      <p>AI 可以從同一個共用 Drive 資料夾讀到對方留下的交接包、共同目標、各自任務邊界、版本與已讀狀態，減少每次重新交代背景。</p>
     </div>
     <div class="tile">
       <h3>Google Drive 衝突副本？</h3>
@@ -273,7 +273,7 @@
     </div>
     <div class="tile">
       <h3>每次往返重做？</h3>
-      <p>第一次接駁後，你可以對 AI 說「把目前背景交給對方」或「看看對方有沒有回覆」。AI 依本地設定與 Hub 狀態協助你判斷下一步。</p>
+      <p>第一次接駁後，你可以對 AI 說「把目前背景交給對方」或「看看對方有沒有回覆」。AI 依本地設定與共用 Drive 資料夾的狀態協助你判斷下一步。</p>
     </div>
   </div>
 </section>
@@ -286,7 +286,7 @@
     <li>先安裝 Agent Handoff Kit，讓這個資料夾具備基本交接與健康檢查能力。</li>
     <li>安裝 APS 套件。</li>
     <li>執行 <code>npx aps init</code>，按畫面提問填入五個值。</li>
-    <li>執行 <code>npx aps doctor</code>，確認 Hub 與本機設定正常。</li>
+    <li>執行 <code>npx aps doctor</code>，確認共用 Drive 資料夾與本機設定正常。</li>
     <li>在 AI 工具打開同一個項目資料夾，輸入「教我用 APS」。若你自然說成「教我用 Agent Public Squares」，AI 也應走同一條 APS 流程。</li>
   </ol>
   <pre>npx --yes @adamchanadam/agent-handoff-kit@latest init
@@ -305,23 +305,23 @@ npx aps doctor</pre>
     </thead>
     <tbody>
       <tr>
-        <td>你的角色</td>
-        <td>A 代表你先建立 Hub 給對方加入；B 代表你收到對方 starter pack 後加入。</td>
-        <td>第一次建立通常選 A。</td>
+        <td>設定起手方向</td>
+        <td>畫面問你是第一個建立共用資料夾的人（選 A），還是收到對方邀請後才加入（選 B）。此項只影響設定起步，不影響日後誰可發送或接收 —— 兩邊你都做得到。</td>
+        <td>第一個設定的人選 A；收到對方邀請才設定就選 B。</td>
       </tr>
       <tr>
         <td>項目代號</td>
-        <td>Hub 內用來分開不同合作項目的資料夾名稱。</td>
+        <td>共用 Drive 資料夾內用來分開不同合作項目的資料夾名稱。</td>
         <td><code>aps_uat</code>、<code>branding_2026</code>。只用小寫英文、數字、底線。</td>
       </tr>
       <tr>
         <td>你的 agent id</td>
-        <td>你這邊在 Hub 內的共享身份。</td>
+        <td>你這邊在共用 Drive 資料夾內的共享身份。</td>
         <td>例如 <code>adam</code>。兩部電腦都要用同一個名字代表 Adam。</td>
       </tr>
       <tr>
         <td>對方 agent id</td>
-        <td>對方在 Hub 內的共享身份。對方設置時要與你對調。</td>
+        <td>對方在共用 Drive 資料夾內的共享身份。對方設置時要與你對調。</td>
         <td>例如 <code>jay</code>。Jay 加入時填自己 <code>jay</code>、對方 <code>adam</code>。</td>
       </tr>
       <tr>
@@ -341,12 +341,12 @@ npx aps doctor</pre>
   <p class="lede">本工具的目標不是讓你記更多命令，而是讓 AI 可按同一套規矩代你處理交接。命令列保留作可驗證、可追溯的備用路徑；一般使用時應先對 AI 說你想完成甚麼。</p>
   <div class="grid three">
     <div class="tile">
-      <h3>你有內容給對方</h3>
-      <p>告訴 AI：「幫我將當前任務整理成 APS 交接包給對方」。AI 應自動讀設定、檢查 Hub、整理共同目標、本方任務、對方任務、交叉點、待處理事項、關鍵檔案與請對方回應的問題。發送前，AI 必須先做完整性預檢並給你確認，然後才發佈交接包並生成可貼上的摘要式通知。</p>
+      <h3>你有內容要交出</h3>
+      <p>告訴 AI：「把這部分整理成交接，交給某某」。AI 會自動讀設定、查看共用資料夾、整理共同目標、本方任務、對方任務、交叉點、待辦事項、關鍵檔案，以及請對方回應的問題。發送前，AI 必先做一次完整性檢查並請你過目，確認後才送出，並準備好一段可轉發的通知。</p>
     </div>
     <div class="tile">
       <h3>對方說有新內容</h3>
-      <p>告訴 AI：「check Hub」。AI 應檢查收件、列出待處理內容，先生成方便閱讀的收件報告，再核對交接包是否齊全、是否與本機文件資料和任務要求一致；若資料不足或不一致，AI 應先整理缺漏、發補交需求或共識確認包，不應直接開工。</p>
+      <p>告訴 AI：「check Drive」。AI 應檢查收件、列出待處理內容，先生成方便閱讀的收件報告，再核對交接包是否齊全、是否與本機文件資料和任務要求一致；若資料不足或不一致，AI 應先整理缺漏、發補交需求或共識確認包，不應直接開工。</p>
     </div>
     <div class="tile">
       <h3>出現錯誤或同步問題</h3>
@@ -354,7 +354,29 @@ npx aps doctor</pre>
     </div>
   </div>
   <div class="callout warn">
-    <strong>目前限制：</strong>APS 不會自動提醒對方電腦有新內容，也不會自動觸發對方 AI。AI 應替你生成可直接複製貼上的 Telegram / WhatsApp / Email 通知，你只需貼到平常渠道請對方「check Hub」。通知文字應包含重點摘要與注意事項，不應只列項目代號、主題與交接編號；本機 <code>hubRoot</code> 不應當成對方電腦上的路徑。若 AI 未能順利完成，才回到命令列備用路徑：<code>npx aps doctor</code>、<code>npx aps inbox</code>、<code>npx aps publish</code>、<code>npx aps consume</code>、<code>npx aps revise</code>、<code>npx aps withdraw</code>、<code>npx aps close</code>、<code>npx aps config</code>。
+    <strong>目前限制：</strong>APS 不會自動提醒對方電腦有新內容，也不會自動觸發對方 AI。AI 應替你生成可直接複製貼上的 Telegram / WhatsApp / Email 通知，你只需貼到平常渠道請對方「check Drive」。通知文字應包含重點摘要與注意事項，不應只列項目代號、主題與交接編號；本機 <code>hubRoot</code> 不應當成對方電腦上的路徑。若 AI 未能順利完成，才回到命令列備用路徑：<code>npx aps doctor</code>、<code>npx aps inbox</code>、<code>npx aps publish</code>、<code>npx aps consume</code>、<code>npx aps revise</code>、<code>npx aps withdraw</code>、<code>npx aps close</code>、<code>npx aps config</code>。
+  </div>
+</section>
+
+<section>
+  <h2>同一個項目，可以有多位協作對象</h2>
+  <p class="lede">一個項目的生命周期裏，不同部分可能交給不同人。Agent Public Squares 容許你在同一個項目登記多位協作對象，但每一次交接仍然是一對一、由你過目後送出，而不是群發。</p>
+  <div class="grid three">
+    <div class="tile">
+      <h3>邀請新的協作對象</h3>
+      <p>對 AI 說「邀請某某加入這個項目」。AI 會為對方準備一份起步說明與一段可轉發的通知；對方要在自己電腦先完成基本設定，才正式成為可交接的對象。</p>
+    </div>
+    <div class="tile">
+      <h3>把某部分交給某一位</h3>
+      <p>對 AI 說「把這部分交給某某」。AI 會整理交接內容、做發送前檢查、經你確認後，只送給你指名的那一位，並準備好通知讓你轉發。</p>
+    </div>
+    <div class="tile">
+      <h3>查對方收到沒有</h3>
+      <p>對 AI 說「某某收到了沒有」。AI 會查你發出那一份的狀態 —— 對方是否已讀、是否已處理 —— 用日常語言告訴你，不必你自己翻查記錄。</p>
+    </div>
+  </div>
+  <div class="callout">
+    <strong>仍然是一對一：</strong>多位協作對象不等於群組或群發。每一份交接都明確指向一個收件人，各自有自己的收件與已讀狀態，責任與版本才清楚。
   </div>
 </section>
 
@@ -401,11 +423,11 @@ npx aps doctor</pre>
 <section>
   <h2>下一步</h2>
   <p>第一次使用請由 <a href="guides/index.html">教學中心</a> 開始；若你只是想理解工具定位，讀完本頁已足夠。</p>
-  <p>原始碼與問題回報：<a href="https://github.com/Adamchanadam/ai-public-squares">GitHub repo</a>。授權條款：<a href="https://github.com/Adamchanadam/ai-public-squares/blob/main/LICENSE">Apache License 2.0</a>。</p>
+  <p>原始碼與問題回報：<a href="https://github.com/Adamchanadam/agent-public-squares">GitHub repo</a>。授權條款：<a href="https://github.com/Adamchanadam/agent-public-squares/blob/main/LICENSE">Apache License 2.0</a>。</p>
 </section>
 
 <footer>
-  AI Public Squares · 公眾可用版本 · 最新更新 2026-05-28
+  Agent Public Squares · 公眾可用版本 · 最新更新 2026-05-28
 </footer>
 
 </main>

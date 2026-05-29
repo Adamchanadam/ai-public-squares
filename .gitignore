@@ -24,3 +24,6 @@ node_modules/
 _*.txt
 *.tgz
 dev/qc/evidence/
+
+# Browser-automation scratch (Playwright MCP render-check artifacts)
+.playwright-mcp/

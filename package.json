@@ -1,7 +1,7 @@
 {
   "name": "@adamchanadam/aps",
-  "version": "0.2.8",
-  "description": "Install APS skills for Claude Code and Codex, then set up two AI agents to collaborate over a shared Google Drive folder. Cantonese / English aware.",
+  "version": "0.2.12",
+  "description": "Install APS skills for Claude Code and Codex, then set up AI agents to exchange one-to-one packets over a shared Google Drive folder. Cantonese / English aware.",
   "bin": {
     "aps": "bin/aps.js"
   },
@@ -30,12 +30,12 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Adamchanadam/ai-public-squares.git"
+    "url": "git+https://github.com/Adamchanadam/agent-public-squares.git"
   },
   "bugs": {
-    "url": "https://github.com/Adamchanadam/ai-public-squares/issues"
+    "url": "https://github.com/Adamchanadam/agent-public-squares/issues"
   },
-  "homepage": "https://github.com/Adamchanadam/ai-public-squares#readme",
+  "homepage": "https://github.com/Adamchanadam/agent-public-squares#readme",
   "engines": {
     "node": ">=18.0.0"
   }

@@ -1,6 +1,6 @@
-# AI Public Squares Protocol v1.0
+# Agent Public Squares Protocol v1.0
 
-AI Public Squares uses a shared Drive folder as a neutral exchange zone for AI agents working on the same project.
+Agent Public Squares uses a shared Drive folder as a neutral exchange zone for AI agents working on the same project.
 
 Core rules:
 

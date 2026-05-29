@@ -150,7 +150,7 @@
 <main>
 
 <nav class="site-nav" aria-label="主目錄">
-  <span class="site-nav__brand">AI Public Squares<span class="site-nav__brand-tag">APS</span></span>
+  <span class="site-nav__brand">Agent Public Squares<span class="site-nav__brand-tag">APS</span></span>
   <a class="site-nav__link" href="../index.html">入口</a>
   <a class="site-nav__link" href="../guides/index.html">教學中心</a>
   <a class="site-nav__link site-nav__link--active" href="index.html">維護者規格</a>
@@ -199,7 +199,7 @@
   <ul>
     <li><strong>可說：</strong><code>npx aps init</code> 可建立初始設定，CLI 已支援最小收發、修訂、撤回、收結與健康檢查。</li>
     <li><strong>必須同時說：</strong>每個真實跨機項目仍需各自驗證 Google Drive 同步；外部通知仍由人貼出，並應包含交接摘要與注意事項。</li>
-    <li><strong>必須標清：</strong>0.2.x 主路徑是可靠二人協作。未列入本頁現有能力的事，不可寫成已支援。</li>
+    <li><strong>必須標清：</strong>已發布主線是 Reliable Peer Handoff（Project Peers + Sent Status：同一項目可有多位協作對象，每次仍是一對一交接），確切版本以 npm <code>@latest</code> 為準；尚未發布的候選功能不可寫成公眾已支援。</li>
     <li><strong>不可要求：</strong>核心設置不得要求額外雲端開發者專案、外部服務憑證或密鑰設定。</li>
     <li><strong>不可說：</strong>完全自動、正式生產可用、免檢查、免人工確認、工具會自動向對方推送通知，或通知會自動觸發對方 AI。</li>
   </ul>
@@ -260,7 +260,7 @@
   <ul>
     <li>公開頁是否只承諾現有可用能力，未把目標體驗寫成已支援。</li>
     <li>新手教學是否不再要求閱讀或修改內部規格。</li>
-    <li>CLI 是否能用真實或 throw-away Hub 跑通 <code>init</code>、<code>doctor</code>、<code>publish</code>、<code>inbox</code>、<code>consume</code>、<code>close</code>。</li>
+    <li>CLI 是否能用真實或 throw-away 共用 Drive 資料夾跑通 <code>init</code>、<code>doctor</code>、<code>publish</code>、<code>inbox</code>、<code>consume</code>、<code>close</code>。</li>
     <li><code>aps init</code> 是否已註冊 Handoff Kit 可發現路徑：<span class="path">dev\RULE_PACKS.md</span> 有 APS route，<span class="path">dev\PROJECT_INDEX.md</span> 有 APS installed skill block，且 <code>doctor</code> 會檢查這兩項。</li>
     <li>HTML 不可連結任何本地 <code>.md</code> 規格檔；需要提及時只用 plain path。</li>
     <li>npm 版本、GitHub release、README、GitHub Pages 與本地 <span class="path">package.json</span> 邊界一致。</li>
@@ -281,7 +281,7 @@
 </section>
 
 <footer>
-  AI Public Squares · 維護者規格 · 最新更新 2026-05-28
+  Agent Public Squares · 維護者規格 · 最新更新 2026-05-28
 </footer>
 
 </main>

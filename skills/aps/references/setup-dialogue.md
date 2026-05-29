@@ -8,8 +8,8 @@
 
 ```text
 -------------------------------------
-        ✦ AI Public Squares ✦
-   =^._.^=  <-- APS Hub -->  =^._.^=
+      ✦ Agent Public Squares ✦
+   =^._.^=  <-- 共用 Drive -->  =^._.^=
        packets  |  versions  |  ack
          v<已驗證版本> pre-release
 -------------------------------------
@@ -19,20 +19,20 @@
 📍 目前設定
 - 項目:<project_slug>
 - 你這邊:<own_agent_id>
-- 對方:<other_agent_id>
+- 預設對方:<other_agent_id>
 - 共用資料夾:<hub_root>
 
 我會先替你做兩件事:
-1. 檢查本機設定與 Hub 是否正常。
-2. 看看 <other_agent_id> 是否已有新內容交過來。
+1. 檢查本機設定與共用 Drive 資料夾是否正常。
+2. 讀取 project peers,並看看是否有新內容交過來。
 ```
 
-然後執行 `npx aps doctor` 與 `npx aps inbox`。`npx aps doctor` 顯示的是 APS CLI 版本,不得把它當成 Agent Handoff Kit 版本,亦不得在 APS skill 回覆內顯示 Agent Handoff Kit 啟動卡。若兩項正常且沒有新件,顯示:
+然後執行 `npx aps doctor`、`npx aps peers` 與 `npx aps inbox --all`。`npx aps doctor` 顯示的是 APS CLI 版本,不得把它當成 Agent Handoff Kit 版本,亦不得在 APS skill 回覆內顯示 Agent Handoff Kit 啟動卡。若各項正常且沒有新件,顯示:
 
 ```text
 -------------------------------------
-        ✦ AI Public Squares ✦
-   =^._.^=  <-- APS Hub -->  =^._.^=
+      ✦ Agent Public Squares ✦
+   =^._.^=  <-- 共用 Drive -->  =^._.^=
        packets  |  versions  |  ack
          v<已驗證版本> pre-release
 -------------------------------------
@@ -40,26 +40,30 @@
 ✅ APS 狀態正常。
 
 - 本機設定可讀取。
-- Hub 資料夾存在。
-- 雙方通道存在。
+- 共用 Drive 資料夾存在。
+- peer 通道存在。
 - 收件確認檔存在。
-- 目前沒有 <other_agent_id> 交來的新內容。
+- 目前沒有 peer 交來的新內容。
+
+👥 Project peers
+- <peer_id>:<confirmed / provisional>
+- 這是本 project 的可交接對象清單;`預設對方` 只是舊二人相容設定,不是 project 只能合作一人的限制。
 
 🚀 下一步你可以選一件事:
 
 A. 我替你發一個測試交接給 <other_agent_id>
-   用來確認對方那邊能否看到同一個 Hub。
+   用來確認對方那邊能否看到同一個共用 Drive 資料夾。
 
-B. 我替你生成一段給 <other_agent_id> 的通知
-   你可以直接貼到 Telegram、WhatsApp、Email 或你們平常使用的通訊工具,請對方開始接入。
+B. 我替你邀請新 peer 加入這個 project
+   例如 Fanny / Jackie。工具會生成 provisional peer 與 starter pack,對方先完成 Agent Handoff Kit init,再完成 APS 設置後才可正式收交接。
 
-C. 我把目前任務整理成 APS 交接包給 <other_agent_id>
+C. 我把目前任務整理成 APS 交接包給指定 peer
    適合你現在真的有工作要交給對方。
 
 💡 推薦:A。先用測試交接驗證雙方路徑,比直接交正式內容穩妥。
 ```
 
-> 收到。我會帶你由零開始設置 AI Public Squares,後面簡稱 APS。簡單講,我們會在你的電腦與對方的電腦之間設立一個共用雲端資料夾,讓兩部 AI 代理可以交接檔案、回覆與確認收到。
+> 收到。我會帶你由零開始設置 Agent Public Squares,後面簡稱 APS。簡單講,我們會在你的電腦與對方的電腦之間設立一個共用雲端資料夾,讓兩部 AI 代理可以交接檔案、回覆與確認收到。
 >
 > 開始之前,請先確認三件事:
 >
@@ -69,7 +73,7 @@ C. 我把目前任務整理成 APS 交接包給 <other_agent_id>
 
 若第二項未完成,提供以下短訊,然後暫停:
 
-> 我想用 AI Public Squares 建立一個跨機 AI 協作流程。我會先在我這邊設置,完成後會傳你一份 starter pack 和幾條安裝指令。你在自己電腦照做即可。
+> 我想用 Agent Public Squares 建立一個跨機 AI 協作流程。我會先在我這邊設置,完成後會傳你一份 starter pack 和幾條安裝指令。你在自己電腦照做即可。
 
 ## 2. 先決條件檢查
 
@@ -110,8 +114,8 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 > 我會用以下預設值。若你接受,回覆「OK」。若要改,請指出要改哪一項。
 >
-> 一、你的 agent_id:你在 Hub 內的固定身份,例如 `adam`。
-> 二、對方的 agent_id:對方在 Hub 內的固定身份,例如 `jay`。
+> 一、你的 agent_id:你在共用 Drive 資料夾內的固定身份,例如 `adam`。
+> 二、對方的 agent_id:對方在共用 Drive 資料夾內的固定身份,例如 `jay`。
 > 三、共用資料夾位置:使用你提供的雲端硬碟路徑。
 > 四、共享權限:你需要親自在雲端硬碟中把資料夾分享給對方,並給予編輯權限。AI 不會代你更改雲端權限。
 
@@ -139,6 +143,16 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 <hub_root>/_hub/starter-pack-<other_agent_id>.md
 ```
 
+starter pack 的安裝段必須先列 Agent Handoff Kit,再列 APS:
+
+```powershell
+npx --yes @adamchanadam/agent-handoff-kit@latest init
+npm install --save-dev @adamchanadam/aps@latest
+npx aps init
+```
+
+若對方已安裝 Agent Handoff Kit,第一行可略過。若對方在乾淨資料夾直接執行 `npx aps init`,CLI 會因缺少 `AGENTS.md`、`dev/RULE_PACKS.md` 或 `dev/PROJECT_INDEX.md` 而拒絕接入;這時應先完成 Agent Handoff Kit init,再重跑 `npx aps init`。
+
 聊天中輸出短訊:
 
 > APS 這邊已設置好。Starter pack 已放在共用雲端資料夾的 `_hub` 子資料夾。你同步後打開該檔,按裡面的安裝指令在自己的工作目錄執行;完成後告訴我即可。
@@ -155,15 +169,15 @@ npx aps publish --topic setup_test --body "APS setup test from <own_agent_id>."
 
 完成後:
 
-> 設置完成。這個工作目錄已有 APS 本地設定。我會先替你做兩件事:一,檢查 Hub 與本機設定是否完整;二,看看對方是否已有新內容。若兩項都正常,我可以立即替你建立一個測試交接包,或生成一段給對方的 WhatsApp 短訊。你不需要記住命令;之後只要直接說「教我用 APS」「教我用 Agent Public Squares」「幫我將當前任務整理成 APS 交接包給對方」「看看對方有沒有回覆」或「Drive 同步不到」即可。
+> 設置完成。這個工作目錄已有 APS 本地設定。我會先替你做三件事:一,檢查共用 Drive 資料夾與本機設定是否完整;二,讀取 project peers;三,查看所有 peer 是否有新內容。若各項正常,我可以立即替你建立一個測試交接包、邀請新 peer 加入,或把目前任務整理成交接包。你不需要記住命令;之後只要直接說「教我用 APS」「教我用 Agent Public Squares」「邀請 Fanny 加入這個 APS project」「把這部分交給 Fanny」「Jay 收到未」「check Drive」「check Hub」或「Drive 同步不到」即可。
 
 日常一語交接可用以下 wording:
 
-> 可以。我要先讀取本地 APS 設定,檢查 Hub,再把目前任務整理成交接包草稿與預檢結果。除非發現敏感資料、共同目標不清或對方任務會影響下一步,我會先把摘要交給你確認;只有你確認後,我才會發佈並生成可直接複製貼上的通知文字。
+> 可以。我要先讀取本地 APS 設定,檢查共用 Drive 資料夾,再把目前任務整理成交接包草稿與預檢結果。除非發現敏感資料、共同目標不清或對方任務會影響下一步,我會先把摘要交給你確認;只有你確認後,我才會發佈並生成可直接複製貼上的通知文字。
 
 寫入前預檢 wording。若證據位置是本機路徑,必須標明只適用於本方電腦;給對方的識別以 project slug、topic、packet id / version 和相對 lane 為主,不得把本方 Google Drive 本機路徑寫成對方要照用的路徑:
 
-> 我已整理好交接包草稿,現在先做發送前預檢。共同目標、本方任務、對方任務、交叉點、請對方做的事、不應誤解的事、證據位置與敏感資料檢查都要齊全。請確認三件事:一、交接包內容完整 / 正確;二、topic 是 `<topic>`;三、可以寫入 APS Hub。你回「確認發送」後我才會 publish。
+> 我已整理好交接包草稿,現在先做發送前預檢。共同目標、本方任務、對方任務、交叉點、請對方做的事、不應誤解的事、證據位置與敏感資料檢查都要齊全。請確認三件事:一、交接包內容完整 / 正確;二、topic 是 `<topic>`;三、可以寫入共用 Drive 資料夾。你回「確認發送」後我才會 publish。
 
 正式交接、長正文、多行摘要、表格或含引號 / 特殊符號的正文,AI 內部應先寫入正文檔,再使用:
 
@@ -176,14 +190,14 @@ npx aps publish --topic <topic> --body-file <body_file_path>
 如果目前工作目錄已有 `.aps/config.json`,而用戶問「怎樣更新 / 升級 APS」,使用以下 wording:
 
 ```text
-這個項目已經有 APS 本地設定,所以不用重新建立 Hub。
+這個項目已經有 APS 本地設定,所以不用重新建立共用 Drive 資料夾。
 
 我會走升級路徑:
 1. 更新 npm package。
 2. 執行 `npx aps upgrade`,備份並刷新 APS skill,更新本地橋接與 Handoff Kit 註冊。
-3. 執行 `npx aps doctor`,確認 Hub 與本機設定仍正常。
+3. 執行 `npx aps doctor`,確認共用 Drive 資料夾與本機設定仍正常。
 
-升級不會覆寫既有交接包、outbox、ack 或 Hub 協定檔。完成後請重新啟動 AI 工具,再回到項目資料夾輸入「教我用 APS」。
+升級不會覆寫既有交接包、outbox、ack 或共用 Drive 資料夾的協定檔。完成後請重新啟動 AI 工具,再回到項目資料夾輸入「教我用 APS」。
 ```
 
 若已發出測試交接,再補一句:
@@ -193,13 +207,13 @@ npx aps publish --topic <topic> --body-file <body_file_path>
 > 📨 APS 有新測試交接
 >
 > 🔎 重點摘要
-> 這是一個 APS 設置後的測試交接,用來確認雙方 Hub、收件與 AI 讀取流程可用。
+> 這是一個 APS 設置後的測試交接,用來確認雙方共用 Drive 資料夾、收件與 AI 讀取流程可用。
 >
 > ⚠️ 注意事項
 > 請先確認你自己電腦上的 APS 專案資料夾已準備好;不要使用發送方的本機 Google Drive 路徑。
 >
 > 🚀 下一步
-> 在你自己電腦上打開已接入 APS 的對應項目資料夾,由你本人確認可以處理後,向 AI 輸入「check Hub」。
+> 在你自己電腦上打開已接入 APS 的對應項目資料夾,由你本人確認可以處理後,向 AI 輸入「check Drive」。
 
 ## 7.1 有新收件時的顯示順序
 
@@ -258,7 +272,7 @@ C. 稍後再處理
 💡 推薦:<A/B/C>。<一句客觀理由>
 ```
 
-若資料不足,預檢表要明確標示缺漏,並建議先發補交需求包。原交接預設保持未處理,方便下次 `check Hub` 仍可看到。
+若資料不足,預檢表要明確標示缺漏,並建議先發補交需求包。原交接預設保持未處理,方便下次 `check Drive` 仍可看到。
 
 ## 8. 共識確認 wording
 
@@ -281,13 +295,13 @@ C. 稍後再處理
 
 ```text
 WhatsApp / 即時訊息:
-我已用 APS 回覆了一個共識確認包。請打開你的 AI 工具,輸入「check Hub」,先確認共同目標與任務邊界後再繼續。
+我已用 APS 回覆了一個共識確認包。請打開你的 AI 工具,輸入「check Drive」,先確認共同目標與任務邊界後再繼續。
 
 Email 主旨:
 APS 共識確認
 
 Email 正文:
-我已用 APS 回覆了一個共識確認包。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入「check Hub」。請先確認共同目標、任務邊界與下一步,再繼續執行。
+我已用 APS 回覆了一個共識確認包。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入「check Drive」。請先確認共同目標、任務邊界與下一步,再繼續執行。
 ```
 
 收件資料不足 wording:
@@ -302,19 +316,19 @@ Email 正文:
 - 需要對方補交的內容:
 
 WhatsApp / 即時訊息:
-我已用 APS 回覆了一個補交需求包。請打開你的 AI 工具,輸入「check Hub」,按缺漏清單補交資料。
+我已用 APS 回覆了一個補交需求包。請打開你的 AI 工具,輸入「check Drive」,按缺漏清單補交資料。
 
 Email 主旨:
 APS 需要補交資料
 
 Email 正文:
-我已用 APS 回覆了一個補交需求包。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入「check Hub」,按缺漏清單補交資料。
+我已用 APS 回覆了一個補交需求包。請在你自己電腦上打開已接入 APS 的對應項目資料夾,輸入「check Drive」,按缺漏清單補交資料。
 ```
 
 ## 9. 不可承諾
 
-- 不承諾直接發 WhatsApp、Email 或系統推送;APS 目前是共享 Hub 與交接狀態機制,不是通知服務。
+- 不承諾直接發 WhatsApp、Email 或系統推送;APS 目前是共用 Drive 資料夾與交接狀態機制,不是通知服務。
 - 不承諾更改雲端硬碟分享權限。
 - 不承諾對方電腦已完成設置。
-- 不承諾自然語言日常操作或補救流程已完成;只可說專案已完成一次維護者真實 Google Drive 往返驗證,而每個新項目仍要各自驗證 Hub 路徑、離線存取與同步狀態。0.2.x pre-release 已提供互動式設置、`revise`、`withdraw`、`doctor` 與短命令日用流程;本機互動式設定回歸與全面檢已通過,但仍需實際協作雙方做真機日常演練。
+- 不承諾自然語言日常操作或補救流程已完成;只可說專案已完成一次維護者真實 Google Drive 往返驗證,而每個新項目仍要各自驗證共用 Drive 資料夾路徑、離線存取與同步狀態。0.2.x pre-release 已提供互動式設置、`revise`、`withdraw`、`doctor` 與短命令日用流程;本機互動式設定回歸與全面檢已通過,但仍需實際協作雙方做真機日常演練。
 - 不承諾 PROTOCOL source 可用;實作時必須先驗證 package 內 `resources/protocol/` 存在。

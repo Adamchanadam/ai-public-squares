@@ -13,6 +13,12 @@
 
 任務需求演進的長期 narrative。Newest first。AI 觀察到 substantive task evolution 時 append。
 
+- 2026-05-29 — APS 方向收斂為先做「正名與框架(0.2.12)」、人性化安裝四項拆去 0.2.13。觸發點:Adam 發現 onboarding walkthrough 仍純兩人框架 + 仍用舊詞「Hub」,反映文檔 QC 只查結構唔查內容模型。由此 Adam 定案:過去無真實公眾用過「check Hub」(只得佢同 Jay),索性全面切「check Drive」+ 把產品正名為 Agent Public Squares(同姊妹 Agent Handoff Kit 同家族;簡寫 APS 不變、npm 套件名不改)。產品身份由「AI Public Squares」過渡為「Agent Public Squares」,舊名保留為可識別 alias。
+
+- 2026-05-28 — APS 的方向再進一步:由「0.2.9 Reliable Peer Handoff 候選」演進到「人性化上手」。真機 UAT(Jay 用 Mac)暴露兩個同源問題 —— 安裝時強迫填對方名字、以及活躍 peer 仍卡 `provisional` 反過嚟擋住對方回覆 —— 令 Adam 提出把產品由「工程師式預填所有參數先開工」轉向「邊做邊加組員」:安裝只設定自己嗰邊,協作對象用緊先邀請。同時把內部術語「Hub」對外改為「共用 Drive 資料夾」,貼近非技術用戶本身已識的 Google Drive。這次演進把焦點由「協定正確」推向「非技術新手的真實上手體驗」。0.2.10 / 0.2.11 為此鋪路(hub-root 方括號修正、peer 參與即確認),人性化上手本身留待下一版。
+
+- 2026-05-28 — APS 的近期方向從 0.2.7 Reliable Pair 進一步演進為 0.2.9 Reliable Peer Handoff 候選：一個 project 可以有多位 peers，但每個 packet 仍然只發給一位 peer，並保留 human-in-the-loop。這次轉折來自 Adam 的 UAT 反饋：長任務可能 part 1 交給 Jay、part 2 交給 Fanny、part 3 交給 Jackie；因此 `.aps/config.json` 的 `otherAgentId` 只能是舊二人相容預設，不可代表整個 project 永久只限一名協作對象。
+
 - 2026-05-28 — APS 的 post-0.2.6 方向從「多人協作、watch、通知、Contacts selector」收窄為 0.2.7 Reliable Pair：先把二人交接做到可依賴，再把 Contacts selector、`_notify`、`aps watch`、桌面通知、平台排程、正式 Dropbox / OneDrive 支援與多收件人封包延後。這次演進降低了落地風險，也避免公開文件過早承諾真正多人平台能力。
 
 - 2026-05-26 — APS 在 0.2.0 pre-release 發布後，立即進入本地 0.2.1 候選硬化：CLI 從最小收發閉環擴展到可修訂、可撤回未讀封包、可只讀診斷 Hub；技能與公開文件同步標明「0.2.0 已發布、0.2.1 仍未發布」的邊界。這次演進把「出錯補救」從人工文件指引推進到可驗證命令，但仍需正式外發前檢、提交決策及後續自然語言操作演練，才可考慮發布。
@@ -29,10 +35,26 @@
 
 主要架構取捨與 rationale。AI 在 plan 涉及 multi-option trade-off 時 append，並等用戶 confirm。
 
+- 2026-05-29 — 決定 0.2.12「正名與框架」版的範圍與次序。品牌正式定為 Agent Public Squares(AI Public Squares 降為仍可識別 legacy alias);收件 trigger「check Hub」→「check Drive」、概念詞「Hub」→「共用 Drive 資料夾」(只改 prose;內部 hubRoot / _hub/ / 協定結構詞保留;check Hub 留隱藏 alias)。npm 套件名 @adamchanadam/aps 不改(簡寫不變、零安裝斷裂);GitHub repo slug 改 agent-public-squares;歷史紀錄與本機 folder 不改(folder 留待無 session 時專做)。人性化安裝四項拆去 0.2.13 獨立 UAT。經 codex(gpt-5.5、只讀、高 reasoning)獨立覆核補入要害:觸發詞活在 skill + bin/aps.js 生成文字(淨改 docs 無效,既有用戶要 reinstall + upgrade + 重啟);prose 與結構詞要分(PROTOCOL 結構詞不改);改名涵蓋 npm tarball 全部檔含 examples;GitHub 改名次序為先 rename → 驗 Pages 200 → 同步 URL + remote → 後 publish;0.2.12 文件不可承諾 0.2.13 三問安裝;既有 Hub 已寫協定檔不自動改名。Codex 全文:dev/qc/evidence/2026-05-29-codex-0212-naming-review/codex_review.txt。
+
+- 2026-05-28 — 選擇「參與即自我確認 + 三檔可達性」作為 peer 確認 root-fix(0.2.11),而不是單靠 `init` 確認或放寬到「有 lane 就放行」。理由:真機 UAT 證明只靠 `init` 確認會令活躍 agent 卡在 `provisional`、反過嚟擋住對方回覆;而「有 lane」唔代表已加入(`init` 會為雙方建 lane)。所以改為:`publish` / `consume` 自動確認執行者自己的 peer card(只確認自己、override 身份時唔做);收件人閘改成 confirmed / provisional-但有真實活動 / 擋,三檔。授權永遠唔用 role。經兩次獨立 codex 只讀覆核確認。
+
+- 2026-05-28 — 決定把「安裝時對方名字」由必填改為可留空(人性化上手,下一版),而非維持工程式預填。理由:真實工作流程係邊做邊決定交畀邊個;底層 Project Peers 已支援後加 peer。關鍵架構風險係 4 處必須一齊改(doctor 拆本機 / peer 健康、`publish` 無對方時提示而非靜默失敗、舊二人相容、starter pack 改喺邀請時生成),否則上手會「表面簡化、實際仍卡舊模型」—— 此為 codex 點出的要害。詞彙「Hub→共用 Drive 資料夾」屬外層改、保留 `check Hub` 相容,內部路徑不動。
+
+- 2026-05-28 — 選擇 Project Peers + Sent Status 作為 0.2.9 候選，而不是把 project 擴展成真正多人平台或多收件人 packet。理由：它解決「同一 project 不應只限一名協作對象」的核心 UX 問題，同時保留單收件 packet、單寫 lane、ack 語義、人工通知與人工確認，避免過早引入群組權限、同步廣播、自動通知或平台排程複雜度。
+
 - 2026-05-28 — 選擇 Reliable Pair 先行，而不是立即做真正多人平台、Contacts selector、watch、通知或平台排程。理由：當前最有價值的產品風險在 AI 是否能穩定完成二人交接的讀設定、診斷、草稿、確認、發包、收件摘要、補資料與共識流程；在這條主線未穩前加入多人與通知層，會擴大權限、狀態、同步與使用者期望風險。Contacts selector 保留為日後體驗層，不改變底層單收件封包模型。
 
 ## Insights & Learnings
 
 累積式學習、反思、觀察。AI 觀察到多 session 累積 pattern 時 append。
+
+- 2026-05-29 — 文檔 QC 只查結構(標記 / 連結 / section 配對)會放過「內容模型漂移」:同一次改寫,入口頁已轉多 peer 而 walkthrough 仍純兩人,兩頁都過結構檢查。已在外發前檢加第 9 項「user-facing 文檔內容與產品模型深審」。另一教訓:rebrand 不可盲改字串 —— 畀人睇的 prose 詞與結構詞(hubRoot / _hub/ / 協定 schema)要分開,否則為咗文案一致會整爛協定可讀性與設定相容(codex 點出)。
+
+- 2026-05-28 — 真機 UAT 是揪出設計缺陷最有效的手段,而且不同 AI 工具的容忍度不同。Codex 對 skill frontmatter `description` 有 1024 硬上限、Claude 沒有 —— 只在 Claude 端驗證會 miss 純 codex 的 blocker(skill 載入失敗、靜悄悄退用舊 backup)。教訓:跨工具產品的外發前檢,要對每個目標工具做明確機器檢查,不可假設一個工具過到、另一個就過到。
+
+- 2026-05-28 — 「簡化上手」的陷阱:減少問題很容易,但若底層命令(doctor / publish)仍假設舊模型,簡化只是表面,新手會在第二步才撞板。真正人性化要求一組耦合改動一齊落地。獨立第二意見(codex 只讀覆核)在這類主路徑重構特別有價值,值得在動手前先取得;本 session 三次用 codex 覆核(role 邏輯、peer 確認 root-fix、上手設計)都收窄或修正了原方案。
+
+- 2026-05-28 — 對 APS 這類協作工具，最危險的漂移不是功能缺失，而是「命名與路由以為自己知道」。`Agent Public Squares` 與 `AI Public Squares` 必須被視為同一品牌；AI 入口、Handoff Kit route、skill 觸發詞、README 與 public docs 要共同覆蓋自然語言名稱變體，否則真實用戶一改說法就會掉到錯誤 onboarding。
 
 - 2026-05-28 — 當預估成功率低於約七成時，這不是單純開發難度，而是產品範圍風險。對 APS 這類面向非技術用戶的工具，可靠的二人閉環比早期多人平台更重要；公開文件與 QC 必須阻止「可研究」被寫成「已支援」。

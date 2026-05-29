@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>分層 QC — 觸發詞彙 · AI Public Squares</title>
+<title>分層 QC — 觸發詞彙 · Agent Public Squares</title>
 <style>
   :root {
     --ink: #1b2230;
@@ -224,7 +224,7 @@
 <main>
 
 <nav class="site-nav" aria-label="主目錄">
-  <span class="site-nav__brand">AI Public Squares<span class="site-nav__brand-tag">APS</span></span>
+  <span class="site-nav__brand">Agent Public Squares<span class="site-nav__brand-tag">APS</span></span>
   <a class="site-nav__link" href="../index.html">入口</a>
   <a class="site-nav__link" href="../guides/index.html">教學中心</a>
   <a class="site-nav__link site-nav__link--active" href="governance-map.html">分層 QC</a>
@@ -300,7 +300,7 @@
       <h3>🟡 外發前檢</h3>
       <p><strong>別名</strong>：<code>跑外發前檢</code> / <code>release-check</code> / <code>handover-verify</code></p>
       <p><strong>時機</strong>:物件離開本工作目錄之前(推送遠端 / 分享教學或維護者頁 / 傳橋接規則包、starter pack 或設置指引予協作夥伴)。</p>
-      <p><strong>覆蓋</strong>：快檢 4 項 + 8 項：</p>
+      <p><strong>覆蓋</strong>：快檢 4 項 + 9 項：</p>
       <ul>
         <li>跨工作目錄佔位符審核</li>
         <li>README / 入口 / 教學 / 維護者 / skill / CLI 跨面交叉閱讀</li>
@@ -310,8 +310,9 @@
         <li>新安裝與既有項目升級路徑檢查</li>
         <li>APS 跨機交接包、會話交接、品牌與版本分流檢查</li>
         <li>Google Drive 已驗證主路徑與其他同步資料夾未驗證邊界檢查</li>
+        <li>User-facing 文檔內容與產品模型深審(改寫後全頁模型一致、多 peer 框架、圖文對齊 CLI)</li>
       </ul>
-      <p><strong>驗收</strong>：12 項全過。<br><strong>失敗</strong>：handover stop。</p>
+      <p><strong>驗收</strong>：13 項全過。<br><strong>失敗</strong>：handover stop。</p>
     </article>
 
     <article class="tier red">
@@ -327,7 +328,7 @@
         <li>審核報告輸出</li>
         <li>規格與實際 runtime 行為落差審核</li>
       </ul>
-      <p><strong>驗收</strong>：18 項 + report committed。<br><strong>失敗</strong>：逐條列阻擋項。</p>
+      <p><strong>驗收</strong>：19 項 + report committed。<br><strong>失敗</strong>：逐條列阻擋項。</p>
     </article>
 
   </div>
@@ -335,7 +336,7 @@
 
 <section>
   <h2>APS 全面檢三條主線</h2>
-  <p class="lede">AI Public Squares 的全面檢不只是多跑幾條命令,而是要證明公開說法、外發物可信度與協定實際行為三者一致。狀態須逐項標示為通過、失敗、受阻或接受風險。</p>
+  <p class="lede">Agent Public Squares 的全面檢不只是多跑幾條命令,而是要證明公開說法、外發物可信度與協定實際行為三者一致。狀態須逐項標示為通過、失敗、受阻或接受風險。</p>
   <table class="params">
     <thead>
       <tr><th>主線</th><th>要核對之事</th><th>不通過時代表什麼</th></tr>
@@ -353,7 +354,7 @@
       </tr>
       <tr>
         <td>協定實際運行正確性</td>
-        <td>Hub 協定、橋接規則包樣板、實際工作目錄、發件記錄、收件記錄、單寫通道、交接包版本、啟動時待處理計算、修訂 / 撤回 / 收結行為、Handoff Kit APS route registration 與 project-index registration 須有實際操作記錄或對應工作目錄證據。</td>
+        <td>共用 Drive 資料夾協定、橋接規則包樣板、實際工作目錄、發件記錄、收件記錄、單寫通道、交接包版本、啟動時待處理計算、修訂 / 撤回 / 收結行為、Handoff Kit APS route registration 與 project-index registration 須有實際操作記錄或對應工作目錄證據。</td>
         <td>文檔說得通,但實際共享資料夾流程未必跑得通。</td>
       </tr>
     </tbody>
@@ -385,12 +386,16 @@
         <td>發送前須檢查共同目標、任務邊界、交叉點、請對方做的事、證據、風險與敏感資料;收件後也須產生收件報告,檢查是否足夠回應,並核對本機設定、文件資料、任務要求、證據位置與版本狀態是否一致。</td>
       </tr>
       <tr>
+        <td>Project Peers 逐一交接隔離</td>
+        <td>涉及 project-level peers 時,全面檢不可只跑二人往返。須至少驗證 A → B 單收件交接與 A → C 單收件交接各自 consume；<code>inbox --all</code> / <code>inbox --from</code> 不可顯示不屬於自己的 packet；錯收件人 <code>consume</code> 必須被拒絕；<code>status --packet-id</code> 只查本機 agent 自己發出的 packet。</td>
+      </tr>
+      <tr>
         <td>補交與共識確認</td>
         <td>交接不足時先發補交需求;理解不一致時先發共識確認包。未補齊或未達成共識前,不得把原交接收結。</td>
       </tr>
       <tr>
         <td>通知與同步邊界</td>
-        <td>APS 不自動觸發對方 AI,也不保證對方電腦即時同步。AI 應生成可貼到 Telegram / WhatsApp / Email 的摘要式通知,包含重點摘要、注意事項與 <code>check Hub</code> 下一步;對方看不到時先檢查 Drive 同步。</td>
+        <td>APS 不自動觸發對方 AI,也不保證對方電腦即時同步。AI 應生成可貼到 Telegram / WhatsApp / Email 的摘要式通知,包含重點摘要、注意事項與 <code>check Drive</code> 下一步;對方看不到時先檢查 Drive 同步。</td>
       </tr>
       <tr>
         <td>新安裝與版本升級落地</td>
@@ -398,7 +403,7 @@
       </tr>
       <tr>
         <td>交接語義防混淆</td>
-        <td>「收工」應走會話交接;「交給 Jay / 對方 / Hub」應走 APS 跨機交接包;只說「交接包」時必須先澄清,不得直接寫檔或寫 Hub。</td>
+        <td>「收工」應走會話交接;「交給 Jay / 對方 / 共用 Drive 資料夾」應走 APS 跨機交接包;只說「交接包」時必須先澄清,不得直接寫檔或寫共用 Drive 資料夾。</td>
       </tr>
       <tr>
         <td>品牌與版本防混淆</td>
@@ -440,8 +445,13 @@
       </tr>
       <tr>
         <td>日常協作流程</td>
-        <td>一語交接、AI 讀設定、健康檢查、整理上下文、發送前預檢、用戶確認、發佈、生成摘要式通知、接收方 <code>check Hub</code>、收件報告、本機對接檢查、補交 / 共識確認、回覆 / 收結能追蹤同一條邏輯。</td>
+        <td>一語交接、AI 讀設定、健康檢查、整理上下文、發送前預檢、用戶確認、發佈、生成摘要式通知、接收方 <code>check Drive</code>、收件報告、本機對接檢查、補交 / 共識確認、回覆 / 收結能追蹤同一條邏輯。</td>
         <td><a class="site-nav__link" href="../guides/aps-onboarding-walkthrough.html#daily">第一次測試交接</a></td>
+      </tr>
+      <tr>
+        <td>多 peer 逐一交接流程</td>
+        <td>同一 project 內至少三個 agent,按 A → B 單收件交接、B consume、A → C 單收件交接、C consume 走通；收件箱按 packet 收件人隔離,不得讓 B / C 看見或消化不屬於自己的 packet。</td>
+        <td><code>npx aps peers</code>、<code>publish --to</code>、<code>inbox --all</code>、<code>consume</code>、<code>status --packet-id</code></td>
       </tr>
       <tr>
         <td>出錯補救流程</td>
@@ -540,7 +550,7 @@
   <p>對 AI 說一句觸發詞即可：</p>
   <ul>
     <li>「<strong>跑快檢</strong>」— AI 跑 doctor + git status + grep set</li>
-    <li>「<strong>跑外發前檢</strong>」— AI 跑快檢 + 8 項外發審核</li>
+    <li>「<strong>跑外發前檢</strong>」— AI 跑快檢 + 9 項外發審核</li>
     <li>「<strong>跑全面檢</strong>」— AI 跑外發前檢 + 6 項人工 / 跨工作目錄審核;如涉及跨工作目錄,AI 列出需於對應工作目錄另開新對話處理的子任務</li>
   </ul>
   <div class="callout warn">
@@ -549,7 +559,7 @@
 </section>
 
 <footer>
-  AI Public Squares · 分層 QC 參考卡 · 建立 2026-05-21 S6 · 同步 2026-05-28 · 單一真源於 <code>dev/qc/triggers.md</code>
+  Agent Public Squares · 分層 QC 參考卡 · 建立 2026-05-21 S6 · 同步 2026-05-28 · 單一真源於 <code>dev/qc/triggers.md</code>
 </footer>
 
 </main>

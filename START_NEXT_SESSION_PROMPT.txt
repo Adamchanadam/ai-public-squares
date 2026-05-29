@@ -1,15 +1,19 @@
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for AI Public Squares; published as `@adamchanadam/aps`; GitHub repo Adamchanadam/ai-public-squares is public; GitHub Pages enabled).
 
-Current state (2026-05-28): GitHub pre-release `v0.2.8` is published at https://github.com/Adamchanadam/ai-public-squares/releases/tag/v0.2.8 and points to commit `136042c`. npm latest is now `@adamchanadam/aps@0.2.8`; registry readback confirms version/latest `0.2.8`, bin `aps`, fileCount 14, and `npx --yes @adamchanadam/aps@latest --help` displays v0.2.8 Traditional Chinese help.
+Current state (2026-05-28, end of S43): npm latest is `@adamchanadam/aps@0.2.10` (pre-release / UAT build = 0.2.9 Project Peers + Sent Status scope + a hub-root bracket-validation fix + the Codex skill load-fix). GitHub release stays `v0.2.8`; `main` is unchanged; nothing was committed / pushed / tagged this session.
 
-0.2.8 scope includes the published 0.2.7 Reliable Pair base plus summary-style human notifications, receiver local-alignment reporting wording, `claude -p` external-review governance note, and role-B interactive `init` defaults (`agent_b / agent_a`).
+`0.2.11` is implemented, tested and release-checked LOCALLY but NOT published. It is the peer-lifecycle root-fix: publish / consume now self-confirm the acting agent's own peer card; `publish --to` is three-way (confirmed → send; provisional-but-active → send + warning; inactive / unregistered / no-activity → block); the setup `role A/B` question is reworded as setup-direction with a `you seem to be the joiner` hint; `aps config` shows 設定起手方向 not 角色. `package.json` is at 0.2.11; `dev/release-notes/v0.2.11.md` is written. Real-machine UAT (Jay on Mac): the cross-machine Google Drive round-trip works, but Jay's formal REPLY was blocked because Adam's peer card is still `provisional` on the published 0.2.10 — which is exactly what 0.2.11 fixes. Publishing 0.2.11 (then Jay reinstalls `@latest`) unblocks Jay. Reminder: `AI Public Squares` and `Agent Public Squares` are the same brand; `APS` is the abbreviation. Every packet stays single-recipient and human-approved; true multi-agent / `_notify` / `watch` / Project Context Index remain deferred and must not be promised as current support.
+
+Docs state: the three user-facing HTML pages (`docs/index.html`, `docs/guides/index.html`, `docs/guides/aps-onboarding-walkthrough.html`) were rewritten this session — one-project-multiple-peers, 設定起手方向, 前期測試版, pre-release / human-in-loop boundaries kept, no local `.md` links. They are uncommitted; the Hub → Drive vocabulary was deliberately left for the onboarding change. README and GitHub Pages still say npm latest 0.2.8 (public-framing still open). Agent Handoff Kit v0.3.12 doctor passes; this is the S43 full closeout (hot log stays 10 entries).
+
+Two threads to resume (priority order): (1) DECIDE & PUBLISH 0.2.11 (recommended first) to unblock Jay — preflight `npm whoami` = adamchanadam, confirm 0.2.11 not yet on npm, `npm publish --access public`, readback, then sync npm-latest → 0.2.11 in handoff / log / index. (2) IMPLEMENT the agreed `humanize onboarding + Drive vocabulary` change (next version, e.g. 0.2.12) — full design is in this handoff's `Active Objective`: install asks only 3 things (shared Drive folder / project / your own name), counterpart NOT required at install, add collaborators on-demand (`邀請 Fanny`), vocabulary 「共用 Drive 資料夾」 with 「check Drive」 promoted but 「check Hub」 kept, role A/B demoted, and the FOUR coupled changes must land together (doctor split / publish-prompt-when-no-peer / two-person compat / starter-pack-on-invite); then finalize the three docs' Drive vocabulary in the same version. Codex design study: `dev/qc/evidence/2026-05-28-codex-skill-loadfix/codex_onboarding_design.txt`. Also open: maintainer pages, public-framing of the published pre-release, Jay's continued UAT, and cleanup of scratch `_aps_uat_adam_recv/` + real-Hub test slugs `aps_uat_0_2_9_jay/` and `aps_uat_claude_20260528/` (keep the Hub for now). Local commit `127f55f` exists and is unpushed; the whole 0.2.9 → 0.2.11 candidate + docs + governance set is uncommitted.
 
 Do not commit, push, tag, create a GitHub release, publish npm, or change GitHub Pages unless Adam explicitly asks.
 
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md (latest S34 entry)
+3. dev/SESSION_LOG.md (latest S43 entry)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/DOC_SYNC_REGISTRY.md
@@ -18,12 +22,12 @@ Read in order:
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
-Voice / writing hard rule: user-facing prose must be contemporary written Traditional Chinese. Colloquial Cantonese markers listed in `AGENTS.md` are allowed only inside verbatim user-trigger quotes. HTML must not link local `.md` files; use plain `<span class="path">` references for internal spec paths.
+Voice / writing hard rule: user-facing prose must be contemporary written Traditional Chinese. For documents (公文 tone): no piled-up technical terms or clause numbers as sentence subjects, no broken Chinese-English fragments, minimal English; weighty yet restrained. Colloquial Cantonese markers listed in `AGENTS.md` are allowed only inside verbatim user-trigger quotes. HTML must not link local `.md` files; use plain `<span class="path">` references for internal spec paths.
 
-Expected next action: refresh `AI_Public_Squares_UAT` from npm latest 0.2.8, then run Adam-side and Jay-side Reliable Pair UAT, including natural-language alias checks for「教我用 APS」「教我用 AI Public Squares」「教我用 Agent Public Squares」.
+Expected next action: confirm with Adam whether to publish 0.2.11 first (recommended) to unblock Jay, then either continue Jay's UAT or start implementing the humanize-onboarding change per the Active Objective. Any commit / push / tag / GitHub release / npm publish needs Adam's explicit authorization. Do not implement Project Context Index until after the onboarding change and Project Peers UX UAT.
 
 QC vocabulary: if Adam says 「跑快檢 / 跑外發前檢 / 跑全面檢」 or quick-check / release-check / full-check, load `dev/qc/triggers.md` and run that tier. If he says a vague QC term, ask 「你指快檢 / 外發前檢 / 全面檢?」.
 
-External review note: `cmd /c claude -p "<bounded read-only review prompt>"` works from this repo root for Claude Code headless read-only review. Keep prompts short and file-scoped, include「只讀，不改檔」, and if it times out, retry with a smaller scope before treating it as blocked. If a real technical blocker remains, check current Claude Code official docs or web guidance before changing the command pattern.
+External review note: for an independent read-only second opinion, `cmd /c codex exec --skip-git-repo-check -c sandbox_mode="read-only" -c approval_policy="never" "<bounded prompt, 只讀不改檔>" < /dev/null` works from this repo root (used three times this session for design cross-checks — role logic, peer-lifecycle root-fix, onboarding design). `cmd /c claude -p "..."` also works. Keep prompts short and file-scoped; if it times out, retry with a smaller scope before treating it as blocked.
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
