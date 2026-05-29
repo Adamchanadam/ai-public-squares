@@ -88,10 +88,6 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 
 - Short index: product direction changed to Reliable Peer Handoff with one project / many peers / single-recipient packets; durable details live in the roadmap, index, and handoff.
 
-## 2026-05-28 (S34) — post-publish governance lessons converted
-
-- Short index: v0.2.8 publish lessons became narrow governance checks for post-publish readback and APS discovery; durable details live in registry / QC rules / handoff.
-
 ## Entry Template
 
 ````markdown
