@@ -8,7 +8,22 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-29 (S46, latest) — 0.2.13 第一段 CLI + 第二段 skill built/committed; Kit 0.3.14 recorded; QC 行為真源對齊 mechanism
+## 2026-05-29 (S47, latest) — 0.2.13 第三段+ (公開頁對齊 + 命名統一 Agent_Public_Squares + starter pack + 加入教學頁) + B4/B5 + 第四段 UAT GREEN
+
+- **ID:** S47
+- **Summary:** Completed 0.2.13 第三段+ : aligned all public surfaces to three-question / items (cleared the 9(d) public-HTML blocker), unified the shared-folder default name `AI_Public_Squares` → `Agent_Public_Squares` (scrubbed every user-facing default / example; existing folders untouched, compat), rewrote `starterPackContent()` into a short forwardable invite message + new joiner page `docs/guides/aps-join-invite.html`, plus B4/B5. One codex read-only review of the starter-pack design. 第四段 UAT GREEN in an isolated sandbox. Two commits (`3d1dcd1`, `10bd98b`); nine local commits unpushed; nothing published. Only 第五段 (gated release) remains.
+- **第三段+ (`3d1dcd1`):** README + docs/index.html + walkthrough + maintainers → three-question / items; default folder name unified to `Agent_Public_Squares` + full user-facing scrub (CLI init prompt, README, docs HTML, setup-dialogue, demo fixtures; bridge-pack placeholder token → neutral `<your_shared_drive_folder_absolute_path>`); `starterPackContent()` → short written-Chinese invite message + link; new `docs/guides/aps-join-invite.html` (Drive share/offline + separate work folder + AI-guided install with the 3 commands + must-match project code + success check; emoji headings; no local .md links; download URLs verified via codex + WebFetch — Google support answer/10838124, nodejs.org/en/download); setup-dialogue §6 + guides hub (2 cards) + PROJECT_INDEX Fact Base aligned; `dev/release-notes/v0.2.13.md` written. `docs/plans/*.md` real-hub `…\AI_Public_Squares\` path kept as fact (not scrubbed).
+- **B4/B5 (`10bd98b`):** `peer starter` prints「未建立 peer」note; starter-pack filename project-scoped (`starter-pack-<project>-<peer>.md`); SKILL.md / setup-dialogue path refs synced.
+- **codex (gpt-5.5, read-only):** reviewed the starter-pack gap analysis — confirmed all 13 identified gaps + found 6 more (work-folder ≠ Drive root, wrong path level, AI-guide safety frame, two-layer structure, peer-starter ambiguity, filename collision); folded in. Evidence `dev/qc/evidence/2026-05-29-codex-starterpack-review/` (out.txt; not committed).
+- **第四段 UAT (GREEN):** isolated OS-temp sandbox + redirected HOME (real Hub + real `~/.claude` untouched); local 0.2.13 code via `node bin/aps.js`. Pass: three-question init `Agent_Public_Squares`; doctor solo passes; peer add project-scoped starter pack; jay join→confirmed; `publish --to jay --items` → frontmatter `- id:` verbatim ×2; inbox; publish-no-recipient exit 1; revise preserve (v2) / `--clear-items` (v3 `items: []`); consume; old two-person config publish-without-`--to` warns + sends.
+- **Process note:** used a dynamic Workflow (6 sub-agents) for the read-only 第三段 audit / plan, then verified against the real files myself (the workflow's line numbers drifted → its output was a cross-check, not patch coordinates).
+- **Changed (repo; 2 commits, unpushed):** `bin/aps.js`; `skills/aps/SKILL.md` + `references/setup-dialogue.md`; `README.md`; `docs/index.html`; `docs/guides/{index,aps-onboarding-walkthrough,aps-join-invite}.html`; `docs/maintainers/index.html`; `examples/README.md` + `demo-agent-{a,b}/dev/rules/aps-bridge.md`; `dev/PROJECT_INDEX.md`; new `dev/release-notes/v0.2.13.md`; closeout: `dev/SESSION_HANDOFF.md`, this log, `dev/SESSION_LOG_archive/*`, `dev/PROJECT_DECISIONS.md`, `START_NEXT_SESSION_PROMPT.txt`.
+- **QC:** `node --check`; 9(d) grep onboarding/shipped surfaces 0 `AI_Public_Squares` + 0 old-model markers; HTML `<section>` balance + 0 local .md links; bridge-pack token substitution; B4/B5 dry-run; SKILL `description` 729; UAT GREEN; `git diff --check` clean; Handoff Kit doctor (see S47 closeout card).
+- **Boundary:** Two local commits (Adam authorized each); NO push / tag / release / npm publish / Pages. `package.json` still 0.2.12.
+- **Next:** 0.2.13 第五段 — gated release (version bump → 外發前檢 / 全面檢 → npm publish → push → Pages → GitHub release; each external action individually authorized).
+- **Log maintenance:** S47 prepended (hot log 11); N-rule moved the oldest entry (S37) into archive batch 009 → hot log back to 10; INDEX updated.
+
+## 2026-05-29 (S46) — 0.2.13 第一段 CLI + 第二段 skill built/committed; Kit 0.3.14 recorded; QC 行為真源對齊 mechanism
 
 - **ID:** S46
 - **Summary:** Built 0.2.13 第一段 (CLI「冇對方都用得」model + items explicit contract) and 第二段 (skill aligned to the new model), each verified and committed locally. Two codex read-only reviews (plan + implementation). Recorded Adam's Agent Handoff Kit upgrade 0.3.13→0.3.14. After the skill was found still teaching the old five-question model, hardened the QC mechanism with a CLI↔skill↔docs 行為真源對齊 check (外發前檢 9(d)) + blocking gate. Decided ship vehicle 方案甲. Six local commits; nothing pushed / published.
@@ -106,10 +121,6 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 ## 2026-05-28 (S38) — 0.2.9 full audit and receiver isolation fix
 
 - Short index: local 0.2.9 Project Peers audit fixed receiver filtering / consume guard and Agent Public Squares route discovery; durable details live in `dev/qc/2026-05-28-aps-full-audit-0.2.9-project-peers.md` and `dev/SESSION_HANDOFF.md`.
-
-## 2026-05-28 (S37) — 0.2.9 Project Peers UAT and starter pack fix
-
-- Short index: Adam / Jay / Fanny UAT covered Project Peers and fixed new-peer Agent Handoff Kit preflight; durable details live in `dev/SESSION_HANDOFF.md`, `dev/PROJECT_INDEX.md`, and the latest full-audit report.
 
 ## Entry Template
 

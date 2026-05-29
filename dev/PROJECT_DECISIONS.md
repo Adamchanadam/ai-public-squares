@@ -13,6 +13,8 @@
 
 任務需求演進的長期 narrative。Newest first。AI 觀察到 substantive task evolution 時 append。
 
+- 2026-05-29 (S47) — 0.2.13「人性化上手」做到淨剩發佈:第三段公開頁全部對齊三問 / items(清咗 9(d) 公開頁 blocker);starter pack 由「填表 + 命令塞晒入去」重寫成一封可轉發嘅邀請訊息 + 一版專為「被邀請者」而設嘅教學頁(`docs/guides/aps-join-invite.html`),把 terminal / 命令 / 排錯嘅複雜度搬離訊息。同時把共用資料夾預設名由 `AI_Public_Squares` 統一做 `Agent_Public_Squares`(切走同產品改名撞嘅舊名陷阱;既有資料夾相容)。第四段 UAT 喺隔離沙盒行綠。產品由「協定可上手」推到「邀請體驗對非技術人都跟得到」。下一刀淨係 gated release(第五段)。
+
 - 2026-05-29 (S46) — 0.2.13「人性化上手」由設計進入落地:第一段(CLI 冇對方都用得模型 + items 明示契約)同第二段(skill 對齊三問 / items / 邀請)已 build + 驗 + 本機 commit。產品由「協定 + 候選功能」明確向「非技術新手真實可上手」推進。同時治理層成熟一階:QC 由「查結構」升級到「行為真源對齊」(`bin/aps.js` 為行為真源,skill + 公開頁跟),並把分階段落地嘅 drift 由「靠 AI 記住」變成明文 blocking 閘。
 
 - 2026-05-29 (S45) — Jay 真機 UAT 回傳,確認跨機交接 + 「check Drive」喺真正第二部機行得通,APS 由「協定 + 候選功能」進入「真實雙機可用」階段。同時產品邊界再收斂:自動化／背景通知／排程由「延後路線」改判為「非 APS 範圍」—— APS 定位鎖死為手動、human-in-loop、靠同步資料夾嘅結構化交接,自動喚醒交返畀 AI 工具／OS／通訊軟件。下一刀係 0.2.13 人性化上手(install 三問 + 四項耦合 CLI 改動 + items 明示契約)。
@@ -39,6 +41,8 @@
 
 主要架構取捨與 rationale。AI 在 plan 涉及 multi-option trade-off 時 append，並等用戶 confirm。
 
+- 2026-05-29 (S47) — 四個架構/產品取捨,starter-pack 設計嗰個經 codex 只讀覆核。(1) **共用資料夾預設名統一做 `Agent_Public_Squares`**(Adam 拍板)而非沿用舊 `AI_Public_Squares`(同產品名撞、必中坑)或維持用戶自填(無統一):只改新安裝預設 + scrub 用戶面舊名,既有資料夾 / config 相容,`docs/plans/*.md` 記錄嘅真實 hub 路徑當事實保留;本機 dev folder + 真 Drive hub 改名延後(live cwd / 共享外部風險,唔喺 session 內做)。(2) **starter pack = 可轉發短訊 + 連去 HTML 教學頁**,而非「命令塞入 pack / 叫對方開 Drive 個檔照做」:訊息短、命令同排錯放教學頁;codex 指出全新加入者部 AI 未必預載 APS skill,所以教學頁要有真實三條安裝命令,唔可以淨係「叫你個 AI 教我用 APS」。(3) **工作資料夾維持本機獨立**,唔可以做共用 Drive hub 嘅 sub-folder(否則本機 repo 全 sync 上雲 + 兩邊改撞,正正係 APS 要解決嘅問題)。(4) **呢批摺入 0.2.13** 而非另開版本:starter pack 既然係「人性化上手」核心,出緊呢個 build 但邀請信仲技術化係自打嘴巴。
+
 - 2026-05-29 (S46) — 0.2.13 第一段三個架構取捨,全部經 codex 兩輪只讀覆核(計劃 + 實作)確認。(1) **publish 收件資格閘覆蓋所有收件來源**:明示 `--to`(新多 peer 路)失敗即擋,舊 config 預設對方(fallback)只警告不擋 —— 揀呢個而非「只喺 `--to` 檢查」(codex 指出嘅不一致窿)或「一刀切都擋」(會整爛舊二人『先發包、對方後加入』嘅 documented smoke)。(2) **items frontmatter-only 解析 + revise 預設保留**:揀明示契約(`--items` / `--items-file` 逐字入 frontmatter、reader 只讀 frontmatter 區塊)而非全文 regex(會誤抽正文 stray `- id:`);revise 唔傳沿用上一版而非清空(避免靜默資料丟失),清空要明示 `--clear-items`。(3) **三問安裝(純三條)**:揀 codex 偏好嘅乾淨三問 + 用緊先邀請,而非保留可選第四條問對方;最清楚、最貼「設定自己、邊做邊加」。另一治理取捨:把「結構過≠行為對齊」嘅防漂移由 HTML 推廣到 CLI↔skill↔docs(外發前檢 9(d)),揀「擴充既有第 9 項 + 立 memory + blocking 閘」而非「補一個窄 case patch」(根因治理)。
 
 - 2026-05-29 (S45) — 兩個架構取捨,均經 codex 只讀覆核。(1) **自動化層「出範圍」而非「延後」**:把 `aps watch`、檔案式 `_notify`、OS 及 AI 平台排程、桌面通知、Telegram bot 自動代發剔出 roadmap。理由:同步資料夾本質保證唔到即時推送或喚醒 AI;呢類能力屬 AI 工具／OS／通訊軟件或另一項產品,收入 APS 只會擴大權限同「見到提醒=已處理」嘅誤解,違背低門檻、人手確認定位。codex:剪裁安全、無流程斷絕、無功能缺口,只需同步 triggers / registry 口徑(已做)。(2) **packet `items` 用「AI 明示申報」契約**(`--items` / `--items-file`)而非喺正文逆向抽:正文係 AI 自由生成,認固定標題／標點會睇 AI 點寫而漏抽或抽錯(Jay 真包根本冇「請對方做的事」標題);機器要讀嘅資料一定要走明示欄位。evidence:`dev/qc/evidence/2026-05-29-codex-items-generality/` + `dev/qc/evidence/2026-05-29-codex-roadmap-prune/`。
@@ -56,6 +60,8 @@
 ## Insights & Learnings
 
 累積式學習、反思、觀察。AI 觀察到多 session 累積 pattern 時 append。
+
+- 2026-05-29 (S47) — 三條累積學習。(1) **舊名遺留係改名工程嘅長尾陷阱**:產品由 AI Public Squares 改做 Agent Public Squares,但共用資料夾預設名、本機 folder、真 Drive hub 仲叫舊名,任何一處用戶可見嘅舊名都會令新手揀錯 / 撞名(Adam:「單是目錄用 AI Public Squares 就是坑」)。教訓:改名要分「用戶可見預設 / 示例」(即刻 scrub)同「事實記錄 / 既有資料」(保留,唔可 falsify 真實路徑);真實 folder 改名係 live-cwd / 共享外部操作,要無 session / 人手做,唔好 mid-session。(2) **dynamic Workflow 對細任務係用大咗**:今次第三段盤點 6 個 agent 燒約 65 萬 token,結果同 inline 差距唔大,而且行號漂移要自己對返真檔;workflow 真正抵用喺檔多(十幾廿個以上)/ 要對抗式多角度覆核 / 讀大到塞爆主 context。輸出當第二意見,唔當 patch 座標。(3) **外部下載連結要核官方文件先寫落公開頁**:join 教學頁嘅 Google Drive / Node 下載連結經 codex + WebFetch 核實(Google support `answer/10838124`、`nodejs.org/en/download`),唔靠記憶 —— 公開頁畀錯連結係真 defect。
 
 - 2026-05-29 (S46) — 三條累積學習。(1) **「結構過≠行為對齊」是跨教學層通病,非 HTML 獨有**:S44/S45(入口頁 vs walkthrough)同 S46(CLI vs skill)同源 —— description 長度 / YAML / 觸發詞 / section 結構檢查全過,但行為模型已漂移。已把外發前檢第 9 項由只審 HTML 擴成 CLI↔skill↔docs 行為真源對齊(9(d)),並立 memory `feedback-structure-vs-behaviour-drift`。教訓:確定性真源(`bin/aps.js`)一改行為,教學層(skill / docs)必須對齊或明文 blocking。(2) **分階段落地嘅 drift 要做成 QC blocking 閘,唔好靠 AI 記住**:第一段 CLI 先行、docs 後補嗰段,必須喺 handoff Risks + release gate 明文 blocking,先唔會發佈時漏對齊。(3) **耦合主路徑改動,動手前同改完後各做一次 codex 只讀覆核都有回報**:計劃覆核揪出原計劃漏咗 `upgrade` / `config` / `inbox` 等耦合(否則三問安裝係假);實作覆核揪出 starter pack 舊文案、巢狀 items 解析、修訂互斥三個位。
 

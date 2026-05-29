@@ -1,38 +1,43 @@
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for Agent Public Squares; npm `@adamchanadam/aps`; GitHub repo Adamchanadam/agent-public-squares is public; Pages enabled). Local working-folder name is still `AI_Public_Squares` (rename deferred).
 
-Current state (2026-05-29, end of S46): npm latest is `@adamchanadam/aps@0.2.12` (published pre-release). There are SIX local commits ahead of origin/main (`ff044e9`); working tree clean; NOTHING pushed, tagged, or published. The six: `18caf2f` S45 closeout, `387fc5e` 0.2.13 第一段 CLI, `ac1ab55` 第一段 codex fixes, `d67dbaa` Agent Handoff Kit 0.3.14 record, `afd7c3a` QC 行為真源對齊機制, `b9061c2` 0.2.13 第二段 skill.
+Current state (2026-05-29, end of S47): npm latest is `@adamchanadam/aps@0.2.12` (published pre-release); `package.json` is still `0.2.12` (bumping to 0.2.13 is the first step of the release). There are NINE local commits ahead of origin/main (`ff044e9`); working tree clean; NOTHING pushed, tagged, or published. The two newest: `3d1dcd1` (0.2.13 第三段+), `10bd98b` (0.2.13 B4/B5).
 
-0.2.13 「人性化上手」progress: 第一段 (CLI) and 第二段 (skill) are DONE and committed locally.
-- 第一段 (bin/aps.js): three-question init (Drive folder / project / your own name; counterpart optional; role inferred), doctor split (local-core decides exit, peer health informational, passes with no counterpart), publish gives an actionable peer prompt when no recipient + runs the reachability gate on all recipient sources (explicit --to blocks, config-default partner only warns), starter pack moves from init to `peer add`, upgrade/config/inbox all work with no counterpart, and the explicit items contract (--items/--items-file recorded verbatim into frontmatter, readPacketSummary reads frontmatter-only, revise preserves prior items unless --items/--clear-items). S45 truncation fix rides along. Verified: isolated-Hub smoke 48/48 + node --check + Handoff Kit doctor 45.
-- 第二段 (skills/aps/SKILL.md + references/setup-dialogue.md): aligned to the three-question / items / invite model; description 729 ≤1024 valid; verified via the new 外發前檢 9(d) behaviour-truth check.
+0.2.13 「人性化上手」: 第一段–第四段 are DONE & committed locally, and 第四段 UAT is GREEN. Only 第五段 (gated release) remains.
+- 第一段 (bin/aps.js): three-question init (no counterpart), doctor local-core vs peer split (solo passes), publish actionable no-recipient prompt + reachability gate (explicit --to blocks / config-default partner warns), starter pack moved init→peer add, items explicit contract (--items verbatim into frontmatter, frontmatter-only read, revise preserve / --clear-items), S45 truncation fix.
+- 第二段 (skills/aps): SKILL.md + setup-dialogue aligned to three-question / items / invite; description 729.
+- 第三段+ (3d1dcd1): README + docs/index.html + walkthrough + maintainers aligned to three-question / items (cleared the 9(d) public-HTML blocker); UNIFIED the shared-folder default name AI_Public_Squares → Agent_Public_Squares and scrubbed the underscore name from every user-facing default/example (CLI init prompt, docs, demo fixtures; bridge-pack placeholder token → neutral <your_shared_drive_folder_absolute_path>); rewrote starterPackContent() into a short forwardable written-Chinese invite message + link to the NEW joiner page docs/guides/aps-join-invite.html (which carries the three install commands so a fresh joiner's AI can install); wrote dev/release-notes/v0.2.13.md; aligned setup-dialogue §6 + guides hub + PROJECT_INDEX.
+- B4/B5 (10bd98b): peer starter prints a「未建立 peer」note; starter-pack filename project-scoped (starter-pack-<project>-<peer>.md).
+- 第四段 UAT GREEN (isolated OS-temp sandbox, redirected HOME, real Hub + real ~/.claude untouched, local 0.2.13 code): three-question init Agent_Public_Squares; doctor solo passes; peer add → project-scoped starter pack; jay join→confirmed; publish --to jay --items → items verbatim in frontmatter; inbox; publish-no-recipient exit 1; revise preserve / --clear-items; consume; old two-person config publish-without-to warns+sends. All pass.
 
-The approved next step is 0.2.13 第三段 (QC + public surfaces): align README + docs/index.html + docs/guides/aps-onboarding-walkthrough.html install sections to the three-question / items model, do a maintainer-page (docs/maintainers/index.html) vocabulary read-through, and write dev/release-notes/v0.2.13.md. **This is the work that clears the live 9(d) BLOCKING item: the public HTML still teaches the old five-question / init-writes-starter model, while the CLI and skill already teach the new model.** Use bin/aps.js (committed) as the behaviour truth and SKILL.md as the wording reference. Then 第四段 UAT (clean new-user end-to-end + old-config regression + publish-prompt-no-peer + items round-trip), then 第五段 GATED release (version bump 0.2.13 → release-check/full-check → npm publish → push → Pages → GitHub release; each external action needs Adam's explicit authorization).
+The approved next step is 0.2.13 第五段 — GATED release (the only remaining stage):
+1. Bump package.json 0.2.12 → 0.2.13.
+2. Run 🟡 外發前檢 (release-check) then 🔴 全面檢 (full-check) per dev/qc/triggers.md; re-confirm 外發前檢 #9 / 9(d) passes (it should — CLI ↔ skill ↔ docs already aligned).
+3. Then EACH action individually authorized by Adam: `npm publish --access public`; `git push origin main` (9 commits); GitHub Pages readback; GitHub release (tag v0.2.13 + body from dev/release-notes/v0.2.13.md).
+4. Post-publish read-backs before claiming done: `npm view @adamchanadam/aps version dist-tags.latest --json`, `npx --yes @adamchanadam/aps@latest --help` (expect v0.2.13), live Pages, remote branch/tag.
 
-This session also: recorded Adam's Agent Handoff Kit upgrade 0.3.13→0.3.14 (clean), and HARDENED the QC mechanism — after the skill was found still teaching the old model, the dev/qc/triggers.md 外發前檢 第 9 項 was extended to a CLI↔skill↔docs「行為真源對齊」check (item 9(d)) + a「結構過≠行為對齊」principle + a staged-landing blocking gate; full-check spec-to-runtime + DOC_SYNC rows were strengthened; memory feedback-structure-vs-behaviour-drift written. PRINCIPLE NOW IN FORCE: bin/aps.js is the user-visible-behaviour truth source; skill + public docs are teaching layers that must follow; structure checks passing ≠ behaviour aligned; staged CLI-ahead-of-teaching must be tracked as blocking in handoff Risks + release gate.
-
-Do not commit, push, tag, release, publish, or change GitHub Pages unless Adam explicitly asks. Automation (watch / _notify / scheduling / desktop notif / bot auto-send) is OUT OF SCOPE — never re-add it. `items` must use the explicit contract, never prose-parsing; revise preserves prior items.
+Do not commit, push, tag, release, publish, or change GitHub Pages unless Adam explicitly asks (each external action is its own authorization). Automation (watch / _notify / scheduling / desktop notif / bot auto-send) is OUT OF SCOPE — never re-add it. `items` uses the explicit contract, never prose-parsing; revise preserves prior items. New installs default the shared folder to Agent_Public_Squares; existing AI_Public_Squares folders keep working; the underscore name is scrubbed from user-facing defaults only (the `AI Public Squares` product alias with a space, and the `check Hub` trigger, stay recognized); the local dev-folder + Drive-hub rename are DEFERRED and must NOT be done mid-session.
 
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md (latest S46 entry)
+3. dev/SESSION_LOG.md (latest S47 entry)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
-6. dev/DOC_SYNC_REGISTRY.md (now carries the 9(d) behaviour-truth rows)
-7. dev/qc/triggers.md (外發前檢 9(d) 行為真源對齊; full-check CLI↔skill parity)
-8. docs/plans/2026-05-28-aps-public-product-multi-agent-roadmap.md
-9. dev/PROJECT_DECISIONS.md (0.2.13 design + 行為真源 principle + automation-out-of-scope)
-10. bin/aps.js (committed 第一段 — the behaviour truth the public docs must match)
-11. skills/aps/SKILL.md + references/setup-dialogue.md (committed 第二段 — wording reference)
+6. dev/qc/triggers.md (🟡 外發前檢 / 🔴 全面檢; 9(d) behaviour-truth)
+7. dev/rules/release.md (release verification + evidence)
+8. dev/DOC_SYNC_REGISTRY.md (Release row: post-publish read-backs)
+9. dev/release-notes/v0.2.13.md (GitHub release body source)
+10. package.json (still 0.2.12 — bump first)
+11. bin/aps.js + skills/aps/** + README + docs/** (the shipped 0.2.13 behaviour + teaching, all aligned)
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
 Voice / writing hard rule: user-facing prose must be contemporary written Traditional Chinese; no piled-up technical terms or clause numbers as sentence subjects, no broken Chinese-English fragments, minimal English. Colloquial Cantonese only inside verbatim user-trigger quotes. HTML must not link local `.md` files; use plain `<span class="path">` for internal spec paths.
 
-Brand / vocab discipline (shipped): display name `Agent Public Squares`; trigger `check Drive`; concept 「共用 Drive 資料夾」. `AI Public Squares` and `check Hub` stay RECOGNIZED legacy aliases. Structural tokens `hubRoot` / `--hub-root` / `_hub/` / `<hub_root>` / PROTOCOL schema / `setupHub` / `doctorHub` must NOT be renamed. Do not reuse the old repo slug `ai-public-squares`. Any skill edit re-measures frontmatter `description` ≤1024 + valid YAML.
+Brand / vocab discipline: display name `Agent Public Squares`; trigger `check Drive`; concept 「共用 Drive 資料夾」; new shared-folder default `Agent_Public_Squares`. `AI Public Squares` (space) and `check Hub` stay RECOGNIZED legacy aliases. Structural tokens `hubRoot` / `--hub-root` / `_hub/` / `<hub_root>` / PROTOCOL schema / `setupHub` / `doctorHub` must NOT be renamed. Do not reuse the old repo slug `ai-public-squares`. Any skill frontmatter edit re-measures `description` ≤1024 + valid YAML.
 
 External review (read-only second opinion): call codex DIRECTLY, never via `cmd /c` (git bash MSYS mangles `/c`). Long/Chinese prompts: write a UTF-8 prompt file, then `codex exec --skip-git-repo-check -c sandbox_mode="read-only" -c approval_policy="never" "$(cat promptfile)" < /dev/null 2>&1 | tee out.txt`. Method recorded in C:\Users\adam\_claude_desktop\GENERIC_OPERATIONAL_RUNBOOK.md §3i / §5k.
 
-QC vocabulary: if Adam says 跑快檢 / 跑外發前檢 / 跑全面檢 (quick-check / release-check / full-check), load dev/qc/triggers.md and run that tier; if vague, ask 「你指快檢 / 外發前檢 / 全面檢?」. Note: 外發前檢第 9 項現含 CLI↔skill↔docs 行為真源對齊 (9(d)) — public HTML 未對齊到三問/items 前,第 9 項不算通過、不可發佈。
+QC vocabulary: if Adam says 跑快檢 / 跑外發前檢 / 跑全面檢 (quick-check / release-check / full-check), load dev/qc/triggers.md and run that tier; if vague, ask 「你指快檢 / 外發前檢 / 全面檢?」.
 
 After reading, summarize current objective, confirmed decisions, pending work, risks, and the next recommended action.
