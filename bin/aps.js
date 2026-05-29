@@ -111,7 +111,7 @@ function loadConfigOrExit() {
     return loadConfig();
   } catch (err) {
     console.error(`Config failed: ${err.message}`);
-    console.error('Fix `.aps/config.json`, or rerun `npx aps config --hub-root ... --project ... --agent-id ... --other-agent-id ... --role A|B`.');
+    console.error('Fix `.aps/config.json`, or rerun `npx aps config --hub-root ... --project ... --agent-id ...` (--other-agent-id / --role A|B optional).');
     process.exit(1);
   }
 }
@@ -982,7 +982,10 @@ function parseFrontmatterItems(text) {
     if (/^items:\s*\[\s*\]\s*$/.test(line)) { inItems = false; continue; }
     if (/^items:\s*$/.test(line)) { inItems = true; continue; }
     if (inItems) {
-      const match = line.match(/^\s*-\s+id:\s*"?(.*?)"?\s*$/);
+      // Only a top-level entry at the renderer's exact 2-space indent counts. A more deeply
+      // indented line (a hypothetical nested list) is skipped, not collected; the next column-0
+      // key ends the items block.
+      const match = line.match(/^ {2}-\s+id:\s*"?(.*?)"?\s*$/);
       if (match) { items.push(unescapeYamlDouble(match[1])); continue; }
       if (/^\S/.test(line)) inItems = false;
     }
@@ -1330,25 +1333,11 @@ function ensurePeerArtifacts({ hubRoot, projectSlug, agentId, displayName, peerS
   return steps;
 }
 
-function starterPackContent(values, counterpartRole) {
+function starterPackContent(values) {
   return `# APS Starter Pack for ${values.otherAgentId}
 
-這份 starter pack 由 \`aps init\` 產生,用來讓對方在自己的電腦完成同一個共用 Drive 資料夾設定。
-
-## 已決定的設定
-
-- project_slug: \`${values.projectSlug}\`
-- your agent_id: \`${values.otherAgentId}\`
-- counterpart agent_id: \`${values.agentId}\`
-- your role: \`${counterpartRole}\`
-- 共用 Drive 資料夾 root on your machine:請改成你自己電腦上 Google Drive 同步資料夾的完整路徑
-
-## 身份名稱
-
-請沿用同一套共用 Drive 資料夾身份名稱,只對調自己 / 對方:
-
-- 你這邊: \`${values.otherAgentId}\`
-- 對方: \`${values.agentId}\`
+這份 starter pack 由 \`aps peer add\` / \`aps peer starter\` 產生,用來讓 ${values.otherAgentId} 在自己的電腦加入同一個共用 Drive 資料夾項目。
+邀請你的人是 \`${values.agentId}\`。
 
 ## 安裝
 
@@ -1362,15 +1351,20 @@ npx aps init
 
 如果你的資料夾已經有 Agent Handoff Kit,第一行可略過。若 \`npx aps init\` 回報缺少 AGENTS.md、dev/RULE_PACKS.md 或 dev/PROJECT_INDEX.md,請先完成 Agent Handoff Kit init,再重新執行 \`npx aps init\`。
 
-互動式設定會逐步問用途。請使用以下值:
+## 設定時的三個答案
 
-- 角色: \`${counterpartRole}\`
-- 項目代號: \`${values.projectSlug}\`
-- 你的 agent id: \`${values.otherAgentId}\`
-- 對方 agent id: \`${values.agentId}\`
-- Google Drive 本機 AI_Public_Squares 完整路徑:在檔案總管打開你自己電腦上的共用 AI_Public_Squares 資料夾,複製地址列完整路徑
+\`npx aps init\` 只會問你三件事,請這樣回答:
 
-不要複製 \`G:\\...\\AI_Public_Squares\` 這類示例路徑。這必須是你自己電腦上的真實 Google Drive 本機路徑。
+1. Google Drive 本機 AI_Public_Squares 完整路徑:在檔案總管打開你自己電腦上的共用 AI_Public_Squares 資料夾,複製地址列完整路徑(例如 \`G:\\我的雲端硬碟\\AI_Public_Squares\`,但必須是你自己電腦上的真實路徑,不要照抄示例)。
+2. 項目代號:\`${values.projectSlug}\`(必須與邀請你的人一致)。
+3. 你自己的名稱:\`${values.otherAgentId}\`。
+
+設定不會問「對方是誰」 —— APS 是邊做邊加,設定好你自己這一邊就可以收發。
+
+## 收發
+
+- 收件:打開 AI 工具,輸入「check Drive」,AI 會讀取共用 Drive 資料夾並整理收件報告。
+- 回覆邀請你的人:在 AI 工具說「回覆 ${values.agentId}」,或備用指令 \`npx aps publish --to ${values.agentId} --topic <主題> --body-file <檔> --items "甲;乙"\`。
 
 完成後,如果 Claude Code 或 Codex 未即時看到 APS skill,請重新啟動該 AI 工具。
 
@@ -1379,12 +1373,12 @@ npx aps init
 如果只需要 Bridge Pack:
 
 \`\`\`powershell
-npx aps bridge-pack --role ${counterpartRole} > dev/rules/aps-bridge.md
+npx aps bridge-pack > dev/rules/aps-bridge.md
 \`\`\`
 
 ## 日常觸發句
 
-當對方通知你有新交接包,打開 AI 工具並輸入:
+當有人通知你有新交接包,打開 AI 工具並輸入:
 
 > check Drive
 `;
@@ -1521,7 +1515,7 @@ if (!subcommand || subcommand === '--help' || subcommand === '-h') {
                                   重新產生給指定 peer 的 starter pack
   npx aps publish --to <id> --topic <snake> --body <text>
   npx aps publish --to <id> --topic <snake> --body-file <path> [--items "甲;乙" | --items-file <path>]
-                                  發佈 v1 交接包並追加 outbox;--items 由發送方申報「請對方做的事」,CLI 逐字記錄
+                                  發佈 v1 交接包並追加 outbox;--items 由發送方申報「請對方做的事」,CLI 逐字記錄(分號分隔;項目本身含分號時改用 --items-file)
   npx aps revise --packet-id <id> --body-file <path> --reason <text> [--items "甲;乙" | --items-file <path> | --clear-items]
                                   為自己發出的交接包建立下一個不可變版本;未指定 items 時沿用上一版
   npx aps inbox
@@ -1951,7 +1945,6 @@ if (subcommand === 'peer') {
     process.exit(1);
   }
   try {
-    const counterpartRole = (config.role || 'A').toUpperCase() === 'A' ? 'B' : 'A';
     const starterValues = { ...config, hubRoot, projectSlug, agentId: localAgentId, otherAgentId: peerId };
     const starterTarget = path.join(hubRoot, '_hub', `starter-pack-${peerId}.md`);
     const steps = [];
@@ -1965,7 +1958,7 @@ if (subcommand === 'peer') {
         dryRun,
       }));
     }
-    steps.push(writeFileOrUpdate(starterTarget, starterPackContent(starterValues, counterpartRole), dryRun));
+    steps.push(writeFileOrUpdate(starterTarget, starterPackContent(starterValues), dryRun));
     console.log(action === 'add' ? `👥 APS peer add: ${peerId}` : `📦 APS peer starter: ${peerId}`);
     for (const result of steps) console.log(formatSetupResult(result));
     console.log('');
@@ -2098,6 +2091,10 @@ if (subcommand === 'revise') {
     process.exit(1);
   }
   const clearItems = hasFlag('--clear-items');
+  if (itemsInput.provided && clearItems) {
+    console.error('❌ 修訂失敗:--items / --items-file 與 --clear-items 不可同時使用。');
+    process.exit(1);
+  }
   const reason = getRequiredFlagValue('--reason');
   requireValues({ '--hub-root': hubRoot, '--project': projectSlug, '--agent-id': agentId });
   const errors = [
