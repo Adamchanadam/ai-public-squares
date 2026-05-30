@@ -303,6 +303,23 @@ Project Context Index 可包含的欄位：
 
 Project Context Index 的驗收點是：AI 可用它減少誤讀，但所有開工、補交、共識確認、consume、close、revise 仍必須回到 packet / outbox / ack 與使用者確認。若 context 與 packet 不一致，AI 必須以 packet 為準並把 context 標示為可能過期。
 
+### 4.5 人類呈現層：衍生唯讀 HTML 速覽（方向已定，落地仍延後）
+
+決定（2026-05-30 S48，與 Adam 傾定）：Project Context Index 分兩層，不可撈埋。
+
+- **來源層 = `_context/from_<agent_id>/context.log.md`（plain markdown）。** AI 讀同寫呢層；保持明示欄位（上表 §4.4），不可叫 AI 逆向解析 HTML（與 memory `feedback-no-hardcode-ai-content-parsing` 一致：機器要讀的資料走明示契約，不靠標籤逆向估）。
+- **人類呈現層 = 由來源層派生的唯讀 HTML「項目大局速覽」。** 一版清爽 dashboard 讓人一眼睇大局，比叫人揭 markdown 專業；沿用 `docs/` 既有視覺語言（同一套色 / 字體 / site-nav / badge / 卡片），與公開頁同一家族。
+
+此 HTML 呈現層必須守三條界線（與 APS 核心原則一致）：
+
+1. **衍生唯讀快照，明示可能過期。** 頁頂固定一條橫額：執行真相一律以 packet / outbox / ack 為準；附生成時間戳；若與 packet 不一致以 packet 為準。每條呈現項要指得返來源 packet / outbox / ack。
+2. **按需生成，不自動刷新。** 由 CLI 一個指令（例如 `aps context`，或 `check Drive` 順手）即時由 `_context/*.md` 渲染；不加 build step、不做背景定時更新——背景自動刷新屬非 APS 範圍（§5）。
+3. **永遠唯讀總覽，不可長出互動。** 不加打剔 / 改狀態 / 拖卡 / 死線——一加互動即由「速覽」變成任務板，正是本節禁止的產品膨脹。
+
+參考樣板（假資料、不接生成邏輯、gitignored）：`dev/qc/evidence/2026-05-30-context-index-mock/index.html`（連 `render-fullpage.png`）。樣板示範了工作流分段表、已定案決策 / 等待資料 / 未決問題 / 風險、最近封包線索，以及頁頂的唯讀＋可能過期橫額。
+
+落地次序：此呈現層仍屬延後，等核心（Reliable Peer Handoff）在真實使用驗證後才做；真正動手前先 brainstorming 釐清需求，再由樣板演進為「markdown 來源 → CLI 按需生成」的實作。
+
 ---
 
 ## 五、自動化、背景通知與排程:非 APS 範圍

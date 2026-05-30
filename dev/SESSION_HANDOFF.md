@@ -70,7 +70,7 @@ Record only work actually completed in the current session (S48). Earlier S47/S4
 ## Next Priorities
 
 1. **Local dev-folder + real Drive-hub rename → `Agent_Public_Squares`** — deferred; both are no-live-session / external-manual tasks (do NOT do mid-session). A manual checklist can be produced when Adam is ready.
-2. **Project Context Index design** — deferred (in-scope future).
+2. **Project Context Index design** — deferred (in-scope future). Direction recorded in roadmap §4.5 (S48): markdown source (`_context/*.md`, AI read/write) → CLI on-demand read-only HTML overview; the HTML stays a derived, timestamped, packets-are-truth, no-kanban snapshot in the `docs/` visual style. Reference mock (fake data, gitignored): `dev/qc/evidence/2026-05-30-context-index-mock/`. Implementation still deferred until core validation.
 3. **Monitor 0.2.13 adoption** — Jay (and any new joiner) reinstall `@latest` (now 0.2.13) and exercise the three-question install + joiner page on a real machine; capture any defect.
 
 <!-- ack:section:next-task-required-reading -->
