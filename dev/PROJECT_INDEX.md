@@ -6,7 +6,7 @@ Purpose: give a stateless AI a compact map of the project before it reads or edi
 
 | Field | Value | Last verified |
 |---|---|---|
-| Agent Handoff Kit template version | 0.3.14 | 2026-05-29 |
+| Agent Handoff Kit template version | 0.3.17 | 2026-05-30 |
 | Runtime | Node.js ≥18 (for `bin/aps.js` CLI); static HTML for user-facing docs under `docs/` | 2026-05-26 |
 | Framework | None — no build step; HTML hand-maintained; CLI is plain Node | 2026-05-22 |
 | Package manager | npm (`@adamchanadam/aps` published latest is 0.2.13 pre-release — 人性化上手: three-question init + items explicit contract + shared-folder default `Agent_Public_Squares` + forwardable starter-pack invite + joiner page, published 2026-05-30 S48 on top of 0.2.12 naming & framing; npm package name unchanged; prior latest was 0.2.12) | 2026-05-30 |
@@ -170,7 +170,7 @@ Record this at closeout so the next AI can detect wrong-root or workspace drift.
 | Branch / commit | `main`;0.2.13 release commit `6059f45` pushed;S48 closeout commit advances `main` and is pushed too, so origin/main == HEAD, 0 ahead;tag `v0.2.13`→`6059f45` latest;`package.json` 0.2.13 (published npm latest) | 2026-05-30 |
 | Worktree or parallel workspace | none from this workspace; siblings `Demo_Agent_{Adam,Jay}_Public_Squares` are independent stores and must be verified in their own roots before relying on their governance health; GitHub Pages enabled at `https://adamchanadam.github.io/agent-public-squares/` | 2026-05-29 |
 | Execution environment note | `C:\tmp` is not writable in the current Codex desktop execution environment. For temporary evidence or QC artifacts, use a project-local path such as `dev/qc/evidence/<date>-<scope>/` unless the user explicitly authorizes another writable location. | 2026-05-25 |
-| Uncommitted change summary | Working tree clean after the S48 closeout commit. origin/main == HEAD, 0 ahead (0.2.13 release commit `6059f45` + the S48 closeout commit, both pushed). **0.2.13 publicly shipped**: npm latest 0.2.13, GitHub pre-release `v0.2.13`, Pages live. `dev/qc/evidence/` is local evidence (not committed). Outside repo (not tracked): memory files + `GENERIC_OPERATIONAL_RUNBOOK.md`. The S48 release-check round-trips ran in OS-temp sandboxes (redirected HOME; real Hub + real `~/.claude` untouched; OS-cleaned). Real Hub keeps earlier UAT slugs (Adam confirmed disposable). **Pending: Agent Handoff Kit tool upgrade 0.3.14→0.3.17** (Kit tool npm latest is now v0.3.17; do as its own dry-run → apply → commit). | 2026-05-30 |
+| Uncommitted change summary | Working tree clean after the S48 closeout commit. origin/main == HEAD, 0 ahead (0.2.13 release commit `6059f45` + the S48 closeout commit, both pushed). **0.2.13 publicly shipped**: npm latest 0.2.13, GitHub pre-release `v0.2.13`, Pages live. `dev/qc/evidence/` is local evidence (not committed). Outside repo (not tracked): memory files + `GENERIC_OPERATIONAL_RUNBOOK.md`. The S48 release-check round-trips ran in OS-temp sandboxes (redirected HOME; real Hub + real `~/.claude` untouched; OS-cleaned). Real Hub keeps earlier UAT slugs (Adam confirmed disposable). Agent Handoff Kit upgraded 0.3.14→0.3.17 this session (doctor 三向對齊; backup `dev/governance_migrations/20260530T054058Z/`). | 2026-05-30 |
 
 ## Change Hotspots
 

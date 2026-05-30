@@ -1,6 +1,6 @@
 # Session Handoff
 
-Last Updated: 2026-05-30 (S48 full closeout — **0.2.13「人性化上手」已正式發佈並全部讀回核實**。第五段 gated release 完成:`package.json` 升 0.2.13、外發前檢 + 全面檢全綠(報告 `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`)、`npm publish` 成功(npm latest = 0.2.13)、`git push origin main`(release commit `6059f45`)、GitHub Pages 上線新內容、GitHub pre-release `v0.2.13`→`6059f45`。四個對外面(npm / repo main / Pages / GitHub release)已逐項讀回對齊。此 S48 closeout commit 連同 `dev/release-notes/v0.2.13.github.md` 一併提交並推送,遠端治理同步。**0.2.13 由「本機完成、未發佈」推到「公開已發佈」。** 同一 session 亦完成 Agent Handoff Kit 工具升級 0.3.14→0.3.17(dry-run → 套用 → auto-doctor 三向對齊 v0.3.17;AGENTS.md core skip;備份 `governance_migrations/20260530T054058Z`)。其後延後項係本機 dev folder + Drive hub 改名、Project Context Index、監察 0.2.13 採用。)
+Last Updated: 2026-05-30 (S48 full closeout — **0.2.13「人性化上手」已正式發佈並全部讀回核實**。第五段 gated release 完成:`package.json` 升 0.2.13、外發前檢 + 全面檢全綠(報告 `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`)、`npm publish` 成功(npm latest = 0.2.13)、`git push origin main`(release commit `6059f45`)、GitHub Pages 上線新內容、GitHub pre-release `v0.2.13`→`6059f45`。四個對外面(npm / repo main / Pages / GitHub release)已逐項讀回對齊。此 S48 closeout commit 連同 `dev/release-notes/v0.2.13.github.md` 一併提交並推送,遠端治理同步。**0.2.13 由「本機完成、未發佈」推到「公開已發佈」。** 下一步:Adam 想做嘅 Agent Handoff Kit 升級 0.3.14→0.3.17(dry-run 先);其後延後項仍係本機 dev folder + Drive hub 改名、Project Context Index。)
 
 <!-- ack:section:durable-anchors -->
 ## Durable Anchors
@@ -28,7 +28,7 @@ This is the current-state area. At every full closeout, rewrite or explicitly co
 3. **0.2.13「人性化上手」FULLY SHIPPED.** 第一段 (CLI) + 第二段 (skill) + 第三段+ (public surfaces + naming unification + starter-pack rewrite + joiner page) + B4/B5 + 第四段 UAT + **第五段 gated release** all DONE. Nothing about 0.2.13 remains.
 4. **Naming unification (0.2.13, shipped):** new installs default the shared folder to `Agent_Public_Squares`; the underscore `AI_Public_Squares` is scrubbed from every user-facing default / example. The `AI Public Squares` product alias (space) + `check Hub` trigger stay recognized. Existing `AI_Public_Squares` folders / configs keep working. `docs/plans/*.md` keep the real-hub `…\AI_Public_Squares\` path as fact.
 5. **Joiner page** `docs/guides/aps-join-invite.html` is live on Pages; `starterPackContent()` generates a forwardable invite linking to it (with the three install commands). `peer add` writes a project-scoped starter pack (`starter-pack-<project>-<peer>.md`).
-6. Governance state: brand / vocab discipline holds. QC 9(d) behaviour-truth gate verified GREEN at the release-check. Agent Handoff Kit doctor `status: passed` (45 checks). **The Kit was upgraded `0.3.14 → 0.3.17` this session** (auto-doctor 三向對齊; AGENTS.md core skipped clean; only the handoff lifecycle placeholder + PROJECT_INDEX version record changed).
+6. Governance state: brand / vocab discipline holds. QC 9(d) behaviour-truth gate verified GREEN at the release-check. Agent Handoff Kit doctor `status: passed` (45 checks) at this closeout. **Observation (not a release blocker): the Kit TOOL is now npm latest `v0.3.17` while this project records `v0.3.14`** — doctor only checks, does not modify; Adam wants to run the Kit `upgrade` as the next step (dry-run first).
 
 <!-- ack:section:task-understanding-summary -->
 ## Task Understanding Summary
@@ -45,7 +45,7 @@ This is the current-state area. At every full closeout, rewrite or explicitly co
 
 **0.2.13「人性化上手」is DONE and publicly shipped (S48).** No 0.2.13 work remains.
 
-The **Agent Handoff Kit tool upgrade `0.3.14 → 0.3.17` is also DONE this session** (dry-run previewed → applied → auto-doctor `status: passed`, version 三向對齊 v0.3.17; AGENTS.md core skipped clean; only `dev/SESSION_HANDOFF.md` lifecycle placeholder + `dev/PROJECT_INDEX.md` version record changed; backup `dev/governance_migrations/20260530T054058Z/`). No upgrade work remains.
+The immediate next action (Adam's request) is the **Agent Handoff Kit tool upgrade `0.3.14 → 0.3.17`** in this root, run as its own step AFTER the release closeout: `npx --yes @adamchanadam/agent-handoff-kit@latest upgrade --dry-run` first to preview, review the plan, then apply, let it auto-run doctor (AGENTS.md §2.1 Upgrade Done Contract), then commit + push the migration separately. The S46 precedent (0.3.13→0.3.14) was a clean skip-existing migration that only bumped the PROJECT_INDEX version record; expect similar but verify the dry-run.
 
 Deferred (in-scope future, NOT this session): local dev-folder + real Drive-hub rename to `Agent_Public_Squares` (no-live-session / external-manual; a checklist can be produced when Adam is ready); Project Context Index design; true multi-agent platform; multi-recipient packet; group alias; Dropbox / OneDrive formal support.
 
@@ -64,14 +64,14 @@ Record only work actually completed in the current session (S48). Earlier S47/S4
 6. **GitHub Pages** read back live (join page 200; index 「三條問題」present, 「五個值」gone).
 7. **GitHub pre-release `v0.2.13`** created (`--target 6059f45`, `--prerelease`, body from new `dev/release-notes/v0.2.13.github.md` with the verification section corrected to GREEN); read back: latest in release list, tag synced to remote.
 8. **S48 full closeout**: this handoff reconciled to the published reality; S48 log entry + N-rule (S38 → archive batch 009); PROJECT_INDEX workspace identity / release rows updated; PROJECT_DECISIONS evolution + insights appended; START regenerated; `v0.2.13.github.md` committed.
-9. **Agent Handoff Kit tool upgrade `0.3.14 → 0.3.17`** (Adam's request): `upgrade --dry-run` previewed (create 0 / merge 1 = handoff lifecycle placeholder / skip 19 incl. AGENTS.md core clean / conflict 0), then applied; auto-doctor `status: passed` (45), version 三向對齊 v0.3.17; backup `dev/governance_migrations/20260530T054058Z/`. Re-reconciled this handoff + log + index to mark the upgrade done.
 
 <!-- ack:section:next-priorities -->
 ## Next Priorities
 
-1. **Local dev-folder + real Drive-hub rename → `Agent_Public_Squares`** — deferred; both are no-live-session / external-manual tasks (do NOT do mid-session). A manual checklist can be produced when Adam is ready.
-2. **Project Context Index design** — deferred (in-scope future).
-3. **Monitor 0.2.13 adoption** — Jay (and any new joiner) reinstall `@latest` (now 0.2.13) and exercise the three-question install + joiner page on a real machine; capture any defect.
+1. **Agent Handoff Kit tool upgrade `0.3.14 → 0.3.17`** (Adam's request, this session, AFTER the release closeout push): `upgrade --dry-run` → review → apply → auto-doctor (§2.1) → separate commit + push. Then update the PROJECT_INDEX Kit version record + a short SESSION_LOG note.
+2. **Local dev-folder + real Drive-hub rename → `Agent_Public_Squares`** — deferred; both are no-live-session / external-manual tasks (do NOT do mid-session). A manual checklist can be produced when Adam is ready.
+3. **Project Context Index design** — deferred (in-scope future).
+4. **Monitor 0.2.13 adoption** — Jay (and any new joiner) reinstall `@latest` (now 0.2.13) and exercise the three-question install + joiner page on a real machine; capture any defect.
 
 <!-- ack:section:next-task-required-reading -->
 ## Next Task Required Reading
@@ -85,12 +85,14 @@ Before acting on the next task, read or mark blocked:
 | `dev/SESSION_LOG.md` latest entry (S48) | Current evidence | confirmed |
 | `dev/PROJECT_INDEX.md` | Workspace map + source-of-truth pointers | confirmed |
 | `dev/RULE_PACKS.md` | Task routing | confirmed |
+| `AGENTS.md` §2.1 Upgrade Done Contract | required before declaring the Kit upgrade complete | required before Kit upgrade |
+| `dev/PROJECT_INDEX.md` Stack (Kit version row) + `dev/governance_migrations/` | Kit upgrade records the migration here | required before / after Kit upgrade |
 
 <!-- ack:section:risks-blockers -->
 ## Risks / Blockers
 
 1. **0.2.13 is published — no release work pending.** All four public surfaces (npm / repo main / Pages / GitHub release) read back and agree. Nothing about 0.2.13 is unpushed or unverified.
-2. **Kit version drift RESOLVED**: the Agent Handoff Kit was upgraded `0.3.14 → 0.3.17` this session; doctor reports version 三向對齊 (tool / project record / npm latest all v0.3.17). No drift remains.
+2. **Kit tool vs project-record version drift**: the Agent Handoff Kit tool is npm latest `v0.3.17`; this project records `v0.3.14`. Not a release blocker (doctor passed, only checks). Resolve via the Kit `upgrade` (dry-run first; AGENTS.md §2.1); do it as its own step, not folded into other commits.
 3. **`items` must use the explicit contract, never prose-parsing** (codex-validated, UAT + release-check confirmed): sender declares `--items`; CLI records verbatim into frontmatter; reader reads frontmatter only; `revise` preserves prior items unless `--items` / `--clear-items`.
 4. **Naming / rename discipline.** New installs default to `Agent_Public_Squares`; existing `AI_Public_Squares` folders + configs keep working — do NOT force-migrate. Underscore `AI_Public_Squares` scrubbed from user-facing defaults only; `docs/plans/*.md` keep the real-hub path as fact; `AI Public Squares` (space) product alias + `check Hub` trigger stay recognized. The local dev-folder + Drive-hub rename are DEFERRED and must NOT be done mid-session (live-cwd / shared-folder hazards).
 5. **Automation stays out of scope**: never re-add `watch` / `_notify` / OS+platform scheduling / desktop notifications / Telegram-bot auto-send.
@@ -105,7 +107,7 @@ Before acting on the next task, read or mark blocked:
 
 - **0.2.13 release-check GREEN** (report `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`): 外發前檢 (快檢 4 + 9 項) + 全面檢 可跑部分全部通過. Highlights — `node --check` clean; `npm pack --dry-run` version 0.2.13 / 14 files; skill `description` 729 ≤1024 + 0 colon-space (valid YAML); bracket-path `init --dry-run` exit 0 (0.2.10 regression holds); 9(d) teaching-layer old-model markers 0; HTML `<section>` balance (index 10/10, guides hub 3/3, walkthrough 16/16, join 7/7, maintainers 5/5) + 0 local .md links; browser render index/walkthrough 0 console error (join page only favicon-404, cosmetic); fresh isolated 0.2.13 round-trip all GREEN (incl. items verbatim, revise preserve = 2 / --clear-items = 0, consume ack written).
 - **Post-publish read-backs (all agree):** `npm view` version + dist-tags.latest 0.2.13, 14 files; `npx --yes @adamchanadam/aps@latest --help` shows v0.2.13; GitHub Pages join page 200 + index 「三條問題」/ 0 「五個值」; `origin/main` == HEAD; `gh release view v0.2.13` isPrerelease true / isDraft false / target 6059f45 / latest in list; `git ls-remote --tags origin v0.2.13` → 6059f45.
-- **Agent Handoff Kit doctor**: `status: passed`, 45 checks — both at the release-check (Kit v0.3.14) and after the **Kit upgrade to v0.3.17** (version now 三向對齊; prompt mirror + credential sweep ok).
+- **Agent Handoff Kit doctor**: `status: passed`, 45 checks (run at release-check); START_NEXT_SESSION_PROMPT mirror + credential sweep ok. Kit tool drift to v0.3.17 noted (Next Priorities #1).
 - `START_NEXT_SESSION_PROMPT.txt` regenerated at this closeout.
 
 <!-- ack:section:workspace-identity -->
@@ -116,7 +118,7 @@ Git root: same
 Branch: `main`
 Latest pushed state: the 0.2.13 release commit is `6059f45` (pushed; `ff044e9..6059f45`). This S48 closeout commit advances `main` and is pushed too, so `origin/main` == HEAD, **0 ahead**, working tree clean. **npm latest `0.2.13`; tag `v0.2.13`→`6059f45` latest; GitHub pre-release `v0.2.13` latest; Pages live with 0.2.13.** `package.json` is `0.2.13`.
 Remote: `origin = https://github.com/Adamchanadam/agent-public-squares.git` (public, Apache-2.0, HTTPS via Windows Credential Manager). GitHub auto-redirects old web+git URLs but NOT Pages — do not reuse the old slug.
-Worktree status: clean after the S48 closeout + Kit-upgrade commits. Agent Handoff Kit recorded version `0.3.17` (upgraded this session; doctor 三向對齊). Outside the repo (not git-tracked): memory files; `GENERIC_OPERATIONAL_RUNBOOK.md`; OS-temp release-check sandboxes (auto-cleaned). Local working folder still named `AI_Public_Squares` (rename deferred).
+Worktree status: clean after the S48 closeout commit. Agent Handoff Kit recorded version `0.3.14` (tool npm latest now `0.3.17`; upgrade pending as Next Priorities #1). Outside the repo (not git-tracked): memory files; `GENERIC_OPERATIONAL_RUNBOOK.md`; OS-temp release-check sandboxes (auto-cleaned). Local working folder still named `AI_Public_Squares` (rename deferred).
 Execution environment note: Claude Code on Windows, git-bash Bash tool + PowerShell tool. Isolated-hub tests use temp Hub + redirected HOME (real Hub + real `~/.claude` skills untouched); the redirect (HOME / USERPROFILE) and REPO/UAT paths must be re-exported in every Bash call. codex via direct call (never `cmd /c`).
 
 <!-- ack:section:sync-status -->
@@ -132,7 +134,7 @@ Use statuses from `dev/DOC_SYNC_REGISTRY.md`: `confirmed`, `unverified`, `pendin
 - `dev/release-notes/v0.2.13.md` (changelog) + `dev/release-notes/v0.2.13.github.md` (release body): `confirmed` — committed at this closeout.
 - `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`: `confirmed` — committed in the release commit `6059f45`.
 - `dev/PROJECT_INDEX.md`: `confirmed` — workspace identity / release rows updated at this closeout.
-- Agent Handoff Kit upgrade (0.3.14→0.3.17): `confirmed` — applied this session; doctor 三向對齊 v0.3.17; backup `dev/governance_migrations/20260530T054058Z/`.
+- Agent Handoff Kit upgrade (0.3.14→0.3.17): `pending` — Next Priorities #1 (do as its own step).
 - Memories + runbook: `confirmed` (outside repo / not committed).
 - SESSION_LOG archive: `confirmed` — S48 prepended; N-rule moved S38 to batch 009; INDEX updated.
 
@@ -147,7 +149,7 @@ At full closeout, complete this check after updating the state sections above.
 <!-- ack:field:stale-snapshots-left -->
 - Stale snapshots left in this handoff: none. Historical detail lives in `dev/SESSION_LOG.md` (S48 + recent) and `dev/SESSION_LOG_archive/*`.
 <!-- ack:field:lifecycle-conflicts-resolved -->
-- Completed / pending / risk / opening-message lifecycle conflicts resolved or explicitly reclassified: yes. 第五段 release + the Agent Handoff Kit upgrade (0.3.14→0.3.17) both reclassified from pending to done; no completed item remains as an open next priority or active risk. Remaining open work is all deferred / monitoring (renames, Project Context Index, 0.2.13 adoption).
+- Completed / pending / risk / opening-message lifecycle conflicts resolved or explicitly reclassified: yes. 第五段 release reclassified from pending to done; all 0.2.13 stages complete. The prior Risks 「9 commits unpushed」/「package.json still 0.2.12」/「9(d) re-confirm」 items are CLEARED (published + verified). The only open work is the Kit tool upgrade (Next Priorities #1) + deferred future items, consistently stated across Active Objective / Next Priorities / Risks / opening message.
 <!-- ack:field:opening-message-matches-current-state -->
 - Opening message matches current state: yes. `START_NEXT_SESSION_PROMPT.txt` regenerated during this full closeout.
 <!-- ack:field:next-ai-can-continue -->
@@ -174,13 +176,13 @@ Continuity rule: this file carries current state and next action. `SESSION_LOG.m
 ```text
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for Agent Public Squares; npm `@adamchanadam/aps`; GitHub repo Adamchanadam/agent-public-squares is public; Pages enabled). Local working-folder name is still `AI_Public_Squares` (rename deferred).
 
-Current state (2026-05-30, end of S48): 0.2.13「人性化上手」is PUBLICLY SHIPPED and fully read back. npm latest = `@adamchanadam/aps@0.2.13`; `package.json` = 0.2.13; GitHub pre-release `v0.2.13`→`6059f45`; GitHub Pages live with the 0.2.13 content; `origin/main` == local HEAD (the 0.2.13 release commit `6059f45`, the S48 closeout commit, and the Kit-upgrade commit), 0 ahead, working tree clean. All four public surfaces (npm / repo main / Pages / GitHub release) were read back and agree. The 0.2.13 release-check report is `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`.
+Current state (2026-05-30, end of S48): 0.2.13「人性化上手」is PUBLICLY SHIPPED and fully read back. npm latest = `@adamchanadam/aps@0.2.13`; `package.json` = 0.2.13; GitHub pre-release `v0.2.13`→`6059f45`; GitHub Pages live with the 0.2.13 content; `origin/main` == local HEAD (the 0.2.13 release commit `6059f45` plus the S48 closeout commit), 0 ahead, working tree clean. All four public surfaces (npm / repo main / Pages / GitHub release) were read back and agree. The 0.2.13 release-check report is `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`.
 
 0.2.13 shipped the「人性化上手」model end to end: three-question `init` (own side only; counterpart invited later via `peer add`), items as an explicit `--items` sender contract (verbatim into frontmatter; revise preserves / `--clear-items` empties), doctor local-core vs peer split (solo passes), publish actionable no-recipient guidance + reachability gate, the shared-folder default name unified to `Agent_Public_Squares` (underscore `AI_Public_Squares` scrubbed from user-facing defaults; existing folders keep working), a rewritten forwardable starter-pack invite linking to the new joiner page `docs/guides/aps-join-invite.html`, and project-scoped starter-pack filenames. CLI ↔ skill ↔ public docs are aligned (外發前檢 9(d) GREEN).
 
-The Agent Handoff Kit tool was upgraded `0.3.14 → 0.3.17` in S48 (doctor 三向對齊 v0.3.17; AGENTS.md core skipped clean), so no Kit upgrade is pending.
+The immediate next step is the Agent Handoff Kit TOOL upgrade in this root: the Kit tool is npm latest `v0.3.17` while this project records `v0.3.14`. Do it as its own step — `npx --yes @adamchanadam/agent-handoff-kit@latest upgrade --dry-run` first, review the plan, then apply, let it auto-run doctor (AGENTS.md §2.1 Upgrade Done Contract), then commit + push the migration separately and bump the PROJECT_INDEX Kit version record. (If S48 already did this, treat it as done and move to the deferred items.)
 
-The next actionable work is all deferred / monitoring: local dev-folder + real Drive-hub rename to `Agent_Public_Squares` (no-live-session / external-manual — do NOT do mid-session; a checklist can be produced when ready); Project Context Index design; monitoring real-world 0.2.13 adoption (Jay / new joiner reinstall @latest and exercise three-question install + joiner page). Out of APS scope (never re-add): watch / _notify / scheduling / desktop notif / bot auto-send.
+After that, deferred in-scope work: local dev-folder + real Drive-hub rename to `Agent_Public_Squares` (no-live-session / external-manual — do NOT do mid-session; a checklist can be produced when ready); Project Context Index design; monitoring real-world 0.2.13 adoption (Jay / new joiner reinstall @latest and exercise three-question install + joiner page). Out of APS scope (never re-add): watch / _notify / scheduling / desktop notif / bot auto-send.
 
 Do not commit, push, tag, release, publish, or change GitHub Pages unless Adam explicitly asks (each external action is its own authorization). `items` uses the explicit contract, never prose-parsing. New installs default the shared folder to Agent_Public_Squares; existing AI_Public_Squares folders keep working; the underscore name is scrubbed from user-facing defaults only (`AI Public Squares` with a space and the `check Hub` trigger stay recognized); the local dev-folder + Drive-hub rename are DEFERRED and must NOT be done mid-session.
 
@@ -191,6 +193,8 @@ Read in order:
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/qc/triggers.md (🟡 外發前檢 / 🔴 全面檢; 9(d) behaviour-truth)
+7. AGENTS.md §2.1 (Upgrade Done Contract — before the Kit upgrade)
+8. dev/PROJECT_INDEX.md Stack (Kit version row) + dev/governance_migrations/ (Kit upgrade backup)
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
