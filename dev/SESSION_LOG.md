@@ -18,7 +18,8 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 - **QC:** release-check + full-check GREEN (above); all four post-publish read-backs agree; Agent Handoff Kit doctor `status: passed` (45). Kit tool drift to npm latest v0.3.17 noted (next step).
 - **Boundary:** Every external action (publish / push / Pages / release) individually authorized by Adam. The Agent Handoff Kit tool upgrade is queued as the next step (its own dry-run → apply → doctor → separate commit).
 - **Agent Handoff Kit upgrade 0.3.14→0.3.17 (also done this session, Adam's request):** `upgrade --dry-run` (create 0 / merge 1 = handoff lifecycle placeholder / skip 19 incl. AGENTS.md core clean / conflict 0) → applied with `yes` → auto-doctor `status: passed` (45), version 三向對齊 v0.3.17; backup `dev/governance_migrations/20260530T054058Z/`. Handoff + PROJECT_INDEX re-reconciled to mark the upgrade done.
-- **Next:** deferred / monitoring — local dev-folder + Drive-hub rename → `Agent_Public_Squares` (no-live-session / external-manual), Project Context Index design, monitor 0.2.13 adoption (Jay / new joiner reinstall @latest).
+- **Project Context Index 呈現層方向入檔 (commit `ef729c3`):** 與 Adam 傾定後,roadmap §4.5 記低兩層(來源 `_context/*.md` markdown 由 AI 讀寫 → CLI 按需生成唯讀 HTML 速覽畀人睇)+ 三條界線(衍生唯讀+時間戳+以封包為準、按需生成不自動刷新、唯讀無看板/排程/指派);PROJECT_DECISIONS 記架構取捨;整咗一版沿用 docs/ 視覺嘅參考樣板(假資料、render 過、gitignored)`dev/qc/evidence/2026-05-30-context-index-mock/`。實作仍延後(核心驗證後)。
+- **Next:** deferred / monitoring — local dev-folder + Drive-hub rename → `Agent_Public_Squares` (no-live-session / external-manual), Project Context Index 實作 (方向已入 roadmap §4.5), monitor 0.2.13 adoption (Jay / new joiner reinstall @latest).
 - **Log maintenance:** S48 prepended (hot log 11); N-rule moved the oldest entry (S38) into archive batch 009 → hot log back to 10; INDEX updated.
 
 ## 2026-05-29 (S47) — 0.2.13 第三段+ (公開頁對齊 + 命名統一 Agent_Public_Squares + starter pack + 加入教學頁) + B4/B5 + 第四段 UAT GREEN
