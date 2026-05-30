@@ -8,7 +8,17 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-30 (S48, latest) — 0.2.13 第五段 gated release SHIPPED (npm 0.2.13 + push + Pages + GitHub release;全部讀回核實)
+## 2026-05-30 (S49, latest) — Public surface cleanup + GitHub Latest correction
+
+- **ID:** S49
+- **Summary:** Adam flagged two public-surface issues after S48: GitHub repo right rail still showed `v0.1.1` as `Latest`, and README exposed internal `.md` planning / QC documents directly in the repo entry path. Adam explicitly authorized commit, push, and GitHub release change.
+- **Changed (repo):** `README.md` now states `@adamchanadam/aps@0.2.13` / GitHub `v0.2.13` as the current public version while preserving the early-testing boundary, and removes direct README links to `docs/plans/*.md` / `dev/qc/*.md`; `dev/release-notes/v0.2.13.github.md` removes GitHub pre-release wording; `dev/SESSION_HANDOFF.md` and `dev/PROJECT_INDEX.md` updated to record `v0.2.13` as GitHub Latest release.
+- **External action:** GitHub release `v0.2.13` changed from pre-release to standard Latest release with `gh release edit v0.2.13 --prerelease=false --latest`, and release body/title refreshed from `dev/release-notes/v0.2.13.github.md`.
+- **QC:** README grep confirms no direct local `.md` links to `docs/plans/**` or `dev/qc/**`; release readback confirms `isPrerelease=false`, `isDraft=false`, tag `v0.2.13` still targets `6059f45`; remote branch readback confirms pushed main after the cleanup commit.
+- **Boundary:** Product remains early-testing and not production-ready; this change fixes public presentation and GitHub Latest semantics only. No npm publish, version bump, tag move, or Pages-specific deployment action beyond pushing `main`.
+- **Log maintenance:** S49 prepended; N-rule moved S39 short-index entry into archive batch 010, leaving hot log at 10 entries.
+
+## 2026-05-30 (S48) — 0.2.13 第五段 gated release SHIPPED (npm 0.2.13 + push + Pages + GitHub release;全部讀回核實)
 
 - **ID:** S48
 - **Summary:** Ran 0.2.13「人性化上手」第五段 gated release end to end, each external action individually authorized by Adam. Bumped `package.json` 0.2.12→0.2.13, ran 外發前檢 + 全面檢 (GREEN), `npm publish`, pushed `main`, verified Pages, cut GitHub pre-release `v0.2.13`. All four public surfaces (npm / repo main / Pages / GitHub release) read back and agree. **0.2.13 is now publicly shipped.** Next: Agent Handoff Kit tool upgrade 0.3.14→0.3.17 (dry-run first), then deferred renames + Project Context Index.
@@ -127,10 +137,6 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 - **Changed:** `dev/DOC_SYNC_REGISTRY.md`, `dev/SESSION_HANDOFF.md`, `dev/PROJECT_INDEX.md`, `docs/maintainers/index.html`, and this log.
 - **Fix:** Durable sync wording now says `START_NEXT_SESSION_PROMPT.txt` is regenerated only at full closeout. The latest handoff now marks prompt mirror state as pending closeout instead of a mid-session sync. `PROJECT_INDEX` no longer carries the stale managed-core version phrase, and maintainer HTML now distinguishes published 0.2.8 Reliable Pair support from local 0.2.9 Project Peers candidate work.
 - **Boundary:** `START_NEXT_SESSION_PROMPT.txt` remains unchanged in this step. Handoff Kit prompt-mirror doctor should be treated as a closeout check, not a mid-session requirement.
-
-## 2026-05-28 (S39) — Project Peers full-audit scenario codified
-
-- Short index: QC trigger truth now requires Project Peers one-by-one handoff isolation; durable details live in `dev/qc/triggers.md`, `docs/qc/governance-map.html`, and `dev/SESSION_HANDOFF.md`.
 
 ## Entry Template
 

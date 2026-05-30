@@ -2,9 +2,11 @@
 
 > 前稱 AI Public Squares
 
-> **⚠️ 前期測試階段(pre-release)**
+> **⚠️ 早期測試階段**
 >
 > 本工具仍處於早期建構期,以 npm `@latest` 為準。已發布主線是 Reliable Peer Handoff:同一個項目可以邀請多位協作對象,但每個交接包仍只發給一位。主安裝路徑是互動式 `npx aps init`,並保留既有項目 `npx aps upgrade`、長正文 `--body-file` 發佈 / 修訂、APS 品牌與版本分流、繁體中文 help、發送前確認、收件總覽、摘要式人類通知、更安全的對方通知文字,以及收件對象選擇(`peers` / `publish --to` / `inbox --from` / `status`)。CLI 已通過最小發佈、收件、消化、回覆、收結往返測試,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。自然語言日常操作與補救流程仍未完整產品化。確切版本號請以 `npm view @adamchanadam/aps version` 或 `npx aps --help` 為準。
+>
+> 版本提示:目前公開版本是 npm `@adamchanadam/aps@0.2.13`,GitHub Latest release 是 `v0.2.13`。版本已公開,但產品仍屬早期測試階段,不建議用於不可中斷的重要流程。
 >
 > 最新產品決策是 Reliable Peer Handoff：一個 project 可以有多位 peers,但每次仍是單收件交接包。真正多人平台、多收件人 packet、群組 lane、自動通知與 `watch` 仍不屬目前主路徑。核心方向是不要求額外雲端開發者專案、外部服務憑證或密鑰設定。
 >
@@ -57,7 +59,7 @@ npx aps upgrade
 
 `npx aps upgrade` 會讀取既有 `.aps/config.json`,備份並刷新 Claude Code / Codex 的 APS skill,更新本地橋接與 Handoff Kit 註冊,然後做共用 Drive 資料夾預檢。它不會覆寫既有交接包、outbox、ack 或共用 Drive 資料夾協定檔。
 
-> **目前狀態**:前期測試版(以 npm `@latest` 為準)提供 `bridge-pack`、互動式 `init` 技能安裝器、既有項目 `upgrade`、初始共用 Drive 資料夾 skeleton 生成器,預設支援 Claude Code 與 Codex,並加入 `peers`、`peer add`、`peer starter`、`publish --to`、`inbox --from`、`inbox --all` 與 `status --packet-id`,讓同一項目可邀請多位協作對象、每次仍是一對一交接。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並支援 `revise` / `withdraw` / `doctor` / `config`、`publish --body-file` 與 `revise --body-file`;本機互動式設定回歸已通過,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。設置一次後可用短命令作備用。日常主路徑仍應是在 AI 工具輸入自然語言,例如「教我用 APS」「教我用 Agent Public Squares」或「check Drive」。`Agent Public Squares` 是本產品現用名稱,前稱 `AI Public Squares`,兩者指同一產品;`APS` 是簡稱。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為前期測試說明,不要用於不可中斷的重要流程。
+> **目前狀態**:早期測試版(以 npm `@latest` 為準)提供 `bridge-pack`、互動式 `init` 技能安裝器、既有項目 `upgrade`、初始共用 Drive 資料夾 skeleton 生成器,預設支援 Claude Code 與 Codex,並加入 `peers`、`peer add`、`peer starter`、`publish --to`、`inbox --from`、`inbox --all` 與 `status --packet-id`,讓同一項目可邀請多位協作對象、每次仍是一對一交接。CLI 已有最小 `publish` / `inbox` / `consume` / `close` 指令,並支援 `revise` / `withdraw` / `doctor` / `config`、`publish --body-file` 與 `revise --body-file`;本機互動式設定回歸已通過,並沿用一次維護者真實 Google Drive 跨機往返驗證作為協定證據。設置一次後可用短命令作備用。日常主路徑仍應是在 AI 工具輸入自然語言,例如「教我用 APS」「教我用 Agent Public Squares」或「check Drive」。`Agent Public Squares` 是本產品現用名稱,前稱 `AI Public Squares`,兩者指同一產品;`APS` 是簡稱。這仍未等同完整自然語言日常操作或補救流程已產品化。完整可用之前,請把本頁視為早期測試說明,不要用於不可中斷的重要流程。
 
 ---
 
@@ -89,7 +91,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 ## 目前可以怎樣試
 
-前期測試版(以 npm `@latest` 為準)已可用 CLI 跑完整互動式設置、既有項目升級、最小往返、修訂、撤回、只讀診斷與短命令日用流程,並包含 Project Peers + Sent Status,讓同一項目可邀請多位協作對象、每次仍是一對一交接。你可以做三件事:
+早期測試版(以 npm `@latest` 為準)已可用 CLI 跑完整互動式設置、既有項目升級、最小往返、修訂、撤回、只讀診斷與短命令日用流程,並包含 Project Peers + Sent Status,讓同一項目可邀請多位協作對象、每次仍是一對一交接。你可以做三件事:
 
 1. 閱讀本 repo,理解 APS 想解決的跨機協作問題。
 2. 參考下方「想深入了解」中的設置教學,照 CLI 主路徑完成首次設置。
@@ -123,7 +125,7 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 
 ## 想深入了解
 
-下列分三層。新用戶只需要讀前兩項;維護者規格與 `.md` 真源不是安裝起步材料。
+新用戶只需要先讀公眾入口。開發計劃、協定真源與內部檢討文件留在 repo 內供維護者追蹤,不作 README 起步路徑。
 
 公眾入口(HTML,GitHub Pages hosted):
 
@@ -131,17 +133,9 @@ npx --yes @adamchanadam/agent-handoff-kit@latest init
 - [教學中心](https://adamchanadam.github.io/agent-public-squares/docs/guides/index.html) — 按情景選擇教學
 - [第一次安裝與測試](https://adamchanadam.github.io/agent-public-squares/docs/guides/aps-onboarding-walkthrough.html) — 非技術用戶跟著完成首次設置與測試
 
-維護者入口(HTML,GitHub Pages hosted):
+維護者入口:
 
-- [維護者規格](https://adamchanadam.github.io/agent-public-squares/docs/maintainers/index.html) — 公開承諾邊界、QC 路由、同步真源與發佈前核對
-- [分層 QC](https://adamchanadam.github.io/agent-public-squares/docs/qc/governance-map.html) — 維護者閱讀的 QC 觸發詞與檢查分層
-
-AI / 維護者層(.md,予 AI 程式 / repo 維護者讀):
-
-- [跨機接駁實作計劃](docs/plans/2026-05-21-aps-phase4-plan.md) — 實現跨機協作的技術步驟
-- [公開產品路線](docs/plans/2026-05-28-aps-public-product-multi-agent-roadmap.md) — Reliable Peer Handoff、Project Peers + Sent Status、單收件 packet、延後路線與無雲端 API 原則
-- [協定設計理據](docs/plans/2026-05-20-agent-public-square-design.md) — 5 個設計取捨的理由
-- [內部檢討文件](dev/qc/2026-05-22-zero-knowledge-funnel-audit.md) — 「本 repo 須令零認知讀者也能使用」 的檢討與修補路線
+- [維護者規格](https://adamchanadam.github.io/agent-public-squares/docs/maintainers/index.html) — 公開承諾邊界、檢查路由、同步真源與發佈前核對
 
 ---
 

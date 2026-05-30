@@ -1,6 +1,6 @@
 # Session Handoff
 
-Last Updated: 2026-05-30 (S48 full closeout — **0.2.13「人性化上手」已正式發佈並全部讀回核實**。第五段 gated release 完成:`package.json` 升 0.2.13、外發前檢 + 全面檢全綠(報告 `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`)、`npm publish` 成功(npm latest = 0.2.13)、`git push origin main`(release commit `6059f45`)、GitHub Pages 上線新內容、GitHub pre-release `v0.2.13`→`6059f45`。四個對外面(npm / repo main / Pages / GitHub release)已逐項讀回對齊。此 S48 closeout commit 連同 `dev/release-notes/v0.2.13.github.md` 一併提交並推送,遠端治理同步。**0.2.13 由「本機完成、未發佈」推到「公開已發佈」。** 同一 session 亦完成 Agent Handoff Kit 工具升級 0.3.14→0.3.17(dry-run → 套用 → auto-doctor 三向對齊 v0.3.17;AGENTS.md core skip;備份 `governance_migrations/20260530T054058Z`)。另把 Project Context Index 人類呈現層方向(來源 markdown → CLI 按需生成唯讀 HTML 速覽)記入 roadmap §4.5 + 參考樣板,實作仍延後。其後延後項係本機 dev folder + Drive hub 改名、Project Context Index 實作、監察 0.2.13 採用。)
+Last Updated: 2026-05-30 (S49 public-surface cleanup — Adam flagged GitHub repo right rail still showing `v0.1.1` as Latest and README exposing internal `.md` planning / audit documents. Authorized actions: commit, push, and change GitHub release. Local state updated so `README.md` no longer links `docs/plans/*.md` / `dev/qc/*.md` from the repo entry, `dev/release-notes/v0.2.13.github.md` removes the GitHub pre-release wording, and the current release boundary is `v0.2.13` as GitHub Latest release while product status remains early testing. S48 remains the underlying 0.2.13 release evidence: npm latest 0.2.13, release-check/full-check GREEN, Pages live, tag `v0.2.13`→`6059f45`, Agent Handoff Kit upgraded to 0.3.17, Project Context Index direction recorded.)
 
 <!-- ack:section:durable-anchors -->
 ## Durable Anchors
@@ -8,10 +8,10 @@ Last Updated: 2026-05-30 (S48 full closeout — **0.2.13「人性化上手」已
 Stable facts that should survive across sessions. Update only when they change, but verify they still match reality at closeout.
 
 1. Project root and boundary: `C:\Users\adam\_claude_desktop\AI_Public_Squares` is the design / implementation / documentation SSOT workspace for Agent Public Squares (APS). It is not a product runtime workspace. The local working-folder name is still `AI_Public_Squares`; that rename AND the real Drive-hub folder rename are both DEFERRED to a separate no-live-session task (renaming a live folder mid-session breaks this session's cwd; renaming the shared Drive hub is an external + shared op). 0.2.13 (now PUBLISHED) changed only the DEFAULT shared-folder name for NEW installs to `Agent_Public_Squares` and scrubbed the underscore `AI_Public_Squares` from user-facing defaults / examples; existing `AI_Public_Squares` folders + configs keep working; the `AI Public Squares` product alias (with a space) is retained.
-2. Product identity: Agent Public Squares is a cross-machine collaboration protocol and npm package (`@adamchanadam/aps`, Apache-2.0) for AI agents exchanging structured packets through a locally synced shared folder. `AI Public Squares` is a recognized LEGACY alias; `APS` is the abbreviation; the npm package name stays `@adamchanadam/aps`. **npm latest is `0.2.13` (pre-release, published 2026-05-30 S48).**
+2. Product identity: Agent Public Squares is a cross-machine collaboration protocol and npm package (`@adamchanadam/aps`, Apache-2.0) for AI agents exchanging structured packets through a locally synced shared folder. `AI Public Squares` is a recognized LEGACY alias; `APS` is the abbreviation; the npm package name stays `@adamchanadam/aps`. **npm latest is `0.2.13` (early-testing public release, published 2026-05-30 S48).**
 3. Governance model: Agent Handoff Kit doctor is the governance health check for this root. External skill flows, demo workspaces, and other tool outputs are subordinate evidence; this root's handoff / log / index / registry are authoritative for this workspace.
 4. Runtime storage boundary: the shared Drive folder at `G:\我的雲端硬碟\Adam 工作目錄\AI_Projects\AI_Public_Squares\` owns runtime `_hub/`, templates, lane data, and ack files. This repo owns npm package source, public docs, plans, and QC truth. Structural tokens `hubRoot` / `--hub-root` / `_hub/` / `<hub_root>` / PROTOCOL schema / `setupHub` / `doctorHub` must NOT be renamed; only user-facing prose says 「共用 Drive 資料夾」.
-5. Release boundary: GitHub repo `Adamchanadam/agent-public-squares` is public; Pages serves from `main` root. **GitHub pre-release `v0.2.13` (tag `v0.2.13`→`6059f45`) is the latest release**; older `v0.2.12`→`c9e8057` and `v0.2.8`→`136042c` retained. **npm `@adamchanadam/aps@latest` = `0.2.13`.** The receive trigger is `check Drive` (legacy `check Hub` still recognized as a hidden alias). Do not reuse the old repo name `ai-public-squares` (breaks GitHub redirects). Project remains pre-release.
+5. Release boundary: GitHub repo `Adamchanadam/agent-public-squares` is public; Pages serves from `main` root. **GitHub release `v0.2.13` (tag `v0.2.13`→`6059f45`) is the Latest release**; older `v0.2.12`→`c9e8057` and `v0.2.8`→`136042c` retained as pre-releases. **npm `@adamchanadam/aps@latest` = `0.2.13`.** The receive trigger is `check Drive` (legacy `check Hub` still recognized as a hidden alias). Do not reuse the old repo name `ai-public-squares` (breaks GitHub redirects). Product remains early testing, not production-ready.
 6. Product scope decision (locked 2026-05-29 S45): the automation / background-notification / scheduling layer — `aps watch`, file-based `_notify`, OS / AI-platform scheduling, desktop notifications, Telegram-bot auto-send / auto-pushing into a running session — is **OUT OF APS SCOPE**, NOT deferred. APS is a manual, human-in-loop, synced-folder structured-handoff protocol: it produces a copy-ready human notification and the receiver runs `check Drive` by hand. Deferred (still in-scope future): true multi-agent platform, multi-recipient packet, group alias, Project Context Index, Dropbox / OneDrive formal support.
 7. QC discipline (locked 2026-05-29 S46): `bin/aps.js` is the user-visible-behaviour truth source; `skills/aps/**` and public docs are teaching layers that must follow it. Structure-level checks (`description` ≤1024 / valid YAML / trigger phrases / section + link integrity) passing does NOT mean the behaviour / product model is aligned — the two are not interchangeable. When CLI behaviour changes (question count, flags, generated artifacts, command contracts, exit codes), the teaching layers must be re-aligned, or the divergence recorded as a blocking gate in Risks + release gate. SSOT for this rule: `dev/qc/triggers.md` 外發前檢 9(d); memory `feedback-structure-vs-behaviour-drift`.
 
@@ -24,7 +24,7 @@ This is the current-state area. At every full closeout, rewrite or explicitly co
 ## Current Baseline
 
 1. Workspace: `C:\Users\adam\_claude_desktop\AI_Public_Squares`, branch `main`, remote `origin = https://github.com/Adamchanadam/agent-public-squares.git`. The 0.2.13 release commit `6059f45` is pushed; `origin/main` == `6059f45` after that push. This S48 closeout commit advances `main` once more and is pushed too, leaving `origin/main` == HEAD, working tree clean, **0 ahead**.
-2. Public release: **npm latest `@adamchanadam/aps@0.2.13`; GitHub pre-release `v0.2.13` latest; GitHub Pages live with the 0.2.13 content.** `package.json` is `0.2.13`. All four public surfaces read back and agree (see Validation / QC).
+2. Public release: **npm latest `@adamchanadam/aps@0.2.13`; GitHub release `v0.2.13` is Latest; GitHub Pages live with the 0.2.13 content.** `package.json` is `0.2.13`. All four public surfaces read back and agree (see Validation / QC).
 3. **0.2.13「人性化上手」FULLY SHIPPED.** 第一段 (CLI) + 第二段 (skill) + 第三段+ (public surfaces + naming unification + starter-pack rewrite + joiner page) + B4/B5 + 第四段 UAT + **第五段 gated release** all DONE. Nothing about 0.2.13 remains.
 4. **Naming unification (0.2.13, shipped):** new installs default the shared folder to `Agent_Public_Squares`; the underscore `AI_Public_Squares` is scrubbed from every user-facing default / example. The `AI Public Squares` product alias (space) + `check Hub` trigger stay recognized. Existing `AI_Public_Squares` folders / configs keep working. `docs/plans/*.md` keep the real-hub `…\AI_Public_Squares\` path as fact.
 5. **Joiner page** `docs/guides/aps-join-invite.html` is live on Pages; `starterPackContent()` generates a forwardable invite linking to it (with the three install commands). `peer add` writes a project-scoped starter pack (`starter-pack-<project>-<peer>.md`).
@@ -62,10 +62,11 @@ Record only work actually completed in the current session (S48). Earlier S47/S4
 4. **`npm publish --access public`** → `@adamchanadam/aps@0.2.13`; read back: registry version + dist-tags.latest 0.2.13, 14 files; `npx @latest --help` shows v0.2.13.
 5. **`git push origin main`** (release commit `6059f45`, fast-forward `ff044e9..6059f45`); read back: origin/main == HEAD, 0 ahead.
 6. **GitHub Pages** read back live (join page 200; index 「三條問題」present, 「五個值」gone).
-7. **GitHub pre-release `v0.2.13`** created (`--target 6059f45`, `--prerelease`, body from new `dev/release-notes/v0.2.13.github.md` with the verification section corrected to GREEN); read back: latest in release list, tag synced to remote.
+7. **GitHub release `v0.2.13`** was originally created as a pre-release (`--target 6059f45`, body from `dev/release-notes/v0.2.13.github.md`) and then changed in S49 to the GitHub Latest release; tag remains synced to `6059f45`.
 8. **S48 full closeout**: this handoff reconciled to the published reality; S48 log entry + N-rule (S38 → archive batch 009); PROJECT_INDEX workspace identity / release rows updated; PROJECT_DECISIONS evolution + insights appended; START regenerated; `v0.2.13.github.md` committed.
 9. **Agent Handoff Kit tool upgrade `0.3.14 → 0.3.17`** (Adam's request): `upgrade --dry-run` previewed (create 0 / merge 1 = handoff lifecycle placeholder / skip 19 incl. AGENTS.md core clean / conflict 0), then applied; auto-doctor `status: passed` (45), version 三向對齊 v0.3.17; backup `dev/governance_migrations/20260530T054058Z/`. Re-reconciled this handoff + log + index to mark the upgrade done.
 10. **Project Context Index — human-presentation direction recorded** (commit `ef729c3`): discussed with Adam and recorded in roadmap §4.5 the two-layer design (source `_context/*.md` markdown that AI reads/writes → CLI on-demand generated read-only HTML overview) + three guardrails (timestamped snapshot, packets-are-truth, traceable; on-demand, no auto-refresh; read-only, no kanban). Built a reference HTML mock with fake data in the `docs/` visual style (rendered, browser-verified) at `dev/qc/evidence/2026-05-30-context-index-mock/` (gitignored). Logged the architecture choice in PROJECT_DECISIONS. Implementation stays deferred until core validation.
+11. **S49 public-surface cleanup:** README entry no longer exposes internal `.md` planning / QC files as a repo homepage route; release note source no longer calls `v0.2.13` a GitHub pre-release; GitHub `v0.2.13` is treated as the public Latest release while product wording remains early-testing.
 
 <!-- ack:section:next-priorities -->
 ## Next Priorities
@@ -105,7 +106,7 @@ Before acting on the next task, read or mark blocked:
 ## Validation / QC
 
 - **0.2.13 release-check GREEN** (report `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`): 外發前檢 (快檢 4 + 9 項) + 全面檢 可跑部分全部通過. Highlights — `node --check` clean; `npm pack --dry-run` version 0.2.13 / 14 files; skill `description` 729 ≤1024 + 0 colon-space (valid YAML); bracket-path `init --dry-run` exit 0 (0.2.10 regression holds); 9(d) teaching-layer old-model markers 0; HTML `<section>` balance (index 10/10, guides hub 3/3, walkthrough 16/16, join 7/7, maintainers 5/5) + 0 local .md links; browser render index/walkthrough 0 console error (join page only favicon-404, cosmetic); fresh isolated 0.2.13 round-trip all GREEN (incl. items verbatim, revise preserve = 2 / --clear-items = 0, consume ack written).
-- **Post-publish read-backs (all agree):** `npm view` version + dist-tags.latest 0.2.13, 14 files; `npx --yes @adamchanadam/aps@latest --help` shows v0.2.13; GitHub Pages join page 200 + index 「三條問題」/ 0 「五個值」; `origin/main` == HEAD; `gh release view v0.2.13` isPrerelease true / isDraft false / target 6059f45 / latest in list; `git ls-remote --tags origin v0.2.13` → 6059f45.
+- **Post-publish read-backs (all agree):** `npm view` version + dist-tags.latest 0.2.13, 14 files; `npx --yes @adamchanadam/aps@latest --help` shows v0.2.13; GitHub Pages join page 200 + index 「三條問題」/ 0 「五個值」; `origin/main` == HEAD; `gh release view v0.2.13` reports `isPrerelease=false`, `isDraft=false`, target `6059f45`, Latest release; `git ls-remote --tags origin v0.2.13` → 6059f45.
 - **Agent Handoff Kit doctor**: `status: passed`, 45 checks — both at the release-check (Kit v0.3.14) and after the **Kit upgrade to v0.3.17** (version now 三向對齊; prompt mirror + credential sweep ok).
 - `START_NEXT_SESSION_PROMPT.txt` regenerated at this closeout.
 
@@ -115,7 +116,7 @@ Before acting on the next task, read or mark blocked:
 Expected project root: `C:\Users\adam\_claude_desktop\AI_Public_Squares`
 Git root: same
 Branch: `main`
-Latest pushed state: the 0.2.13 release commit is `6059f45` (pushed; `ff044e9..6059f45`). This S48 closeout commit advances `main` and is pushed too, so `origin/main` == HEAD, **0 ahead**, working tree clean. **npm latest `0.2.13`; tag `v0.2.13`→`6059f45` latest; GitHub pre-release `v0.2.13` latest; Pages live with 0.2.13.** `package.json` is `0.2.13`.
+Latest pushed state: the 0.2.13 release commit is `6059f45` (pushed; `ff044e9..6059f45`). This S49 public-surface cleanup commit advances `main` again and is pushed after README / governance cleanup. **npm latest `0.2.13`; tag `v0.2.13`→`6059f45`; GitHub release `v0.2.13` is Latest; Pages live with 0.2.13.** `package.json` is `0.2.13`.
 Remote: `origin = https://github.com/Adamchanadam/agent-public-squares.git` (public, Apache-2.0, HTTPS via Windows Credential Manager). GitHub auto-redirects old web+git URLs but NOT Pages — do not reuse the old slug.
 Worktree status: clean after the S48 closeout + Kit-upgrade commits. Agent Handoff Kit recorded version `0.3.17` (upgraded this session; doctor 三向對齊). Outside the repo (not git-tracked): memory files; `GENERIC_OPERATIONAL_RUNBOOK.md`; OS-temp release-check sandboxes (auto-cleaned). Local working folder still named `AI_Public_Squares` (rename deferred).
 Execution environment note: Claude Code on Windows, git-bash Bash tool + PowerShell tool. Isolated-hub tests use temp Hub + redirected HOME (real Hub + real `~/.claude` skills untouched); the redirect (HOME / USERPROFILE) and REPO/UAT paths must be re-exported in every Bash call. codex via direct call (never `cmd /c`).
@@ -129,13 +130,13 @@ Use statuses from `dev/DOC_SYNC_REGISTRY.md`: `confirmed`, `unverified`, `pendin
 - `package.json`: `confirmed` — 0.2.13, published as npm latest.
 - npm registry: `confirmed` — latest 0.2.13, 14 files (read back).
 - GitHub Pages: `confirmed` — live with 0.2.13 content (read back).
-- GitHub release / tag: `confirmed` — pre-release `v0.2.13`→`6059f45`, latest in list (read back).
+- GitHub release / tag: `confirmed` — `v0.2.13`→`6059f45`, `isPrerelease=false`, GitHub Latest release (read back).
 - `dev/release-notes/v0.2.13.md` (changelog) + `dev/release-notes/v0.2.13.github.md` (release body): `confirmed` — committed at this closeout.
 - `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`: `confirmed` — committed in the release commit `6059f45`.
 - `dev/PROJECT_INDEX.md`: `confirmed` — workspace identity / release rows updated at this closeout.
 - Agent Handoff Kit upgrade (0.3.14→0.3.17): `confirmed` — applied this session; doctor 三向對齊 v0.3.17; backup `dev/governance_migrations/20260530T054058Z/`.
 - Memories + runbook: `confirmed` (outside repo / not committed).
-- SESSION_LOG archive: `confirmed` — S48 prepended; N-rule moved S38 to batch 009; INDEX updated.
+- SESSION_LOG archive: `confirmed` — S49 prepended; N-rule moved S39 short-index entry to batch 010; INDEX updated.
 
 <!-- ack:section:state-reconciliation-check -->
 ## State Reconciliation Check
@@ -175,7 +176,7 @@ Continuity rule: this file carries current state and next action. `SESSION_LOG.m
 ```text
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for Agent Public Squares; npm `@adamchanadam/aps`; GitHub repo Adamchanadam/agent-public-squares is public; Pages enabled). Local working-folder name is still `AI_Public_Squares` (rename deferred).
 
-Current state (2026-05-30, end of S48): 0.2.13「人性化上手」is PUBLICLY SHIPPED and fully read back. npm latest = `@adamchanadam/aps@0.2.13`; `package.json` = 0.2.13; GitHub pre-release `v0.2.13`→`6059f45`; GitHub Pages live with the 0.2.13 content; `origin/main` == local HEAD (the 0.2.13 release commit `6059f45`, the S48 closeout commit, and the Kit-upgrade commit), 0 ahead, working tree clean. All four public surfaces (npm / repo main / Pages / GitHub release) were read back and agree. The 0.2.13 release-check report is `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`.
+Current state (2026-05-30, after S49 public-surface cleanup): 0.2.13「人性化上手」is PUBLICLY SHIPPED and fully read back. npm latest = `@adamchanadam/aps@0.2.13`; `package.json` = 0.2.13; GitHub release `v0.2.13`→`6059f45` is the GitHub Latest release (`isPrerelease=false`); GitHub Pages live with the 0.2.13 content; `origin/main` includes the S49 README / governance cleanup commit after S48. README no longer exposes internal `.md` planning / QC files as a repo homepage route. All four public surfaces (npm / repo main / Pages / GitHub release) were read back and agree. The 0.2.13 release-check report is `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`.
 
 0.2.13 shipped the「人性化上手」model end to end: three-question `init` (own side only; counterpart invited later via `peer add`), items as an explicit `--items` sender contract (verbatim into frontmatter; revise preserves / `--clear-items` empties), doctor local-core vs peer split (solo passes), publish actionable no-recipient guidance + reachability gate, the shared-folder default name unified to `Agent_Public_Squares` (underscore `AI_Public_Squares` scrubbed from user-facing defaults; existing folders keep working), a rewritten forwardable starter-pack invite linking to the new joiner page `docs/guides/aps-join-invite.html`, and project-scoped starter-pack filenames. CLI ↔ skill ↔ public docs are aligned (外發前檢 9(d) GREEN).
 
@@ -188,7 +189,7 @@ Do not commit, push, tag, release, publish, or change GitHub Pages unless Adam e
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md (latest S48 entry)
+3. dev/SESSION_LOG.md (latest S49 entry)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/qc/triggers.md (🟡 外發前檢 / 🔴 全面檢; 9(d) behaviour-truth)

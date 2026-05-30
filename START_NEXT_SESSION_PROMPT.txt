@@ -1,6 +1,6 @@
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for Agent Public Squares; npm `@adamchanadam/aps`; GitHub repo Adamchanadam/agent-public-squares is public; Pages enabled). Local working-folder name is still `AI_Public_Squares` (rename deferred).
 
-Current state (2026-05-30, end of S48): 0.2.13「人性化上手」is PUBLICLY SHIPPED and fully read back. npm latest = `@adamchanadam/aps@0.2.13`; `package.json` = 0.2.13; GitHub pre-release `v0.2.13`→`6059f45`; GitHub Pages live with the 0.2.13 content; `origin/main` == local HEAD (the 0.2.13 release commit `6059f45`, the S48 closeout commit, and the Kit-upgrade commit), 0 ahead, working tree clean. All four public surfaces (npm / repo main / Pages / GitHub release) were read back and agree. The 0.2.13 release-check report is `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`.
+Current state (2026-05-30, after S49 public-surface cleanup): 0.2.13「人性化上手」is PUBLICLY SHIPPED and fully read back. npm latest = `@adamchanadam/aps@0.2.13`; `package.json` = 0.2.13; GitHub release `v0.2.13`→`6059f45` is the GitHub Latest release (`isPrerelease=false`); GitHub Pages live with the 0.2.13 content; `origin/main` includes the S49 README / governance cleanup commit after S48. README no longer exposes internal `.md` planning / QC files as a repo homepage route. All four public surfaces (npm / repo main / Pages / GitHub release) were read back and agree. The 0.2.13 release-check report is `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`.
 
 0.2.13 shipped the「人性化上手」model end to end: three-question `init` (own side only; counterpart invited later via `peer add`), items as an explicit `--items` sender contract (verbatim into frontmatter; revise preserves / `--clear-items` empties), doctor local-core vs peer split (solo passes), publish actionable no-recipient guidance + reachability gate, the shared-folder default name unified to `Agent_Public_Squares` (underscore `AI_Public_Squares` scrubbed from user-facing defaults; existing folders keep working), a rewritten forwardable starter-pack invite linking to the new joiner page `docs/guides/aps-join-invite.html`, and project-scoped starter-pack filenames. CLI ↔ skill ↔ public docs are aligned (外發前檢 9(d) GREEN).
 
@@ -13,7 +13,7 @@ Do not commit, push, tag, release, publish, or change GitHub Pages unless Adam e
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md (latest S48 entry)
+3. dev/SESSION_LOG.md (latest S49 entry)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/qc/triggers.md (🟡 外發前檢 / 🔴 全面檢; 9(d) behaviour-truth)
