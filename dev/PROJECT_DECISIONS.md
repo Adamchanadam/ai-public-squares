@@ -13,6 +13,8 @@
 
 任務需求演進的長期 narrative。Newest first。AI 觀察到 substantive task evolution 時 append。
 
+- 2026-05-30 (S48) — 0.2.13「人性化上手」由「本機完成、未發佈」推到「公開已發佈」。第五段 gated release 行完整條線:升版 → 外發前檢 + 全面檢全綠 → `npm publish` → `git push` → GitHub Pages → GitHub pre-release,每個對外動作逐項授權,四個對外面(npm latest / repo main / Pages / GitHub release)逐項讀回對齊。產品正式對外提供三問安裝 + items 明示契約 + `Agent_Public_Squares` 預設 + 可轉發邀請訊息 + 加入教學頁。0.2.x 一條「人性化上手」主線(0.2.9 Reliable Peer Handoff → 0.2.12 正名與框架 → 0.2.13 人性化上手)告一段落。下一刀係治理工具升級(Agent Handoff Kit 0.3.14→0.3.17)同延後嘅本機 / Drive hub 改名、Project Context Index。
+
 - 2026-05-29 (S47) — 0.2.13「人性化上手」做到淨剩發佈:第三段公開頁全部對齊三問 / items(清咗 9(d) 公開頁 blocker);starter pack 由「填表 + 命令塞晒入去」重寫成一封可轉發嘅邀請訊息 + 一版專為「被邀請者」而設嘅教學頁(`docs/guides/aps-join-invite.html`),把 terminal / 命令 / 排錯嘅複雜度搬離訊息。同時把共用資料夾預設名由 `AI_Public_Squares` 統一做 `Agent_Public_Squares`(切走同產品改名撞嘅舊名陷阱;既有資料夾相容)。第四段 UAT 喺隔離沙盒行綠。產品由「協定可上手」推到「邀請體驗對非技術人都跟得到」。下一刀淨係 gated release(第五段)。
 
 - 2026-05-29 (S46) — 0.2.13「人性化上手」由設計進入落地:第一段(CLI 冇對方都用得模型 + items 明示契約)同第二段(skill 對齊三問 / items / 邀請)已 build + 驗 + 本機 commit。產品由「協定 + 候選功能」明確向「非技術新手真實可上手」推進。同時治理層成熟一階:QC 由「查結構」升級到「行為真源對齊」(`bin/aps.js` 為行為真源,skill + 公開頁跟),並把分階段落地嘅 drift 由「靠 AI 記住」變成明文 blocking 閘。
@@ -60,6 +62,8 @@
 ## Insights & Learnings
 
 累積式學習、反思、觀察。AI 觀察到多 session 累積 pattern 時 append。
+
+- 2026-05-30 (S48) — 兩條發佈執行學習。(1) **分段受閘發佈(逐項授權 + 即時讀回)行得順又安全**:把不可逆動作逐個拆開確認,每個發完即刻讀回(`npm view` / `npx @latest` / Pages 探針 / `gh release view` / `ls-remote`),令「以為發咗」同「真係發咗」唔會混淆;呢套已成穩定 release 範式,值得沿用。(2) **release-check 同先前 UAT 多數重疊但唔可以省**:第四段 UAT 同第五段 release-check 之間只差版本字串(runtime 行為相同),但 release notes 自己寫住「verification NOT YET RUN」,照貼出 release body 就會講大話 —— 所以實跑一次攞新鮮證據 + 改正 release body 狀態係必要,唔可以用『同 UAT 一樣』省略。另:GitHub Pages 推完約 15 秒就 rebuild,但唔可以假設即時;用新增檔案(加入頁)做 200 探針至準,index 200 但內容仲係舊都可能發生。
 
 - 2026-05-29 (S47) — 三條累積學習。(1) **舊名遺留係改名工程嘅長尾陷阱**:產品由 AI Public Squares 改做 Agent Public Squares,但共用資料夾預設名、本機 folder、真 Drive hub 仲叫舊名,任何一處用戶可見嘅舊名都會令新手揀錯 / 撞名(Adam:「單是目錄用 AI Public Squares 就是坑」)。教訓:改名要分「用戶可見預設 / 示例」(即刻 scrub)同「事實記錄 / 既有資料」(保留,唔可 falsify 真實路徑);真實 folder 改名係 live-cwd / 共享外部操作,要無 session / 人手做,唔好 mid-session。(2) **dynamic Workflow 對細任務係用大咗**:今次第三段盤點 6 個 agent 燒約 65 萬 token,結果同 inline 差距唔大,而且行號漂移要自己對返真檔;workflow 真正抵用喺檔多(十幾廿個以上)/ 要對抗式多角度覆核 / 讀大到塞爆主 context。輸出當第二意見,唔當 patch 座標。(3) **外部下載連結要核官方文件先寫落公開頁**:join 教學頁嘅 Google Drive / Node 下載連結經 codex + WebFetch 核實(Google support `answer/10838124`、`nodejs.org/en/download`),唔靠記憶 —— 公開頁畀錯連結係真 defect。
 

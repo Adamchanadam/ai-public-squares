@@ -1,40 +1,30 @@
 Work in C:\Users\adam\_claude_desktop\AI_Public_Squares (template SSOT for Agent Public Squares; npm `@adamchanadam/aps`; GitHub repo Adamchanadam/agent-public-squares is public; Pages enabled). Local working-folder name is still `AI_Public_Squares` (rename deferred).
 
-Current state (2026-05-29, end of S47): npm latest is `@adamchanadam/aps@0.2.12` (published pre-release); `package.json` is still `0.2.12` (bumping to 0.2.13 is the first step of the release). There are NINE local commits ahead of origin/main (`ff044e9`); working tree clean; NOTHING pushed, tagged, or published. The two newest: `3d1dcd1` (0.2.13 第三段+), `10bd98b` (0.2.13 B4/B5).
+Current state (2026-05-30, end of S48): 0.2.13「人性化上手」is PUBLICLY SHIPPED and fully read back. npm latest = `@adamchanadam/aps@0.2.13`; `package.json` = 0.2.13; GitHub pre-release `v0.2.13`→`6059f45`; GitHub Pages live with the 0.2.13 content; `origin/main` == local HEAD (the 0.2.13 release commit `6059f45` plus the S48 closeout commit), 0 ahead, working tree clean. All four public surfaces (npm / repo main / Pages / GitHub release) were read back and agree. The 0.2.13 release-check report is `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`.
 
-0.2.13 「人性化上手」: 第一段–第四段 are DONE & committed locally, and 第四段 UAT is GREEN. Only 第五段 (gated release) remains.
-- 第一段 (bin/aps.js): three-question init (no counterpart), doctor local-core vs peer split (solo passes), publish actionable no-recipient prompt + reachability gate (explicit --to blocks / config-default partner warns), starter pack moved init→peer add, items explicit contract (--items verbatim into frontmatter, frontmatter-only read, revise preserve / --clear-items), S45 truncation fix.
-- 第二段 (skills/aps): SKILL.md + setup-dialogue aligned to three-question / items / invite; description 729.
-- 第三段+ (3d1dcd1): README + docs/index.html + walkthrough + maintainers aligned to three-question / items (cleared the 9(d) public-HTML blocker); UNIFIED the shared-folder default name AI_Public_Squares → Agent_Public_Squares and scrubbed the underscore name from every user-facing default/example (CLI init prompt, docs, demo fixtures; bridge-pack placeholder token → neutral <your_shared_drive_folder_absolute_path>); rewrote starterPackContent() into a short forwardable written-Chinese invite message + link to the NEW joiner page docs/guides/aps-join-invite.html (which carries the three install commands so a fresh joiner's AI can install); wrote dev/release-notes/v0.2.13.md; aligned setup-dialogue §6 + guides hub + PROJECT_INDEX.
-- B4/B5 (10bd98b): peer starter prints a「未建立 peer」note; starter-pack filename project-scoped (starter-pack-<project>-<peer>.md).
-- 第四段 UAT GREEN (isolated OS-temp sandbox, redirected HOME, real Hub + real ~/.claude untouched, local 0.2.13 code): three-question init Agent_Public_Squares; doctor solo passes; peer add → project-scoped starter pack; jay join→confirmed; publish --to jay --items → items verbatim in frontmatter; inbox; publish-no-recipient exit 1; revise preserve / --clear-items; consume; old two-person config publish-without-to warns+sends. All pass.
+0.2.13 shipped the「人性化上手」model end to end: three-question `init` (own side only; counterpart invited later via `peer add`), items as an explicit `--items` sender contract (verbatim into frontmatter; revise preserves / `--clear-items` empties), doctor local-core vs peer split (solo passes), publish actionable no-recipient guidance + reachability gate, the shared-folder default name unified to `Agent_Public_Squares` (underscore `AI_Public_Squares` scrubbed from user-facing defaults; existing folders keep working), a rewritten forwardable starter-pack invite linking to the new joiner page `docs/guides/aps-join-invite.html`, and project-scoped starter-pack filenames. CLI ↔ skill ↔ public docs are aligned (外發前檢 9(d) GREEN).
 
-The approved next step is 0.2.13 第五段 — GATED release (the only remaining stage):
-1. Bump package.json 0.2.12 → 0.2.13.
-2. Run 🟡 外發前檢 (release-check) then 🔴 全面檢 (full-check) per dev/qc/triggers.md; re-confirm 外發前檢 #9 / 9(d) passes (it should — CLI ↔ skill ↔ docs already aligned).
-3. Then EACH action individually authorized by Adam: `npm publish --access public`; `git push origin main` (9 commits); GitHub Pages readback; GitHub release (tag v0.2.13 + body from dev/release-notes/v0.2.13.md).
-4. Post-publish read-backs before claiming done: `npm view @adamchanadam/aps version dist-tags.latest --json`, `npx --yes @adamchanadam/aps@latest --help` (expect v0.2.13), live Pages, remote branch/tag.
+The immediate next step is the Agent Handoff Kit TOOL upgrade in this root: the Kit tool is npm latest `v0.3.17` while this project records `v0.3.14`. Do it as its own step — `npx --yes @adamchanadam/agent-handoff-kit@latest upgrade --dry-run` first, review the plan, then apply, let it auto-run doctor (AGENTS.md §2.1 Upgrade Done Contract), then commit + push the migration separately and bump the PROJECT_INDEX Kit version record. (If S48 already did this, treat it as done and move to the deferred items.)
 
-Do not commit, push, tag, release, publish, or change GitHub Pages unless Adam explicitly asks (each external action is its own authorization). Automation (watch / _notify / scheduling / desktop notif / bot auto-send) is OUT OF SCOPE — never re-add it. `items` uses the explicit contract, never prose-parsing; revise preserves prior items. New installs default the shared folder to Agent_Public_Squares; existing AI_Public_Squares folders keep working; the underscore name is scrubbed from user-facing defaults only (the `AI Public Squares` product alias with a space, and the `check Hub` trigger, stay recognized); the local dev-folder + Drive-hub rename are DEFERRED and must NOT be done mid-session.
+After that, deferred in-scope work: local dev-folder + real Drive-hub rename to `Agent_Public_Squares` (no-live-session / external-manual — do NOT do mid-session; a checklist can be produced when ready); Project Context Index design; monitoring real-world 0.2.13 adoption (Jay / new joiner reinstall @latest and exercise three-question install + joiner page). Out of APS scope (never re-add): watch / _notify / scheduling / desktop notif / bot auto-send.
+
+Do not commit, push, tag, release, publish, or change GitHub Pages unless Adam explicitly asks (each external action is its own authorization). `items` uses the explicit contract, never prose-parsing. New installs default the shared folder to Agent_Public_Squares; existing AI_Public_Squares folders keep working; the underscore name is scrubbed from user-facing defaults only (`AI Public Squares` with a space and the `check Hub` trigger stay recognized); the local dev-folder + Drive-hub rename are DEFERRED and must NOT be done mid-session.
 
 Read in order:
 1. AGENTS.md
 2. dev/SESSION_HANDOFF.md
-3. dev/SESSION_LOG.md (latest S47 entry)
+3. dev/SESSION_LOG.md (latest S48 entry)
 4. dev/PROJECT_INDEX.md
 5. dev/RULE_PACKS.md
 6. dev/qc/triggers.md (🟡 外發前檢 / 🔴 全面檢; 9(d) behaviour-truth)
-7. dev/rules/release.md (release verification + evidence)
-8. dev/DOC_SYNC_REGISTRY.md (Release row: post-publish read-backs)
-9. dev/release-notes/v0.2.13.md (GitHub release body source)
-10. package.json (still 0.2.12 — bump first)
-11. bin/aps.js + skills/aps/** + README + docs/** (the shipped 0.2.13 behaviour + teaching, all aligned)
+7. AGENTS.md §2.1 (Upgrade Done Contract — before the Kit upgrade)
+8. dev/PROJECT_INDEX.md Stack (Kit version row) + dev/governance_migrations/ (Kit upgrade backup)
 
 If this root does not match the expected project root, stop and ask for confirmation.
 
 Voice / writing hard rule: user-facing prose must be contemporary written Traditional Chinese; no piled-up technical terms or clause numbers as sentence subjects, no broken Chinese-English fragments, minimal English. Colloquial Cantonese only inside verbatim user-trigger quotes. HTML must not link local `.md` files; use plain `<span class="path">` for internal spec paths.
 
-Brand / vocab discipline: display name `Agent Public Squares`; trigger `check Drive`; concept 「共用 Drive 資料夾」; new shared-folder default `Agent_Public_Squares`. `AI Public Squares` (space) and `check Hub` stay RECOGNIZED legacy aliases. Structural tokens `hubRoot` / `--hub-root` / `_hub/` / `<hub_root>` / PROTOCOL schema / `setupHub` / `doctorHub` must NOT be renamed. Do not reuse the old repo slug `ai-public-squares`. Any skill frontmatter edit re-measures `description` ≤1024 + valid YAML.
+Brand / vocab discipline: display name `Agent Public Squares`; trigger `check Drive`; concept 「共用 Drive 資料夾」; shared-folder default `Agent_Public_Squares`. `AI Public Squares` (space) and `check Hub` stay RECOGNIZED legacy aliases. Structural tokens `hubRoot` / `--hub-root` / `_hub/` / `<hub_root>` / PROTOCOL schema / `setupHub` / `doctorHub` must NOT be renamed. Do not reuse the old repo slug `ai-public-squares`. Any skill frontmatter edit re-measures `description` ≤1024 + valid YAML.
 
 External review (read-only second opinion): call codex DIRECTLY, never via `cmd /c` (git bash MSYS mangles `/c`). Long/Chinese prompts: write a UTF-8 prompt file, then `codex exec --skip-git-repo-check -c sandbox_mode="read-only" -c approval_policy="never" "$(cat promptfile)" < /dev/null 2>&1 | tee out.txt`. Method recorded in C:\Users\adam\_claude_desktop\GENERIC_OPERATIONAL_RUNBOOK.md §3i / §5k.
 

@@ -8,7 +8,19 @@ Keep recent entries concise. If older entries no longer affect the next action, 
 
 Before closeout, check whether older log detail should be kept, summarized, or archived. Do not remove validation evidence, unresolved risks, or the latest opening message.
 
-## 2026-05-29 (S47, latest) — 0.2.13 第三段+ (公開頁對齊 + 命名統一 Agent_Public_Squares + starter pack + 加入教學頁) + B4/B5 + 第四段 UAT GREEN
+## 2026-05-30 (S48, latest) — 0.2.13 第五段 gated release SHIPPED (npm 0.2.13 + push + Pages + GitHub release;全部讀回核實)
+
+- **ID:** S48
+- **Summary:** Ran 0.2.13「人性化上手」第五段 gated release end to end, each external action individually authorized by Adam. Bumped `package.json` 0.2.12→0.2.13, ran 外發前檢 + 全面檢 (GREEN), `npm publish`, pushed `main`, verified Pages, cut GitHub pre-release `v0.2.13`. All four public surfaces (npm / repo main / Pages / GitHub release) read back and agree. **0.2.13 is now publicly shipped.** Next: Agent Handoff Kit tool upgrade 0.3.14→0.3.17 (dry-run first), then deferred renames + Project Context Index.
+- **Release-check (外發前檢 + 全面檢) GREEN:** `node --check`; `npm pack --dry-run` v0.2.13 / 14 files; doctor 45 passed; skill `description` 729 ≤1024 + 0 colon-space (valid YAML); bracket-path `init --dry-run` exit 0 (0.2.10 regression holds); 9(d) teaching-layer old-model markers 0 (the lone `設定起手方向` hit is the CLI's own `config` display + a correct disclaimer, not init / teaching drift); placeholder / PII / structural-token sweeps clean; HTML `<section>` balance (index 10/10, guides hub 3/3, walkthrough 16/16, join 7/7, maintainers 5/5) + 0 local .md links; browser render index/walkthrough 0 console error (join page only favicon-404, cosmetic); fresh isolated 0.2.13 round-trip GREEN (init solo exit 0 / doctor solo exit 0 / publish-no-recipient exit 1 / peer add project-scoped starter / provisional hard-block / join / publish --to items verbatim / inbox / revise preserve=2 / --clear-items=0 / consume ack). Report `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md`.
+- **External actions (each individually authorized):** `npm publish --access public` → `@adamchanadam/aps@0.2.13` (readback: version + dist-tags.latest 0.2.13, 14 files; `npx @latest --help` v0.2.13). `git push origin main` `ff044e9..6059f45` (readback: origin/main == HEAD, 0 ahead). GitHub Pages readback (join page 200; index 「三條問題」present / 「五個值」0). `gh release create v0.2.13 --target 6059f45 --prerelease` with body from new `dev/release-notes/v0.2.13.github.md` (readback: latest in list, isPrerelease true / isDraft false, tag→6059f45 synced).
+- **Changed (repo):** `package.json` (0.2.13) + `dev/qc/2026-05-30-aps-full-audit-0.2.13-release-check.md` (release commit `6059f45`, pushed); new `dev/release-notes/v0.2.13.github.md`; closeout: `dev/SESSION_HANDOFF.md`, this log, `dev/SESSION_LOG_archive/*`, `dev/PROJECT_INDEX.md`, `dev/PROJECT_DECISIONS.md`, `START_NEXT_SESSION_PROMPT.txt`.
+- **QC:** release-check + full-check GREEN (above); all four post-publish read-backs agree; Agent Handoff Kit doctor `status: passed` (45). Kit tool drift to npm latest v0.3.17 noted (next step).
+- **Boundary:** Every external action (publish / push / Pages / release) individually authorized by Adam. The Agent Handoff Kit tool upgrade is queued as the next step (its own dry-run → apply → doctor → separate commit).
+- **Next:** Agent Handoff Kit upgrade 0.3.14→0.3.17 (dry-run → apply → auto-doctor §2.1 → separate commit + push + PROJECT_INDEX version bump); then deferred local dev-folder + Drive-hub rename, Project Context Index, monitor 0.2.13 adoption.
+- **Log maintenance:** S48 prepended (hot log 11); N-rule moved the oldest entry (S38) into archive batch 009 → hot log back to 10; INDEX updated.
+
+## 2026-05-29 (S47) — 0.2.13 第三段+ (公開頁對齊 + 命名統一 Agent_Public_Squares + starter pack + 加入教學頁) + B4/B5 + 第四段 UAT GREEN
 
 - **ID:** S47
 - **Summary:** Completed 0.2.13 第三段+ : aligned all public surfaces to three-question / items (cleared the 9(d) public-HTML blocker), unified the shared-folder default name `AI_Public_Squares` → `Agent_Public_Squares` (scrubbed every user-facing default / example; existing folders untouched, compat), rewrote `starterPackContent()` into a short forwardable invite message + new joiner page `docs/guides/aps-join-invite.html`, plus B4/B5. One codex read-only review of the starter-pack design. 第四段 UAT GREEN in an isolated sandbox. Two commits (`3d1dcd1`, `10bd98b`); nine local commits unpushed; nothing published. Only 第五段 (gated release) remains.
@@ -117,10 +129,6 @@ Before closeout, check whether older log detail should be kept, summarized, or a
 ## 2026-05-28 (S39) — Project Peers full-audit scenario codified
 
 - Short index: QC trigger truth now requires Project Peers one-by-one handoff isolation; durable details live in `dev/qc/triggers.md`, `docs/qc/governance-map.html`, and `dev/SESSION_HANDOFF.md`.
-
-## 2026-05-28 (S38) — 0.2.9 full audit and receiver isolation fix
-
-- Short index: local 0.2.9 Project Peers audit fixed receiver filtering / consume guard and Agent Public Squares route discovery; durable details live in `dev/qc/2026-05-28-aps-full-audit-0.2.9-project-peers.md` and `dev/SESSION_HANDOFF.md`.
 
 ## Entry Template
 
